@@ -77,6 +77,72 @@ CUA 轨迹数据的采集有两条路径：
 | 评测流程 | 完整（从打开页面到结论） |
 | 产出格式 | `项目名称 \| 测试内容 \| sess-id \| 是否复现` |
 
+### 任务卡格式（JSON）
+
+智子产出、Pichai 分发。每个任务卡包含以下字段：
+
+```json
+{
+  "task_id": "luxesite-253",
+  "repo": "ivegamsft/luxesite",
+  "repo_url": "https://github.com/ivegamsft/luxesite",
+  "buggy_commit": "39a6e117de7046abb5cd2d5d1ed62547138be8f1",
+  "deploy_commands": ["npm install", "npm run dev"],
+  "deploy_verify": {
+    "method": "curl",
+    "check": "curl -s -o /dev/null -w '%{http_code}' http://localhost:3000",
+    "expect": "200",
+    "timeout_seconds": 120
+  },
+  "app_name": "Aurora Luxe",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "test_description_zh": "滚动到推荐评价区域，点击翻页按钮逐页浏览，检查切换过程是否正常流畅。",
+  "framework": "nextjs",
+  "timeout": {"max_steps": 100, "max_minutes": 15},
+  "ground_truth": {
+    "bug_issue": "#253",
+    "bug_description": "404页面缺返回首页链接",
+    "visibility": "仅限智子+Pichai，不发给执行agent"
+  }
+}
+```
+
+**字段说明：**
+- `task_id`：命名规则为 `{repo短名}-{issue号}`（如 `luxesite-253`），全局唯一，由智子统一分配
+- `app_name`：应用名称，用于拼接 mano-cua 任务描述
+- `deploy_verify`：结构化部署验证，执行 agent 确认服务跑起来后再开测
+- `test_page`：Chrome 打开的初始页面路由
+- `test_description_zh`：具体在哪个页面操作，由智子在描述中包含
+- `ground_truth`：仅供智子+Pichai 比对，**不下发给执行 agent**
+- 重试结果文件加后缀区分：`luxesite-253-retry1.json`
+
+### mano-cua 调用规范
+
+mano-cua 是截图驱动的，标准调用流程：
+
+```bash
+# 1. 部署验证
+curl -s -o /dev/null -w '%{http_code}' http://localhost:3000  # 确认返回 200
+
+# 2. 打开 Chrome 到目标页面
+open -a "Google Chrome" "http://localhost:3000${test_page}"
+sleep 3
+
+# 3. 拼接任务描述并执行
+# 任务描述 = "当前Chrome浏览器已打开{app_name}网站，地址是{dev_url}。" + test_description_zh
+mano-cua run "当前Chrome浏览器已打开Aurora Luxe网站，地址是localhost:3000。滚动到推荐评价区域，点击翻页按钮逐页浏览，检查切换过程是否正常流畅。"
+
+# 4. 从输出中提取 sess-id，判定是否复现
+```
+
+**注意：**
+- `mano-cua run` 只接一个参数：拼接后的任务描述字符串
+- 不需要传 URL 参数，任务描述里已包含上下文
+- 轨迹数据自动记录在 mano 服务端，通过 sess-id 查看
+- `mano-cua stop` 可强制停止
+- `test_page` 只用于 Chrome 打开初始页面，不拼进任务描述
+
 ---
 
 ## 三、角色分工
@@ -175,11 +241,36 @@ CUA 轨迹数据的采集有两条路径：
 | 复现判定 | 明确标注：✅ 复现 / ⚠️ 部分复现 / ❌ 未复现 |
 | 产出格式 | 项目名称 \| 测试内容 \| sess-id \| 是否复现 |
 
-### 5.2 PM 质量把控
+### 5.2 三层质量闸门
 
-1. **首轮抽检**：每个 Worker 的前 3 个 case，PM 检查轨迹质量
-2. **异常监控**：超时率 > 30% 或未复现率 > 70% 的 Worker 暂停排查
-3. **每日汇总**：每天向老傅 & Emily 同步进度
+| 层级 | 负责人 | 检查内容 | 覆盖范围 |
+|------|--------|---------|----------|
+| **L1 格式检查** | Pichai | 轨迹完整、sess-id 有效、流程走完、产出格式合规 | 100% |
+| **L2 质量抽检** | 智子 | 命中判定是否准确、轨迹是否覆盖目标功能点 | 初期 50%，稳定后 20-30% |
+| **L3 终审** | 老傅（FTY） | 看数据、定标准 | 按需 |
+
+L2 抽检重点：
+- "未复现"的 case（可能是漏检）
+- "描述模糊"的 case（判定有争议）
+- 每个 Worker 的前 3 个 case（建立信任）
+
+### 5.3 异常监控
+
+1. Worker 连续 30 分钟无产出 → PM 主动排查
+2. 单 Worker 超时率 > 30% → 暂停该 Worker，分析原因
+3. 整体速率低于目标 20% 以上 → 升级到林菡
+4. 每天向老傅 & Emily 同步进度
+
+### 5.4 错误处理规则
+
+| 场景 | 处理方式 |
+|------|----------|
+| 部署失败 | Worker 自行排查一次（改端口、重装依赖），仍失败上报 PM |
+| **同项目连续 3 个 case 部署失败** | 标记 `PROJECT_BLOCKED`，**整批跳过**，不逐个试 |
+| mano-cua 超时（>100 步或 >15 分钟） | 停止当前 case，记录异常，跳到下一个 |
+| mano-cua 异常退出 | 重试 1 次，仍失败则记录异常跳过 |
+| **单 case 卡死超过 15 分钟** | 上报 PM，PM 决定跳过或升级 |
+| 同一个 bug 重试 | 结果文件加后缀（如 `luxesite-253-retry1.json`） |
 
 ---
 
@@ -322,7 +413,7 @@ CUA 轨迹数据的采集有两条路径：
 
 ## 九、相关链接
 
-- Repo: https://github.com/labradorsedsota/cua-data-collection
+- Repo: https://github.com/labradorsedsota/bughunt
 - 群聊「从github找CUA数据」：智子 + 老傅 + Emily + 林菡 + Pichai
 - mano-cua 版本：v1.0.6
 

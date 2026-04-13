@@ -86,6 +86,41 @@ which mano-cua
 
 **当前最新版本：1.0.6**
 
+### mano-cua 调用 SOP
+
+Worker 拿到任务卡后的标准执行流程：
+
+```bash
+# 1. Clone 并部署 buggy 版本
+gh repo clone ${repo}
+cd ${repo_dir}
+git checkout ${buggy_commit}
+${deploy_commands}  # 如 npm install && npm run dev
+
+# 2. 部署验证（确认服务跑起来再开测）
+curl -s -o /dev/null -w '%{http_code}' ${dev_url}  # 期望返回 200
+# 如果 120 秒内不返回 200 → 排查或上报
+
+# 3. 打开 Chrome 到目标页面
+open -a "Google Chrome" "${dev_url}${test_page}"
+sleep 3
+
+# 4. 拼接任务描述并执行 mano-cua
+# 任务描述 = "当前Chrome浏览器已打开{app_name}网站，地址是{dev_url}。" + test_description_zh
+mano-cua run "当前Chrome浏览器已打开{app_name}网站，地址是{dev_url}。{test_description_zh}"
+
+# 5. 从输出中提取 sess-id
+# 6. 判定是否复现，按格式上报结果
+```
+
+**注意事项：**
+- `mano-cua run` 只接一个参数：拼接后的任务描述字符串
+- 不需要传 URL 参数，任务描述里已包含上下文
+- 轨迹数据自动记录在 mano 服务端，通过 sess-id 查看
+- `mano-cua stop` 可强制停止异常 session
+- `test_page` 只用于 Chrome 打开初始页面，不拼进任务描述
+- 同项目的多个 bug 共享部署，不需要重复 clone/install
+
 ### macOS 权限
 
 mano-cua 需要控制桌面 GUI，首次运行时需授权：
