@@ -10,16 +10,24 @@ set -e
 # ── 参数解析 ──────────────────────────────────────────────────────────────────
 
 WORKER_ID=""
+BOT_TOKEN=""
 while [[ $# -gt 0 ]]; do
   case $1 in
     --id) WORKER_ID="$2"; shift 2 ;;
-    *) echo "未知参数: $1"; echo "用法: ./setup-worker.sh --id <编号>"; exit 1 ;;
+    --token) BOT_TOKEN="$2"; shift 2 ;;
+    *) echo "未知参数: $1"; echo "用法: ./setup-worker.sh --id <编号> --token <botToken>"; exit 1 ;;
   esac
 done
 
 if [ -z "$WORKER_ID" ]; then
   echo "❌ 请指定 Worker 编号"
-  echo "用法: ./setup-worker.sh --id 03"
+  echo "用法: ./setup-worker.sh --id 03 --token bf_xxxxxxxxxxxxx"
+  exit 1
+fi
+
+if [ -z "$BOT_TOKEN" ]; then
+  echo "❌ 请指定 DMWork botToken"
+  echo "用法: ./setup-worker.sh --id 03 --token bf_xxxxxxxxxxxxx"
   exit 1
 fi
 
@@ -133,24 +141,29 @@ sudo scutil --set LocalHostName "$WORKER_NAME"
 echo "  机器名: $WORKER_NAME"
 
 # OpenClaw 配置
-# TODO: 周二验证后补充完整的 openclaw.json 模板
-# 需要包含：
-# - 模型 provider 和 API key
-# - DMWork botToken（每台 Worker 可能需要独立的 bot 账号，或共享同一个）
-# - Agent ID: worker-${WORKER_ID}
 cat > "$HOME/.openclaw/openclaw.json" << OCEOF
 {
   "agent": {
     "workspace": "~/.openclaw/workspace"
   },
-  "channels": {
-    "dmwork": {
-      "_comment": "TODO: 补充 DMWork 配置"
+  "plugins": {
+    "entries": {
+      "openclaw-channel-dmwork": {
+        "enabled": true,
+        "config": {
+          "accounts": {
+            "default": {
+              "apiUrl": "https://im.deepminer.com.cn/api",
+              "botToken": "${BOT_TOKEN}"
+            }
+          }
+        }
+      }
     }
   }
 }
 OCEOF
-echo "  openclaw.json: 已写入（待补充完整配置）"
+echo "  openclaw.json: 已写入（botToken: ${BOT_TOKEN:0:10}...）"
 
 # Worker SOUL.md
 cat > "$HOME/.openclaw/workspace/SOUL.md" << 'SOULEOF'
@@ -258,5 +271,5 @@ echo "📋 后续手动步骤："
 echo "  1. gh auth login（如未登录）"
 echo "  2. 系统设置 → 隐私与安全性 → 辅助功能 → 允许 Terminal"
 echo "  3. 系统设置 → 隐私与安全性 → 屏幕录制 → 允许 Terminal"
-echo "  4. 补充 ~/.openclaw/openclaw.json 中的完整配置"
+echo "  4. 补充 ~/.openclaw/openclaw.json 中的模型 provider 配置"
 echo "  5. openclaw gateway start"
