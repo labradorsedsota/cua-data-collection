@@ -193,7 +193,10 @@ curl -s -o /dev/null -w "%{http_code}" https://im.deepminer.com.cn/api/v1/bot/gr
 
 ## 六、待补充（周二验证后）
 
-- [ ] `openclaw.json` 完整配置模板
+- [ ] 每台 Worker 的 Bot ID（类似 `lynx_bot` 的标识，待告知提供方式）
+- [ ] 每台 Worker 的 Bot Token（独立的 DMWork botToken）
+- [ ] `openclaw.json` 完整配置模板（模型 provider + API key 部分）
+- [ ] DMWork apiUrl 确认
 - [ ] DMWork 插件安装步骤（确认最佳方式）
 - [ ] SOUL.md / AGENTS.md 定稿内容
 - [ ] mano-cua 运行参数（超时时间等）
