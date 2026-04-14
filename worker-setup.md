@@ -4,11 +4,32 @@
 
 ---
 
+## 〇、前置准备
+
+### 0.1 安装 VPN
+
+按团队统一配置安装 VPN，确保能访问 GitHub、npm registry 等外部资源。后续所有步骤均需 VPN 已连接。
+
+### 0.2 安装 Google Chrome
+
+从官网下载安装：https://www.google.com/chrome/
+
+或通过 Homebrew 安装（需先完成 2.1）：
+```bash
+brew install --cask google-chrome
+```
+
+mano-cua 依赖 Chrome 进行 GUI 自动化操作，必须安装。
+
+---
+
 ## 一、系统要求
 
 - macOS Sequoia 15.x（新机器默认）
 - 已联网（需要访问 GitHub、npm registry、DMWork API）
 - 已登录 Apple ID（如需要）
+- VPN 已安装并连接
+- Google Chrome 已安装
 
 ## 二、基础环境
 
