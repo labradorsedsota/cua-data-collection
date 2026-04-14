@@ -59,6 +59,32 @@ CUA 轨迹数据的采集有两条路径：
 | 2 | UI Bug 的 PR 足够多 | 单个项目能批量产出数据，优于零散小项目 |
 | 3 | 测试用例多、组件丰富 | 表单/表格/导航/弹窗/轮播/侧边栏等多类型覆盖 |
 
+**管线自动筛选参数（2026-04-15 更新）：**
+
+| 参数 | 值 | 说明 |
+|------|------|------|
+| deploy | Easy（有 dev 脚本） | Mac 可直接跑 |
+| bugs | ≥5 且 ≤500 | 有足够 bug 但不是超大 mono repo |
+| stars | ≥100 | 项目质量下限 |
+| ui_score | ≥2 | 正向词 82 个 - 排除词 32 个，截图+5 |
+| PR changed_files | ≤10 | 排除大重构类 PR |
+| 框架/库排除 | Stars > 50K 排除 | 超大 repo 几乎都是框架/平台，非可测试应用 |
+| 框架/库排除 | 已知名单 16 个 | angular/angular, preactjs/preact, TanStack/query 等 |
+| 框架/库排除 | 描述关键词 17 个 | framework/compiler/runtime/state management 等 |
+| 后端依赖排除 | 黑名单检测 | home-assistant-js-websocket, docker-compose 等 |
+| 候选池 | **869 个项目** | 944 → 过滤框架/库后 869 |
+| 预估可执行 case | ~2,300-2,500 条 | 原 2,500-2,700 × (869/944) |
+
+**任务卡描述规范（2026-04-15 更新）：**
+
+| 规范 | 说明 |
+|------|------|
+| test_page 提取 | Level A: 从 issue body 正则提取 URL 路径（覆盖约 10-15%） |
+| 反逃逸约束 | Level B: test_page="/" 时自动追加「始终在浏览器内操作，禁止打开 Terminal，找不到报 unclear」 |
+| deploy_commands | 强制 npm run dev（不用 dist 部署） |
+| 端口推断 | 从框架自动检测（next→3000, vite→5173, cra→3000, angular→4200） |
+| app_name | 从 package.json name 字段自动填充 |
+
 **选 Bug（3 条）：**
 
 | # | 标准 | 说明 |
