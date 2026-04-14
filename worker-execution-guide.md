@@ -142,28 +142,57 @@ end tell'
 
 ### 通道 2：结果 JSON 写入 repo（持久化，统计和交付用）
 
-将完整结果写入 `results/{worker名}/` 目录，文件名 = `{task_id}.json`：
+将完整结果写入 `results/{worker名}/` 目录，文件名 = `{task_id}.json`。
 
+status 只有两个值：`completed`（mano-cua 跑完）或 `failed`（没跑完）。
+
+**正常 case（completed）：**
 ```json
 {
   "task_id": "luxesite-253",
   "worker": "worker-fabrice",
-  "status": "reproduced",
+  "status": "completed",
   "sess_id": "sess-20260414xxxxx-xxxxxxxxx",
-  "observation": "第 8 步截图中 404 页面无返回首页链接，页面仅显示 404 错误信息",
   "duration_seconds": 272,
   "timestamp": "2026-04-14T15:23:45+08:00",
-  "blocked_diagnosis": null
+  "evaluation": {
+    "success": false,
+    "reason": "404 页面缺少返回首页的导航链接",
+    "evidence": "第 8 步截图中页面仅显示 404 错误信息，无可点击元素",
+    "confidence": 0.92
+  }
 }
 ```
 
-status 取值：`reproduced` | `not_reproduced` | `partial` | `blocked`
+evaluation 直接原样记录 mano-cua 的输出，Worker 不需要自行解读。
+
+**异常 case（failed）：**
+```json
+{
+  "task_id": "cleaningsvc-18",
+  "worker": "worker-moss",
+  "status": "failed",
+  "sess_id": null,
+  "duration_seconds": 0,
+  "timestamp": "2026-04-14T15:30:00+08:00",
+  "evaluation": null,
+  "failure": {
+    "type": "deploy_failed",
+    "symptom": "npm install 报 node-gyp 编译错误",
+    "attempted": [
+      "清缓存重装（同一错误）",
+      "--ignore-scripts（服务启动缺 sass 模块）"
+    ],
+    "recommendation": "跳过，需 nvm 降级 Node 14"
+  }
+}
+```
+
+failure.type 取值：`deploy_failed` | `timeout` | `mano_cua_error` | `url_deviation` | `other`
 
 **push 频率：**
 - 正常：每完成 5 个 case 批量 git push 一次
-- 异常/BLOCKED：立刻 push + 群里通知 PM
-
-**关键：复现判定必须引用具体观测事实（第 N 步截图中看到 xxx），不能只写"复现"或"未复现"。**
+- 异常/failed：立刻 push + 群里通知 PM
 
 ---
 
