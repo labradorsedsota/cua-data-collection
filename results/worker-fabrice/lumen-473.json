@@ -1,0 +1,27 @@
+{
+  "task_id": "lumen-473",
+  "repo": "lumen-notes/lumen",
+  "worker": "worker-fabrice",
+  "status": "failed",
+  "sess_id": "sess-20260414201757-5c5cb8fc42a54ab7ab66d85fbac2123d",
+  "expected_result_used": true,
+  "duration_seconds": 960,
+  "timestamp": "2026-04-14T20:34:00+08:00",
+  "mano_cua": {
+    "status": "STOPPED",
+    "total_steps": 56,
+    "last_action": "left_click (370, 565)",
+    "result": "unclear",
+    "result_summary": "mano-cua 卡在 Choose a repository 对话框（Bad credentials），转而打开 DevTools Console 尝试修改 localStorage 但被 Chrome 安全警告阻挡，56步后硬超时终止，从未到达 Markdown 图片渲染测试。",
+    "last_reasoning": "在 DevTools Console 中尝试输入 allow pasting 但未成功通过 Chrome 安全检查，无法执行 JavaScript 命令修改应用状态。"
+  },
+  "failure": {
+    "type": "timeout",
+    "symptom": "Chrome 残留 testuser 登录态导致 Choose a repository 对话框阻挡，Bad credentials 无法通过，mano-cua 无法进入笔记编辑界面",
+    "attempted": [
+      "尝试选择已有仓库 test-notes-repo",
+      "尝试通过 DevTools Console 修改 localStorage"
+    ],
+    "recommendation": "每个 case 执行前必须清理 Chrome 全部 localhost:5173 相关数据（cookies/localStorage/tabs），否则残留状态会阻塞后续 case"
+  }
+}
