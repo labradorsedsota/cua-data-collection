@@ -75,7 +75,7 @@ CUA 轨迹数据的采集有两条路径：
 | 任务描述内容 | 只描述要验证的功能点，**不暴露 Bug 本身** |
 | 轨迹要求 | 完整（非中途中断） |
 | 评测流程 | 完整（从打开页面到结论） |
-| 产出格式 | `项目名称 \| 测试内容 \| sess-id \| 复现状态(yes/partial/no)` |
+| 产出格式 | `项目名称 \| 测试内容 \| sess-id \| 观测结果(abnormal/normal/unclear)` |
 
 ### 任务卡格式（JSON）
 
@@ -230,8 +230,8 @@ CUA 轨迹数据的采集有两条路径：
 |------|------|
 | 轨迹完整性 | mano-cua session 正常结束（非中断/超时） |
 | 任务描述质量 | 中文、不暴露 bug、只描述要验证的功能点 |
-| 复现判定 | 明确标注：`reproduced: yes`（复现）/ `partial`（部分复现）/ `no`（无法复现）。**必须引用至少一条具体观测事实**（如"第 N 步截图中看到 xxx"）。三级标准由 FTY 2026-04-14 确认 |
-| 产出格式 | 项目名称 \| 测试内容 \| sess-id \| 复现状态（yes/partial/no） |
+| 复现判定 | Worker 标注观测结果：`abnormal`（观测到异常）/ `normal`（看起来正常）/ `unclear`（无法判断）。**必须引用至少一条具体观测事实**。L2 阶段映射为 FTY 交付术语（abnormal→复现 / unclear→部分复现 / normal→无法复现） |
+| 产出格式 | 项目名称 \| 测试内容 \| sess-id \| 观测结果（abnormal/normal/unclear） |
 
 ### 5.2 三层质量闸门
 
@@ -455,7 +455,7 @@ Worker 每个 case 完成后产出：
     "last_reasoning": "...",
     "duration_seconds": 180
   },
-  "reproduced": "yes",
+  "result": "abnormal",
   "result_summary": "第 7 步截图中选中日期后无高亮样式变化，连续 3 次点击不同日期均无视觉反馈",
   "log_file": "logs/vcal-350.log",
   "log_lines": 142
@@ -471,7 +471,7 @@ Worker 每个 case 完成后产出：
 | 项目名称 | repo 全名（如 `uvarov-frontend/vanilla-calendar-pro`）|
 | 测试用例描述 | test_description_zh |
 | sess_id | mano-cua session ID |
-| 是否复现 bug | `yes`（复现）/ `partial`（部分复现）/ `no`（无法复现）—— FTY 2026-04-14 确认三级 |
+| 是否复现 bug | Worker 报 `abnormal/normal/unclear`（观测视角）→ L2 映射为 FTY 术语：复现/无法复现/部分复现 |
 
 ### 状态信号规范
 
@@ -622,7 +622,7 @@ POC 阶段不做 `tasks/assigned/` 的文件移动，Pichai 通过 DMWork 消息
 
 ---
 
-*文档版本：v2.5 | 2026-04-14 | 智子（复现状态字段对齐 FTY 三级标准 yes/partial/no、SOP 去重指向 worker-execution-guide.md、matchPath 修正为 localhost）*
+*文档版本：v2.5 | 2026-04-14 | 智子（SOP 去重指向 worker-execution-guide.md、matchPath 修正、result 字段保持 abnormal/normal/unclear + L2 映射说明、result_summary 统一字段名）*
 *文档版本：v2.4 | 2026-04-14 | 智子（FTY 确认正式筛选参数、产量预估 2,500-2,700、关键词优化 v2.4、周三三批次计划）*
 *文档版本：v2.3 | 2026-04-14 | 智子（FTY 数据需求确认 7 项、粗筛完成 1,124 候选、精筛脚本验证、POC 25 张卡、候选池统计、Bug 精筛逻辑、test_page 补充、待决事项关闭）*
 *文档版本：v2.2 | 2026-04-14 | Pichai（SOP 升级：窗口最大化、日志 tee、双层超时、首步 URL 校验、BLOCKED 强制诊断、日志完整性、判定引用观测、任务间关标签页、Worker Checklist）*
