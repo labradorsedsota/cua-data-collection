@@ -92,10 +92,13 @@ mano-cua 启动后，检查第一步 screenshot 中的 URL 是否指向 dev serv
 - 偏离 → 终止（`mano-cua stop`）并重启
 - 连续 3 次偏离 → 标 BLOCKED
 
-### 第 6 步：超时监控
+### 第 6 步：超时 & 步数监控
 
+- **步数上限 50 步**：监控 log 输出的 `[step N]`，当 N ≥ 50 时立即执行 `mano-cua stop`
 - **软超时 10 分钟**：标 WARN，继续等待
 - **硬超时 15 分钟**：强制终止（`mano-cua stop`），标 BLOCKED
+
+> 步数和超时哪个先到哪个生效，双重保护。超过 50 步视为 timeout 类型失败。
 
 ### 第 7 步：提取结果
 
