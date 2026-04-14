@@ -1,0 +1,24 @@
+{
+  "task_id": "actual-5278",
+  "repo": "actualbudget/actual",
+  "worker": "worker-moss",
+  "status": "failed",
+  "expected_result_used": false,
+  "sess_id": null,
+  "duration_seconds": 0,
+  "timestamp": "2026-04-14T21:46:12+08:00",
+  "mano_cua": null,
+  "failure": {
+    "type": "deploy_failed",
+    "symptom": "App stuck on 'Initializing the connection to the local database...' indefinitely. Frontend loads but absurd-sql (browser SQLite via IndexedDB+SharedArrayBuffer) worker never completes initialization. Additionally better-sqlite3 native module fails to compile on Node v25.8.1.",
+    "attempted": [
+      "git clone (tree:0 filter) + sparse checkout to reach commit 80bb4ab299",
+      "yarn install (yarn 4.9.1 via corepack) - better-sqlite3 compilation failed but frontend deps OK",
+      "Started desktop-client directly with IS_GENERIC_BROWSER=1 PORT=3001 REACT_APP_BACKEND_WORKER_HASH=dev",
+      "Vite dev server running with COOP/COEP headers verified",
+      "Tested in normal and incognito Chrome windows - same result",
+      "Waited 5+ minutes on initialization screen - never resolves"
+    ],
+    "recommendation": "Need Node 20 (via nvm) for better-sqlite3 compilation, or investigate absurd-sql worker initialization failure in browser. May also need to run actual-server alongside desktop-client."
+  }
+}
