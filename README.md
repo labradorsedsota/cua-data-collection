@@ -98,6 +98,7 @@ CUA 轨迹数据的采集有两条路径：
   "dev_url": "http://localhost:3000",
   "test_page": "/",
   "test_description_zh": "滚动到推荐评价区域，点击翻页按钮逐页浏览，检查切换过程是否正常流畅。",
+  "expected_result_zh": "点击翻页按钮后，评价卡片应平滑过渡到下一组，无跳动或闪烁",
   "framework": "nextjs",
   "timeout": {"max_steps": 100, "max_minutes": 15},
   "ground_truth": {
@@ -114,6 +115,7 @@ CUA 轨迹数据的采集有两条路径：
 - `deploy_verify`：结构化部署验证，执行 agent 确认服务跑起来后再开测
 - `test_page`：Chrome 打开的初始页面路由
 - `test_description_zh`：具体在哪个页面操作，由智子在描述中包含
+- `expected_result_zh`：**可选增强**，描述功能的正确行为（从 issue/fix commit 提取），供 mano-cua `--expected-result` 参数使用。evaluation 数据沉淀备用，4/28 前不进训练集（FTY 2026-04-14 确认）。该参数导致 mano-cua 报错时去掉重跑，不阻塞采集
 - `ground_truth`：仅供智子+Pichai 比对，**不下发给执行 agent**
 - 重试结果文件加后缀区分：`luxesite-253-retry1.json`
 
@@ -131,7 +133,8 @@ sleep 3
 
 # 3. 拼接任务描述并执行
 # 任务描述 = "当前Chrome浏览器已打开{app_name}网站，地址是{dev_url}。" + test_description_zh
-mano-cua run "当前Chrome浏览器已打开Aurora Luxe网站，地址是localhost:3000。滚动到推荐评价区域，点击翻页按钮逐页浏览，检查切换过程是否正常流畅。"
+mano-cua run "当前Chrome浏览器已打开Aurora Luxe网站，地址是localhost:3000。滚动到推荐评价区域，点击翻页按钮逐页浏览，检查切换过程是否正常流畅。" \
+  --expected-result "点击翻页按钮后，评价卡片应平滑过渡到下一组，无跳动或闪烁"
 
 # 4. 从输出中提取 sess-id，判定是否复现
 ```
@@ -288,6 +291,37 @@ L2 抽检重点：
 
 ---
 
+## 6.5 项目筛选方法论与进度（智子负责）
+
+### 自动化筛选管线
+
+```
+Phase 1: 广搜（已完成）
+  70 组 GitHub 搜索查询 × 30+ 应用品类
+  → 13,207 个候选 repo
+  → 过滤库类项目 → 12,009 个应用类
+
+Phase 2: 精筛（进行中）
+  Web 语言过滤（TS/JS/Vue/Svelte/HTML/Dart）→ 7,066 个
+  ↓ 逐个检查
+  ├── package.json 可部署性（有 dev/start 脚本、无重型依赖）→ Easy
+  └── closed bug 数量（label:bug, is:closed）→ Bugs≥5
+  ↓
+  最终产出：按 bug 数降序排列的候选项目清单
+```
+
+### 当前进度（实时更新）
+
+| 阶段 | 进度 | 数据 |
+|------|------|------|
+| Phase 1 广搜 | ✅ 完成 | 13,207 → 7,066（Web 语言）|
+| Phase 2 精筛 | 🔄 ~65% | Easy ~2,500+ / Bugs≥5 ~970+ |
+| 最终清单 | ⏳ | 预计 ~1,900 个可用项目 |
+
+> 最终清单产出后将作为后续任务卡制作的输入。从中按 bug 数、框架多样性、组件覆盖度进一步筛选，目标覆盖 1,000+ 项目。
+
+---
+
 ## 七、待确认事项
 
 ### 已明确
@@ -305,8 +339,10 @@ L2 抽检重点：
 | # | 问题 | 决策者 | 状态 |
 |---|------|--------|------|
 | 6 | 候选项目列表是否需要老傅确认？ | Emily / 老傅 | ⏳ 待定 |
-| 7 | 数据有效性标准：必须命中才算有效？部分复现算不算？超时 case 怎么处理？ | 老傅 | ⏳ 待定 |
-| 8 | 测试任务描述由谁编写？ | 全员讨论 | ⏳ 待讨论（见 Proposal A） |
+| 7 | 数据有效性标准：部分复现算不算？超时 case 怎么处理？ | 老傅 | ⏳ 待定 |
+| 8 | ~~测试任务描述由谁编写？~~ | ~~全员讨论~~ | ✅ 已确认：智子编写（Proposal A 生效）|
+| 9 | ~~共享通道~~ | ~~Emily~~ | ✅ 已确认：GitHub repo（bughunt）|
+| 10 | `--expected-result` 是否用于训练？ | 老傅 | ✅ 已确认：evaluation 数据有用，4/28 前沉淀备用，优先操作轨迹 |
 
 ### Proposal A：测试任务描述编写分工
 
@@ -419,4 +455,5 @@ L2 抽检重点：
 
 ---
 
+*文档版本：v2.1 | 2026-04-14 | 智子（新增：expected_result_zh 字段、筛选方法论与进度、待决事项更新）*
 *文档版本：v2.0 | 2026-04-13 | Pichai*
