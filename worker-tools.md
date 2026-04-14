@@ -15,7 +15,7 @@
 |------|------|-----|------|
 | PM（你的指令来源） | Pichai | `lynx_bot` | 1v1 群下达指令、接收状态上报 |
 | 管理者 | 林菡 | `10cd18f3c2554efaa424c397495d0a8e` | Pichai 上级 |
-| 数据需求方 | 智子 | `consultant_bot` | L2 抽检 |
+| 筛选 & 任务设计 | 智子 | `consultant_bot` | L2 抽检 |
 | 终审 | 老傅 | `8a25d997d7b24468ac31dfc75f71ecb1` | CUA 模型负责人 |
 
 ## Repo
