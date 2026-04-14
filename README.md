@@ -442,6 +442,121 @@ Phase 2: 精筛（进行中）
 
 ---
 
+## 6.6 协作与交付流程
+
+### 任务流转
+
+```
+智子 push 任务卡到 tasks/pool/
+        ↓
+Pichai pull → 按项目分配给 Worker → 移至 tasks/assigned/worker-xx/
+        ↓
+Worker 执行（部署 → mano-cua → 结果）
+        ↓
+Worker 将结果 JSON 写入本地 results/{worker名}/{task_id}.json
+        ↓
+Worker 在执行群发状态信号（✅/❌/⚠️）
+        ↓
+Pichai 收集结果 → push 到 repo results/ 目录
+        ↓
+智子 L2 抽检（初期 50%，稳定后 20-30%）
+        ↓
+FTY L3 按需终审
+```
+
+### Repo 目录结构
+
+```
+bughunt/
+├── README.md                    # 项目全景文档（唯一权威源）
+├── data/
+│   ├── candidates.jsonl         # Phase 1 广搜（13,207 条）
+│   └── phase2_results.jsonl     # Phase 2 精筛（7,066 条）
+├── tasks/
+│   ├── pool/                    # 待分配任务卡（智子 push）
+│   │   ├── vcal-350.json
+│   │   └── ...
+│   └── assigned/                # 已分配（Pichai 管理）
+│       ├── worker-fabrice/
+│       └── worker-moss/
+├── results/                     # 执行结果（Pichai 汇总 push）
+│   ├── worker-fabrice/
+│   │   └── vcal-350.json
+│   └── worker-moss/
+├── logs/                        # mano-cua 日志（Worker 本地保留，关键日志 push）
+├── docs/
+│   ├── worker-setup.md          # Worker 装机指南
+│   └── worker-execution-guide.md # Worker 执行手册
+└── scripts/                     # 自动化脚本
+    └── bug_screener.py          # Bug 级批量筛选
+```
+
+### 写权限规则
+
+| 目录 | 写权限 | 说明 |
+|------|--------|------|
+| `tasks/pool/` | 智子 | 任务卡只由智子产出 |
+| `tasks/assigned/` | Pichai | 分配由 Pichai 管理 |
+| `results/` | Pichai | Worker 不直接 push，通过群聊回报，Pichai 统一写入 |
+| `data/` | 智子 | 筛选数据由智子维护 |
+| `README.md` | 智子（方案层）/ Pichai（执行层）| 改前 pull，改完 push，互相 review |
+| `docs/` | Pichai（执行文档）/ 智子（方案文档）| 各管各的 section |
+
+### 结果 JSON 格式
+
+Worker 每个 case 完成后产出：
+
+```json
+{
+  "task_id": "vcal-350",
+  "worker": "fabrice",
+  "timestamp": "2026-04-14T18:30:00+08:00",
+  "deploy": {
+    "status": "success",
+    "duration_seconds": 45
+  },
+  "mano_cua": {
+    "sess_id": "sess-20260414183045-xxxxx",
+    "status": "COMPLETED",
+    "total_steps": 17,
+    "last_action": "DONE",
+    "last_reasoning": "...",
+    "duration_seconds": 180
+  },
+  "result": "abnormal",
+  "result_evidence": "第 7 步截图中选中日期后无高亮样式变化，连续 3 次点击不同日期均无视觉反馈",
+  "log_file": "logs/vcal-350.log",
+  "log_lines": 142
+}
+```
+
+### FTY 交付格式
+
+汇总后按 FTY 确认的格式交付：
+
+| 字段 | 说明 |
+|------|------|
+| 项目名称 | repo 全名（如 `uvarov-frontend/vanilla-calendar-pro`）|
+| 测试用例描述 | test_description_zh |
+| sess_id | mano-cua session ID |
+| 是否复现 bug | normal / abnormal / unclear |
+
+### 状态信号规范
+
+Worker 每个 case 完成后在执行群发一行状态信号：
+
+```
+✅ worker-fabrice | vcal-350 | 4m12s          # 正常完成
+❌ worker-fabrice | vcal-352 | 2m05s | deploy  # 部署失败
+⚠️ BLOCKED worker-moss | ms-511 | 15m | 诊断见群消息  # 需要介入
+```
+
+### POC 简化流程（当前生效）
+
+POC 阶段不做 `tasks/assigned/` 的文件移动，Pichai 通过 DMWork 消息直接指派。结果 Worker 在群里回报，Pichai 手动收集写入 repo。正式流程待 POC 验证后确定。
+
+---
+
 ## 七、待确认事项
 
 ### 已明确
