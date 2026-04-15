@@ -1,0 +1,32 @@
+{
+  "task_id": "slickgpt-38",
+  "repo": "ShipBit/slickgpt",
+  "issue_number": 38,
+  "pr_number": 42,
+  "buggy_commit": "717efc5c61",
+  "fix_commit": "a2200b64ae",
+  "framework": "svelte",
+  "deploy_commands": [
+    "git clone https://github.com/ShipBit/slickgpt.git",
+    "cd slickgpt",
+    "git checkout 717efc5c61",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "@shipbit/slickgpt",
+  "test_description_zh": "测试 SlickGPT 聊天界面的自动滚动行为。操作步骤：1. 打开应用首页，进入一个聊天对话界面。2. 如果需要配置 API Key，尝试查找设置入口并配置（如果无法配置则跳过）。3. 在聊天输入框中发送一条消息，观察聊天内容区域。4. 当 GPT 正在生成回复（打字中）时，尝试用鼠标滚轮向上滚动聊天记录，检查是否能够成功向上滚动并查看之前的对话历史，而不会被自动滚动强制拉回底部。5. 验证当用户手动滚动到上方查看历史记录时，自动滚动不会干扰用户的浏览位置。6. 然后手动滚动回底部，验证此时自动滚动是否恢复正常工作（新生成的内容应自动滚动到可见区域）。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当 GPT 正在生成回复时，如果用户不在聊天底部（已手动向上滚动），自动滚动不应强制将页面拉回底部，用户可以自由浏览历史对话记录；当用户滚动回底部时，自动滚动应恢复正常工作。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Unable to scroll up while chatgpt is typing",
+    "summary": "only autoscroll if user is at the bottom of the chat",
+    "changed_files": 2,
+    "ui_score": 3,
+    "has_screenshot": false
+  }
+}

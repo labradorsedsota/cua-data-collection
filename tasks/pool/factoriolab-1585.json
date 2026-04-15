@@ -1,0 +1,32 @@
+{
+  "task_id": "factoriolab-1585",
+  "repo": "factoriolab/factoriolab",
+  "issue_number": 1585,
+  "pr_number": 1586,
+  "buggy_commit": "f1098b5478",
+  "fix_commit": "c69cbe8a85",
+  "framework": "angular",
+  "deploy_commands": [
+    "git clone https://github.com/factoriolab/factoriolab.git",
+    "cd factoriolab",
+    "git checkout f1098b5478",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:4200 | grep -q '<'",
+  "dev_url": "http://localhost:4200",
+  "test_page": "/spa/list?o=water*2000&odr=0&v=11",
+  "app_name": "factoriolab",
+  "test_description_zh": "测试在 Factorio Space Age 模组预设下，泵（Pump）的数量计算是否与皮带堆叠大小（belt stack size）无关。具体步骤：1. 打开应用后，在设置或预设选择中切换到 'Space Age' 模组预设。2. 添加一个流体（fluid）相关的配方，例如水（water）。3. 找到默认皮带堆叠大小（belt stack size）的设置项，将其设置为大于1的值（例如设为4）。4. 观察该流体配方所需的泵数量。5. 然后将皮带堆叠大小改回1，再次观察泵的数量。6. 对比两次泵的数量，验证泵的数量在不同皮带堆叠大小下是否保持一致。也可以直接访问类似 /spa/list?o=water*2000&odr=0&ist=4&v=11 这样的链接来快速复现场景，观察泵的数量是否合理。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "无论皮带堆叠大小设为多少，流体配方所需的泵数量应保持不变，泵的计算不受皮带堆叠大小的影响。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Factorio Space Age: Pumps are modified by the belt stack size",
+    "summary": "fix: Fix fluid stacking, typeHasCraftingSpeed, closes #1585",
+    "changed_files": 2,
+    "ui_score": 11,
+    "has_screenshot": false
+  }
+}

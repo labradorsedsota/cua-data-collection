@@ -1,0 +1,32 @@
+{
+  "task_id": "notea-98",
+  "repo": "notea-org/notea",
+  "issue_number": 98,
+  "pr_number": 100,
+  "buggy_commit": "3fd5cc25c3",
+  "fix_commit": "bfbb01702f",
+  "framework": "nextjs",
+  "deploy_commands": [
+    "git clone https://github.com/notea-org/notea.git",
+    "cd notea",
+    "git checkout 3fd5cc25c3",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "notea",
+  "test_description_zh": "测试在 Notea 笔记应用中连续打开多个笔记页面后的稳定性。具体步骤：1. 打开 Notea 应用首页；2. 如果需要登录，完成登录流程；3. 在侧边栏或笔记列表中，依次点击打开不同的笔记页面，尽量多次切换（至少连续点击打开 10 个以上不同的笔记）；4. 在每次切换笔记时，观察页面是否正常加载和显示，检查页面底部是否出现红色错误提示；5. 确认在多次切换笔记后，页面仍然稳定可用，能够正常查看和编辑笔记内容，不会出现页面跳动或循环报错的情况。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "连续打开多个笔记页面后，应用保持稳定，页面正常加载，底部不出现红色错误提示，笔记内容可以正常查看和编辑，不会出现页面持续跳动的现象。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Uncaught DOMException: Quota Exceeded",
+    "summary": "fix: avoid images being cached, fix #98",
+    "changed_files": 4,
+    "ui_score": 11,
+    "has_screenshot": true
+  }
+}

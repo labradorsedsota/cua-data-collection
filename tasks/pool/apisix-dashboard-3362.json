@@ -1,0 +1,32 @@
+{
+  "task_id": "apisix-dashboard-3362",
+  "repo": "apache/apisix-dashboard",
+  "issue_number": 3362,
+  "pr_number": 3363,
+  "buggy_commit": "c88b610201",
+  "fix_commit": "9b0fd13d5d",
+  "framework": "react",
+  "deploy_commands": [
+    "git clone https://github.com/apache/apisix-dashboard.git",
+    "cd apisix-dashboard",
+    "git checkout c88b610201",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "apisix-dashboard",
+  "test_description_zh": "测试路由（Route）创建页面中 Vars 字段作为可选字段的行为。具体步骤：1. 打开路由创建页面（Route Add 页面）。2. 填写必填字段，例如 Name（输入一个测试名称）、URI（输入如 /test-vars）以及必要的上游（Upstream）相关字段。3. 找到 Vars 编辑器字段，先输入一些 JSON 内容（例如 [\"arg_name\",\"==\",\"test\"]），然后将其完全清空，使 Vars 字段为空。4. 点击 Add 或 Save 按钮提交表单。5. 验证表单能够正常提交成功，不会因为 Vars 为空而被阻止或出现验证错误。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "Vars 字段为空时，表单应当能够正常提交成功，不会出现 JSON 解析验证错误，提交操作不会被阻止。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Route Vars field cannot be left empty even though it is optional",
+    "summary": "fix(route): allow empty optional vars editor (#3362)",
+    "changed_files": 2,
+    "ui_score": 12,
+    "has_screenshot": false
+  }
+}

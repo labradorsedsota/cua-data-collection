@@ -1,0 +1,32 @@
+{
+  "task_id": "etherpad-lite-7137",
+  "repo": "ether/etherpad-lite",
+  "issue_number": 7137,
+  "pr_number": 7472,
+  "buggy_commit": "ef0b257d3e",
+  "fix_commit": "2814e5b913",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/ether/etherpad-lite.git",
+    "cd etherpad-lite",
+    "git checkout ef0b257d3e",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "etherpad",
+  "test_description_zh": "测试 Etherpad 在开发模式下的主页和编辑器页面渲染完整性。请执行以下步骤：1. 打开浏览器访问 Etherpad 主页（默认地址 /）。2. 检查页面是否完整渲染，没有明显的样式缺失或脚本加载错误。3. 查看页面源代码或开发者工具中的网络请求，确认所有 script 标签引用的资源（特别是包含 /watch/index 路径的脚本）都能正常加载（HTTP 200），没有 404 错误。4. 点击创建一个新的 pad 或访问任意 pad 页面。5. 同样检查 pad 页面的渲染是否完整，所有脚本和资源是否正常加载。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "主页和 pad 编辑器页面应完整渲染，所有 script 标签引用的资源（包括 /watch/index 相关脚本）均能正常加载，浏览器开发者工具的网络面板中不应出现 404 错误，页面功能正常可用。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "etherpad running in dev mode breaks reverse proxying when hosting on a subdirectory url",
+    "summary": "fix: dev mode entrypoint paths respect x-proxy-path header",
+    "changed_files": 4,
+    "ui_score": 12,
+    "has_screenshot": false
+  }
+}

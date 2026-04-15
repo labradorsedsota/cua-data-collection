@@ -1,0 +1,32 @@
+{
+  "task_id": "website-5102",
+  "repo": "asyncapi/website",
+  "issue_number": 5102,
+  "pr_number": 5228,
+  "buggy_commit": "7602c4ebfa",
+  "fix_commit": "5cceb564a3",
+  "framework": "nextjs",
+  "deploy_commands": [
+    "git clone https://github.com/asyncapi/website.git",
+    "cd website",
+    "git checkout 7602c4ebfa",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/blog",
+  "app_name": "@asyncapi/website",
+  "test_description_zh": "测试 AsyncAPI 网站博客页面筛选下拉框的聚焦样式。具体步骤：1. 打开浏览器并导航到 /blog 页面。2. 找到页面上的 'Filter by type...' 或类似的筛选下拉框（Select 组件）。3. 用鼠标点击该下拉框，使其获得焦点，观察下拉框的边框和聚焦环样式是否整洁、统一，没有多余的重叠边框。4. 再次点击页面空白处取消焦点，然后使用 Tab 键导航到该下拉框，再次观察聚焦状态下的边框样式是否干净清晰。5. 如果页面上有多个筛选下拉框，对每个都进行同样的聚焦测试。6. 另外导航到 /tools 页面，查找类似的下拉筛选组件，同样点击或 Tab 聚焦后观察边框样式是否整洁。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当筛选下拉框获得焦点时（无论通过鼠标点击还是 Tab 键），应显示单一、整洁的聚焦环样式，边框不应出现重叠或双层线条的外观，视觉效果应与网站其他输入组件的聚焦风格保持一致。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Bug]: Fix double border on blog filter dropdowns when focused",
+    "summary": "style: adjust focus ring and border styles for the Select component.",
+    "changed_files": 1,
+    "ui_score": 20,
+    "has_screenshot": false
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "task_id": "flitter-68",
+  "repo": "meursyphus/flitter",
+  "issue_number": 68,
+  "pr_number": 70,
+  "buggy_commit": "d434e673bf",
+  "fix_commit": "2f4a2d16c6",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/meursyphus/flitter.git",
+    "cd flitter",
+    "git checkout d434e673bf",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "flitter-workspace",
+  "test_description_zh": "测试在 Canvas 渲染模式下，DecoratedBox 组件同时设置背景颜色（background color）和圆角（border-radius）时的渲染效果。具体步骤：1. 打开应用首页或示例页面；2. 找到或创建一个使用 DecoratedBox 的示例，该示例同时应用了背景颜色和 border-radius（圆角）；3. 观察在 Canvas 画布上渲染的盒子，确认背景颜色是否被正确裁剪（clip）到圆角范围内，即背景色不应溢出圆角边界；4. 同时检查如果有 box-shadow（阴影），阴影是否也正确跟随圆角形状。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "设置了 border-radius 的 DecoratedBox 在 Canvas 渲染时，背景颜色应被正确裁剪到圆角区域内，不会出现背景色溢出到圆角外的直角区域；box-shadow 也应正确跟随圆角形状显示。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Bug: background color not clipped on canvas decorated box with border-radius",
+    "summary": "fixed #68 border radius is applied to box shadow in canvas painter ",
+    "changed_files": 5,
+    "ui_score": 3,
+    "has_screenshot": false
+  }
+}

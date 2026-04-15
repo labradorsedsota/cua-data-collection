@@ -1,0 +1,32 @@
+{
+  "task_id": "lms-1821",
+  "repo": "frappe/lms",
+  "issue_number": 1821,
+  "pr_number": 2119,
+  "buggy_commit": "dc4bbdaa55",
+  "fix_commit": "c5145c6c24",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/frappe/lms.git",
+    "cd lms",
+    "git checkout dc4bbdaa55",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "frappe_lms",
+  "test_description_zh": "测试课程作业中文件上传的隔离性功能。步骤：1. 登录 Web 门户；2. 进入某个课程页面，找到一个类型为 PDF 的作业（Assignment），上传一个文件（例如一个 PDF 文件）；3. 确认文件上传成功并正确显示在该作业页面；4. 然后导航到同一课程下的另一个不同类型的作业（例如 DOC 或 IMAGE 类型的作业）；5. 检查该新作业页面中的文件上传区域，确认其显示状态是否正确反映了该作业自身的提交记录，即每个作业应该独立展示各自上传的文件内容。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到课程作业功能，直接报告 unclear。",
+  "expected_result_zh": "每个作业页面应独立显示各自的上传文件。在一个作业中上传文件后，导航到另一个作业时，该作业的文件上传区域应仅显示属于该作业的提交内容，而不应显示其他作业中上传的文件。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Uploaded File Appears Across Multiple Assignments Instead of Being Isolated",
+    "summary": "fix: misc issues",
+    "changed_files": 8,
+    "ui_score": 8,
+    "has_screenshot": false
+  }
+}

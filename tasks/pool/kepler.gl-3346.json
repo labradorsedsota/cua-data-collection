@@ -1,0 +1,32 @@
+{
+  "task_id": "kepler.gl-3346",
+  "repo": "keplergl/kepler.gl",
+  "issue_number": 3346,
+  "pr_number": 3365,
+  "buggy_commit": "be6ba648d7",
+  "fix_commit": "f25f128671",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/keplergl/kepler.gl.git",
+    "cd kepler.gl",
+    "git checkout be6ba648d7",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "kepler.gl",
+  "test_description_zh": "测试 kepler.gl 加载包含布尔类型字段（值为 yes/no 字符串）的 GeoJSON 文件后，数据表中布尔值的解析是否正确。具体步骤：1. 打开 kepler.gl 的演示页面；2. 准备一个 GeoJSON 文件，其中某个字段包含 yes 和 no 字符串值（例如第一行为 yes，第二行为 no）；3. 将该 GeoJSON 文件拖拽或通过上传按钮加载到地图中；4. 数据加载完成后，点击页面上的 Show data table（显示数据表）按钮；5. 在数据表中检查该字段的值，确认包含 yes 的行对应显示为 true，包含 no 的行对应显示为 false，即 yes/no 字符串被正确解析为对应的布尔值。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "GeoJSON 中值为 yes 的字段在数据表中应显示为 true，值为 no 的字段应显示为 false，yes/no 字符串能被正确解析为对应的布尔值。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Bug] Incorrect parsing of boolean field when loading GeoJSON",
+    "summary": "[Bug] Fix incorrect boolean parsing for yes/no string values",
+    "changed_files": 2,
+    "ui_score": 15,
+    "has_screenshot": false
+  }
+}

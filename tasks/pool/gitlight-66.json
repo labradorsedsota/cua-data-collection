@@ -1,0 +1,32 @@
+{
+  "task_id": "gitlight-66",
+  "repo": "colinlienard/gitlight",
+  "issue_number": 66,
+  "pr_number": 71,
+  "buggy_commit": "f724c2f9da",
+  "fix_commit": "e60939bc47",
+  "framework": "svelte",
+  "deploy_commands": [
+    "git clone https://github.com/colinlienard/gitlight.git",
+    "cd gitlight",
+    "git checkout f724c2f9da",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "gitlight",
+  "test_description_zh": "测试 GitLight 应用在登录 GitHub 后加载通知列表的功能。打开应用首页，观察页面是否能正常加载并显示内容，检查是否存在无限加载的情况。由于此应用需要 GitHub OAuth 认证才能使用核心功能，请先观察首页是否有登录入口或演示模式，如果需要登录才能访问通知功能，则记录页面当前状态。重点关注：页面是否能正常渲染而不卡在加载状态，浏览器控制台是否有 JavaScript 错误。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "应用首页能正常加载渲染，如果有演示模式或无需登录即可查看的通知列表，通知列表应能正常显示各种类型的通知而不出现无限加载或 JavaScript 错误。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Infinite loading with error `Uncaught (in promise) Error: Invalid notification type: WorkflowRun`",
+    "summary": "fix(front): avoid error caused by unsupported notification type",
+    "changed_files": 1,
+    "ui_score": 3,
+    "has_screenshot": false
+  }
+}

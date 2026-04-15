@@ -1,0 +1,32 @@
+{
+  "task_id": "apisix-dashboard-3283",
+  "repo": "apache/apisix-dashboard",
+  "issue_number": 3283,
+  "pr_number": 3285,
+  "buggy_commit": "a2ee27a2a0",
+  "fix_commit": "a49ccd086c",
+  "framework": "react",
+  "deploy_commands": [
+    "git clone https://github.com/apache/apisix-dashboard.git",
+    "cd apisix-dashboard",
+    "git checkout a2ee27a2a0",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "apisix-dashboard",
+  "test_description_zh": "测试全局规则（Global Rules）的列表功能。操作步骤：1. 在浏览器中打开应用首页，找到并导航到全局规则（Global Rules）管理页面；2. 查看全局规则列表是否正常显示；3. 尝试创建多条全局规则，注意每条规则使用不同的插件类型（例如分别使用 response-rewrite、proxy-rewrite 等不同插件）；4. 确认创建的多条全局规则都能在列表中正确展示；5. 验证全局规则列表的分页、刷新等基本交互功能是否正常；6. 测试完成后尝试删除创建的全局规则，确认删除操作正常。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "全局规则列表页面能正常加载和展示，使用不同插件类型创建的多条全局规则均能正确显示在列表中，列表的增删查等基本操作均工作正常。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Fix tests affected by APISIX https://github.com/apache/apisix/pull/12800",
+    "summary": "fix: global rules tests",
+    "changed_files": 1,
+    "ui_score": 8,
+    "has_screenshot": false
+  }
+}

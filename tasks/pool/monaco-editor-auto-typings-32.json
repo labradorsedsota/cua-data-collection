@@ -1,0 +1,32 @@
+{
+  "task_id": "monaco-editor-auto-typings-32",
+  "repo": "lukasbach/monaco-editor-auto-typings",
+  "issue_number": 32,
+  "pr_number": 38,
+  "buggy_commit": "2bd2ac6d63",
+  "fix_commit": "ebab0bc777",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/lukasbach/monaco-editor-auto-typings.git",
+    "cd monaco-editor-auto-typings",
+    "git checkout 2bd2ac6d63",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "monaco-editor-auto-typings-root",
+  "test_description_zh": "测试 monaco-editor-auto-typings 的自动类型解析功能。打开页面后，找到 Monaco 编辑器实例，在编辑器中输入一段包含 npm 包导入语句的代码（例如输入 import 语句导入一个 Web 端的包），观察编辑器是否能正确自动解析并加载该包的 TypeScript 类型定义。特别关注当包的 index.d.ts 文件中包含对 .js 文件的引用时，编辑器是否能正确解析这些引用对应的类型定义文件，不应出现类型解析错误或未解析的模块提示。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在编辑器中输入导入语句后，自动类型加载功能应正确解析所有类型定义，包括从 .d.ts 文件中引用 .js 文件的情况，编辑器中不应显示类型解析相关的错误提示，悬停在导入的模块或符号上应能看到正确的类型信息。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[BUG] Packages for the web do not work with auto typings",
+    "summary": "fix: resolution of references to .js files in initial index.d.ts",
+    "changed_files": 1,
+    "ui_score": 9,
+    "has_screenshot": false
+  }
+}

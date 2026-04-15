@@ -1,0 +1,32 @@
+{
+  "task_id": "lms-2006",
+  "repo": "frappe/lms",
+  "issue_number": 2006,
+  "pr_number": 2018,
+  "buggy_commit": "10a9a5230e",
+  "fix_commit": "2c60521894",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/frappe/lms.git",
+    "cd lms",
+    "git checkout 10a9a5230e",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "frappe_lms",
+  "test_description_zh": "测试在课程中删除课时后重新添加新课时的功能。具体步骤：1. 打开应用首页，找到创建课程的入口，创建一个新课程并保存；2. 在课程中点击添加章节（Add Chapter），命名为 Introduction；3. 在该章节中点击添加课时（Add Lesson），命名为 Item 1，然后保存；4. 返回到课程页面，再次点击添加课时，命名为 Item 2 并保存；5. 删除 Item 1 这个课时；6. 再次点击添加课时（Add Lesson）按钮，观察是否打开了一个全新的空白课时编辑表单，而不是打开之前已删除或已有课时的编辑页面；7. 验证新添加的课时表单是空白的，可以正常输入新课时名称并保存。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "删除已有课时后，点击添加课时按钮应打开一个全新的空白课时编辑表单，允许用户创建全新的课时，而不是展示已删除课时或其他已存在课时的内容。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "“Add Lesson” button redirects to previous lesson instead of creating a new one",
+    "summary": "fix: reindex lessons after deletion to prevent stale form state",
+    "changed_files": 1,
+    "ui_score": 10,
+    "has_screenshot": false
+  }
+}

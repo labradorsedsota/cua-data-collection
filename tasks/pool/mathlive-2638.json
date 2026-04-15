@@ -1,0 +1,32 @@
+{
+  "task_id": "mathlive-2638",
+  "repo": "arnog/mathlive",
+  "issue_number": 2638,
+  "pr_number": 2659,
+  "buggy_commit": "ee83ada72d",
+  "fix_commit": "ec8f1e0c3f",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/arnog/mathlive.git",
+    "cd mathlive",
+    "git checkout ee83ada72d",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "mathlive",
+  "test_description_zh": "测试数学公式编辑器中带颜色文本在失去焦点后的显示效果。具体步骤：1. 打开页面，找到 MathField 数学公式编辑器输入区域并点击进入编辑状态；2. 在编辑器中输入带颜色的文本，例如输入 LaTeX 命令 \\textcolor{red}{hello} 或 \\color{red}{abc} 来插入红色文本；3. 确认红色文本已正确显示；4. 使用键盘快捷键（如 Ctrl+A）或鼠标拖选的方式选中（高亮）这些带颜色的文本；5. 观察选中状态下文本的显示；6. 点击页面上 MathField 编辑器之外的空白区域，使编辑器失去焦点（blur）；7. 观察失去焦点后，之前带颜色的文本是否仍然以其原始颜色（如红色）正确显示。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "MathField 失去焦点后，带颜色的文本（如红色文本）应继续以其原始颜色正确显示，而不是变成黑色或其他默认颜色。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Blurred mathfield displays selected colored text in black",
+    "summary": "Fix colored text when MathField loses focus (fixes #2638, fixes #2479)",
+    "changed_files": 1,
+    "ui_score": 6,
+    "has_screenshot": false
+  }
+}

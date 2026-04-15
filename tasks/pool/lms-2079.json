@@ -1,0 +1,32 @@
+{
+  "task_id": "lms-2079",
+  "repo": "frappe/lms",
+  "issue_number": 2079,
+  "pr_number": 2262,
+  "buggy_commit": "26623ecc25",
+  "fix_commit": "ba01c1e803",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/frappe/lms.git",
+    "cd lms",
+    "git checkout 26623ecc25",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "frappe_lms",
+  "test_description_zh": "测试LMS设置页面中列表部分各标签页的垂直滚动行为。操作步骤：1. 打开应用后导航到设置页面（Settings）；2. 在设置对话框中找到列表部分（Lists section），依次点击其中的标签页（如 Badges 等）；3. 观察当列表中只有少量项目（例如仅一项）时，内容区域的垂直滚动条表现是否正常，即当内容未超出容器高度时不应显示多余的滚动条；4. 如果有足够多的项目超出容器高度，验证垂直滚动条能正常出现并可滚动。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当设置对话框列表部分的标签页中项目数量较少、未超出容器高度时，不应出现垂直滚动条；当项目数量超出容器高度时，垂直滚动条应自动出现并可正常滚动。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Overflow-y set to scroll in settings dialog tabs under lists section",
+    "summary": "fix: add overflow-y-auto to settings dialog content panel (#2079)",
+    "changed_files": 10,
+    "ui_score": 14,
+    "has_screenshot": false
+  }
+}

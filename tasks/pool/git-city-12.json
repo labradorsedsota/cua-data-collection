@@ -1,0 +1,32 @@
+{
+  "task_id": "git-city-12",
+  "repo": "srizzon/git-city",
+  "issue_number": 12,
+  "pr_number": 20,
+  "buggy_commit": "99be4ba77f",
+  "fix_commit": "ea0b6721a0",
+  "framework": "nextjs",
+  "deploy_commands": [
+    "git clone https://github.com/srizzon/git-city.git",
+    "cd git-city",
+    "git checkout 99be4ba77f",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "git-city",
+  "test_description_zh": "测试 git-city 项目的开发者查询功能和请求配额机制。步骤：1. 打开首页，找到搜索或输入开发者用户名的入口；2. 输入一个 GitHub 用户名（例如 'torvalds'）并提交查询；3. 观察页面是否正常加载该开发者的信息（如仓库、城市可视化等）；4. 注意观察浏览器开发者工具的 Network 面板，确认提交一次查询后发出的 API 请求数量是否合理（不应在无操作时自动发出大量重复请求）；5. 再次查询同一个已存在的用户名，观察是否正常返回结果且不触发多余的请求。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "输入用户名查询后，页面应正常展示开发者信息，且每次查询只应产生合理数量的 API 请求，不应在无用户操作时自动发出大量（如10个）重复请求",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Bug]  automatically 10 requests hit doing nothing",
+    "summary": "🐛 fix(rate-limit): skip quota for existing devs and only record on success",
+    "changed_files": 1,
+    "ui_score": 6,
+    "has_screenshot": false
+  }
+}

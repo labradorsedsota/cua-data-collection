@@ -1,0 +1,32 @@
+{
+  "task_id": "trix-77",
+  "repo": "basecamp/trix",
+  "issue_number": 77,
+  "pr_number": 341,
+  "buggy_commit": "cfc9d51602",
+  "fix_commit": "fb84a0e7b5",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/basecamp/trix.git",
+    "cd trix",
+    "git checkout cfc9d51602",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "trix",
+  "test_description_zh": "测试Trix编辑器中图片附件的插入和取消选中功能。操作步骤：1. 打开Trix编辑器演示页面；2. 在编辑器中插入一张图片（可以通过工具栏的附件按钮上传，或者拖拽一张图片到编辑器区域中）；3. 等待图片上传完成并显示在编辑器中；4. 图片此时应处于选中状态，点击编辑器区域外部（或编辑器内的其他文本区域）使图片取消选中；5. 观察浏览器开发者工具控制台是否有任何错误信息（如404请求错误）；6. 确认图片在取消选中后仍然正常显示，没有出现占位符替代或图片丢失的情况。始终在浏览器内操作，禁止打开Terminal或其他应用程序。如果在浏览器中找不到目标功能，直接报告unclear。",
+  "expected_result_zh": "图片上传完成后，点击编辑器外部取消选中图片时，浏览器控制台不应出现任何404错误或blob URL请求错误，图片应继续正常显示在编辑器中。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Attaching an image, deselecting it, shows an error in Chrome",
+    "summary": "Invalidate attachment view cache when preview URL changes. Fixes #77",
+    "changed_files": 5,
+    "ui_score": 6,
+    "has_screenshot": false
+  }
+}

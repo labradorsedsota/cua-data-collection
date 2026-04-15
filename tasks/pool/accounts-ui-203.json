@@ -1,0 +1,32 @@
+{
+  "task_id": "accounts-ui-203",
+  "repo": "zesty-io/accounts-ui",
+  "issue_number": 203,
+  "pr_number": 205,
+  "buggy_commit": "7e56b51b15",
+  "fix_commit": "9230056b06",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/zesty-io/accounts-ui.git",
+    "cd accounts-ui",
+    "git checkout 7e56b51b15",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/settings",
+  "app_name": "accounts-ui",
+  "test_description_zh": "测试双因素认证（2FA）启用功能中的国家代码验证逻辑。操作步骤：1. 登录一个尚未启用2FA的账户；2. 导航到账户设置页面；3. 在「Two-Factor Authentication (2FA)」区域中，仅输入手机号码但不填写国家代码（country code）；4. 点击「ENABLE AUTHY 2FA」按钮；5. 观察页面是否正确校验了国家代码字段，确认在国家代码为空时系统的响应行为是否合理（例如是否给出明确的提示信息，而非发送不完整的请求）。同时测试当手机号码和国家代码都正确填写时，点击启用按钮的行为是否正常。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当国家代码未填写时，页面应阻止提交请求并给出友好的表单验证提示，不应向后端发送不完整的数据。只有当手机号码和国家代码都填写完整时，才允许发送启用2FA的请求。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Disallow 2FA enablement without country code ",
+    "summary": "Feature/#203 country code",
+    "changed_files": 3,
+    "ui_score": 5,
+    "has_screenshot": false
+  }
+}
