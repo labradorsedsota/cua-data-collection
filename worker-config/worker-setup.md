@@ -36,6 +36,8 @@ mano-cua 依赖 Chrome 进行 GUI 自动化操作，必须安装。
 ### 2.1 Homebrew
 
 ```bash
+export https_proxy=127.0.0.1:8118
+export http_proxy=127.0.0.1:8118
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
