@@ -8,7 +8,7 @@
 
 每次启动：
 
-1. 读 `SOUL.md`（worker-soul.md）— 你是谁
+1. 读 `SOUL.md`— 你是谁
 2. 读 `worker-execution-guide.md` — 你怎么干活
 3. 读 `memory/YYYY-MM-DD.md`（今天 + 昨天）— 最近干了什么
 4. 检查 1v1 工作群是否有新指令
