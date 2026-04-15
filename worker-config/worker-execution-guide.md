@@ -248,8 +248,11 @@ failure.type 取值：`deploy_failed` | `timeout` | `mano_cua_error` | `url_devi
 | mano-cua 崩溃 | 重试 1 次，仍失败 → 记录异常跳过 |
 | 首步 URL 偏离 | 终止重启，连续 3 次 → BLOCKED + 诊断 |
 | `--expected-result` 报错 | 去掉该参数重跑 |
+| 任务描述要求打开 DevTools / 执行 JS | mano-cua 无法操作浏览器控制台，自然报 unclear → 正常跳过，不算异常 |
 
 **BLOCKED 必须附诊断：** 失败现象 + 根因判断 + 至少 2 种解决方案 + 建议方案。
+
+**控制台 JS 类任务卡说明：** 少量任务卡（约 5 张，占比 ~2%）的测试步骤包含"在浏览器控制台执行 JS 代码"（如调用 `editor.render()`、`player.configure()` 等）。mano-cua 只能操作 GUI，无法打开 DevTools 执行 JS。这类卡排产时放在最后，Worker 正常执行即可——mano-cua 走不到控制台操作步骤时会自然报 `unclear`，不产生垃圾轨迹，不需要特殊处理。
 
 ---
 
@@ -275,5 +278,6 @@ failure.type 取值：`deploy_failed` | `timeout` | `mano_cua_error` | `url_devi
 
 ---
 
-*文档版本：v1.7 | 2026-04-14 | Pichai*
+*文档版本：v1.8 | 2026-04-15 | Pichai*
+*v1.8 变更：新增控制台 JS 类任务卡处理说明（约 5 张，排产末尾，mano-cua 自然兜底）*
 *v1.7 变更：装机章节拆分为独立文件 worker-setup.md，执行手册改为引用*
