@@ -32,7 +32,23 @@
 
 ## 二、执行流程（逐步操作）
 
-### 第 1 步：Clone 并部署
+### 第 1 步：清理端口 + Clone 并部署
+
+**启动新项目前，必须先清理目标端口上的残留进程。** 93 个项目共用 :3000，41 个项目共用 :5173——不清理会导致新项目启动失败（端口占用）。
+
+```bash
+# 从任务卡 dev_url 提取端口号（如 http://localhost:3000 → 3000）
+PORT=$(echo "${dev_url}" | grep -oE ':[0-9]+' | tr -d ':')
+
+# 清理该端口上的残留进程
+lsof -ti:${PORT} | xargs kill -9 2>/dev/null
+sleep 1
+
+# 确认端口已释放
+lsof -i:${PORT} && echo "⚠️ 端口 ${PORT} 仍被占用，请手动排查" || echo "✅ 端口 ${PORT} 已释放"
+```
+
+**同项目不同 bug 切换时**（只换 commit，不换项目）：也需要先 kill 服务再 checkout 新 commit 重新启动。
 
 ```bash
 # 首次执行该项目时 clone（同项目多个 bug 共享部署，不需重复 clone）
@@ -241,6 +257,7 @@ failure.type 取值：`deploy_failed` | `timeout` | `mano_cua_error` | `url_devi
 
 | 场景 | 处理 |
 |------|------|
+| 端口被占用 | `lsof -ti:${PORT} \| xargs kill -9`，确认释放后重新启动 |
 | 部署失败 | 自行排查一次（端口、依赖、版本），仍失败 → 上报 PM |
 | 同项目连续 3 个 case 部署失败 | 标 PROJECT_BLOCKED，整批跳过 |
 | mano-cua 软超时（>10min） | 标 WARN，继续等 |
@@ -260,6 +277,7 @@ failure.type 取值：`deploy_failed` | `timeout` | `mano_cua_error` | `url_devi
 
 ```
 启动前：
+[ ] 目标端口已清理（无残留进程）
 [ ] 部署验证通过（curl 返回 200）
 [ ] Chrome 打开目标页面 + 窗口最大化
 [ ] logs/ 目录存在
@@ -278,6 +296,7 @@ failure.type 取值：`deploy_failed` | `timeout` | `mano_cua_error` | `url_devi
 
 ---
 
-*文档版本：v1.8 | 2026-04-15 | Pichai*
+*文档版本：v1.9 | 2026-04-15 | Pichai*
+*v1.9 变更：新增端口清理步骤（第 1 步前置）+ 异常处理表新增端口占用 + Checklist 新增端口检查项*
 *v1.8 变更：新增控制台 JS 类任务卡处理说明（约 5 张，排产末尾，mano-cua 自然兜底）*
 *v1.7 变更：装机章节拆分为独立文件 worker-setup.md，执行手册改为引用*
