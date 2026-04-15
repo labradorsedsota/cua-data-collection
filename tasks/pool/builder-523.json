@@ -1,0 +1,34 @@
+{
+  "task_id": "builder-523",
+  "repo": "frappe/builder",
+  "issue_number": 523,
+  "pr_number": 524,
+  "buggy_commit": "1e097bc84d",
+  "fix_commit": "5b80f772c0",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/frappe/builder.git",
+    "cd builder",
+    "git checkout 1e097bc84d",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "builder",
+  "test_description_zh": "测试在页面构建器中切换页面时，变量管理器（Variable Manager）浮动面板的关闭行为。具体步骤：1. 打开构建器并进入任意页面的编辑视图；2. 在左侧边栏中找到并点击变量（Variables）图标，打开变量管理器面板；3. 确认变量管理器面板已成功打开并显示；4. 切换到另一个不同的页面（通过页面列表或导航方式）；5. 观察切换页面后，变量管理器面板是否已自动关闭，不再浮动显示在新页面上。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当用户在构建器中从一个页面切换到另一个页面时，之前打开的变量管理器浮动面板应当自动关闭，不会继续浮动显示在新页面上。用户如需在新页面使用变量管理器，需要手动重新打开。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Variable Manager stays open when switching pages",
+    "summary": "fix: close Variable Manager on page navigation",
+    "changed_files": 2,
+    "ui_score": 14,
+    "has_screenshot": false
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

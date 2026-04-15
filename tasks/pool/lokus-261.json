@@ -1,0 +1,33 @@
+{
+  "task_id": "lokus-261",
+  "repo": "lokus-ai/lokus",
+  "issue_number": 261,
+  "pr_number": 264,
+  "buggy_commit": "13a9619895",
+  "fix_commit": "9a4368c242",
+  "framework": "react",
+  "deploy_commands": [
+    "git clone https://github.com/lokus-ai/lokus.git",
+    "cd lokus",
+    "git checkout 13a9619895",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "lokus",
+  "test_description_zh": "测试编辑器中维基链接（wikilink）的创建和显示功能。具体步骤：1）打开编辑器，在一段文字中间位置输入 [[ 触发链接创建，观察自动补全弹出后选择一个文件，检查链接是否插入在光标原始位置且前后空白和换行保持正常。2）在已有其他链接的同一行中，再次输入 [[ 触发自动补全，观察自动补全下拉菜单是否正常弹出并可选择。3）在一个段落末尾创建一个链接，观察该行与相邻行之间的行间距是否与普通文本行间距一致。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "1）通过 [[ 创建链接后，链接应出现在光标原始位置，前后空白和换行不应被删除或改变。2）在同一行已有链接的情况下输入 [[ 应正常弹出自动补全下拉菜单，无需按 Enter 即可使用。3）当链接位于段落末尾时，行间距应与普通文本行间距保持一致，不出现异常增大的间距。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Bug]: Some more links errors",
+    "summary": "Fix/261 wikilink bugs",
+    "changed_files": 1,
+    "ui_score": 7,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

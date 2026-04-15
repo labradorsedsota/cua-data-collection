@@ -1,0 +1,33 @@
+{
+  "task_id": "kaneo-1081",
+  "repo": "usekaneo/kaneo",
+  "issue_number": 1081,
+  "pr_number": 1084,
+  "buggy_commit": "81ccb0532a",
+  "fix_commit": "a5daa49d27",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/usekaneo/kaneo.git",
+    "cd kaneo",
+    "git checkout 81ccb0532a",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "kaneo",
+  "test_description_zh": "测试在任务详情中创建子任务后，子任务是否能即时显示。操作步骤：1. 打开浏览器访问应用首页，如果需要登录则先完成登录/注册流程。2. 进入一个已有的项目（如果没有项目则先创建一个项目）。3. 在项目看板中找到或创建一个任务，点击进入该任务的详情页面。4. 在任务详情中找到子任务（subtask）相关区域，连续添加2-3个子任务。5. 观察每个子任务创建后是否立即出现在子任务列表中，无需手动刷新页面。6. 关闭任务详情页面，回到看板视图，检查新创建的子任务是否正确显示。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "每次创建子任务后，新创建的子任务应立即出现在任务详情的子任务列表中，无需手动刷新页面即可看到变化。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "bug: subtask didn't appear after creation",
+    "summary": "fix(ui): make subtasks appear after creation without refresh",
+    "changed_files": 1,
+    "ui_score": 8,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

@@ -1,0 +1,34 @@
+{
+  "task_id": "meilisearch-ui-239",
+  "repo": "eyeix/meilisearch-ui",
+  "issue_number": 239,
+  "pr_number": 250,
+  "buggy_commit": "49fd55e2d2",
+  "fix_commit": "c09c30dd81",
+  "framework": "react",
+  "deploy_commands": [
+    "git clone https://github.com/eyeix/meilisearch-ui.git",
+    "cd meilisearch-ui",
+    "git checkout 49fd55e2d2",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "meilisearch-ui",
+  "test_description_zh": "测试 Meilisearch UI 在单例模式（Singleton Mode）下的页面导航和统计请求行为。步骤：1. 打开应用首页，观察页面是否正常加载；2. 在首页上点击各个导航链接（如索引列表、设置等），观察页面是否能顺畅切换，不出现加载卡顿或需要反复点击才能导航成功的情况；3. 打开浏览器开发者工具的 Network 面板，观察 /stats 相关的网络请求数量是否合理，不应出现大量密集的重复请求；4. 在不同页面间来回切换多次，确认每次点击链接都能正常导航到目标页面，且不会出现请求被取消导致的错误提示。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "页面导航应流畅，每次点击链接都能正常跳转到目标页面，不需要反复点击；Network 面板中 /stats 请求数量应合理，不应出现大量密集的重复请求或请求被取消的情况；页面不应显示任何错误提示。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Thousands of /stats requests in singleton mode",
+    "summary": "fix renader loop in singleton mode",
+    "changed_files": 1,
+    "ui_score": 6,
+    "has_screenshot": false
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

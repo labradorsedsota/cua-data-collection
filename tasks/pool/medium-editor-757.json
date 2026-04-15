@@ -1,0 +1,33 @@
+{
+  "task_id": "medium-editor-757",
+  "repo": "yabwe/medium-editor",
+  "issue_number": 757,
+  "pr_number": 758,
+  "buggy_commit": "9aace0cba1",
+  "fix_commit": "50e254a950",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/yabwe/medium-editor.git",
+    "cd medium-editor",
+    "git checkout 9aace0cba1",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/demo/",
+  "app_name": "medium-editor",
+  "test_description_zh": "测试在段落首个单词上创建链接后选区恢复的功能。操作步骤：1. 打开 MediumEditor 的演示页面，找到可编辑区域。2. 在编辑器中先输入一段文字形成一个段落，然后按回车创建一个新段落，并在新段落中输入一些文字（例如 'hello world test'）。3. 用鼠标选中新段落的第一个单词（例如 'hello'）。4. 点击工具栏中的链接按钮（anchor/link 按钮），输入一个 URL（例如 'http://example.com'）并确认创建链接。5. 观察链接创建完成后，选区是否正确地停留在当前段落的链接文字上，而不是跑到前一个段落或其他位置。6. 验证生成的链接元素确实包裹了正确的文字，并且选区范围仅限于当前段落内的链接节点。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在段落第一个单词上创建链接后，选区应正确恢复到当前段落的链接节点上，不应选中前一个段落的内容，链接应正确包裹所选的第一个单词。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Buggy restore selection when creating link on first word in paragraph",
+    "summary": "Fix #757, issue where selection restored too large",
+    "changed_files": 2,
+    "ui_score": 10,
+    "has_screenshot": true
+  },
+  "_description_source": "llm"
+}

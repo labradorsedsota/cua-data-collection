@@ -1,0 +1,34 @@
+{
+  "task_id": "dejavu-413",
+  "repo": "appbaseio/dejavu",
+  "issue_number": 413,
+  "pr_number": 415,
+  "buggy_commit": "2bf0c70d5f",
+  "fix_commit": "3ac8a47c8a",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/appbaseio/dejavu.git",
+    "cd dejavu",
+    "git checkout 2bf0c70d5f",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "dejavu-monorepo",
+  "test_description_zh": "测试数据浏览器中CSV导出功能是否能完整导出所有字段。操作步骤：1. 打开应用后，进入数据浏览器（Data Browser）页面；2. 查看当前展示的数据条目，注意观察数据表格中显示的所有列/字段；3. 找到并点击导出（Export）功能按钮；4. 选择导出为CSV格式；5. 下载导出的CSV文件并检查其内容，确认CSV文件中包含数据浏览器中显示的所有字段列，而不仅仅是部分字段。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "导出的CSV文件应包含数据浏览器中显示的所有字段/列，每一个在数据表格中可见的字段都应出现在导出文件的表头中，不应遗漏任何字段。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Missing fields in Exported CSV file",
+    "summary": "Fix: Missing fields in exported files",
+    "changed_files": 2,
+    "ui_score": 6,
+    "has_screenshot": false
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

@@ -1,0 +1,33 @@
+{
+  "task_id": "kan-206",
+  "repo": "kanbn/kan",
+  "issue_number": 206,
+  "pr_number": 207,
+  "buggy_commit": "fc692cb411",
+  "fix_commit": "362381f516",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/kanbn/kan.git",
+    "cd kan",
+    "git checkout fc692cb411",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/cards/",
+  "app_name": "kan",
+  "test_description_zh": "测试卡片详情页中评论功能对长链接/长字符串的显示效果。操作步骤：1. 打开一个卡片详情页（路径类似 /cards/[cardPublicId]）；2. 在评论区域输入一条包含很长链接或很长无空格字符串的评论（例如粘贴一个超长URL如 https://example.com/very-long-path-segment-that-goes-on-and-on-and-on-without-any-spaces-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa）；3. 提交评论后，观察评论内容是否正确显示在评论容器内，文字和链接不应超出评论区域的边界。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "包含长链接或长字符串的评论内容应正确换行，完全显示在评论容器内部，不会溢出容器边界。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Overflow when adding links to comments",
+    "summary": "fix(bug): remove overflow of comment (#206)",
+    "changed_files": 3,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

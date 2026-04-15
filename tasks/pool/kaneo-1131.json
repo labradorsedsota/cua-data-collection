@@ -1,0 +1,33 @@
+{
+  "task_id": "kaneo-1131",
+  "repo": "usekaneo/kaneo",
+  "issue_number": 1131,
+  "pr_number": 1132,
+  "buggy_commit": "eb40d3f3b6",
+  "fix_commit": "9aca18f1f8",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/usekaneo/kaneo.git",
+    "cd kaneo",
+    "git checkout eb40d3f3b6",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "kaneo",
+  "test_description_zh": "测试项目看板中删除默认列后的持久性。操作步骤：1. 打开浏览器访问应用首页，如果需要登录则先完成登录。2. 创建一个新项目（如果已有项目也可使用现有项目）。3. 进入该项目的设置页面，找到列（Column）管理相关的配置。4. 确认默认存在的列包括 To Do、In Progress、In Review、Done。5. 删除 'In Review' 列，等待出现删除确认提示（如 'Column deleted'）。6. 删除成功后，刷新页面或返回项目看板页面，确认 'In Review' 列确实已被删除且不再显示。7. 再次刷新页面多次，确认 'In Review' 列没有重新出现。8. 导航到其他页面后再返回该项目，确认列的配置保持不变，被删除的列没有恢复。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "删除 'In Review' 列后，无论如何刷新页面或在页面间导航，该列都不应重新出现，项目的列配置应保持用户设置的状态。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "bug: \"In Review\" column keeps reappearing for projects with no additional changes to other default columns.",
+    "summary": "fix: stop column migration from restoring deleted default columns",
+    "changed_files": 1,
+    "ui_score": 9,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

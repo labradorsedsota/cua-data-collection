@@ -1,0 +1,33 @@
+{
+  "task_id": "organice-1006",
+  "repo": "200ok-ch/organice",
+  "issue_number": 1006,
+  "pr_number": 1013,
+  "buggy_commit": "98259f7bb0",
+  "fix_commit": "a64e799b80",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/200ok-ch/organice.git",
+    "cd organice",
+    "git checkout 98259f7bb0",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/manifest.json",
+  "app_name": "organice",
+  "test_description_zh": "测试 organice 应用的 PWA manifest.json 配置是否正确。具体步骤：1. 在浏览器中打开应用首页。2. 打开浏览器开发者工具，切换到 Application（应用）面板，查看 Manifest 部分，确认 manifest.json 已正确加载。3. 在浏览器地址栏中直接访问 /manifest.json 路径，确认该路径能返回有效的 JSON 内容，包含 short_name、name、icons 等 PWA 所需的标准字段。4. 回到首页，检查页面 HTML 源码中 <link rel='manifest'> 标签是否正确指向 /manifest.json。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "直接访问 /manifest.json 路径时应返回有效的 JSON 文件，包含 short_name、name、icons 等 PWA 标准字段；首页 HTML 中应有正确的 <link rel='manifest' href='/manifest.json'> 标签；开发者工具 Application 面板中 Manifest 应正确显示所有 PWA 配置信息。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "When self-hosted, manifest is missing when installing PWA on iOS",
+    "summary": "fix(1006): Creating a static /manifest.json",
+    "changed_files": 2,
+    "ui_score": 10,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

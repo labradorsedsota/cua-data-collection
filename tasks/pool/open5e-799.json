@@ -1,0 +1,34 @@
+{
+  "task_id": "open5e-799",
+  "repo": "open5e/open5e",
+  "issue_number": 799,
+  "pr_number": 800,
+  "buggy_commit": "1f0bc0aa24",
+  "fix_commit": "1f643339ae",
+  "framework": "nuxt",
+  "deploy_commands": [
+    "git clone https://github.com/open5e/open5e.git",
+    "cd open5e",
+    "git checkout 1f0bc0aa24",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/monsters/srd-2024_lich",
+  "app_name": "nuxt-app",
+  "test_description_zh": "测试 MdViewer 组件在内联模式下对 <strong> 标签的渲染样式。步骤：1. 打开应用首页，尝试导航到一个包含使用 MdViewer 组件渲染 Markdown 内容的页面（例如怪物详情页面，如 /monsters/srd-2024_lich 或类似路径）。2. 找到页面中包含内联 Markdown 渲染的区域，特别是包含加粗文本（<strong> 标签）的段落。3. 观察加粗文本是否以内联方式（inline）显示，即加粗文本与周围文本在同一行内，前后没有换行或额外的块级间距。4. 确认 <strong> 标签没有被渲染为块级元素（display: block），应始终保持内联显示。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在 MdViewer 内联模式下，<strong> 加粗标签应以内联方式（display: inline）渲染，与周围文本在同一行显示，前后不应出现换行或块级间距。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[BUG] MdViewer component styles `<strong>` tags as `display: block` in Inline mode",
+    "summary": "Bugfix: `<strong>` now always rendered inline by `MdViewer` component",
+    "changed_files": 1,
+    "ui_score": 14,
+    "has_screenshot": false
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

@@ -1,0 +1,33 @@
+{
+  "task_id": "megadraft-286",
+  "repo": "globocom/megadraft",
+  "issue_number": 286,
+  "pr_number": 287,
+  "buggy_commit": "3785a67cd1",
+  "fix_commit": "0c9bbcd21d",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/globocom/megadraft.git",
+    "cd megadraft",
+    "git checkout 3785a67cd1",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "megadraft",
+  "test_description_zh": "测试 MegadraftEditor 富文本编辑器中可移动插件块的交换功能。具体步骤：1. 打开页面后，找到 Megadraft 编辑器区域；2. 观察编辑器中是否已有内容块（如图片块、视频块或其他插件块），如果没有，尝试通过编辑器工具栏或侧边栏的加号按钮添加至少两个插件块；3. 在其中一个插件块的输入框中输入一些文字内容；4. 在不移开焦点（不点击其他地方）的情况下，直接点击该块的上移或下移按钮来交换该块与相邻块的位置；5. 检查交换完成后，之前输入的文字内容是否仍然保留在对应的插件块中；6. 再次尝试交换回来，确认数据依然完整。重点验证在输入框保持焦点状态下执行块交换操作时，输入的数据是否能正确保存和显示。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在插件块的输入框中输入文字后，不移开焦点直接交换块的位置，交换完成后输入的文字内容应完整保留，不会丢失或回退到之前的空值状态。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Data loss when swapping plugin blocks with blur update",
+    "summary": "fix: Move blur blocks without data loss",
+    "changed_files": 1,
+    "ui_score": 8,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

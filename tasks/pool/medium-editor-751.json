@@ -1,0 +1,33 @@
+{
+  "task_id": "medium-editor-751",
+  "repo": "yabwe/medium-editor",
+  "issue_number": 751,
+  "pr_number": 752,
+  "buggy_commit": "7393444eb9",
+  "fix_commit": "f073dba37c",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/yabwe/medium-editor.git",
+    "cd medium-editor",
+    "git checkout 7393444eb9",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/demo.html",
+  "app_name": "medium-editor",
+  "test_description_zh": "测试 medium-editor 的链接创建功能。具体步骤：1. 打开编辑器演示页面。2. 在编辑器中找到一段文本，选中文本开头的前几个单词（例如段落最开始的文字）。3. 点击工具栏中的链接按钮（anchor 按钮），输入一个 URL 并确认，为选中的文本创建一个链接。4. 确认链接创建成功后，再选中同一段落中其他位置的文字（非链接部分的文字）。5. 再次点击工具栏中的链接按钮，尝试为新选中的文字创建另一个链接，输入不同的 URL 并确认。6. 验证第二个链接是否也能成功创建，即在同一段落中可以存在多个链接。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在段落开头创建第一个链接后，仍然能够在同一段落的其他位置成功创建第二个链接，两个链接都应正常显示并可点击。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Editor refuse to create links if there is already a link positioned in the very beginning.",
+    "summary": "Fix #751 - issue with finding anchor when clicking anchor button",
+    "changed_files": 2,
+    "ui_score": 11,
+    "has_screenshot": true
+  },
+  "_description_source": "llm"
+}

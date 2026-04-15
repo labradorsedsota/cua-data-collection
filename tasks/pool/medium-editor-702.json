@@ -1,0 +1,33 @@
+{
+  "task_id": "medium-editor-702",
+  "repo": "yabwe/medium-editor",
+  "issue_number": 702,
+  "pr_number": 703,
+  "buggy_commit": "cef04d009d",
+  "fix_commit": "48d9842b4e",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/yabwe/medium-editor.git",
+    "cd medium-editor",
+    "git checkout cef04d009d",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/demo",
+  "app_name": "medium-editor",
+  "test_description_zh": "测试 MediumEditor 的 destroy() 方法是否能正确清理所有编辑器相关的属性。操作步骤：1. 打开 demo 页面，确认页面上存在可编辑的富文本编辑器区域。2. 打开浏览器开发者工具控制台，检查编辑器元素上是否存在 data-medium-editor-element、role、aria-multiline、medium-editor-index 等编辑器添加的额外属性。3. 在控制台中对编辑器实例调用 .destroy() 方法。4. 再次检查之前的编辑器 DOM 元素，确认所有由编辑器添加的额外属性（包括 role=\"textbox\"、aria-multiline=\"true\"、medium-editor-index、data-medium-editor-element 等）是否已被完全移除。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "调用 destroy() 后，编辑器 DOM 元素上所有由 MediumEditor 添加的额外属性（如 role、aria-multiline、medium-editor-index、data-medium-editor-element 等）应全部被移除，DOM 元素恢复为初始状态。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": ".destroy() question",
+    "summary": "Ensure all extra attributes are removed on destroy",
+    "changed_files": 2,
+    "ui_score": 5,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

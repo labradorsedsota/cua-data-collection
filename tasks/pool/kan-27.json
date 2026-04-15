@@ -1,0 +1,33 @@
+{
+  "task_id": "kan-27",
+  "repo": "kanbn/kan",
+  "issue_number": 27,
+  "pr_number": 40,
+  "buggy_commit": "116fefcaf3",
+  "fix_commit": "56b0161c6f",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/kanbn/kan.git",
+    "cd kan",
+    "git checkout 116fefcaf3",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "kan",
+  "test_description_zh": "测试在看板页面创建新卡片时，不输入任何标题直接点击创建按钮的表单验证功能。具体步骤：1. 打开看板页面，找到一个已有的列（column），点击添加新卡片的按钮或入口；2. 在弹出的新建卡片表单/弹窗中，不输入任何标题内容，保持标题字段为空；3. 直接点击「Create card」或类似的创建按钮（也可以尝试按回车键提交）；4. 观察表单的行为：弹窗是否仍然保持打开状态，标题输入框是否显示错误提示状态，是否在输入框下方出现类似「Title can not be empty」的错误提示信息。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当标题为空时点击创建按钮，弹窗/表单不应关闭，标题输入框应显示错误状态，并在输入框下方显示提示信息说明标题不能为空，而不是直接关闭弹窗后显示错误弹出提示。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Error popup when creating a card without anything inputted",
+    "summary": "refactor: move form reset logic to onSuccess and improve error handli…",
+    "changed_files": 1,
+    "ui_score": 10,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

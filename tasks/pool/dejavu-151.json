@@ -1,0 +1,34 @@
+{
+  "task_id": "dejavu-151",
+  "repo": "appbaseio/dejavu",
+  "issue_number": 151,
+  "pr_number": 152,
+  "buggy_commit": "94f02a0487",
+  "fix_commit": "799d83e481",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/appbaseio/dejavu.git",
+    "cd dejavu",
+    "git checkout 94f02a0487",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "dejavu-monorepo",
+  "test_description_zh": "测试 Dejavu 应用中设置字段映射为 Search 数据类型（n-gram）时的 search_analyzer 配置。具体步骤：1. 在浏览器中打开应用首页。2. 连接到一个 Elasticsearch 实例或使用默认的演示数据集。3. 找到数据映射（Mapping）相关的功能区域，尝试为某个字段设置数据类型为 Search（即启用 n-gram 子字段）。4. 查看生成的映射配置，确认当字段设置为 Search 类型时，search_analyzer 的值是否正确设置为 simple 类型。5. 同时检查 autosuggest 子字段的映射中是否也包含了 search_analyzer 为 simple 的配置。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当字段的数据类型设置为 Search（n-gram）时，生成的映射配置中 search_analyzer 应为 simple，autosuggest 子字段的映射中也应包含 search_analyzer: simple 的配置。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Change search_analyzer when using n-grams to simple type",
+    "summary": "Fixes #151",
+    "changed_files": 1,
+    "ui_score": 7,
+    "has_screenshot": false
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

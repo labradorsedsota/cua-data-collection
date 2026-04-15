@@ -1,0 +1,33 @@
+{
+  "task_id": "kaneo-1066",
+  "repo": "usekaneo/kaneo",
+  "issue_number": 1066,
+  "pr_number": 1075,
+  "buggy_commit": "c68388e7d4",
+  "fix_commit": "e365cadd6b",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/usekaneo/kaneo.git",
+    "cd kaneo",
+    "git checkout c68388e7d4",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "kaneo",
+  "test_description_zh": "测试在项目看板中创建标签后，新标签能否在其他任务的标签搜索下拉框中立即可见。具体步骤：1. 打开浏览器，进入项目页面；2. 如果没有项目，先创建一个项目（如名为 TestProject）；3. 在项目看板中创建一个新的 issue（任务），在创建过程中新建一个标签（label），例如命名为 TestLabel，然后点击创建更多（Create more）或类似按钮继续创建下一个 issue；4. 在新的 issue 创建表单中，点击标签搜索下拉框，搜索刚刚创建的标签名称 TestLabel；5. 验证刚刚创建的标签是否在搜索结果中立即出现，无需手动刷新页面。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在创建第一个 issue 时新建的标签，应在随后创建第二个 issue 时的标签搜索下拉框中立即可见，无需手动刷新页面。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "bug: labels needs a hard refresh to be visible",
+    "summary": "Refresh label caches after creating a label",
+    "changed_files": 1,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

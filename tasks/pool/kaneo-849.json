@@ -1,0 +1,33 @@
+{
+  "task_id": "kaneo-849",
+  "repo": "usekaneo/kaneo",
+  "issue_number": 849,
+  "pr_number": 1076,
+  "buggy_commit": "2a4fa066cd",
+  "fix_commit": "17de4b3c47",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/usekaneo/kaneo.git",
+    "cd kaneo",
+    "git checkout 2a4fa066cd",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "kaneo",
+  "test_description_zh": "测试在多个浏览器标签页中独立切换工作区的功能。操作步骤：1. 打开应用并登录账号，进入主页面。2. 在当前标签页中选择并打开一个工作区（例如第一个可用的工作区），记住该工作区名称。3. 在浏览器中打开一个新标签页，访问同一个应用地址并确认已登录。4. 在新标签页中切换到另一个不同的工作区。5. 回到第一个标签页，刷新页面。6. 验证第一个标签页刷新后仍然停留在之前选择的工作区，而不是被切换到其他工作区。确认每个标签页的工作区选择是独立的，互不影响。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在第一个标签页刷新后，应仍然显示之前选择的工作区，不会被第二个标签页的工作区选择所覆盖，每个标签页的工作区状态应该是独立的。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "bug: Parallel browser tabs overwrite each others current workspace",
+    "summary": "fix(web): isolate active workspace per tab via URL",
+    "changed_files": 3,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

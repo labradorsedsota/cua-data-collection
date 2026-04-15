@@ -1,0 +1,34 @@
+{
+  "task_id": "umbrel-dashboard-198",
+  "repo": "getumbrel/umbrel-dashboard",
+  "issue_number": 198,
+  "pr_number": 200,
+  "buggy_commit": "72ebe77bc9",
+  "fix_commit": "d4bea6849a",
+  "framework": "vue",
+  "deploy_commands": [
+    "git clone https://github.com/getumbrel/umbrel-dashboard.git",
+    "cd umbrel-dashboard",
+    "git checkout 72ebe77bc9",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:8080 | grep -q '<'",
+  "dev_url": "http://localhost:8080",
+  "test_page": "/",
+  "app_name": "umbrel-dashboard",
+  "test_description_zh": "测试比特币钱包中闪电网络通道开启功能的费率选择和提现编辑流程。具体步骤：1. 打开应用后，找到比特币钱包相关页面或组件。2. 尝试进入闪电网络通道开启流程，查看费率选择界面，确认不同费率选项（如最快确认、约4小时、约24小时）是否正确显示对应的 sats 费用数值。3. 尝试选择不同的费率选项，验证是否可以正常选中并继续操作。4. 进入提现（withdraw）流程，进入审核提现（review-withdraw）阶段后，点击返回编辑提现，验证返回后页面状态是否正常，之前的错误提示是否被正确清除，能否正常重新编辑和提交。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "费率选择界面中所有选项应正确显示对应的 sats 费用值（不应为0），用户可以正常选择任一费率选项并继续开启通道流程。在提现流程中，从审核提现返回编辑提现时，之前的错误消息应被清除，用户可以正常重新编辑。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Can't select the fee for opening a LN channel",
+    "summary": "Show channel open errors for only the highest fee",
+    "changed_files": 3,
+    "ui_score": 8,
+    "has_screenshot": true
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

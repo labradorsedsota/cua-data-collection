@@ -1,0 +1,33 @@
+{
+  "task_id": "signature_pad-656",
+  "repo": "szimek/signature_pad",
+  "issue_number": 656,
+  "pr_number": 657,
+  "buggy_commit": "b96157005e",
+  "fix_commit": "f92b31c0af",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/szimek/signature_pad.git",
+    "cd signature_pad",
+    "git checkout b96157005e",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "signature_pad",
+  "test_description_zh": "测试 signature_pad 的 toData() 和 fromData() 功能，验证不同线宽的签名数据在保存和重新加载后是否能正确还原。具体步骤：1. 打开页面，找到签名画板区域。2. 在画板上绘制签名线条（如果页面提供了线宽设置选项，尝试切换不同线宽分别绘制）。3. 查找页面上是否有保存数据（toData）和加载数据（fromData）的按钮或演示功能。4. 如果页面提供了相关交互按钮，先绘制线条，然后点击保存/导出数据按钮，再点击加载/恢复数据按钮，观察重新绘制后的线条粗细是否与原始绘制时一致。5. 如果页面只有基础的签名画板演示，则在画板上绘制一些线条，观察画板的基本绘制功能是否正常工作，并截图记录。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "使用 fromData() 加载之前通过 toData() 保存的签名数据后，所有不同粗细的线条应当正确还原其原始线宽，包括比默认值更粗的线条也应保持其设定的粗细，而不是被重置为默认线宽。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "line width not restored",
+    "summary": "fix: use point group options in calculations",
+    "changed_files": 4,
+    "ui_score": 9,
+    "has_screenshot": true
+  },
+  "_description_source": "llm"
+}

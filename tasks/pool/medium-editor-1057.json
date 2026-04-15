@@ -1,0 +1,33 @@
+{
+  "task_id": "medium-editor-1057",
+  "repo": "yabwe/medium-editor",
+  "issue_number": 1057,
+  "pr_number": 1058,
+  "buggy_commit": "55b72924b4",
+  "fix_commit": "b5bd1db4c6",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/yabwe/medium-editor.git",
+    "cd medium-editor",
+    "git checkout 55b72924b4",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/demo/",
+  "app_name": "medium-editor",
+  "test_description_zh": "测试 medium-editor 富文本编辑器的文字换行行为。步骤：1. 打开页面，找到 medium-editor 的可编辑区域（demo 编辑器）。2. 在编辑器中输入一段包含长英文单词的文本，例如输入 'This is a test with superlongwordthatshouldonlybreakappropriately and normal words following it'。3. 观察长单词的换行表现：长单词应该在合理的位置换行（即保持单词完整性，仅在必要时在单词边界处换行），而不应该在单词中间任意两个字母之间断开。4. 再输入一些正常长度的英文单词组成的段落，确认正常单词不会在字母中间被强制断开。5. 缩小浏览器窗口宽度，观察编辑器内文本的换行是否合理，正常单词应保持完整不被拆断。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "编辑器中的英文文本应以合理的方式换行，正常长度的单词不应在字母中间被强制断开，只有在必要时（如超长单词溢出容器）才在适当位置换行，保持良好的排版效果。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "CSS word-break: break-all is intended but why oh why!?",
+    "summary": "Fix #1057 - replace break-all with break-word",
+    "changed_files": 1,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

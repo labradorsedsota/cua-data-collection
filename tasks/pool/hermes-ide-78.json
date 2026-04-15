@@ -1,0 +1,33 @@
+{
+  "task_id": "hermes-ide-78",
+  "repo": "hermes-hq/hermes-ide",
+  "issue_number": 78,
+  "pr_number": 91,
+  "buggy_commit": "1879f21455",
+  "fix_commit": "521f1c4a3b",
+  "framework": "react",
+  "deploy_commands": [
+    "git clone https://github.com/hermes-hq/hermes-ide.git",
+    "cd hermes-ide",
+    "git checkout 1879f21455",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "hermes-ide",
+  "test_description_zh": "测试插件更新通知的显示方式和布局影响。操作步骤：1. 打开应用首页（主屏幕），观察主屏幕的初始布局，包括会话列表或空状态内容的位置。2. 等待或触发插件更新通知出现（如果有插件更新提示）。3. 观察插件更新通知的呈现形式：检查它是否以 Toast 浮动通知的方式显示（例如固定定位在页面角落），而不是作为内联元素插入到主内容区域中。4. 确认当插件更新通知出现时，主屏幕的会话列表或空状态内容不会发生位移或布局跳动。5. 检查页面中是否存在 Toast 通知容器组件。6. 如果通知出现，尝试关闭或忽略通知，确认交互正常。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "插件更新通知应以 Toast 浮动通知形式呈现（固定/绝对定位），不参与正常文档流布局，不会导致主屏幕内容（会话列表或空状态）发生位移或布局跳动。通知出现和消失时主内容区域保持稳定。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Plugin update banner disrupts home screen layout",
+    "summary": "Replace plugin update banner with toast notifications",
+    "changed_files": 7,
+    "ui_score": 13,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

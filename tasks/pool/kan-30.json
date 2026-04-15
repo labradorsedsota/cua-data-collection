@@ -1,0 +1,33 @@
+{
+  "task_id": "kan-30",
+  "repo": "kanbn/kan",
+  "issue_number": 30,
+  "pr_number": 31,
+  "buggy_commit": "c9a9779e79",
+  "fix_commit": "2043a8f98c",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/kanbn/kan.git",
+    "cd kan",
+    "git checkout c9a9779e79",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/settings",
+  "app_name": "kan",
+  "test_description_zh": "测试删除工作空间功能，特别是在工作空间中包含带有标签的卡片时能否正常删除。具体步骤：1. 首先创建一个新的工作空间；2. 在该工作空间中创建一个看板（board）；3. 在看板中创建一个列表（list）；4. 在列表中创建一张卡片（card）；5. 为该卡片创建一个标签（label）；6. 将该标签附加到卡片上；7. 进入设置页面；8. 点击删除工作空间按钮；9. 确认删除操作；10. 验证工作空间是否被成功删除。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "工作空间应被成功删除，即使其中包含带有标签的卡片，删除操作也应顺利完成，不出现错误。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Attempting to delete workspace with a card which has a label assigned, it fails",
+    "summary": "fix: add cascade delete for card-related foreign keys and invalidate …",
+    "changed_files": 5,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

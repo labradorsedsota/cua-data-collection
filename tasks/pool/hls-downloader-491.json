@@ -1,0 +1,33 @@
+{
+  "task_id": "hls-downloader-491",
+  "repo": "puemos/hls-downloader",
+  "issue_number": 491,
+  "pr_number": 505,
+  "buggy_commit": "8c0f39bc11",
+  "fix_commit": "36e503ee9c",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/puemos/hls-downloader.git",
+    "cd hls-downloader",
+    "git checkout 8c0f39bc11",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "hls-downloader",
+  "test_description_zh": "测试 HLS 下载器在下载文件名包含特殊字符时的下载功能。操作步骤：1. 打开应用主页面；2. 在输入框中粘贴一个 HLS 流地址（m3u8 链接），尝试使用包含特殊字符（如括号、引号、冒号等）的流地址；3. 点击解析或加载按钮，等待流信息加载完成；4. 选择一个可用的清晰度/轨道；5. 点击下载按钮，观察下载过程是否正常进行，文件名是否被正确生成且不包含非法字符；6. 确认下载任务能够正常启动并进行，不会因为文件名问题而取消或报错。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当 HLS 流的文件名中包含特殊字符时，应用应能正确清理/转义文件名中的非法字符，下载任务能够正常启动和完成，不会因文件名包含非法字符而导致下载失败或取消。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Sanitize download file name or else no download is possible",
+    "summary": "fix: sanitize download filenames to remove illegal characters",
+    "changed_files": 4,
+    "ui_score": 8,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

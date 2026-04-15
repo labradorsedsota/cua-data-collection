@@ -1,0 +1,33 @@
+{
+  "task_id": "kan-242",
+  "repo": "kanbn/kan",
+  "issue_number": 242,
+  "pr_number": 245,
+  "buggy_commit": "c30da618ec",
+  "fix_commit": "c0a3c37d95",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/kanbn/kan.git",
+    "cd kan",
+    "git checkout c30da618ec",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "kan",
+  "test_description_zh": "测试从 Trello 导入看板的功能，重点验证导入后卡片的清单（checklist）和 Markdown 内容是否正确显示。具体步骤：1. 打开应用首页，寻找导入功能入口（可能在设置、新建看板或侧边栏中）。2. 选择从 Trello 导入看板的选项。3. 如果需要上传 Trello 导出的 JSON 文件，则准备一个包含清单和 Markdown 描述的 Trello 看板导出文件进行导入。4. 导入完成后，打开导入的看板，检查卡片中是否包含清单项（checklist items），并确认清单的勾选状态是否正确保留。5. 打开包含 Markdown 描述的卡片，确认描述中的 Markdown 语法（如反引号包裹的代码、加粗、链接等）是否被正确渲染为富文本格式，而非显示原始的 Markdown 转义字符。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "从 Trello 导入的看板中，卡片的清单（checklist）项应完整显示，包括已勾选和未勾选的状态；卡片描述中的 Markdown 内容应被正确渲染为富文本（如代码高亮、加粗等），而非显示原始 Markdown 语法符号。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Import from trello omits checklists and neuters markdown",
+    "summary": "feat: add tiptap markdown support, add checklist support from trello",
+    "changed_files": 5,
+    "ui_score": 12,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

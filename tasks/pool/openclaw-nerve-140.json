@@ -1,0 +1,34 @@
+{
+  "task_id": "openclaw-nerve-140",
+  "repo": "daggerhashimoto/openclaw-nerve",
+  "issue_number": 140,
+  "pr_number": 177,
+  "buggy_commit": "c43fb6912c",
+  "fix_commit": "a66b932273",
+  "framework": "react",
+  "deploy_commands": [
+    "git clone https://github.com/daggerhashimoto/openclaw-nerve.git",
+    "cd openclaw-nerve",
+    "git checkout c43fb6912c",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "openclaw-nerve",
+  "test_description_zh": "测试会话侧边栏（AGENTS / Sessions 面板）的会话过滤与显示功能。操作步骤：1. 打开应用后，找到左侧或侧边的 AGENTS 会话面板（Sessions 面板）。2. 观察面板中显示的会话列表内容。3. 检查面板中是否只显示了真正的顶层 agent 会话根节点（如 agent:*:main 类型的会话），以及相关的活跃子会话。4. 确认面板中不应出现非 agent 类型的根会话条目（如 Discord、WhatsApp 风格的联系人/频道条目）。5. 确认面板中不应出现过期的 cron 会话或 cron 运行记录。6. 验证较早创建的真实顶层 agent 会话根节点仍然可见，没有被错误隐藏。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "AGENTS 会话面板应该只显示真正的顶层 agent 根会话和相关活跃子会话，不应出现非 agent 类型的根会话、旧的 Discord/WhatsApp 风格条目、或过期的 cron 会话/运行记录。较早的真实 agent 根会话应保持可见。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Bug] Session sidebar leaks stale non-agent and cron sessions",
+    "summary": "fix(sessions): filter agents sidebar to real roots",
+    "changed_files": 4,
+    "ui_score": 10,
+    "has_screenshot": false
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

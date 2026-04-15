@@ -1,31 +1,34 @@
 {
   "task_id": "lumen-473",
   "repo": "lumen-notes/lumen",
-  "repo_url": "https://github.com/lumen-notes/lumen",
-  "issue_url": "https://github.com/lumen-notes/lumen/issues/473",
-  "fix_pr": 476,
+  "issue_number": 473,
+  "pr_number": 476,
   "buggy_commit": "affc7f0b3e",
   "fix_commit": "7e7c975da1",
-  "framework": "TypeScript/Vite",
-  "package_manager": "npm",
-  "node_version": "any",
+  "framework": "react",
   "deploy_commands": [
-    "git clone https://github.com/lumen-notes/lumen.git lumen-473",
-    "cd lumen-473",
+    "git clone https://github.com/lumen-notes/lumen.git",
+    "cd lumen",
     "git checkout affc7f0b3e",
     "npm install",
     "npm run dev"
   ],
-  "deploy_verify": "浏览器打开 http://localhost:5173，应显示笔记应用界面",
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
   "dev_url": "http://localhost:5173",
   "test_page": "/",
-  "app_name": "Lumen Notes",
-  "test_description_zh": "当前浏览器已打开 Lumen Notes 笔记应用。请创建一个包含引用图片的 Markdown 笔记。在笔记内容中使用 Markdown 图片语法引用一张图片。观察引用的图片是否能正确显示在预览中。",
-  "expected_result_zh": "Markdown 中引用的图片应该在预览中正确显示。如果部分引用的图片无法显示（显示为破损图标或空白），则说明存在 bug。",
-  "timeout": 600,
+  "app_name": "lumen",
+  "test_description_zh": "测试 Markdown 文件中外部图片的渲染功能。具体步骤：1. 打开应用首页，找到或创建一个包含 Markdown 内容的笔记/文档。2. 在 Markdown 内容中插入一个包含复杂 URL 参数的外部图片引用，例如包含特殊字符（如 #、~、多个查询参数）的图片 URL，格式为 ![](https://example.com/image.png?w=100&h=100#fragment)。3. 同时插入一个简单 URL 格式的外部图片引用，例如 ![](https://example.com/simple-image.jpg)。4. 观察 Markdown 渲染预览区域，验证两种格式的外部图片是否都能正常显示渲染。5. 点击渲染后的图片，确认是否能在新标签页中打开原始图片链接。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "所有外部图片引用（无论 URL 格式是否复杂）都应在 Markdown 渲染视图中正常显示，图片可见且可点击跳转到原始链接。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
   "ground_truth": {
-    "bug_type": "图片显示失败",
-    "expected_behavior": "引用的图片应正确显示",
-    "actual_behavior": "部分引用图片不显示"
-  }
+    "bug_type": "",
+    "issue_title": "Some Referenced Images Not Displaying in Markdown Files",
+    "summary": "Proxy external images",
+    "changed_files": 2,
+    "ui_score": 12,
+    "has_screenshot": true
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
 }

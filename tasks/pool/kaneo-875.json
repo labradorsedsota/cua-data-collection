@@ -1,0 +1,33 @@
+{
+  "task_id": "kaneo-875",
+  "repo": "usekaneo/kaneo",
+  "issue_number": 875,
+  "pr_number": 1040,
+  "buggy_commit": "3218979b37",
+  "fix_commit": "4183267dc4",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/usekaneo/kaneo.git",
+    "cd kaneo",
+    "git checkout 3218979b37",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "kaneo",
+  "test_description_zh": "测试「新建项目」弹窗中 Project Key 输入框的字符限制功能。操作步骤：1. 打开应用后，进入 Workspace 页面；2. 点击「+ New Project」按钮，打开新建项目弹窗；3. 在 Project Name 输入框中输入一个项目名称；4. 在 Key 输入框中尝试输入一个非常长的字符串（例如超过100个字符），观察输入框是否对输入长度进行了限制；5. 检查输入长字符串后，弹窗的布局是否保持正常，「Used for ticket IDs」容器是否保持在弹窗范围内，没有溢出或撑破弹窗。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "Key 输入框应有最大字符数限制（例如不超过10个字符左右），输入超长字符串时输入框应截断或拒绝多余输入，弹窗布局始终保持固定宽度不被撑开，「Used for ticket IDs」容器不会溢出到弹窗或视口之外。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "bug: Project Key input lacks character limit/overflow handling",
+    "summary": "fix: project key input limit",
+    "changed_files": 1,
+    "ui_score": 15,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

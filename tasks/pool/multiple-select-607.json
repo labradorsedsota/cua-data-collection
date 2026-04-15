@@ -1,31 +1,33 @@
 {
   "task_id": "multiple-select-607",
   "repo": "wenzhixin/multiple-select",
-  "repo_url": "https://github.com/wenzhixin/multiple-select",
-  "issue_url": "https://github.com/wenzhixin/multiple-select/issues/607",
-  "fix_pr": 609,
-  "framework": "Vue/JavaScript",
-  "package_manager": "npm",
-  "app_name": "Multiple Select",
-  "test_description_zh": "当前浏览器已打开 Multiple Select 组件的演示页面。请找到带有过滤（filter）功能的下拉选择框。在过滤输入框中输入一个包含大写字母的关键词。观察过滤结果是否正确匹配了大小写不同的选项，还是只匹配了小写。",
-  "expected_result_zh": "过滤功能应该不区分大小写，输入大写字母也能匹配到对应的选项。如果过滤只返回小写匹配结果（忽略了大写选项），则说明存在 bug。",
-  "ground_truth": {
-    "bug_type": "过滤逻辑缺陷",
-    "expected_behavior": "大小写不敏感过滤",
-    "actual_behavior": "onFilter 事件只返回小写格式"
-  },
+  "issue_number": 607,
+  "pr_number": 609,
   "buggy_commit": "c4178301c4",
   "fix_commit": "72862a5354",
+  "framework": "vue",
   "deploy_commands": [
-    "git clone https://github.com/wenzhixin/multiple-select.git multiple-select-607",
-    "cd multiple-select-607",
+    "git clone https://github.com/wenzhixin/multiple-select.git",
+    "cd multiple-select",
     "git checkout c4178301c4",
     "npm install",
     "npm run dev"
   ],
-  "deploy_verify": "浏览器打开 http://localhost:5173，应显示 Multiple Select 演示页面",
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
   "dev_url": "http://localhost:5173",
-  "test_page": "/examples/",
-  "timeout": 600,
-  "node_version": "any"
+  "test_page": "/",
+  "app_name": "multiple-select",
+  "test_description_zh": "测试 multiple-select 组件的 onFilter 事件回调参数是否正确保留用户输入的原始大小写格式。操作步骤：1. 在浏览器中打开页面，找到一个带有筛选功能（filter）的多选下拉框示例。2. 点击该多选下拉框使其展开，找到顶部的搜索/筛选输入框。3. 在筛选输入框中输入包含大小写混合的文本，例如 'Hello World' 或 'Hello WORLD'。4. 观察页面上是否有任何方式展示 onFilter 事件回调收到的文本值（如控制台输出或页面显示），验证 onFilter 回调接收到的文本是否与用户实际输入的文本大小写完全一致。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "onFilter 事件回调接收到的文本参数应与用户在筛选框中输入的原始文本完全一致，保留原始的大小写格式，例如输入 'Hello World' 回调应收到 'Hello World' 而非全小写形式。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "onFilter event retrieves text only lowercase format",
+    "summary": "Updated onFilter event parameter to original search",
+    "changed_files": 2,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
 }

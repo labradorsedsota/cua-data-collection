@@ -1,0 +1,34 @@
+{
+  "task_id": "storefront-635",
+  "repo": "saleor/storefront",
+  "issue_number": 635,
+  "pr_number": 639,
+  "buggy_commit": "c8f6e7faf5",
+  "fix_commit": "879be042dc",
+  "framework": "nextjs",
+  "deploy_commands": [
+    "git clone https://github.com/saleor/storefront.git",
+    "cd storefront",
+    "git checkout c8f6e7faf5",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "saleor-storefront",
+  "test_description_zh": "测试结账页面在不同 locale 参数下的渲染情况。具体步骤：1. 打开结账页面（storefront 首页或 checkout 页面）；2. 在 URL 中尝试不同的 locale 查询参数组合，包括：不带 locale 参数访问页面、带正常 locale 参数（如 ?locale=en-US）访问页面、带空字符串 locale 参数（?locale=）访问页面、带非标准格式的 locale 参数访问页面；3. 观察每种情况下页面是否能正常渲染，不出现白屏或错误提示；4. 确认在缺少或异常的 locale 参数下，页面能正确回退到默认语言环境并正常显示内容。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在所有 locale 参数组合（缺失、空字符串、非标准格式等）下，页面都能正常渲染，不出现白屏、JavaScript 错误或崩溃，能正确回退到默认语言环境。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "TypeError: (intermediate value)(intermediate value)(intermediate value) is not iterable",
+    "summary": "#635 Fix two minor bugs",
+    "changed_files": 2,
+    "ui_score": 3,
+    "has_screenshot": false
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

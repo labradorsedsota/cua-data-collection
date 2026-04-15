@@ -1,0 +1,34 @@
+{
+  "task_id": "core-240",
+  "repo": "RedPlanetHQ/core",
+  "issue_number": 240,
+  "pr_number": 241,
+  "buggy_commit": "2d4b28d1d8",
+  "fix_commit": "16410dc918",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/RedPlanetHQ/core.git",
+    "cd core",
+    "git checkout 2d4b28d1d8",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "core",
+  "test_description_zh": "测试标签(Label)页面的基本导航功能。步骤：1. 打开应用首页，等待页面加载完成。2. 在侧边栏中查找标签(Label)相关的导航项。3. 点击侧边栏中的任意一个标签(Label)。4. 观察页面是否正常跳转到对应的标签详情页面，页面内容是否正常渲染，浏览器控制台是否无 JavaScript 错误。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "点击侧边栏中的标签后，页面应正常导航到标签详情页面，页面内容正常加载和渲染，浏览器控制台无 TypeError 或其他 JavaScript 错误。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "TypeError: Cannot read properties of undefined (reading 'length') on label click",
+    "summary": "fix: prevent TypeError when documents is undefined in label page",
+    "changed_files": 1,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}
