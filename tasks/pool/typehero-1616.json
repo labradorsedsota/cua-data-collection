@@ -1,0 +1,34 @@
+{
+  "task_id": "typehero-1616",
+  "repo": "typehero/typehero",
+  "issue_number": 1616,
+  "pr_number": 1623,
+  "buggy_commit": "31ab6e85d3",
+  "fix_commit": "11fcc54f9c",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/typehero/typehero.git",
+    "cd typehero",
+    "git checkout 31ab6e85d3",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "typehero",
+  "test_description_zh": "测试导航栏中用户设置链接的跳转目标是否正确。具体步骤：1. 打开首页，查看页面右上角或导航栏区域是否有用户头像或登录按钮。2. 如果需要登录，尝试登录（如果有登录入口的话）。3. 登录后，点击导航栏右上角的用户头像或用户菜单，展开下拉菜单。4. 在下拉菜单中找到 'Settings'（设置）选项。5. 检查该 Settings 链接的 href 属性，确认其指向的 URL 是否包含当前用户名，格式应为 /@用户名/settings。6. 点击 Settings 链接，确认页面跳转到的 URL 路径是否为 /@用户名/settings 格式。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "导航栏下拉菜单中的 Settings 链接应指向 /@用户名/settings 路径，点击后页面 URL 也应为该格式",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Bug]: Settings URL is wrong on navigation",
+    "summary": "fix:  settings url now links to /@username/settings",
+    "changed_files": 1,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

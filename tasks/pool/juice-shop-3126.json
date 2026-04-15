@@ -1,0 +1,33 @@
+{
+  "task_id": "juice-shop-3126",
+  "repo": "juice-shop/juice-shop",
+  "issue_number": 3126,
+  "pr_number": 3127,
+  "buggy_commit": "dcb1787dd3",
+  "fix_commit": "50630aaabd",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/juice-shop/juice-shop.git",
+    "cd juice-shop",
+    "git checkout dcb1787dd3",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/#/basket",
+  "app_name": "juice-shop",
+  "test_description_zh": "测试 Juice Shop 的钱包支付下单流程。具体步骤：1. 在浏览器中打开应用，注册或登录一个用户账号。2. 进入用户钱包页面，确认钱包余额情况。3. 浏览商品列表，将一件商品添加到购物篮中。4. 进入购物篮页面，确认商品已添加。5. 进入结账流程，选择收货地址（如果需要先添加地址则添加一个）。6. 在支付方式中选择使用钱包（Wallet）支付。7. 完成下单操作，观察订单确认页面是否正常显示，订单状态是否正确。8. 检查钱包余额是否被正确扣减。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "使用钱包支付下单后，订单应正确生成，钱包余额应被准确扣减。如果钱包余额不足，应提示余额不足且不应生成订单。整个结账流程应正常完成，页面无报错。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[🐛] placeOrder(): Non-atomic wallet handling allows order placement after failed payment",
+    "summary": "fix(checkout): prevent invalid orders and race conditions in placeOrd…",
+    "changed_files": 1,
+    "ui_score": 2,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

@@ -1,0 +1,33 @@
+{
+  "task_id": "forms-3175",
+  "repo": "nextcloud/forms",
+  "issue_number": 3175,
+  "pr_number": 3214,
+  "buggy_commit": "dc294b48cc",
+  "fix_commit": "dfd51784a3",
+  "framework": "vue",
+  "deploy_commands": [
+    "git clone https://github.com/nextcloud/forms.git",
+    "cd forms",
+    "git checkout dc294b48cc",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "forms",
+  "test_description_zh": "测试 Nextcloud Forms 应用中将表单结果导出为电子表格并链接到文件的功能。具体步骤：1. 打开 Nextcloud Forms 应用界面；2. 找到一个已有提交数据的表单（如果没有，先创建一个表单并提交至少一条数据）；3. 进入该表单的「结果」(Results) 页面；4. 点击导出菜单，选择「创建电子表格」(Create spreadsheet) 选项；5. 在弹出的文件选择器中选择一个目录，然后点击「Create XLSX」或其他格式按钮；6. 观察是否成功创建电子表格文件并成功链接到该表单，页面应显示链接成功而非报错。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "点击「创建电子表格」后，系统应在所选目录中成功创建包含表单提交数据的电子表格文件，并将该文件成功链接到表单，页面不应出现「There was an error while linking the file」等错误提示。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Unable to link results to sheets",
+    "summary": "fix(export): Handle exceptions when reading file content and ignore whitespace-only files",
+    "changed_files": 1,
+    "ui_score": 9,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

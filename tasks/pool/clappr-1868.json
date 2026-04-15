@@ -1,0 +1,33 @@
+{
+  "task_id": "clappr-1868",
+  "repo": "clappr/clappr",
+  "issue_number": 1868,
+  "pr_number": 1869,
+  "buggy_commit": "46974e00d0",
+  "fix_commit": "acb7108de8",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/clappr/clappr.git",
+    "cd clappr",
+    "git checkout 46974e00d0",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/demo/",
+  "app_name": "clappr-project",
+  "test_description_zh": "测试 Clappr 播放器在使用 configure() 方法重新加载视频源后，媒体控制栏的显示行为。操作步骤：1. 打开 /demo/ 页面，等待播放器加载完成。2. 点击播放器的播放按钮开始播放视频。3. 在播放过程中，打开浏览器的 JavaScript 控制台，输入 player.configure({source:'http://clappr.io/highline.mp4'}) 并回车执行，使播放器重新加载视频源。4. 执行后观察播放器状态：此时视频尚未开始播放，将鼠标移到播放器区域上方悬停，观察媒体控制栏（进度条、播放按钮等控件）是否正确隐藏。在视频未开始播放前，媒体控制栏不应该自动显示出来，也不应该在鼠标悬停时显示。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "使用 configure() 方法重新加载视频源后，在视频尚未开始播放的状态下，媒体控制栏应保持隐藏状态，鼠标悬停在播放器上时也不应出现媒体控制栏，行为应与使用 player.load() 方法一致。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "bug: mediacontrols show up loading source using configure()",
+    "summary": "fix(media_control): prevent mediacontrol to show calling configure with source",
+    "changed_files": 3,
+    "ui_score": 5,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

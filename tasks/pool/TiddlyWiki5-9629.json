@@ -1,0 +1,33 @@
+{
+  "task_id": "TiddlyWiki5-9629",
+  "repo": "TiddlyWiki/TiddlyWiki5",
+  "issue_number": 9629,
+  "pr_number": 9639,
+  "buggy_commit": "0673426f5a",
+  "fix_commit": "821dcaf002",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/TiddlyWiki/TiddlyWiki5.git",
+    "cd TiddlyWiki5",
+    "git checkout 0673426f5a",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "tiddlywiki",
+  "test_description_zh": "测试在TiddlyWiki中使用:map过滤器运行时，函数参数变量名为\"element\"的情况下功能是否正常工作。具体步骤：1. 打开TiddlyWiki页面；2. 点击创建新Tiddler的按钮（通常是加号按钮）；3. 在新Tiddler的内容编辑区域中输入以下代码：\\function visible:node(element) [<element>match[abc]then[yes]else[no]]（换行）\\function call(element, element-type) [[visible:]addsuffix<element-type>is[variable]]:map[function<currentTiddler>,<element>]~[[missed]]（换行）<<call abc node>>；4. 保存或预览该Tiddler，查看渲染结果是否显示为\"yes\"。这里测试的是:map过滤器运行中通过function[]动态调用函数时，参数名为\"element\"的变量能否正确传递到被调用的函数内部。预期结果应为\"yes\"，因为传入的element值为abc，与match[abc]匹配。始终在浏览器内操作，禁止打开Terminal或其他应用程序。如果在浏览器中找不到目标功能，直接报告unclear。",
+  "expected_result_zh": "新创建的Tiddler渲染后应显示\"yes\"，表明参数名为\"element\"的变量在:map过滤器运行中通过function[]调用时能正确传递其值（abc）到目标函数visible:node中。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Report] Weird behavior inside :map filterrun with variable named \"element\"",
+    "summary": "Ensures that getting variable info for a function doesnt pollute parent widget",
+    "changed_files": 1,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

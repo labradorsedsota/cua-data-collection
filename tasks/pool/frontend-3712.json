@@ -1,0 +1,33 @@
+{
+  "task_id": "frontend-3712",
+  "repo": "source-academy/frontend",
+  "issue_number": 3712,
+  "pr_number": 3714,
+  "buggy_commit": "d5f147bae3",
+  "fix_commit": "093671e7e8",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/source-academy/frontend.git",
+    "cd frontend",
+    "git checkout d5f147bae3",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/playground",
+  "app_name": "frontend",
+  "test_description_zh": "测试 CSE Machine 可视化工具中 Clear Dead Frames 模式下全局帧函数对象的显示情况。操作步骤：1. 打开应用页面，在代码编辑器中输入一段包含多个全局函数定义的 Source 代码（例如定义几个简单函数如 function f(x) { return x; } function g(x) { return x + 1; }）。2. 运行代码，打开右侧的 CSE Machine 可视化面板。3. 观察全局帧（Global frame）中预计算的函数对象列表是否正常显示。4. 点击 Clear Dead Frames 按钮（清除死帧模式）。5. 再次观察全局帧中的函数对象列表，确认全局帧及其包含的所有函数对象在 Clear Dead Frames 模式下仍然完整显示，与非 Clear 模式下的显示内容一致。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在 Clear Dead Frames 模式开启后，全局帧中预计算的函数对象列表应与未开启 Clear 模式时完全一致，所有全局函数对象均正常显示在全局帧中。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "CSE Machine : Global functions throughout execution but not in Clear Mode",
+    "summary": "Introducing temporary layout tables when clearDeadFrame is toggled",
+    "changed_files": 6,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

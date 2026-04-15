@@ -1,0 +1,34 @@
+{
+  "task_id": "frontend-3715",
+  "repo": "source-academy/frontend",
+  "issue_number": 3715,
+  "pr_number": 3714,
+  "buggy_commit": "d5f147bae3",
+  "fix_commit": "093671e7e8",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/source-academy/frontend.git",
+    "cd frontend",
+    "git checkout d5f147bae3",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/playground",
+  "app_name": "frontend",
+  "test_description_zh": "测试 CSE Machine 在居中对齐视图下使用 Shift+Enter 重新运行程序时的布局表现。具体步骤：1. 打开浏览器访问应用首页，进入 Source Academy 的代码编辑器（Playground）页面；2. 在编辑器中输入一段会产生多个环境帧（frame）的程序，例如包含函数定义和调用的代码；3. 运行程序，打开右侧的 CSE Machine 可视化面板；4. 在 CSE Machine 面板中开启居中对齐（centre-aligned）视图模式；5. 使用步进功能进入程序的中间执行步骤；6. 在中间步骤时按下 Shift+Enter 重新运行程序；7. 观察 CSE Machine 中各个环境帧的布局是否正确显示，帧之间是否正常排列、没有重叠；8. 尝试切换关闭再开启居中对齐模式，观察布局是否始终保持正确。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在居中对齐视图下，使用 Shift+Enter 重新运行程序后，CSE Machine 中的各个环境帧应正确排列，不出现重叠现象，布局坐标计算正确，切换居中对齐模式前后布局均保持一致且正常。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "CSE Machine: Shift+Enter during intermediate steps of a program in centre-aligned view corrupts stored layout coordinates",
+    "summary": "Introducing temporary layout tables when clearDeadFrame is toggled",
+    "changed_files": 6,
+    "ui_score": 6,
+    "has_screenshot": false
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

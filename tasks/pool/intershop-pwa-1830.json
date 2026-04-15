@@ -1,0 +1,34 @@
+{
+  "task_id": "intershop-pwa-1830",
+  "repo": "intershop/intershop-pwa",
+  "issue_number": 1830,
+  "pr_number": 1840,
+  "buggy_commit": "d4d53ae4ed",
+  "fix_commit": "ef2270a2ba",
+  "framework": "angular",
+  "deploy_commands": [
+    "git clone https://github.com/intershop/intershop-pwa.git",
+    "cd intershop-pwa",
+    "git checkout d4d53ae4ed",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:4200 | grep -q '<'",
+  "dev_url": "http://localhost:4200",
+  "test_page": "/checkout/payment",
+  "app_name": "intershop-pwa",
+  "test_description_zh": "测试结账支付页面中切换支付方式时的键盘焦点保持功能。操作步骤：1. 在浏览器中访问应用首页，添加商品到购物车并进入结账流程，导航到结账支付页面（checkout payment page）。2. 使用 Tab 键导航到支付方式选择区域。3. 选择一种支付方式。4. 继续使用 Tab 键导航到另一种支付方式并选择它。5. 观察切换支付方式后，键盘焦点是否仍然保持在支付方式选择区域附近，而非跳转到页面顶部。6. 检查页面中是否存在 aria-live 区域用于通知支付方式更新状态。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "切换支付方式后，键盘焦点应保持在支付方式选择区域，不会丢失或跳回页面顶部。页面应通过 aria-live polite 区域向屏幕阅读器用户通知支付方式更新成功的状态信息。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Accessibility: focus is lost when selecting payment methods",
+    "summary": "fix(accessibility): keep the focus after changing a payment method",
+    "changed_files": 1,
+    "ui_score": 15,
+    "has_screenshot": false
+  },
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

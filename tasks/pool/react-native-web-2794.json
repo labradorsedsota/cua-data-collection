@@ -1,0 +1,33 @@
+{
+  "task_id": "react-native-web-2794",
+  "repo": "necolas/react-native-web",
+  "issue_number": 2794,
+  "pr_number": 2797,
+  "buggy_commit": "3c27decd16",
+  "fix_commit": "f58fd3937c",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/necolas/react-native-web.git",
+    "cd react-native-web",
+    "git checkout 3c27decd16",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "react-ui-monorepo",
+  "test_description_zh": "测试 react-native-web 中 View 组件的 pointer-events 属性传播行为。具体步骤：1. 在浏览器中打开应用页面；2. 查找或构建一个场景：外层 View 设置了 pointer-events 为 none，内部包含一个可点击的子组件（如带有 onPress 事件的按钮或 Pressable）；3. 尝试点击该子组件，验证 pointer-events none 是否正确地阻止了所有子组件和孙组件的指针事件响应；4. 确认当父级 View 的 pointer-events 设置为 none 时，其内部所有层级的子组件都不应响应点击操作。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当父级 View 的 pointer-events 设置为 none 时，其所有子组件和孙组件的点击事件（如 onPress）都不应被触发，指针事件应被完全阻止。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Regression: pointer-events:\"none\" is no longer respected by child components in version 0.21.0",
+    "summary": "[fix] Correctly propagate `pointer-events` to children",
+    "changed_files": 4,
+    "ui_score": 2,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

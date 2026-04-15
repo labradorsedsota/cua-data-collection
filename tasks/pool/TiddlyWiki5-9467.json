@@ -1,0 +1,33 @@
+{
+  "task_id": "TiddlyWiki5-9467",
+  "repo": "TiddlyWiki/TiddlyWiki5",
+  "issue_number": 9467,
+  "pr_number": 9494,
+  "buggy_commit": "da41a55f29",
+  "fix_commit": "844564180f",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/TiddlyWiki/TiddlyWiki5.git",
+    "cd TiddlyWiki5",
+    "git checkout da41a55f29",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/prerelease/",
+  "app_name": "tiddlywiki",
+  "test_description_zh": "测试 TiddlyWiki 中 $let 组件的变量作用域功能，特别是当内层 $let 使用筛选器表达式且筛选器返回空结果时的变量赋值行为。操作步骤：1. 打开 TiddlyWiki 预发布版页面；2. 点击创建新 tiddler 的按钮（通常是加号按钮）；3. 在 tiddler 内容区域输入以下 wikitext 内容：<$let variable=\"1\"><$let variable={{{ [tag[nonExistentTag]] }}}> <<variable>> </$let></$let>；4. 关闭编辑模式或预览该 tiddler 的渲染结果；5. 观察渲染输出中 <<variable>> 的值，确认当内层 $let 的筛选器表达式返回空结果时，变量是否被正确覆盖为空值（即不应显示外层的值 \"1\"，而应显示空字符串或无内容）。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "渲染结果中 <<variable>> 应显示为空字符串或无内容，不应显示外层 $let 定义的值 \"1\"，因为内层 $let 使用的筛选器返回空结果时应将变量覆盖为空值。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[BUG] `$let` scoping problem with empty filter results [5.4.0-prerelease]",
+    "summary": " Fix LetWidget to always set all staged variables on first render",
+    "changed_files": 2,
+    "ui_score": 9,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

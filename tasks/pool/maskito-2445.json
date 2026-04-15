@@ -1,0 +1,33 @@
+{
+  "task_id": "maskito-2445",
+  "repo": "taiga-family/maskito",
+  "issue_number": 2445,
+  "pr_number": 2481,
+  "buggy_commit": "c1033e016a",
+  "fix_commit": "f836f4f5ec",
+  "framework": "angular",
+  "deploy_commands": [
+    "git clone https://github.com/taiga-family/maskito.git",
+    "cd maskito",
+    "git checkout c1033e016a",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:4200 | grep -q '<'",
+  "dev_url": "http://localhost:4200",
+  "test_page": "/addons/phone/#non-strict",
+  "app_name": "maskito",
+  "test_description_zh": "测试 Phone 组件非严格模式下，先手动输入国家代码再粘贴剩余号码时的正确性。操作步骤：1. 打开 /addons/phone 页面，找到非严格模式（non-strict）的电话号码输入框示例区域；2. 点击输入框，手动输入 +7；3. 确认输入框中显示 +7；4. 然后在光标位于 +7 之后的位置，粘贴文本 9773630125；5. 检查输入框中的结果，+7 应该被保留作为国家代码前缀，粘贴的数字应追加在 +7 之后并正确格式化，最终显示类似 +7 (977) 363-01-25 的格式，而不是 +7 被覆盖替换为其他国家代码。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在非严格模式电话输入框中先输入 +7 再粘贴 9773630125 后，+7 国家代码应被保留，最终显示格式化后的号码如 +7 (977) 363-01-25，而非被替换为 +977 36 30125",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "🐞 - `Phone` erases previously entered digits on new digits paste",
+    "summary": "fix(phone): `Phone` preserves previously entered digits on new digits paste",
+    "changed_files": 10,
+    "ui_score": 6,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}
