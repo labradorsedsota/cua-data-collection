@@ -88,14 +88,28 @@ unassigned → assigned（Pichai 选卡）→ in_progress（Worker ACK）→ com
 
 1. `git pull` 最新 dispatch-log.json
 2. 从 `status: unassigned` 的卡中选卡（规则：纯净优先、同项目同 Worker、每批 5 张）
-3. **前置筛选（必须）**：检查每张卡的项目类型和 `test_page`，跳过以下情况：
+3. **前置筛选（必须，按优先级依次检查）**：
+   
+   **硬性排除（直接跳过，标 failed + deploy_failed）：**
+   - `backend_risk: true` 的卡
+   - `repo_size_kb > 500000`（>500MB）的卡（交叉查 `tasks/pool/` 中对应卡的 `repo_size_kb` 字段）
    - `test_page` 是 `/login`、`/auth`、`/signin`、`/dashboard` 等需要认证的页面
    - 项目明显需要数据库（如看板工具、CRM、项目管理类应用）
    - 项目需要 OAuth/第三方认证（Google、GitHub 登录等）
-   - 跳过的卡标 `status: "failed"`，`result: "deploy_failed"`，`note: "需要数据库/认证，前置筛选跳过"`
+   - `deploy_commands` 含 docker、database、prisma 关键词
+   - 跳过的卡标 `status: "failed"`，`result: "deploy_failed"`，`note: "前置筛选跳过：[具体原因]"`
+   
+   **排产优先级（从高到低）：**
+   - 优先选 `deploy_commands` 步骤 ≤3 的简单项目
+   - 优先选 `repo_size_kb` 小的项目（<100MB 优先）
+   - 同项目打包，每批 5 张，复用 clone + install
+   - 100-200MB 的项目降优先级但不排除，视 Worker 能力分配
+   
 4. 更新选中卡的状态为 `assigned`，填入 `worker`、`batch`、`assigned_at`
 5. 更新 `summary` 统计
 6. `git push`
+
+> **注意：** `repo_size_kb` 字段目前只在 `tasks/pool/` 的完整卡中有，`tasks/pool-clean/` 暂未同步。选卡时交叉查 pool 中对应卡获取该字段。
 
 ### 5.2 状态同步（收到林菡通知时）
 
