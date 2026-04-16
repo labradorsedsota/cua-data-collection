@@ -76,6 +76,12 @@ payload **必须** 带 mention 字段：
 5. ⚠️ 每个 case 完成 mano-cua 后，先发状态信号再开始下一个 case
 6. 所有汇报消息必须 @Pichai（带 mention 字段），否则 PM 收不到
 
+⚠️ 执行节奏要求（必须遵守）：
+- 每个 case 必须在独立的 turn 中完成
+- 正确节奏：部署 case 1 → mano-cua → 写结果 → @Pichai 发状态信号 → 结束当前 turn → 下一个 turn 开始 case 2
+- 禁止在一个 turn 里连续执行多个 case
+- 这是为了确保每个 case 之间都有消息发送的"呼吸点"，避免长时间无汇报
+
 现在请先 @Pichai 回复 ACK。
 ```
 
