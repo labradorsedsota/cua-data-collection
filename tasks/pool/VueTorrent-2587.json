@@ -1,0 +1,36 @@
+{
+  "task_id": "VueTorrent-2587",
+  "repo": "VueTorrent/VueTorrent",
+  "issue_number": 2587,
+  "pr_number": 2588,
+  "buggy_commit": "b809dd1f80",
+  "fix_commit": "c101bdc6dd",
+  "framework": "vue",
+  "deploy_commands": [
+    "git clone https://github.com/VueTorrent/VueTorrent.git",
+    "cd VueTorrent",
+    "git checkout b809dd1f80",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "vuetorrent",
+  "test_description_zh": "测试通过 VueTorrent Web UI 删除包含特殊字符（如管道符 |、问号 ? 等）的 tracker 的功能。步骤：1. 打开 VueTorrent Web UI；2. 选择一个已有的 torrent（如果没有，则先添加一个）；3. 进入该 torrent 的详情页面，找到 Trackers（追踪器）相关的标签页或面板；4. 查看 tracker 列表，确认是否存在包含特殊字符的 tracker URL；5. 尝试选中一个 tracker 并执行删除操作；6. 观察删除操作后 tracker 是否确实从列表中移除。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "选中 tracker 并执行删除操作后，该 tracker 应从列表中成功移除，不应出现删除操作看似成功但 tracker 仍然存在的情况。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Bug]: Cannot remove certain trackers via VueTorrent Web UI",
+    "summary": "fix: Properly handle special characters when removing trackers",
+    "changed_files": 1,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_backend_risk": true,
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm",
+  "repo_size_kb": 269896
+}

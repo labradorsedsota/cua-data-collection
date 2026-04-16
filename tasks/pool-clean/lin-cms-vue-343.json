@@ -1,0 +1,25 @@
+{
+  "task_id": "lin-cms-vue-343",
+  "repo": "TaleLin/lin-cms-vue",
+  "issue_number": 343,
+  "pr_number": 344,
+  "buggy_commit": "d319cf137b",
+  "fix_commit": "ae967373d0",
+  "framework": "vue",
+  "deploy_commands": [
+    "git clone https://github.com/TaleLin/lin-cms-vue.git",
+    "cd lin-cms-vue",
+    "git checkout d319cf137b",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:8080 | grep -q '<'",
+  "dev_url": "http://localhost:8080",
+  "test_page": "/",
+  "app_name": "lin-cms-vue",
+  "test_description_zh": "测试管理后台中编辑权限分组功能的多次连续修改操作。步骤：1. 登录管理后台（默认账号如 root/123456 或 admin/123456）。2. 进入管理员页面，找到权限分组管理相关入口。3. 选择一个已有的权限分组，点击编辑进入编辑权限分组页面。4. 在权限列表中，勾选某个权限（如查询图书），同时取消勾选另一个权限（如搜索日志），然后点击确认保存。5. 保存成功后，再次进入同一分组的编辑页面，这次反过来操作：勾选之前取消的权限（搜索日志），取消之前勾选的权限（查询图书），再次点击确认保存。6. 验证第二次修改是否也能正常保存成功，页面是否给出成功提示，权限变更是否生效。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "每次修改权限分组后点击确认，系统都应正常发送网络请求保存变更，并给出成功提示。连续多次修改权限（先增后删、再删后增）都应能正常生效，不会出现操作无响应或权限未更新的情况。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 10428
+}

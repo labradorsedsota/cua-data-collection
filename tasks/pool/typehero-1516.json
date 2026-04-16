@@ -1,0 +1,36 @@
+{
+  "task_id": "typehero-1516",
+  "repo": "typehero/typehero",
+  "issue_number": 1516,
+  "pr_number": 1518,
+  "buggy_commit": "f12f0dd5ff",
+  "fix_commit": "f877680ee6",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/typehero/typehero.git",
+    "cd typehero",
+    "git checkout f12f0dd5ff",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/challenge/generic-function-arguments/solutions",
+  "app_name": "typehero",
+  "test_description_zh": "测试解决方案（solution）页面的评论深度链接功能。操作步骤：1. 访问一个挑战的解决方案评论深度链接页面，例如导航到 /challenge/generic-function-arguments/solutions 页面，找到一个解决方案并进入其评论区；2. 如果评论有多页，尝试通过直接在地址栏输入包含评论ID的链接（如 /challenge/generic-function-arguments/solutions/89/comments/68）来访问特定评论；3. 验证页面加载后，目标评论能够正确显示并被高亮，无需手动翻页即可看到被链接的评论。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "通过深度链接直接访问解决方案的特定评论时，页面应自动加载到包含该评论的位置，目标评论被高亮显示，用户无需手动翻页查找。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Bug]: Linking to comments when there are multiple pages is broken on a solution",
+    "summary": "Fixes 1516 - Deep linking to solution comments",
+    "changed_files": 1,
+    "ui_score": 3,
+    "has_screenshot": false
+  },
+  "_backend_risk": true,
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm",
+  "repo_size_kb": 104447
+}

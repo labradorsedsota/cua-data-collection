@@ -1,0 +1,34 @@
+{
+  "task_id": "typehero-1504",
+  "repo": "typehero/typehero",
+  "issue_number": 1504,
+  "pr_number": 1506,
+  "buggy_commit": "78516716a2",
+  "fix_commit": "79673ac367",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/typehero/typehero.git",
+    "cd typehero",
+    "git checkout 78516716a2",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/challenge/hello-world/solutions",
+  "app_name": "typehero",
+  "test_description_zh": "测试解决方案（solution）评论的删除功能及删除后的分页加载行为。具体步骤：1. 打开浏览器访问应用首页，找到并进入一个挑战（challenge）页面，例如 'hello-world' 挑战。2. 进入该挑战的解决方案（solutions）区域，找到一个包含评论的解决方案。3. 如果该解决方案只剩下最后一条评论，尝试删除这条评论。4. 观察删除操作完成后，页面是否正常刷新评论列表，评论区域是否正确显示为空状态（无评论），而不是出现错误或加载失败的情况。5. 验证删除最后一条评论后，页面没有报错提示，评论区域能正常展示。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "删除解决方案的最后一条评论后，评论列表应正常刷新并显示空状态（无评论），页面不应出现任何错误提示或加载失败的情况。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Bug]: Deletion of Last Comment Results in Prisma Error During Paginated Comments Fetch",
+    "summary": "fix: Prevent '0' being passed as the page param to paginated solution comments api",
+    "changed_files": 3,
+    "ui_score": 3,
+    "has_screenshot": false
+  },
+  "_description_source": "llm",
+  "repo_size_kb": 104447
+}

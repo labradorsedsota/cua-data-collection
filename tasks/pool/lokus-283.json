@@ -1,0 +1,34 @@
+{
+  "task_id": "lokus-283",
+  "repo": "lokus-ai/lokus",
+  "issue_number": 283,
+  "pr_number": 350,
+  "buggy_commit": "5d26f1de9a",
+  "fix_commit": "81c3118fe5",
+  "framework": "react",
+  "deploy_commands": [
+    "git clone https://github.com/lokus-ai/lokus.git",
+    "cd lokus",
+    "git checkout 5d26f1de9a",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "lokus",
+  "test_description_zh": "测试笔记编辑器中代码块的缩进保留功能。操作步骤：1. 打开应用后，创建一个新的笔记（如果需要点击新建按钮或类似操作）；2. 在编辑器中输入三个反引号（```）来创建一个代码块；3. 在代码块中输入带有缩进的代码内容，例如输入一个包含嵌套结构的函数：先输入 'function example() {' 然后换行，输入四个空格加 'if (condition) {' 再换行，输入八个空格加 'doSomething();' 再换行，输入四个空格加 '}' 再换行，输入 '}'；4. 检查代码块中显示的内容是否正确保留了所有层级的缩进结构，每一行的前导空格/制表符应当与输入时完全一致；5. 也可以尝试从外部复制一段带缩进的代码粘贴到代码块中，验证粘贴后缩进是否正确保留。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "代码块中的缩进应当被正确保留和渲染，嵌套层级的空格或制表符结构应与用户输入时完全一致，代码显示应具有清晰的层次结构，类似于代码编辑器中的效果。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Bug]: Code block indentation not preserved correctly",
+    "summary": "Fix: Code block indentation not preserved correctly (#283)",
+    "changed_files": 4,
+    "ui_score": 5,
+    "has_screenshot": false
+  },
+  "_description_source": "llm",
+  "repo_size_kb": 75463
+}

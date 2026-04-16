@@ -1,0 +1,34 @@
+{
+  "task_id": "static-cms-790",
+  "repo": "StaticJsCMS/static-cms",
+  "issue_number": 790,
+  "pr_number": 800,
+  "buggy_commit": "d6a44bede0",
+  "fix_commit": "e633c75bbc",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/StaticJsCMS/static-cms.git",
+    "cd static-cms",
+    "git checkout d6a44bede0",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "static-cms",
+  "test_description_zh": "测试 Markdown 编辑器中添加 mailto 邮件链接的功能。具体步骤：1. 打开应用首页，找到并进入一个包含 Markdown 编辑器的内容条目（例如 demo 中的某篇文章或页面）。2. 在 Markdown 编辑器中，手动输入一个邮件链接格式的 Markdown 文本，例如 [contact@email.com](mailto:contact@email.com)。3. 观察编辑器的预览区域，确认邮件链接在预览中正确渲染为一个单层的可点击链接，而不是出现嵌套链接或其他异常渲染。4. 同时测试使用编辑器工具栏的链接按钮功能，在 URL 字段中输入 mailto:contact@email.com，确认生成的链接地址就是 mailto:contact@email.com，而非被拼接了其他前缀路径。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在 Markdown 编辑器中输入 mailto 链接后，预览区域应正确显示为单层邮件链接，不会出现链接嵌套或重复渲染的情况；通过链接按钮添加 mailto: 开头的 URL 时，生成的链接地址应保持为 mailto:contact@email.com，不会被错误地拼接站点路径前缀。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Markdown email link",
+    "summary": "fix: markdown links",
+    "changed_files": 7,
+    "ui_score": 12,
+    "has_screenshot": false
+  },
+  "_description_source": "llm",
+  "repo_size_kb": 88657
+}
