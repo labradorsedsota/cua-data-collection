@@ -32,6 +32,22 @@
 
 ## 二、执行流程（逐步操作）
 
+### ⚠️ 执行节奏：每个 case 一个 turn
+
+**每完成一个 case 的 mano-cua 后，必须先 @Pichai 发状态信号，再开始下一个 case。**
+
+不要在一个 turn 里连续执行多个 case。正确节奏：
+
+```
+Turn 1: 部署 case 1 → mano-cua → 写结果 JSON → @Pichai 发状态信号
+Turn 2: 部署 case 2 → mano-cua → 写结果 JSON → @Pichai 发状态信号
+...
+```
+
+错误做法：一口气跑完所有 case 最后才汇报。这会导致 PM 长时间收不到进度，触发巡检告警。
+
+---
+
 ### 第 1 步：清理端口 + Clone 并部署
 
 **启动新项目前，必须先清理目标端口上的残留进程。** 93 个项目共用 :3000，41 个项目共用 :5173——不清理会导致新项目启动失败（端口占用）。
@@ -259,6 +275,7 @@ failure.type 取值：`deploy_failed` | `timeout` | `mano_cua_error` | `url_devi
 |------|------|
 | 端口被占用 | `lsof -ti:${PORT} \| xargs kill -9`，确认释放后重新启动 |
 | 部署失败 | 自行排查一次（端口、依赖、版本），仍失败 → 上报 PM |
+| Node 版本不兼容 | 用 nvm 切版本：先查 `package.json` 的 `engines` 字段；没有则根据框架年代判断（老 Angular → Node 14，一般项目 → Node 18/20）。最多试 2 个版本，还不行就标 deploy_failed |
 | 同项目连续 3 个 case 部署失败 | 标 PROJECT_BLOCKED，整批跳过 |
 | mano-cua 软超时（>10min） | 标 WARN，继续等 |
 | mano-cua 硬超时（>15min） | `mano-cua stop`，标 BLOCKED + 诊断 |
@@ -296,7 +313,8 @@ failure.type 取值：`deploy_failed` | `timeout` | `mano_cua_error` | `url_devi
 
 ---
 
-*文档版本：v1.9 | 2026-04-15 | Pichai*
+*文档版本：v2.0 | 2026-04-16 | Pichai*
+*v2.0 变更：新增 turn 拆分规则（每个 case 完成后必须先发状态再继续下一个）+ Node 版本兼容处理规则*
 *v1.9 变更：新增端口清理步骤（第 1 步前置）+ 异常处理表新增端口占用 + Checklist 新增端口检查项*
 *v1.8 变更：新增控制台 JS 类任务卡处理说明（约 5 张，排产末尾，mano-cua 自然兜底）*
 *v1.7 变更：装机章节拆分为独立文件 worker-setup.md，执行手册改为引用*
