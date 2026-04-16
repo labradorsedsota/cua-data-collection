@@ -1,0 +1,14 @@
+{
+  "task_id": "emoji-mart-220",
+  "worker": "worker-03",
+  "timestamp": "2026-04-16T23:25:00+08:00",
+  "session_id": "sess-20260416232546-f735bbb54ae54908bfe2e48159b1b27d",
+  "result": "abnormal",
+  "result_summary": "肤色选择器无障碍访问完全失效：肤色色块为 span 元素无任何 ARIA 属性（无 role、aria-label、aria-checked、tabindex），容器 div.emoji-mart-skin-swatches 无 role=radiogroup，Tab 键导航完全跳过肤色选择器（搜索框→emoji 网格→页面外），Enter/Space 在焦点离开 picker 后无反应，各肤色选项无描述性标签（如 Default Skin Tone 等），组件未以可访问方式呈现（非 select 菜单也无正确 role 的自定义组件）。",
+  "observed_behavior": "HTML 结构：div.emoji-mart-skin-swatches > span.emoji-mart-skin-swatch.selected > span[data-skin='1'].emoji-mart-skin.emoji-mart-skin-tone-1（共6个肤色选项）。outerHTML 确认：1) 容器无 role 属性；2) 各 swatch span 无 role/aria-label/tabindex/aria-checked 属性；3) 仅通过 class='selected' 标记选中状态（纯视觉）；4) Tab 键导航顺序：搜索框→emoji 网格区域（蓝色边框）→焦点离开 picker；5) 肤色色块从未获得键盘焦点；6) 鼠标点击可展开肤色选项并切换选择。DevTools Elements 面板和 Console 查询 outerHTML 均验证了以上发现。",
+  "expected_behavior": "肤色选择器应可通过键盘（Tab、Enter、Space、方向键等）进行导航和操作，各肤色选项应具有描述性的 ARIA 标签（如 Default Skin Tone、Light Skin Tone、Medium-Light Skin Tone 等），整个组件应以可访问的方式呈现（如 select 菜单或带有正确 role 的自定义组件）",
+  "steps_taken": 81,
+  "dev_url": "http://localhost:6006",
+  "log_file": "logs/emoji-mart-220.log",
+  "notes": "复用 emoji-mart-218 的 storybook 环境（port 6006，同一 buggy_commit c2c7092fc4）。mano-cua 在 step 81 被系统 SIGKILL，但已完成全部测试和数据收集。mano-cua 通过右键→检查元素查看 DOM 结构，通过 Console 执行 outerHTML 查询确认无 ARIA 属性，通过 Tab 键导航测试确认肤色选择器不可键盘访问。"
+}

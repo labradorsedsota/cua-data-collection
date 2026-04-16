@@ -1,0 +1,14 @@
+{
+  "task_id": "emoji-mart-762",
+  "worker": "worker-03",
+  "timestamp": "2026-04-17T00:20:00+08:00",
+  "session_id": "sess-20260417001245-ce60d592a28548d3b474c45df33d4100",
+  "result": "abnormal",
+  "result_summary": "预览区域文本容器 DIV.color-c 宽度随 emoji 名称长度动态扩展（93px→211px），没有固定宽度、没有 text-overflow:ellipsis、overflow 为 visible。Picker 整体宽度稳定（336px）但预览文本未做截断处理。",
+  "observed_behavior": "1) Emoji Picker 正常加载于 http://localhost:1234；2) 搜索 'water polo' 显示相关 emoji；3) 悬停不同 emoji 时预览区域正确显示名称和 shortcode；4) DevTools 检查 DIV.color-c（预览文本容器）：overflow=visible，无 text-overflow 属性，无 max-width/固定 width；5) offsetWidth 随内容变化：'Water Polo' + shortcode → 93px，空闲 'Pick an emoji…' → 135px，'Man Playing Water Polo' + shortcode → 187px，'Woman Playing Water Polo' + shortcode → 211px；6) 所有情况下 offsetWidth === scrollWidth，说明容器直接扩展而非裁剪溢出；7) ResizeObserver 监测 Picker 整体宽度始终为 336px，未发生跳动；8) 但内部预览文本区未做任何截断处理（无 ellipsis、无 overflow:hidden）。",
+  "expected_behavior": "悬停不同 emoji 时，Picker 宽度保持固定不变，预览区域中较长的 emoji 名称文本应被正确截断（如显示省略号），不会导致 Picker 整体宽度随文本长度变化而跳动。",
+  "steps_taken": 109,
+  "dev_url": "http://localhost:1234",
+  "log_file": "logs/emoji-mart-762.log",
+  "notes": "mano-cua 在 step 109 被 SIGKILL，但已收集到充分数据。bug 核心：DIV.color-c 缺少 overflow:hidden + text-overflow:ellipsis + 固定宽度约束，文本容器自由扩展。虽然 Picker 整体宽度在 flex 布局中保持 336px 未跳动，但预览文本在视觉上不截断。buggy_commit 465eec076b 使用 yarn workspace + parcel dev server（端口 1234），与此前 storybook 版本不同。"
+}

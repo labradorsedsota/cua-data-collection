@@ -1,0 +1,14 @@
+{
+  "task_id": "emoji-mart-327",
+  "worker": "worker-03",
+  "timestamp": "2026-04-17T00:05:00+08:00",
+  "session_id": "sess-20260416235958-8695f58e52b042e591e10e0d34ac1c6d",
+  "result": "abnormal",
+  "result_summary": "搜索 'fam'/'family' 时显示2个重复的 emoji 条目：Entry1 'Family' (:man-woman-boy: :family:) 和 Entry2 'Man Woman Boy' (:family: :man-woman-boy:)，视觉上完全相同的 👨👩👦 emoji 被列出两次。shortcode 顺序互换但指向同一 emoji。控制台无 duplicate key 警告（React 层面 key 不同），属于数据级搜索索引去重 bug。",
+  "observed_behavior": "1) emoji 选择器正常加载，搜索框可正常输入；2) 输入 'fam' 后搜索结果显示2个 emoji，均为 👨👩👦 家庭 emoji；3) 输入 'family' 后仍为同样2个重复条目——Entry1 名称 'Family' shortcodes ':man-woman-boy: :family:'，Entry2 名称 'Man Woman Boy' shortcodes ':family: :man-woman-boy:'；4) Console 面板（Default levels + Verbose 均开启）在整个搜索过程中完全为空——无 JS 错误、无 duplicate key 警告、无任何 warning。Issues 面板仅有4个浏览器级无障碍/废弃特性建议，与搜索功能无关。",
+  "expected_behavior": "在搜索框输入 'fam' 和 'family' 时，搜索结果中的 emoji 不应出现重复项，浏览器控制台不应出现 duplicate key 等错误或警告信息。",
+  "steps_taken": 55,
+  "dev_url": "http://localhost:6006",
+  "log_file": "logs/emoji-mart-327.log",
+  "notes": "bug 为数据级搜索索引去重问题：同一 emoji 被以不同 primary name 索引两次（Family vs Man Woman Boy），搜索时两条记录均命中 'family' 关键词导致重复展示。React 无 duplicate key 警告说明组件使用了不同 key（可能是内部 ID），但用户可见的搜索结果确实有重复。"
+}

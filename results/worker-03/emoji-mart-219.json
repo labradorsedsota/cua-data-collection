@@ -1,0 +1,14 @@
+{
+  "task_id": "emoji-mart-219",
+  "worker": "worker-03",
+  "timestamp": "2026-04-16T23:03:00+08:00",
+  "session_id": "sess-20260416230953-01c4bbcf80864a1783817e33a77013a8",
+  "result": "abnormal",
+  "result_summary": "分类图标键盘可访问性完全失效：分类图标为 <span> 元素 Role:generic，无 tabindex 属性，Tab 键导航完全跳过分类图标栏（顺序：搜索框→emoji 滚动区→浏览器地址栏）；无 role=button 或 ARIA 属性；无 CSS :focus 样式定义；span 上仅有 click 事件监听器无 keydown/keyup 处理；容器 div.emoji-mart-bar 无 role=navigation 或 nav 元素。鼠标点击可正常切换分类。",
+  "observed_behavior": "Tab 键导航顺序：1) 搜索输入框（有可见焦点指示）→ 2) emoji 滚动列表区（有蓝色边框焦点指示）→ 3) 浏览器地址栏（焦点离开 picker）。分类图标从未获得键盘焦点。分类图标 HTML 结构：span.emoji-mart-anchor title='Frequently Used' data-index='1' — Role:generic, Name:''(空), 无 tabindex, 无 ARIA 属性。Event Listeners 面板确认 span 上仅有 click 事件，无 keydown/keyup。CSS 中 .emoji-mart-anchor 无 :focus 伪类样式。",
+  "expected_behavior": "emoji 选择器顶部的各个分类图标应该可以通过 Tab 键依次聚焦，聚焦时有可见的焦点样式，按 Enter/Space 可切换分类，分类导航区域应有合适的无障碍角色（如 nav）和可访问标题。",
+  "steps_taken": 75,
+  "dev_url": "http://localhost:6006",
+  "log_file": "logs/emoji-mart-219.log",
+  "notes": "使用 emoji-mart-218 已部署的 storybook 环境（port 6006，buggy_commit c2c7092fc4 恰好是 219 的 fix_commit，但 219 的 buggy_commit 8c80e7d4e5 更早，同样存在此 bug）。mano-cua 通过 DevTools Elements/Accessibility/Event Listeners 面板逐一验证了 HTML 结构、ARIA 属性、事件监听器和 CSS 样式，并执行了完整的 Tab 键导航测试。"
+}
