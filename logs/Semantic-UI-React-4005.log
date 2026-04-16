@@ -1,0 +1,499 @@
+Session created: sess-20260417031343-9520829844ee428a8c781ceea8ebbde7
+UI panel initialized successfully
+UI window displayed
+Expected result: 在多选Dropdown中通过键盘选中一个选项后，高亮焦点应停留在被选中项的下一个可用选项上，再次按下箭头键时应从该位置继续向下导航，而不是跳回列表顶部。
+[step 0] Action: Initializing
+[step 0] Reasoning: Initializing session connection
+[step 0] Action: screenshot
+[step 1] Action: scroll down (83, 400) scroll_amount 5
+[step 1] Reasoning: I can see the Semantic UI React documentation site is open. I need to navigate to the Modules > Dropdown section. Let me scroll down in the left sidebar to find the Modules section.
+[step 2] Action: scroll down (83, 400) scroll_amount 5
+[step 2] Reasoning: I can see Elements and Collections sections. I need to scroll more to find the Modules section which should contain Dropdown.
+[step 3] Action: scroll down (83, 400) scroll_amount 5
+[step 3] Reasoning: I can see Collections and Views sections. I need to scroll more to find the Modules section.
+[step 4] Action: left_click (29, 393)
+[step 4] Reasoning: I can see the Modules section with Dropdown listed. Let me click on "Dropdown" in the left navigation.
+[step 5] Action: left_click (1051, 277)
+[step 5] Reasoning: I'm now on the Dropdown component page. I can see in the right-side table of contents there's "Multiple Selection" listed. Let me click on it to navigate directly to that section.
+[step 6] Action: left_click (584, 169)
+[step 6] Reasoning: I can see the "Multiple Selection" section with a "Skills" dropdown. Now I need to click on the "Skills" dropdown to open it and then test keyboard navigation. Let me click on the Skills dropdown.
+[step 7] Action: key: Down
+[step 7] Reasoning: The dropdown is now open showing the list of skills: Angular, CSS, Graphic Design, Ember, HTML, Information Architecture, Javascript, Mechanical Engineering. 
+
+Now I need to use the keyboard down arrow to navigate through the list. Let me press the down arrow key 3-4 times to navigate to a middle item.
+
+**Initial state observation:** The dropdown is open but I notice no item appears highlighted yet (no selectedIndex is active). Let me press the down arrow key.
+[step 8] Action: key: Down
+[step 8] Reasoning: I notice pressing the Down arrow didn't visually highlight any item - no item appears to be highlighted. Let me take a closer look. The dropdown is still open but I don't see any highlighted item. Let me press Down again and take a screenshot to see more clearly.
+[step 9] Action: key: Down
+[step 9] Reasoning: I notice that "Graphic Design" appears to have a slightly different background - it might be highlighted (the 3rd item). Let me zoom in to see more clearly. It seems like the first Down press highlighted "Angular" (index 0), second highlighted "CSS" (index 1), and now "Graphic Design" (index 2) is highlighted. The highlight may be subtle. 
+
+Let me press Down 2 more times to reach a middle item (around index 4 - HTML or Information Architecture).
+[step 10] Action: key: Down
+[step 10] Reasoning: I can see the "Ember" item now appears highlighted (it has a slightly different background). The highlighting is subtle. I've pressed Down 3 times total. Let me press Down one more time to get to "HTML" (index 4).
+[step 11] Action: screenshot
+[step 11] Reasoning: The highlight is very subtle in these screenshots. I can see "HTML" appears to be selected now (it has a slightly different background). I've pressed Down 4 times total. Now I should be at "HTML" (index 4, 0-indexed). Let me press Enter to select the current item (HTML).
+
+Before pressing Enter, let me zoom into the dropdown area to confirm which item is highlighted.
+[step 12] Action: key: Return
+[step 12] Reasoning: The highlight is very subtle. Let me zoom into just the dropdown area by looking more closely. The items are Angular, CSS, Graphic Design, Ember, HTML, Information Architecture, Javascript, Mechanical Engineering. I've pressed Down 4 times, so the current focus should be at index 4 (HTML, since index 0=Angular, 1=CSS, 2=Graphic Design, 3=Ember, 4=HTML).
+
+Let me now press Enter to select "HTML" and observe what happens to the highlight position.
+[step 13] Action: key: Down
+[step 13] Reasoning: Excellent! After pressing Enter, "HTML" was selected (I can see "HTML ×" chip in the input field at the top). The dropdown remains open, and the list now shows the remaining options (HTML is removed from the list): Angular, CSS, Graphic Design, Ember, **Information Architecture**, Javascript, Mechanical Engineering, Meteor.
+
+Now I need to observe: **where is the focus (selectedIndex) after selecting HTML?**
+
+Looking at the list:
+- Before: Angular(0), CSS(1), Graphic Design(2), Ember(3), HTML(4), Information Architecture(5), Javascript(6), Mechanical Engineering(7)
+- After selecting HTML (at index 4): Angular(0), CSS(1), Graphic Design(2), Ember(3), Information Architecture(4), Javascript(5), Mechanical Engineering(6), Meteor(7)
+
+**Expected behavior:** After selecting the item at index 4 (HTML), the focus should stay at index 4 which is now "Information Architecture" (the next available item right after where HTML was).
+
+I cannot see clear highlighting in the screenshot. Let me take a screenshot to check, and then press Down to verify where the focus moves.
+
+**Now I'll press Down to see where the focus moves from the current position:**
+[step 14] Action: Minimize panel
+[step 14] Reasoning: The highlight is still very subtle. I need to better identify which item is currently highlighted. Let me use browser zoom to get a better view of the dropdown items. Actually, let me try a different approach - I'll check the DOM/page source or use browser developer tools. But actually, I should just observe the visual state more carefully.
+
+Let me minimize the panel widget to get a better view and take a careful screenshot of just the dropdown area.
+[step 15] Action: key: Return
+[step 15] Reasoning: Good, the panel is minimized. Now I can see the dropdown more clearly. The dropdown shows:
+- HTML (selected, shown as chip "HTML ×")
+- The list now shows: Angular, CSS, Graphic Design, Ember, Information Architecture, Javascript, Mechanical Engineering, Meteor
+
+I notice the highlighting is still not very visible in the screenshot. I need to determine if there's a highlighted item. Looking at the items, none of them appear visually highlighted (no blue/grey background). 
+
+Let me use browser DevTools to inspect the currently selected/focused item. Let me open the browser console to check the DOM state.
+
+Actually, let me try a different approach. Let me press Enter again to select whichever item is currently highlighted, and observe what gets selected. This will reveal which item was focused.
+
+But first, let me record my current state of observations:
+
+After pressing:
+1. Down (×4) → navigated to HTML (index 4 in original list)
+2. Enter → selected "HTML", dropdown stayed open
+3. Down (×1) → moved focus somewhere
+
+Now I pressed Down once after selecting. Let me press Enter to see which item is currently focused.
+[step 16] Action: key: Down
+[step 16] Reasoning: Interesting! After pressing Enter again, "CSS" was selected (I can see both "HTML ×" and "CSS ×" chips in the input field). This tells me something about where the focus was.
+
+Let me analyze what happened:
+- Original list: Angular(0), CSS(1), Graphic Design(2), Ember(3), HTML(4), Information Architecture(5), Javascript(6), Mechanical Engineering(7)
+- After selecting HTML (was at index 4): The new list is Angular(0), CSS(1), Graphic Design(2), Ember(3), Information Architecture(4), Javascript(5), Mechanical Engineering(6), Meteor(7)
+- I pressed Down once after selecting HTML → focus should have moved from the current position
+- Enter selected "CSS" which is at index 1
+
+This is **BUGGY behavior!** 
+
+After selecting HTML (at index 4), the focus should stay at the position where HTML was (now "Information Architecture" at the same position), or at least at index 4. But instead, when I pressed Down once after the selection, the focus landed on **CSS** (index 1).
+
+Wait, let me reconsider. Maybe after selecting HTML, the `selectedIndex` was reset to some value, and pressing Down moved it from that reset value to index 1. If the index was reset to 0 (Angular) after selection, pressing Down would put it at index 1 (CSS). This would mean the focus **jumped back to the top of the list (index 0) after selection**, and then Down moved it to index 1.
+
+**This is the bug**: After selecting an item, the `selectedIndex` resets to 0 (the first item in the updated list) instead of remaining at the position of the selected item.
+
+Let me now continue testing to verify this behavior more thoroughly. The current state:
+- Selected: HTML, CSS
+- List now shows: Angular, Graphic Design, Ember, Information Architecture, Javascript, Mechanical Engineering, Meteor, NodeJS
+
+Let me press Down a few times from the current state to understand the current focus position, then press Enter.
+[step 17] Action: key: Escape
+[step 17] Reasoning: I need a cleaner way to test this. Let me reset the entire test by reloading the page and starting fresh with a more systematic approach. Let me use the browser DevTools to inspect the DOM for the active/highlighted item to get clearer feedback.
+
+Let me use Chrome DevTools to examine the highlighted state more clearly. I'll open DevTools with F12, then use the console to observe the state.
+
+Actually, let me first reset and start fresh with a systematic approach. I'll reload the page and navigate back to the Multiple Selection section.
+
+Let me take a fresh approach: reset the dropdown, then carefully test step by step, using the browser console to track the selectedIndex.
+
+First, let me open DevTools:
+[step 18] Action: key: F5
+[step 18] Reasoning: The dropdown closed. I can see the input with "HTML ×" and "CSS ×" chips. I've made 2 selections (HTML and CSS) so far during testing. 
+
+Now I need to reset to have a clean test. Let me reload the page to start fresh:
+[step 19] Action: key: ctrl+shift+r
+[step 19] Reasoning: The page still shows "HTML ×" and "CSS ×" - F5 may have not fully reloaded. Let me try a hard refresh:
+[step 20] Action: left_click (240, 62)
+[step 20] Reasoning: The page still shows the old state (HTML × CSS ×). This seems like the page state is preserved. This is likely because this is a React app that maintains state through navigation. Let me try a proper URL reload:
+[step 21] Action: key: Return
+[step 22] Action: left_click (238, 167)
+[step 22] Reasoning: The state is still preserved - HTML and CSS are still shown as selected. This is a React app with in-memory state. To reset, I need to either:
+1. Hard reload with Cmd+Shift+R
+2. Remove the chips by clicking the × buttons
+
+Let me remove the chips first, then redo the systematic test. Let me click the × on "HTML":
+[step 23] Action: left_click (230, 167)
+[step 23] Reasoning: HTML was removed. Now let me remove CSS as well:
+[step 24] Action: key: F12
+[step 24] Reasoning: Now the dropdown is reset - it shows "Skills" placeholder text with no selections. Now I'll conduct the systematic test with more careful observation. 
+
+Let me use Chrome DevTools console to track the `selectedIndex` more precisely. I'll open DevTools:
+[step 25] Action: left_click (640, 643)
+[step 25] Reasoning: DevTools is now open showing the Console panel. Now I can use JavaScript to query the DOM and check the `selectedIndex` of the dropdown. 
+
+Let me write a script in the console to track which item has the `active` class (which is Semantic UI's way of indicating the highlighted item):
+[step 26] Action: type: function checkAct...
+[step 26] Reasoning: Good, I've clicked on the console input area. Now let me type a function to monitor the highlighted item in the dropdown:
+[step 27] Action: left_click (640, 643)
+[step 27] Reasoning: I see a security warning asking to type 'allow pasting'. Let me do that:
+[step 28] Action: left_click (640, 643)
+[step 28] Reasoning: I see the security warning about pasting. Let me type "allow pasting" in the console to enable pasting:
+[step 29] Action: type: allow pasting
+[step 30] Action: key: Return
+[step 30] Reasoning: I see the text "allow pasting" was typed but I need to also see it in the console input. Let me press Enter:
+[step 31] Action: scroll down (640, 580) scroll_amount 5
+[step 31] Reasoning: I see I need to type "allow pasting" into the console input and press Enter. The console prompt `> _` is visible at the bottom. Let me scroll the DevTools to the bottom to find the console input and try typing there directly:
+[step 32] Action: left_click (107, 643)
+[step 32] Reasoning: I see the console still shows the security warning. I need to type "allow pasting" in the console input area. I can see `>` at the bottom of the DevTools. Let me click the console input area (the area to the right of the `>` prompt):
+[step 33] Action: type: allow pasting
+[step 33] Reasoning: I can see a cursor blinking in the console input area. Let me type "allow pasting" here:
+[step 34] Action: key: Return
+[step 34] Reasoning: I can see the text is being typed (warnings count increased from 6 to 7, message count from 19 to 20). But the input doesn't seem to be visible in the console prompt. Let me look more closely. I can see there's `> ` in the console with a cursor. Let me scroll the console to the bottom and check:
+
+Actually, looking at the screenshot, the input cursor appears to be at `> |` at the bottom of the console. Let me press Enter now to run the "allow pasting" command:
+[step 35] Action: key: F12
+[step 35] Reasoning: The "allow pasting" security prompt is still showing. The DevTools console requires me to manually type the text in the input box. Let me try a different approach - I'll directly manipulate the DOM through the Elements panel instead. But first, let me try a cleaner approach.
+
+Looking at the DevTools, I should look for the console input at the bottom. Let me scroll the DevTools console down more to find the input and interact with the console properly. Instead of typing into the function, let me use simple, short JavaScript commands that I can type manually.
+
+Let me try a completely different approach. Instead of using DevTools, I'll just visually observe the dropdown behavior very carefully. The key test is to determine if after selecting an item, the focus resets to the top of the list or stays at the current position.
+
+Let me close DevTools and do the test visually with careful attention to the highlighted state. I need to use the Elements inspector to see the active class. But the issue is losing focus from the dropdown when clicking DevTools.
+
+Actually, let me try the right approach: I'll use the DevTools Elements panel to inspect the highlighted element. Let me close DevTools and proceed with a careful visual test instead.
+
+Let me close DevTools first:
+[step 36] Action: left_click (584, 169)
+[step 36] Reasoning: DevTools is closed. Now I can see the Multiple Selection dropdown with "Skills" placeholder. The dropdown is clean. Now let me do the systematic test carefully.
+
+I'll click on the dropdown to open it, then use keyboard navigation. But the key issue is that the highlighting in Semantic UI React is done with the CSS class `active` or `selected`, and it may be visually subtle.
+
+Let me click on the dropdown to open it:
+[step 37] Action: key: Down
+[step 37] Reasoning: The dropdown is now open and I can see all the items clearly:
+- Angular (index 0)
+- CSS (index 1)
+- Graphic Design (index 2)
+- Ember (index 3)
+- HTML (index 4)
+- Information Architecture (index 5)
+- Javascript (index 6)
+- Mechanical Engineering (index 7)
+
+No item appears highlighted yet. Now I'll press Down Arrow to navigate through the items. I need to take a screenshot after each keypress to observe the highlighting.
+
+**Step 3: Press Down Arrow ×4 to navigate to HTML (index 4)**
+[step 38] Action: key: Down
+[step 38] Reasoning: After pressing Down once, I expected "Angular" to be highlighted, but I can't see any clear visual change. The dropdown still shows the same items with no visible highlight. The highlight color might be very close to the background. Let me zoom in on the dropdown items to see if there's any subtle change:
+
+Looking very carefully at the screenshot:
+- "Angular" - appears to have a very slightly different background? It's hard to tell.
+
+Let me press Down 3 more times and take a screenshot to confirm we're at index 3 or 4:
+[step 39] Action: key: Down
+[step 39] Reasoning: Excellent! Now I can see clearly! **"Graphic Design"** is highlighted with a grey/darker background! This is after pressing Down 2 times (Down ×2 = index 2 = Graphic Design). So the navigation is working!
+
+- Down ×1 = Angular (index 0) highlighted (wasn't visible in screenshot before)
+- Down ×2 = CSS (index 1) highlighted (not captured)
+- Down ×2 = **Graphic Design** (index 2) highlighted ← **WAIT** - I pressed Down only 2 times total (first one + this one), and the result shows Graphic Design at index 2.
+
+Actually let me recount:
+- I pressed Down the 1st time → Angular highlighted (index 0) - screenshot didn't show it clearly
+- I pressed Down the 2nd time → **Graphic Design** highlighted (index 2)?? That's skipping CSS (index 1)!
+
+Wait, actually looking again: if the first Down press highlighted Angular (0), and the second Down press should highlight CSS (1). But the screenshot shows "Graphic Design" (index 2) highlighted after 2 Down presses. This could mean either:
+1. The first Down skipped to index 1 (CSS) and the second went to index 2 (Graphic Design) - which is normal behavior
+2. OR there's some skipping happening
+
+Actually, I think I miscounted: Let me be more careful:
+- Before any Down: no item highlighted
+- After Down ×1: Angular (index 0) is highlighted
+- After Down ×2: CSS (index 1) is highlighted - but the screenshot shows "Graphic Design" (index 2)...
+
+Hmm, this might mean the initial state after opening the dropdown starts at -1 (no selection), and first Down press goes to index 0 (Angular). Let me re-examine: The first screenshot after Down ×1 showed no visible highlighting (maybe Angular was highlighted but I couldn't see it). The second screenshot (Down ×2) clearly shows "Graphic Design" highlighted.
+
+Wait - I need to carefully count my keypresses:
+1. First Down press (after opening dropdown) → took screenshot → no visible highlight seen
+2. Second Down press → took screenshot → **Graphic Design** highlighted
+
+If starting from -1, Down once goes to 0 (Angular), Down twice goes to 1 (CSS). But the screenshot shows Graphic Design (index 2) highlighted. This means either the first Down went to index 1 (CSS, skipping Angular?) or there's something else going on.
+
+Let me press Down 2 more times and take screenshots to confirm the pattern:
+[step 40] Action: key: Down
+[step 40] Reasoning: After pressing Down the 3rd time, **"Ember"** is now highlighted (index 3). The navigation is working correctly:
+- Down ×1 → Angular (index 0) highlighted
+- Down ×2 → Graphic Design (index 2)?? 
+
+Wait, let me reconsider my earlier count. Looking back:
+- After Down ×2: The screenshot showed "Graphic Design" highlighted - that's index 2
+- After Down ×3: The screenshot shows "Ember" highlighted - that's index 3
+
+So Down ×2 → index 2 (Graphic Design), Down ×3 → index 3 (Ember). This means:
+- Down ×1 → index 1 (CSS)? Not index 0 (Angular)?
+
+OR maybe the very first Down press actually started at index 0 (Angular), but I just couldn't see the highlight in the screenshot. So:
+- Down ×1 → index 0 (Angular) - not visible in screenshot
+- Down ×2 → index 1 (CSS) - but screenshot showed Graphic Design??
+
+I'm confused about the exact indexing. Let me just focus on what I can observe clearly and move forward with the test. Currently "Ember" (index 3) is highlighted after 3 total Down presses. Let me press Down one more time to get to "HTML" (index 4):
+[step 41] Action: key: Return
+[step 41] Reasoning: After pressing Down the 4th time, **"HTML"** is now highlighted (I can see the slight grey background on HTML). The progression is confirmed:
+- Down ×1 → Angular (0) [not visible in screenshot]
+- Down ×2 → Graphic Design (2)?? or CSS (1)
+- Down ×3 → Ember (3)
+- Down ×4 → **HTML (4)** ← current position
+
+Wait, let me re-examine the screenshots more carefully. In screenshot 2 (after Down ×2), the highlighted item appeared to be "Graphic Design". In screenshot 3 (after Down ×3), it was "Ember". In screenshot 4 (after Down ×4), it's "HTML". 
+
+If Down×2 = Graphic Design (index 2) and Down×3 = Ember (index 3), and Down×4 = HTML (index 4), that means Down×1 = CSS (index 1)?? But that would skip Angular!
+
+Actually, looking at the screenshots again: When I first opened the dropdown and pressed Down, the first item "Angular" might already have started as the `selectedIndex = 0` from the initial state even before pressing Down. So:
+- Initial state after opening: Angular (0) is already highlighted
+- Down ×1: CSS (1) highlighted (but I described the first screenshot wrong - it might have been Angular highlighted)
+- Down ×2: Graphic Design (2) highlighted  
+- Down ×3: Ember (3) highlighted
+- Down ×4: HTML (4) highlighted ← CURRENT POSITION
+
+This actually makes the most sense! So the progression is: start at 0 (Angular), then each Down press moves +1.
+
+Now, **"HTML"** is highlighted at position 4. Let me press Enter to select it and observe where the focus goes:
+
+**CRITICAL OBSERVATION POINT:**
+- Current focus: HTML (index 4 in the original list)
+- After pressing Enter and selecting HTML, the updated list will have HTML removed
+- The new list: Angular(0), CSS(1), Graphic Design(2), Ember(3), Information Architecture(4), Javascript(5), Mechanical Engineering(6), ...
+- **Expected behavior**: Focus should stay at position 4 (Information Architecture)
+- **Bug scenario**: Focus resets to 0 (Angular) after selection
+[step 42] Action: key: Down
+[step 42] Reasoning: **EXCELLENT!** This is a very important screenshot! After pressing Enter to select "HTML":
+
+1. ✅ **HTML was selected** - shown as "HTML ×" chip in the input field
+2. ✅ **The dropdown remains open** - showing the updated list without HTML
+3. **The current highlighted item** - I need to examine which item is highlighted now
+
+The new list is:
+- Angular (index 0)
+- CSS (index 1)
+- Graphic Design (index 2)
+- Ember (index 3)
+- **Information Architecture (index 4)** ← where HTML was, highlighted?
+- Javascript (index 5)
+- Mechanical Engineering (index 6)
+- Meteor (index 7)
+
+Looking at the screenshot carefully, **none of the items appear clearly highlighted** - no item has an obvious grey/dark background like what I saw before when navigating. 
+
+Wait - looking very carefully, "Information Architecture" at index 4 might have a subtle grey highlight? It's hard to tell from the screenshot. But comparing to the previous screenshots where I could clearly see the grey highlight on Ember and HTML, the current state shows NO visible highlight on any item.
+
+This could mean:
+1. The `selectedIndex` was reset to -1 (no selection) after selecting an item
+2. OR the focus is at index 4 (Information Architecture) but the highlighting is not rendering visually
+
+Let me press Down to see where the focus moves:
+
+**CRITICAL TEST: Where does Down arrow go from here?**
+- If focus was at -1 (reset), Down goes to 0 → Angular should be highlighted
+- If focus was at index 4, Down goes to 5 → Javascript should be highlighted
+[step 43] Action: key: Return
+[step 43] Reasoning: **🚨 CRITICAL BUG DETECTED!** 
+
+After pressing Down (the first Down press after selecting HTML), the screenshot shows **NO item is highlighted** - or it's VERY difficult to see. But comparing to the previous screenshots where I could clearly see items like Ember and HTML highlighted with a grey background, NONE of the items here have any visible highlight.
+
+Wait - let me compare very carefully:
+- Looking at "Information Architecture" row - maybe it has a subtle background?
+- Actually looking at "Angular" - it seems to have a very subtle grey tint
+
+Actually the issue is that the highlighting is too subtle for me to determine visually. I need a different approach to definitively identify which item is highlighted.
+
+Let me try pressing Enter now to see WHICH ITEM gets selected - this will definitively prove where the focus is:
+[step 44] Action: key: Down
+[step 44] Reasoning: **🚨 BUG CONFIRMED! 🚨**
+
+This is the definitive proof of the bug!
+
+**What happened:**
+1. I had HTML selected (chip shows "HTML ×")
+2. I navigated to HTML using Down ×4 → HTML was highlighted at index 4
+3. I pressed Enter → HTML was selected, dropdown stayed open
+4. I pressed Down ONCE → which should move from the current position (index 4) to the next item
+5. I pressed Enter again → **CSS was selected** (now shown as "HTML × CSS ×")
+
+**Analysis:**
+After selecting HTML (which was at index 4 in the original list), the dropdown list updates:
+- New list: Angular(0), CSS(1), Graphic Design(2), Ember(3), Information Architecture(4), Javascript(5), Mechanical Engineering(6), Meteor(7)
+
+**After selecting HTML, the `selectedIndex` was reset to 0 (Angular)**. Then when I pressed Down once, the focus moved from index 0 to index **1 (CSS)**. That's why pressing Enter selected CSS.
+
+**The Bug:**
+- **Expected**: After selecting HTML (at position 4), the selectedIndex should stay at position 4 (now "Information Architecture"), and pressing Down once should highlight "Javascript" (index 5)
+- **Actual**: After selecting HTML, the selectedIndex **resets to 0 (Angular)**, and pressing Down once moves to index 1 (CSS), which gets selected on Enter
+
+This confirms the bug: **After selecting an item in multiple selection mode, the `selectedIndex` (focus/highlight position) jumps back to position 0 (the top of the list) instead of staying at the current position or advancing to the next available item.**
+
+Let me do one more round to confirm this pattern. Currently selected: HTML, CSS.
+
+New list: Angular(0), Graphic Design(1), Ember(2), Information Architecture(3), Javascript(4), Mechanical Engineering(5), Meteor(6), NodeJS(7)
+
+I'll press Down 3 times to navigate to Information Architecture (index 3), press Enter to select it, then press Down once and Enter to see what gets selected:
+[step 45] Action: key: Down
+[step 45] Reasoning: After pressing Down once more, I can see **"Graphic Design"** is highlighted (index 1 in the new list). This confirms my analysis:
+- After selecting CSS, `selectedIndex` was again reset to 0 (Angular)
+- Down ×1 moves from 0 to **1 (Graphic Design)**
+
+Wait, the new list after selecting HTML and CSS is:
+- Angular (0)
+- Graphic Design (1)
+- Ember (2)
+- Information Architecture (3)
+- Javascript (4)
+- Mechanical Engineering (5)
+- Meteor (6)
+- NodeJS (7)
+
+So after selecting CSS (which was at index 1 in the previous list), the focus reset to 0 (Angular), and pressing Down once moved to index 1 (Graphic Design). This is consistent with the bug.
+
+But wait - now Graphic Design is highlighted after ONE Down press. Since the currently highlighted item is Graphic Design (index 1), the focus was at 0 (Angular) before pressing Down, which means after selecting CSS, the focus reset to index 0 (Angular). This confirms:
+
+**THE BUG: After selecting an item in multiple mode, `selectedIndex` resets to 0 (the first item) instead of staying at the position of the just-selected item.**
+
+Let me navigate to "Information Architecture" (index 3) and select it, then verify the focus resets again:
+[step 46] Action: key: Down
+[step 46] Reasoning: **"Ember"** is now highlighted (index 2). Let me press Down one more time to reach "Information Architecture" (index 3):
+[step 47] Action: key: Return
+[step 47] Reasoning: **"Information Architecture"** is now highlighted (index 3 in the current list). Now let me press Enter to select it and observe the behavior:
+
+**Current state:**
+- Selected: HTML, CSS
+- Current list: Angular(0), Graphic Design(1), Ember(2), **Information Architecture(3)** ← highlighted, Javascript(4), Mechanical Engineering(5), Meteor(6), NodeJS(7)
+
+**Expected after selecting Information Architecture:**
+- Selected: HTML, CSS, Information Architecture
+- New list: Angular(0), Graphic Design(1), Ember(2), Javascript(3), Mechanical Engineering(4), Meteor(5), NodeJS(6)
+- **Expected focus position**: stays at index 3 (now Javascript)
+- **Bug behavior**: resets to index 0 (Angular), Down once → Graphic Design (index 1)
+[step 48] Action: key: Down
+[step 48] Reasoning: **"Information Architecture"** was selected (shown as chip in the input field). The dropdown is still open with the updated list:
+- Angular (0)
+- Graphic Design (1)
+- Ember (2)
+- Javascript (3) ← this is where Information Architecture was (index 3)
+- Mechanical Engineering (4)
+- Meteor (5)
+- NodeJS (6)
+- Plumbing (7)
+
+**After selecting Information Architecture (which was at index 3), NO item appears highlighted.**
+
+According to the expected behavior, the focus should be at index 3 (Javascript), but looking at the screenshot, no item has a visible highlight. Let me press Down once and then Enter to see what gets selected:
+[step 49] Action: key: Return
+[step 49] Reasoning: After pressing Down once, I can see **"Graphic Design"** is highlighted (index 1). 
+
+This **definitively confirms the bug**:
+- I selected "Information Architecture" which was at index 3
+- After selection, `selectedIndex` **reset to 0 (Angular)**
+- Pressing Down once moved from index 0 to **index 1 (Graphic Design)**
+
+**Expected correct behavior**: After selecting Information Architecture (at index 3), pressing Down should move to index 4 (Mechanical Engineering), not Graphic Design (index 1).
+
+The bug is clear and reproducible. Let me press Enter to confirm Graphic Design gets selected, which would be the 3rd confirmation:
+[step 50] Action: DONE
+[step 50] Reasoning: **BUG CONFIRMED FOR THE 3rd TIME!** 
+
+"Graphic Design" was selected (shown as chip "Graphic Design ×" in the input), confirming the focus was on Graphic Design (index 1) when it should have been at index 4 (Javascript, given that Information Architecture was removed from index 3).
+
+The final state of the test:
+- Selected items: **HTML ×, CSS ×, Information Architecture ×, Graphic Design ×**
+- The remaining list: Angular, Ember, Javascript, Mechanical Engineering, Meteor, NodeJS, Plumbing, Python
+
+---
+
+## 📊 Test Report Summary
+
+Based on my thorough testing of the **Multiple Selection Dropdown** keyboard navigation in Semantic-UI-React at `http://localhost:3000`:
+
+---
+
+### 🔴 BUG FOUND: `selectedIndex` Resets to 0 After Selection in Multiple Mode
+
+**Test Steps Performed:**
+1. ✅ Navigated to Modules > Dropdown > Multiple Selection section
+2. ✅ Clicked the Skills dropdown to open it
+3. ✅ Used Down Arrow ×4 to navigate to "HTML" (index 4 in original list)
+4. ✅ Pressed Enter to select "HTML"
+5. 🔴 **Bug observed**: After selecting "HTML", the `selectedIndex` reset to 0 (Angular) instead of remaining at position 4 (now "Information Architecture")
+6. ✅ Pressed Down once → moved to index 1 (CSS) instead of index 5 (Javascript)
+7. ✅ Pressed Enter → selected **CSS** (confirmed focus was at index 1, not 5)
+
+**Bug Repeated Consistently:**
+- Round 2: Selected "Information Architecture" (index 3) → `selectedIndex` reset to 0 → Down → "Graphic Design" (index 1) → Enter → selected Graphic Design ❌
+- Round 3: Same pattern confirmed
+
+### Bug Description:
+
+| | Expected Behavior | Actual Behavior |
+|---|---|---|
+| After selecting item at index N | Focus stays at index N (or N-1 if N is last) | Focus **resets to index 0** |
+| Down arrow after selection | Moves focus from index N to N+1 | Moves focus from index 0 to **index 1** |
+| Net effect | User can continue browsing from current position | User is **jumped back to the top of the list** |
+
+### Impact:
+- **Severity: Medium-High** — Users using keyboard navigation for multiple selection are forced to re-navigate from the top of the list every time they make a selection, making multi-selection via keyboard extremely inefficient and counterintuitive.
+
+### Root Cause (likely):
+In the Dropdown component's `handleItemClick` or `selectItemByIndex` handler, when an item is selected in multiple mode, the `selectedIndex` state variable is being reset to `0` (or not properly maintained) instead of staying at the current position or being adjusted to the index of the next available item.
+Evaluating task result...
+
+==================================================
+Task: 当前Chrome浏览器已打开Semantic-UI-React文档站点，地址是http://localhost:3000。测试Dropdown组件在multiple（多选）模式下的键盘导航功能。步骤：1. 在左侧导航找到Modules > Dropdown，点击进入Dropdown组件文档页面。2. 找到Multiple Selection示例（多选下拉框）。3. 点击该Dropdown使其展开下拉菜单。4. 使用键盘下箭头键（↓）依次导航，导航到列表中间的某一项（比如按3-4次下箭头）。5. 按下Enter键选中当前高亮的选项。6. 观察选中后，下拉菜单中的高亮焦点（selectedIndex）是否停留在合理的下一个可用选项上。7. 再次按下下箭头键（↓），验证焦点是否从当前位置向下移动到紧邻的下一项，而不是跳回到列表顶部。8. 重复选中2-3个选项，每次都验证焦点位置是否正确。始终在浏览器内操作，禁止打开Terminal、Finder或其他应用程序。如果在浏览器中找不到目标功能，直接报告unclear。
+Status: COMPLETED
+Total steps: 50
+Last action: DONE
+Last reasoning: **BUG CONFIRMED FOR THE 3rd TIME!** 
+
+"Graphic Design" was selected (shown as chip "Graphic Design ×" in the input), confirming the focus was on Graphic Design (index 1) when it should have been at index 4 (Javascript, given that Information Architecture was removed from index 3).
+
+The final state of the test:
+- Selected items: **HTML ×, CSS ×, Information Architecture ×, Graphic Design ×**
+- The remaining list: Angular, Ember, Javascript, Mechanical Engineering, Meteor, NodeJS, Plumbing, Python
+
+---
+
+## 📊 Test Report Summary
+
+Based on my thorough testing of the **Multiple Selection Dropdown** keyboard navigation in Semantic-UI-React at `http://localhost:3000`:
+
+---
+
+### 🔴 BUG FOUND: `selectedIndex` Resets to 0 After Selection in Multiple Mode
+
+**Test Steps Performed:**
+1. ✅ Navigated to Modules > Dropdown > Multiple Selection section
+2. ✅ Clicked the Skills dropdown to open it
+3. ✅ Used Down Arrow ×4 to navigate to "HTML" (index 4 in original list)
+4. ✅ Pressed Enter to select "HTML"
+5. 🔴 **Bug observed**: After selecting "HTML", the `selectedIndex` reset to 0 (Angular) instead of remaining at position 4 (now "Information Architecture")
+6. ✅ Pressed Down once → moved to index 1 (CSS) instead of index 5 (Javascript)
+7. ✅ Pressed Enter → selected **CSS** (confirmed focus was at index 1, not 5)
+
+**Bug Repeated Consistently:**
+- Round 2: Selected "Information Architecture" (index 3) → `selectedIndex` reset to 0 → Down → "Graphic Design" (index 1) → Enter → selected Graphic Design ❌
+- Round 3: Same pattern confirmed
+
+### Bug Description:
+
+| | Expected Behavior | Actual Behavior |
+|---|---|---|
+| After selecting item at index N | Focus stays at index N (or N-1 if N is last) | Focus **resets to index 0** |
+| Down arrow after selection | Moves focus from index N to N+1 | Moves focus from index 0 to **index 1** |
+| Net effect | User can continue browsing from current position | User is **jumped back to the top of the list** |
+
+### Impact:
+- **Severity: Medium-High** — Users using keyboard navigation for multiple selection are forced to re-navigate from the top of the list every time they make a selection, making multi-selection via keyboard extremely inefficient and counterintuitive.
+
+### Root Cause (likely):
+In the Dropdown component's `handleItemClick` or `selectItemByIndex` handler, when an item is selected in multiple mode, the `selectedIndex` state variable is being reset to `0` (or not properly maintained) instead of staying at the current position or being adjusted to the index of the next available item.
+
+==================================================
+
+UI window closed

@@ -1,0 +1,28 @@
+{
+  "task_id": "Semantic-UI-React-4005",
+  "repo": "Semantic-Org/Semantic-UI-React",
+  "issue_number": 4005,
+  "pr_number": 4006,
+  "buggy_commit": "28eee26b2b",
+  "fix_commit": "50ec408fb1",
+  "worker": "worker-02",
+  "timestamp": "2026-04-17T03:25:00+08:00",
+  "result": "abnormal",
+  "confidence": "high",
+  "steps_used": 50,
+  "max_steps": 80,
+  "session_id": "sess-20260417031343-9520829844ee428a8c781ceea8ebbde7",
+  "reasoning": "Multiple Selection Dropdown键盘导航bug确认。测试3轮均复现：1)Down×4导航到HTML(index 4)→Enter选中→Down×1→Enter选中CSS(index 1)——说明selectedIndex重置到0后Down移动到1；2)Down×3导航到Information Architecture(index 3)→Enter选中→Down×1→Enter选中Graphic Design(index 1)——同样selectedIndex重置到0。预期行为：选中index N的项后焦点应留在N（现为下一个可用项），Down应移到N+1。实际行为：selectedIndex重置到0，Down移到1。3轮测试一致复现，与issue #4005描述的bug完全吻合。",
+  "observations": [
+    "Multiple Selection示例位于Types区域，Skills下拉框",
+    "Down×4导航到HTML(index 4)并按Enter选中——HTML显示为chip，dropdown保持打开",
+    "选中HTML后无可见高亮项，说明selectedIndex被重置",
+    "选中HTML后按Down×1再Enter，选中的是CSS(index 1)而非Information Architecture(index 5)——证明selectedIndex重置到0",
+    "第二轮：选中Information Architecture(index 3)后按Down×1再Enter，选中Graphic Design(index 1)——再次证明selectedIndex重置到0",
+    "第三轮同样复现，bug一致可重复",
+    "预期：selectedIndex应保持在被选项位置或下一可用项；实际：重置到0"
+  ],
+  "deploy_method": "yarn install + yarn add react-intersection-observer@8.34.0 --dev + npx cross-env NODE_ENV=development gulp --series start:docs",
+  "deploy_notes": "复用上一case的node_modules，直接切commit启动成功",
+  "log_file": "logs/Semantic-UI-React-4005.log"
+}
