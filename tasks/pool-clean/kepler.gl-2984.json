@@ -1,0 +1,26 @@
+{
+  "task_id": "kepler.gl-2984",
+  "repo": "keplergl/kepler.gl",
+  "issue_number": 2984,
+  "pr_number": 2985,
+  "buggy_commit": "81780f5ab0",
+  "fix_commit": "c39778ce9d",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/keplergl/kepler.gl.git",
+    "cd kepler.gl",
+    "git checkout 81780f5ab0",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "kepler.gl",
+  "test_description_zh": "测试 Kepler.gl 的 AI Assistant 功能，验证当配置了自定义 Ollama Base URL 后，通过聊天框发送消息时是否正确使用该配置的 URL。具体步骤：1. 打开 Kepler.gl 应用页面；2. 找到并打开 AI Assistant 面板；3. 在 AI Assistant 的设置中，查找 Ollama Base URL 配置项，将其设置为一个非 localhost 的远程地址；4. 选择一个 Ollama 模型并启动聊天会话；5. 在聊天输入框中输入一条消息，点击发送箭头按钮发送消息；6. 观察网络请求（通过浏览器开发者工具的 Network 面板），确认发送消息的请求目标地址是否与配置的 Ollama Base URL 一致。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到 AI Assistant 功能或相关配置项，直接报告 unclear。",
+  "expected_result_zh": "在 AI Assistant 聊天框中发送消息时，网络请求应发送到用户配置的自定义 Ollama Base URL 地址，而不是默认的 localhost 地址。所有聊天消息的请求目标应与设置中配置的远程 Ollama Base URL 保持一致。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

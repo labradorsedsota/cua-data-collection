@@ -1,0 +1,26 @@
+{
+  "task_id": "dejavu-448",
+  "repo": "appbaseio/dejavu",
+  "issue_number": 448,
+  "pr_number": 449,
+  "buggy_commit": "4ba5397390",
+  "fix_commit": "7eb4154ee8",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/appbaseio/dejavu.git",
+    "cd dejavu",
+    "git checkout 4ba5397390",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/products/",
+  "app_name": "dejavu-monorepo",
+  "test_description_zh": "测试在 DejaVu 数据浏览器中编辑并更新文档字段值的功能。操作步骤：1. 打开应用页面，观察数据浏览器（Data Browser）是否正常加载并显示文档列表。2. 由于 DejaVu 是一个 Elasticsearch 数据浏览工具，需要先连接到一个 Elasticsearch 集群。如果页面上有连接输入框，尝试输入一个 Elasticsearch 地址进行连接（如 http://localhost:9200）。3. 连接成功后，在数据浏览器中找到任意一条文档记录。4. 切换到编辑模式（Edition Mode），尝试点击某个单元格并修改其值。5. 确认修改后，观察更新请求是否成功发送，文档是否被成功更新，页面是否显示更新成功的反馈。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在数据浏览器的编辑模式下，点击文档单元格修改值后，更新请求应成功发送（无 400 错误），文档值应被正确更新，页面应显示更新成功的反馈。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

@@ -1,0 +1,26 @@
+{
+  "task_id": "jekyll-admin-187",
+  "repo": "jekyll/jekyll-admin",
+  "issue_number": 187,
+  "pr_number": 191,
+  "buggy_commit": "0057a351ce",
+  "fix_commit": "cb43c45c5e",
+  "framework": "cra",
+  "deploy_commands": [
+    "git clone https://github.com/jekyll/jekyll-admin.git",
+    "cd jekyll-admin",
+    "git checkout 0057a351ce",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "jekyll-admin",
+  "test_description_zh": "测试在 Jekyll Admin 中创建文章（post）时，对文件名中日期部分的验证功能。具体步骤：1. 在浏览器中打开应用后，导航到 Posts（文章）管理页面；2. 点击新建文章（New Post）按钮；3. 填写文章标题和正文内容；4. 将文章的文件名路径修改为包含无效日期的格式，例如将日期部分设置为 '2016-55-55'（如 2016-55-55-test-title.md）；5. 点击保存按钮；6. 观察页面是否显示文件名无效的验证错误提示信息，并确认页面仍然正常工作、数据没有丢失。同时也测试在非 posts 类型的 collection 中创建文档时，输入无效文件名是否也能得到正确的验证提示。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当用户输入包含无效日期（如 2016-55-55）的文章文件名并尝试保存时，页面应显示类似'文件名无效'的验证错误提示，阻止保存操作，页面保持正常状态且已填写的数据不会消失。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

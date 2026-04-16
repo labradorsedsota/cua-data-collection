@@ -1,0 +1,24 @@
+{
+  "task_id": "blinko-1068",
+  "repo": "blinkospace/blinko",
+  "issue_number": 1068,
+  "pr_number": 1069,
+  "buggy_commit": "3069a00d5a",
+  "fix_commit": "d33b031258",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/blinkospace/blinko.git",
+    "cd blinko",
+    "git checkout 3069a00d5a",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/api/file/pic01.png?thumbnail=true",
+  "app_name": "blinko-monorepo",
+  "test_description_zh": "测试 Blinko 的 Markdown 导出功能，验证导出的内容中图片文件是否完整可用。具体步骤：1. 登录 Blinko 应用；2. 创建或找到一条包含图片的笔记（如果没有现成笔记，先上传一张图片到笔记中）；3. 使用内置的导出 Markdown 功能将该笔记导出；4. 检查导出过程是否正常完成；5. 另外，在浏览器地址栏中直接访问 /api/file/ 路径下的某个图片文件（不带 thumbnail 参数），验证是否能正常返回图片内容而非错误信息。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "导出的 Markdown 文件中包含的图片应为完整的图片文件（文件大小正常，不是仅1KB的错误响应）。直接通过 /api/file/<filename> 访问图片时应能正常返回图片内容，而不是返回 Unauthorized 错误。",
+  "max_steps": 80,
+  "timeout_minutes": 15
+}

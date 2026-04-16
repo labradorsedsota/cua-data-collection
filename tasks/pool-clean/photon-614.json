@@ -1,0 +1,26 @@
+{
+  "task_id": "photon-614",
+  "repo": "Xyphyn/photon",
+  "issue_number": 614,
+  "pr_number": 615,
+  "buggy_commit": "ca9b0f013f",
+  "fix_commit": "064a16d8b2",
+  "framework": "svelte",
+  "deploy_commands": [
+    "git clone https://github.com/Xyphyn/photon.git",
+    "cd photon",
+    "git checkout ca9b0f013f",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/user-attachments/assets/fda42fe2-6bba-462d-be4c-3fcb244ff44c",
+  "app_name": "photon-lemmy",
+  "test_description_zh": "测试评论区中外部链接的打开行为。操作步骤：1. 打开 Photon Lemmy 应用首页；2. 找到任意一个帖子并进入其详情页（点击帖子标题或评论区域）；3. 在评论区中找到包含外部链接（指向非本站的URL）的评论；4. 检查该外部链接的 HTML 属性，确认其是否具有 target=\"_blank\" 属性；5. 点击该外部链接，观察链接是否在新标签页中打开。注意：评论中的外部链接（非站内链接）应当在新标签页中打开，而站内链接应在当前标签页打开。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "评论区中的外部链接应具有 target=\"_blank\" 属性，点击后应在新标签页中打开，而非在当前标签页中跳转。站内链接则应在当前标签页打开。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

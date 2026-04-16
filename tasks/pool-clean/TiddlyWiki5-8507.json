@@ -1,0 +1,24 @@
+{
+  "task_id": "TiddlyWiki5-8507",
+  "repo": "TiddlyWiki/TiddlyWiki5",
+  "issue_number": 8507,
+  "pr_number": 9496,
+  "buggy_commit": "da41a55f29",
+  "fix_commit": "86c4770a28",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/TiddlyWiki/TiddlyWiki5.git",
+    "cd TiddlyWiki5",
+    "git checkout da41a55f29",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "tiddlywiki",
+  "test_description_zh": "测试 TiddlyWiki 中 decodebase64 过滤器操作符对非法 base64 输入的处理能力。操作步骤：1. 打开 TiddlyWiki 页面；2. 点击创建新 tiddler 的按钮（通常是页面右侧的加号按钮）；3. 在新 tiddler 的文本编辑区域中输入以下内容：text: {{{ [[http://tiddlywiki.com]decodebase64[]] }}}；4. 保存该 tiddler（点击确认/完成按钮）；5. 观察页面是否正常渲染该 tiddler，不应出现未捕获的错误导致页面崩溃或功能异常。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "保存包含 decodebase64 过滤器且输入为非法 base64 字符串的 tiddler 后，页面应正常运行，不应出现未捕获的 URIError 或其他 JavaScript 异常导致页面崩溃，过滤器应优雅地处理无效输入。",
+  "max_steps": 80,
+  "timeout_minutes": 15
+}

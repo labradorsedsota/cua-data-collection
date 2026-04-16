@@ -1,0 +1,24 @@
+{
+  "task_id": "tres-199",
+  "repo": "Tresjs/tres",
+  "issue_number": 199,
+  "pr_number": 204,
+  "buggy_commit": "ff6989b4d5",
+  "fix_commit": "0701db8fc7",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/Tresjs/tres.git",
+    "cd tres",
+    "git checkout ff6989b4d5",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "tresjs",
+  "test_description_zh": "测试在 TresJS 3D 场景中，将模型（如 GLTF 模型）放置在一个 Group 容器内，并对 Group 设置位置变换（如 position），验证 Group 内的所有子元素（包括加载的 3D 模型和基础几何体）是否都正确地继承了父级 Group 的变换属性。具体步骤：1. 打开页面，等待 3D 场景加载完成。2. 观察场景中是否存在 3D 模型和其他几何体（如球体）。3. 确认所有放在同一个 Group 内的子对象是否位于相同的变换空间中，即它们的位置是否都受到了父级 Group position 的影响。4. 检查模型是否与同组内的其他基础几何体保持正确的相对位置关系。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "Group 内的所有子元素（包括 GLTF 模型和基础几何体如 Sphere）都应该受到父级 Group 的 position 变换影响，它们在场景中的位置应当是自身 position 加上父级 Group position 的结果，所有子对象保持正确的相对位置关系。",
+  "max_steps": 80,
+  "timeout_minutes": 15
+}

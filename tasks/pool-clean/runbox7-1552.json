@@ -1,0 +1,26 @@
+{
+  "task_id": "runbox7-1552",
+  "repo": "runbox/runbox7",
+  "issue_number": 1552,
+  "pr_number": 1648,
+  "buggy_commit": "3c728174e9",
+  "fix_commit": "b2699b3c6b",
+  "framework": "angular",
+  "deploy_commands": [
+    "git clone https://github.com/runbox/runbox7.git",
+    "cd runbox7",
+    "git checkout 3c728174e9",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:4200 | grep -q '<'",
+  "dev_url": "http://localhost:4200",
+  "test_page": "/app/",
+  "app_name": "runbox7",
+  "test_description_zh": "测试邮件列表中拖拽移动邮件到文件夹后的选择状态清除功能。操作步骤：1. 打开应用主页面（邮件列表页面）；2. 在邮件列表中选中一封邮件，将其拖拽到左侧某个文件夹（如文件夹A）；3. 观察拖拽完成后邮件列表中的选择状态是否已清除；4. 再选中另一封不同的邮件，将其拖拽到另一个文件夹（如文件夹B）；5. 验证只有第二次拖拽的那封邮件被移动到了文件夹B，之前已移动到文件夹A的邮件仍然在文件夹A中不受影响。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "每次拖拽移动邮件后，邮件列表的选择状态应被清除。连续对不同邮件执行拖拽移动操作时，每次只有当前选中的邮件被移动到目标文件夹，之前已移动的邮件不会被重复移动。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

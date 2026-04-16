@@ -1,0 +1,26 @@
+{
+  "task_id": "podverse-web-1206",
+  "repo": "podverse/podverse-web",
+  "issue_number": 1206,
+  "pr_number": 1302,
+  "buggy_commit": "5e91a1c7eb",
+  "fix_commit": "b778fa0abb",
+  "framework": "nextjs",
+  "deploy_commands": [
+    "git clone https://github.com/podverse/podverse-web.git",
+    "cd podverse-web",
+    "git checkout 5e91a1c7eb",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/queue",
+  "app_name": "podverse-web",
+  "test_description_zh": "测试播客队列页面中剧集的下拉菜单功能。操作步骤：1. 在浏览器中打开应用后，导航到队列（Queue）页面；2. 如果队列中有剧集条目，找到某个剧集条目上的更多按钮（省略号图标/ellipsis-h）；3. 点击该更多按钮，观察弹出的下拉菜单是否正常显示在最前层，确保菜单项完全可见且不被其他剧集描述内容遮挡；4. 尝试点击下拉菜单中的某个选项，验证点击能够正确触发菜单项对应的操作，而不是误触到菜单下方的剧集链接。注意：此功能需要用户登录后队列中有多个剧集才能充分测试。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "队列页面中点击更多按钮后，下拉菜单应完整显示在所有剧集内容的上方（前层），点击菜单项时应正确响应菜单操作，不会穿透到下方的剧集链接。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

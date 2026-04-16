@@ -1,0 +1,26 @@
+{
+  "task_id": "dejavu-176",
+  "repo": "appbaseio/dejavu",
+  "issue_number": 176,
+  "pr_number": 191,
+  "buggy_commit": "8090f9b8de",
+  "fix_commit": "99b2240dbf",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/appbaseio/dejavu.git",
+    "cd dejavu",
+    "git checkout 8090f9b8de",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "dejavu-monorepo",
+  "test_description_zh": "测试 Dejavu 数据导出功能中模态框的交互行为。步骤：1. 打开应用首页，连接一个 Elasticsearch 实例（如果有默认的演示数据源则直接使用）。2. 找到导出数据的功能入口（通常在工具栏或操作区域中寻找 Export 或导出相关按钮），点击打开导出模态框。3. 在导出模态框显示后，点击模态框外部的灰色遮罩区域，观察模态框是否仍然保持打开状态。4. 确认模态框只能通过点击关闭图标（X按钮）来关闭，而不是通过点击外部区域关闭。5. 同时验证其他模态框（如果有的话）的正常关闭行为不受影响。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "导出模态框在点击外部遮罩区域时不应关闭，只有点击模态框上的关闭图标才能关闭该模态框。其他模态框的行为不受影响。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

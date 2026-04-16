@@ -1,0 +1,26 @@
+{
+  "task_id": "lms-1917",
+  "repo": "frappe/lms",
+  "issue_number": 1917,
+  "pr_number": 1987,
+  "buggy_commit": "4ace8b2ec0",
+  "fix_commit": "ca30ab8a5e",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/frappe/lms.git",
+    "cd lms",
+    "git checkout 4ace8b2ec0",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "frappe_lms",
+  "test_description_zh": "测试课程课件编辑页面中讲师笔记（Instructor Notes）的富文本编辑功能。具体步骤：1. 打开浏览器访问应用首页，找到并进入任意一个课程（Course）。2. 进入该课程的某个课件（Lesson）编辑页面。3. 在课件编辑区域或讲师笔记区域，找到左侧的 '+' 按钮（用于添加非纯文本内容块，如图片、代码块等）。4. 点击该 '+' 按钮，观察弹出的下拉菜单是否完整可见、可正常交互，不被页面左侧边栏遮挡。5. 同样测试 Tune 按钮（用于调整内容块样式的按钮），点击后观察其弹出菜单是否完整可见、可正常点击操作。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "点击课件编辑页面讲师笔记中的 '+' 按钮和 Tune 按钮后，弹出的下拉菜单应完整显示在可视区域内，不被侧边栏遮挡，用户可以正常查看和点击菜单中的所有选项。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

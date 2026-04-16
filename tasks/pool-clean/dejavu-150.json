@@ -1,0 +1,26 @@
+{
+  "task_id": "dejavu-150",
+  "repo": "appbaseio/dejavu",
+  "issue_number": 150,
+  "pr_number": 157,
+  "buggy_commit": "8c6d6f22fe",
+  "fix_commit": "f23899f511",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/appbaseio/dejavu.git",
+    "cd dejavu",
+    "git checkout 8c6d6f22fe",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "dejavu-monorepo",
+  "test_description_zh": "测试 Dejavu 数据浏览器的连接登录和数据表加载功能。操作步骤：1. 打开应用首页，找到连接 Elasticsearch 的输入区域。2. 在 URL 输入框中输入一个 Elasticsearch 地址（如 http://localhost:9200），在 App name（索引名）输入框中输入一个索引名称。3. 点击连接/登录按钮。4. 观察连接成功后，页面是否能正常加载并显示数据表（DataTable），包括映射（mappings）信息和列头是否正确渲染，页面不应出现白屏或错误提示。特别关注当 Elasticsearch 索引使用了别名（alias）时，数据表是否也能正常加载和渲染。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "连接 Elasticsearch 后，数据表应正常渲染，页面不应出现 JavaScript 错误或白屏，映射信息和表格列头应正确显示，无论索引是直接名称还是通过别名访问都应正常工作。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

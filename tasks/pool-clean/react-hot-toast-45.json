@@ -1,0 +1,24 @@
+{
+  "task_id": "react-hot-toast-45",
+  "repo": "timolins/react-hot-toast",
+  "issue_number": 45,
+  "pr_number": 54,
+  "buggy_commit": "1609cc6f6e",
+  "fix_commit": "3836611c7b",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/timolins/react-hot-toast.git",
+    "cd react-hot-toast",
+    "git checkout 1609cc6f6e",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "react-hot-toast",
+  "test_description_zh": "测试 react-hot-toast 的 toast.promise 功能在长时间异步操作下的表现。步骤：1. 打开页面后，在浏览器控制台或页面交互区域中触发一个 toast.promise 调用，传入一个耗时较长（例如 35-40 秒）的 Promise，配置 loading、success、error 三种状态的消息文本。2. 观察 loading 状态的 toast 是否在整个 Promise 执行期间持续显示，不会提前消失。3. 等待 Promise resolve 后，确认 loading toast 被替换为 success toast。验证 loading toast 在 Promise 完成之前不会被自动移除。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "loading 状态的 toast 应在整个 Promise 执行期间（即使超过30秒）持续显示，不会提前自动消失；当 Promise 成功 resolve 后，loading toast 才被替换为 success toast。",
+  "max_steps": 80,
+  "timeout_minutes": 15
+}

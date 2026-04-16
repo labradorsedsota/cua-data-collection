@@ -1,0 +1,26 @@
+{
+  "task_id": "forms-2943",
+  "repo": "nextcloud/forms",
+  "issue_number": 2943,
+  "pr_number": 2944,
+  "buggy_commit": "58f70e5a3c",
+  "fix_commit": "e93bb71af8",
+  "framework": "vue",
+  "deploy_commands": [
+    "git clone https://github.com/nextcloud/forms.git",
+    "cd forms",
+    "git checkout 58f70e5a3c",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "forms",
+  "test_description_zh": "测试表单结果页面的摘要视图功能。具体步骤：1. 打开浏览器访问应用首页；2. 找到或创建一个表单（如果已有表单则直接使用）；3. 进入该表单的结果（Results）页面；4. 查看摘要视图（Summary view），确认摘要图表和统计数据能够正确反映所有提交的响应数据；5. 如果结果页面有分页功能，切换不同页面后观察摘要视图中的图表/统计是否始终基于全部响应进行汇总计算，而不仅仅是当前页面显示的部分响应；6. 同时测试结果页面中的视图切换菜单（如摘要视图和逐条响应视图之间的切换）是否能正常工作。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "摘要视图中的图表和统计数据应基于所有已提交的响应进行汇总展示，无论分页状态如何；视图切换菜单（PillMenu）应能正常在不同结果视图之间切换。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

@@ -1,0 +1,24 @@
+{
+  "task_id": "maplibre-gl-js-4125",
+  "repo": "maplibre/maplibre-gl-js",
+  "issue_number": 4125,
+  "pr_number": 4132,
+  "buggy_commit": "dac8f27c62",
+  "fix_commit": "c434f924f0",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/maplibre/maplibre-gl-js.git",
+    "cd maplibre-gl-js",
+    "git checkout dac8f27c62",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/test/examples/3d-terrain.html",
+  "app_name": "maplibre-gl",
+  "test_description_zh": "测试在启用3D地形的地图中，地址栏哈希值与地图实际位置状态的同步功能。操作步骤：1. 打开页面 /test/examples/3d-terrain.html，等待3D地形地图完全加载。2. 用鼠标拖拽地图移动一段距离，然后停止操作，等待地图完全停止移动（约1-2秒）。3. 观察浏览器地址栏中的哈希值（URL中#后面的缩放级别/纬度/经度等参数）。4. 在浏览器开发者工具控制台中执行 map.getZoom() 获取当前地图的实际缩放级别。5. 比较地址栏哈希中的缩放值与控制台返回的缩放值是否一致。6. 可以多次移动地图并重复上述比较操作，验证每次地图停止后哈希值都能正确同步。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "地图停止移动后，浏览器地址栏哈希中的缩放级别值应与通过 map.getZoom() 获取的实际缩放级别值一致（或差异极小可忽略不计），说明哈希与地图位置状态正确同步。",
+  "max_steps": 80,
+  "timeout_minutes": 15
+}

@@ -1,0 +1,26 @@
+{
+  "task_id": "sim-3922",
+  "repo": "simstudioai/sim",
+  "issue_number": 3922,
+  "pr_number": 3932,
+  "buggy_commit": "a0796f088b",
+  "fix_commit": "57e5bac121",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/simstudioai/sim.git",
+    "cd sim",
+    "git checkout a0796f088b",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/user-attachments/assets/5e6b103a-4feb-4f28-bc3b-73e870994b18",
+  "app_name": "simstudio",
+  "test_description_zh": "测试在 simstudio 中，MCP 工具在 Agent Block 中的调用功能。具体步骤：1. 打开浏览器访问应用首页。2. 进入工具或 MCP 配置页面，确认已配置一个 MCP 服务器连接（如果没有，则配置一个带有 HTTP 认证头的外部 MCP 服务器）。3. 创建一个新的工作流（Workflow）。4. 在工作流中添加一个 Agent Block，并将已配置的 MCP 工具附加到该 Agent Block 上。5. 运行该工作流，观察 Agent Block 是否能够成功调用 MCP 工具并返回正确结果。6. 同时可以单独添加一个 MCP Tool Block 直接调用同一个 MCP 工具，对比两种方式的执行结果是否一致。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "MCP 工具无论是在独立的 MCP Tool Block 中直接调用，还是在 Agent Block 中作为工具被 Agent 调用，都应该能够成功执行并返回正确结果，不应出现认证失败（Authentication failed）或其他错误。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

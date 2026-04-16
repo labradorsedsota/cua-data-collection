@@ -1,0 +1,24 @@
+{
+  "task_id": "jupytergis-1187",
+  "repo": "geojupyter/jupytergis",
+  "issue_number": 1187,
+  "pr_number": 1188,
+  "buggy_commit": "234eec5711",
+  "fix_commit": "fa177f1b50",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/geojupyter/jupytergis.git",
+    "cd jupytergis",
+    "git checkout 234eec5711",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "@jupytergis/jupytergis-root",
+  "test_description_zh": "测试 JupyterGIS 中对 VectorTile 图层应用 Canonical（规范化）符号化功能。具体步骤：1. 在浏览器中打开 JupyterGIS 应用界面；2. 加载或创建一个包含 VectorTile 图层的地图项目（例如 MacroStrat 数据源）；3. 找到该 VectorTile 图层的符号化设置对话框，选择 Canonical 符号化类型；4. 在属性下拉框中选择颜色相关的属性字段（如 color），确认下拉框中显示的选项与实际应用的值一致；5. 点击 OK 确认符号化设置；6. 观察地图是否正常渲染，控制台是否有报错。另外测试：先选择一个非颜色属性（如数值型字段），保存后重新打开符号化对话框，再切换回颜色属性并确认保存，验证地图能否正常渲染。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "选择 Canonical 符号化并使用颜色属性字段后，地图应正常渲染，不出现 'Expected an array for fill-color' 等控制台错误。切换不同属性字段后重新选择颜色属性并保存，地图也应正常显示。",
+  "max_steps": 80,
+  "timeout_minutes": 15
+}

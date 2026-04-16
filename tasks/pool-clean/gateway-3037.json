@@ -1,0 +1,26 @@
+{
+  "task_id": "gateway-3037",
+  "repo": "WebThingsIO/gateway",
+  "issue_number": 3037,
+  "pr_number": 3040,
+  "buggy_commit": "21a21c1dfa",
+  "fix_commit": "1cd6034b75",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/WebThingsIO/gateway.git",
+    "cd gateway",
+    "git checkout 21a21c1dfa",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/settings/addons",
+  "app_name": "webthings-gateway",
+  "test_description_zh": "测试 WebThings Gateway 的扩展插件（extension add-on）安装和加载功能。具体步骤：1. 在浏览器中打开 WebThings Gateway 首页；2. 导航到设置页面（Settings），找到附加组件/插件管理相关入口（Add-ons）；3. 尝试查看已安装的扩展插件列表，或尝试安装一个纯前端扩展插件（如主题类插件，例如 square theme 这类仅包含 CSS 和 JavaScript 而没有后端可执行文件的扩展）；4. 验证该类扩展插件能够被正常识别、安装和启用，不会因为缺少 exec 字段而报错或被拒绝加载。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "纯前端扩展插件（不包含后端可执行文件、manifest 中无 exec 字段的扩展类型插件）应当能够被 Gateway 正常识别和加载，不会出现验证错误或加载失败的情况。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

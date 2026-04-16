@@ -1,0 +1,26 @@
+{
+  "task_id": "open5e-869",
+  "repo": "open5e/open5e",
+  "issue_number": 869,
+  "pr_number": 870,
+  "buggy_commit": "7505a6890e",
+  "fix_commit": "49d882eae6",
+  "framework": "nuxt",
+  "deploy_commands": [
+    "git clone https://github.com/open5e/open5e.git",
+    "cd open5e",
+    "git checkout 7505a6890e",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/conditions",
+  "app_name": "nuxt-app",
+  "test_description_zh": "测试在首次访问页面时（无本地存储缓存）默认文档源是否正确加载。操作步骤：1. 打开浏览器，清除本地存储或使用无痕模式访问应用首页。2. 观察页面加载后，源选择器（source selector）显示的已加载源数量。3. 导航到 Conditions 页面（路径为 /conditions）。4. 验证 Conditions 页面是否正常显示条件定义列表内容（而非空列表或错误页面）。5. 确认默认加载的文档源中包含了 MISC 类型的文档（如 core 等），使得依赖这些文档源的内容能够正常展示。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在首次访问（无本地存储数据）时，Conditions 页面应正常显示条件定义列表内容，不应出现空列表或404错误。默认文档源应包含 srd-2014、srd-2024 以及 MISC 类型文档（如 core、elderberry-inn-icons），源选择器应显示正确的已加载源数量。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

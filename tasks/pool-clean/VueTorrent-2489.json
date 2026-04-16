@@ -1,0 +1,26 @@
+{
+  "task_id": "VueTorrent-2489",
+  "repo": "VueTorrent/VueTorrent",
+  "issue_number": 2489,
+  "pr_number": 2491,
+  "buggy_commit": "277e7ea554",
+  "fix_commit": "3796c4a355",
+  "framework": "vue",
+  "deploy_commands": [
+    "git clone https://github.com/VueTorrent/VueTorrent.git",
+    "cd VueTorrent",
+    "git checkout 277e7ea554",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/torrents/123456789",
+  "app_name": "vuetorrent",
+  "test_description_zh": "测试种子详情页面中评论（comment）的链接渲染功能。操作步骤：1. 打开应用首页，进入种子列表页面。2. 找到并点击任意一个种子，进入种子详情页面的 Overview（概览）标签。3. 观察种子名称下方的评论（comment）区域，检查评论中包含的 URL 链接是否正确渲染。特别关注评论文本中同时包含普通文本域名和完整 URL 的情况（例如评论内容类似 'This torrent was downloaded from tracker.com. https://tracker.com/torrents/12345678'），验证评论文本是否完整且未被篡改地显示，所有 URL 链接应保持原始格式正确呈现。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "种子详情 Overview 标签页中的评论文本应完整无误地显示，当评论中包含重复出现的域名或 URL 时，文本不应被截断、拼接错误或格式混乱，所有链接应保持原始格式正确渲染。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

@@ -1,0 +1,26 @@
+{
+  "task_id": "dejavu-119",
+  "repo": "appbaseio/dejavu",
+  "issue_number": 119,
+  "pr_number": 129,
+  "buggy_commit": "51dc4bd7dd",
+  "fix_commit": "049ccf63f1",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/appbaseio/dejavu.git",
+    "cd dejavu",
+    "git checkout 51dc4bd7dd",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "dejavu-monorepo",
+  "test_description_zh": "测试批量删除记录后界面总记录数的更新情况。步骤：1. 打开 Dejavu 应用首页，连接到一个 Elasticsearch 集群（如果有默认的 demo 数据源则直接使用）。2. 记录当前界面上显示的总记录数。3. 在数据表格中勾选多条记录（至少选择2条以上）。4. 点击批量删除按钮，确认删除操作。5. 删除完成后，观察界面上显示的总记录数是否已经正确更新，应该减少了被删除的记录数量。6. 同时检查数据表格中被删除的记录是否已从列表中消失。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "批量删除记录后，界面上显示的总记录数应立即正确更新（减少对应的删除数量），数据表格也应刷新不再显示已删除的记录。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

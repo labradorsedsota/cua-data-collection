@@ -1,0 +1,26 @@
+{
+  "task_id": "lms-2069",
+  "repo": "frappe/lms",
+  "issue_number": 2069,
+  "pr_number": 2132,
+  "buggy_commit": "49e989f39e",
+  "fix_commit": "23cde1761b",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/frappe/lms.git",
+    "cd lms",
+    "git checkout 49e989f39e",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "frappe_lms",
+  "test_description_zh": "测试学生主页在用户登录后的内容加载情况。具体步骤：1. 打开应用首页；2. 如果需要登录，使用可用的账号登录系统；3. 登录后观察首页（学生主页/Dashboard）是否正常加载内容，包括侧边栏、欢迎信息、继续学习区域、已注册课程、进度追踪、推荐内容等模块；4. 特别关注当用户未加入任何批次（batch）时，首页是否仍能正常渲染而不出现空白或控制台报错；5. 检查浏览器控制台是否有 JavaScript 错误。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "登录后首页应正常加载所有仪表盘内容，即使用户未加入任何批次，页面也不应出现空白，不应有 JavaScript 错误，侧边栏、欢迎信息及各内容区域均应正常显示。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

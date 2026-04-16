@@ -1,0 +1,26 @@
+{
+  "task_id": "lumen-473",
+  "repo": "lumen-notes/lumen",
+  "issue_number": 473,
+  "pr_number": 476,
+  "buggy_commit": "affc7f0b3e",
+  "fix_commit": "7e7c975da1",
+  "framework": "react",
+  "deploy_commands": [
+    "git clone https://github.com/lumen-notes/lumen.git",
+    "cd lumen",
+    "git checkout affc7f0b3e",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "lumen",
+  "test_description_zh": "测试 Markdown 文件中外部图片的渲染功能。具体步骤：1. 打开应用首页，找到或创建一个包含 Markdown 内容的笔记/文档。2. 在 Markdown 内容中插入一个包含复杂 URL 参数的外部图片引用，例如包含特殊字符（如 #、~、多个查询参数）的图片 URL，格式为 ![](https://example.com/image.png?w=100&h=100#fragment)。3. 同时插入一个简单 URL 格式的外部图片引用，例如 ![](https://example.com/simple-image.jpg)。4. 观察 Markdown 渲染预览区域，验证两种格式的外部图片是否都能正常显示渲染。5. 点击渲染后的图片，确认是否能在新标签页中打开原始图片链接。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "所有外部图片引用（无论 URL 格式是否复杂）都应在 Markdown 渲染视图中正常显示，图片可见且可点击跳转到原始链接。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

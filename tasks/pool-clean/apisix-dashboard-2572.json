@@ -1,0 +1,26 @@
+{
+  "task_id": "apisix-dashboard-2572",
+  "repo": "apache/apisix-dashboard",
+  "issue_number": 2572,
+  "pr_number": 2573,
+  "buggy_commit": "adcd2e3766",
+  "fix_commit": "80029c6494",
+  "framework": "react",
+  "deploy_commands": [
+    "git clone https://github.com/apache/apisix-dashboard.git",
+    "cd apisix-dashboard",
+    "git checkout adcd2e3766",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "apisix-dashboard",
+  "test_description_zh": "测试 APISIX Dashboard 中抽屉组件（Drawer）内插件的删除功能。具体步骤：1. 打开浏览器访问 APISIX Dashboard；2. 进入路由（Route）或服务（Service）等包含插件配置的页面；3. 在插件配置步骤中，启用一个插件（如 basic-auth 等常用插件）；4. 打开插件列表的抽屉组件（Drawer），找到已启用的插件；5. 点击该插件对应的删除按钮；6. 验证插件是否被成功从已启用列表中移除。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在抽屉组件中点击删除按钮后，对应的已启用插件应被成功删除并从插件列表中移除。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

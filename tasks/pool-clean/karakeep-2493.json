@@ -1,0 +1,24 @@
+{
+  "task_id": "karakeep-2493",
+  "repo": "karakeep-app/karakeep",
+  "issue_number": 2493,
+  "pr_number": 2556,
+  "buggy_commit": "f500129c74",
+  "fix_commit": "3d18d89c36",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/karakeep-app/karakeep.git",
+    "cd karakeep",
+    "git checkout f500129c74",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "karakeep",
+  "test_description_zh": "测试 KaraKeep 的书签收藏和文章阅读功能，验证保存网页文章后图片是否能正常显示。操作步骤：1. 在浏览器中打开 KaraKeep 应用首页。2. 找到添加书签或收藏链接的入口（如添加按钮或输入框）。3. 尝试添加一个包含图片的网页链接作为书签（例如微信公众号文章链接 https://mp.weixin.qq.com/s/kvhc3xjpBl8Uk4-Yv0-CAw 或其他含有懒加载图片的网页）。4. 等待系统抓取和解析文章内容。5. 打开保存的书签，进入文章阅读/预览视图。6. 检查文章中的图片是否正常加载和显示，图片不应显示为占位符或空白区域。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "保存的文章在阅读视图中，所有图片（包括使用非标准懒加载属性如 data-src 的图片）都应正常加载并显示，不应出现图片破损、占位符或空白的情况。",
+  "max_steps": 80,
+  "timeout_minutes": 15
+}

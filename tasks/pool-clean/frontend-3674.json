@@ -1,0 +1,26 @@
+{
+  "task_id": "frontend-3674",
+  "repo": "source-academy/frontend",
+  "issue_number": 3674,
+  "pr_number": 3701,
+  "buggy_commit": "342c852708",
+  "fix_commit": "5c69204ecd",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/source-academy/frontend.git",
+    "cd frontend",
+    "git checkout 342c852708",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/playground",
+  "app_name": "frontend",
+  "test_description_zh": "测试 CSE Machine 中 for 循环执行后帧（frame）的布局顺序是否按照时间先后从左到右排列。操作步骤：1. 打开 Source Academy 的 Playground 页面；2. 在代码编辑器中输入以下代码：function foo(n) { const msg = \"frame \" + stringify(n); } for (let i = 0; i < 3; i = i + 1) { foo(i); } 3. 选择 Source §3 或支持 for 循环的语言版本；4. 运行代码并打开 CSE Machine 可视化视图（在右侧面板中切换到 CSE Machine 标签）；5. 逐步执行或完整执行代码后，观察 CSE Machine 中所有帧的布局排列；6. 验证新创建的帧是否按照创建的时间顺序从左到右依次排列，即先创建的帧在左侧，后创建的帧在右侧，循环变量的帧和函数调用产生的帧都应遵循此时间顺序。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "CSE Machine 可视化中，所有帧按照创建时间的先后顺序从左到右排列，for 循环中产生的循环变量帧不会将之前已创建的函数调用帧挤到右侧，整体布局保持时间顺序的一致性。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

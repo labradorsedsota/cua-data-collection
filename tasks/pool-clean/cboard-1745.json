@@ -1,0 +1,24 @@
+{
+  "task_id": "cboard-1745",
+  "repo": "cboard-org/cboard",
+  "issue_number": 1745,
+  "pr_number": 1819,
+  "buggy_commit": "62d72c3f10",
+  "fix_commit": "3556b26aa7",
+  "framework": "cra",
+  "deploy_commands": [
+    "git clone https://github.com/cboard-org/cboard.git",
+    "cd cboard",
+    "git checkout 62d72c3f10",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "cboard",
+  "test_description_zh": "测试导航到根面板时URL是否正确更新。操作步骤：1. 打开应用后，进入设置页面（Settings），找到 Navigation and Buttons（导航和按钮）相关选项，启用 Context-Aware Back Buttons（上下文感知返回按钮），然后点击保存。2. 返回面板界面，依次点击进入多层嵌套的文件夹（至少深入三层）。3. 观察当前浏览器地址栏中的URL，确认URL包含当前面板的ID。4. 点击导航栏上的 |< 按钮（回到根面板按钮），导航回根面板。5. 观察浏览器地址栏中的URL是否已更新为根面板对应的ID，确认URL与当前显示的面板一致。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "点击 |< 按钮导航回根面板后，浏览器地址栏中的URL应正确更新为根面板对应的路径（如 /board/{根面板ID}），与当前显示的面板保持一致。",
+  "max_steps": 80,
+  "timeout_minutes": 15
+}

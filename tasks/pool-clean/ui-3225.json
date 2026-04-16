@@ -1,0 +1,26 @@
+{
+  "task_id": "ui-3225",
+  "repo": "temporalio/ui",
+  "issue_number": 3225,
+  "pr_number": 3291,
+  "buggy_commit": "3e6416d28c",
+  "fix_commit": "09c083e018",
+  "framework": "svelte",
+  "deploy_commands": [
+    "git clone https://github.com/temporalio/ui.git",
+    "cd ui",
+    "git checkout 3e6416d28c",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/user-attachments/assets/914dc91e-d0f9-464b-864b-7e88c0073e38",
+  "app_name": "@temporalio/ui",
+  "test_description_zh": "测试 Temporal UI 中对已完成工作流执行 Reset 操作时的授权错误提示功能。步骤：1. 在浏览器中打开应用，导航到一个已完成的工作流详情页面。2. 找到并点击 Reset 操作按钮。3. 在弹出的 Reset 确认模态框中，填写必要的参数并确认执行 Reset 操作。4. 观察当操作失败时（例如授权失败），模态框是否正确显示错误信息，而不是直接关闭。验证 Reset 操作在遇到错误时，确认模态框应保持打开状态并展示相应的错误提示信息。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当 Reset 操作遇到错误（如授权失败）时，Reset 确认模态框应保持打开状态并正确显示错误信息，而不是在操作完成前自动关闭。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

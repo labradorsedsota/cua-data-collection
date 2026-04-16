@@ -1,0 +1,26 @@
+{
+  "task_id": "insights-647",
+  "repo": "frappe/insights",
+  "issue_number": 647,
+  "pr_number": 768,
+  "buggy_commit": "a447f6447d",
+  "fix_commit": "0cc5173342",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/frappe/insights.git",
+    "cd insights",
+    "git checkout a447f6447d",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "insights",
+  "test_description_zh": "测试折线图在按日期降序排序时的钻取（drill down）功能是否正确。具体步骤：1. 打开 Insights 应用，进入查询或图表创建页面；2. 创建一个新的查询，包含一个日期列和一个数字列；3. 创建一个折线图（Line Chart）来可视化该查询结果；4. 将日期列设置为降序排序（descending order）；5. 查看图表渲染结果，然后点击图表上的第2个数据点进行钻取（drill down）；6. 验证钻取结果是否与该数据点对应的实际数据一致。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "点击降序排序后的折线图上的第2个数据点进行钻取时，钻取结果应准确对应该数据点所代表的日期和数值，而非其他行的数据。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

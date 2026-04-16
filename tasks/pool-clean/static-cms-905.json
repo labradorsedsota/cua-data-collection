@@ -1,0 +1,26 @@
+{
+  "task_id": "static-cms-905",
+  "repo": "StaticJsCMS/static-cms",
+  "issue_number": 905,
+  "pr_number": 911,
+  "buggy_commit": "2d2b048347",
+  "fix_commit": "a0bc731357",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/StaticJsCMS/static-cms.git",
+    "cd static-cms",
+    "git checkout 2d2b048347",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "static-cms",
+  "test_description_zh": "测试 Static CMS 中 relation 小部件的界面表现。步骤：1. 打开应用后，找到包含 relation 类型字段的内容编辑页面（可能需要先进入某个 collection 并创建或编辑一个条目）。2. 找到 relation 小部件（一个带有自动补全功能的下拉选择框），点击该字段使其获得焦点，观察焦点环的样式是否正常。3. 在 relation 小部件中输入内容触发自动补全列表，观察加载图标与箭头图标之间的布局是否正常、两者是否有合理的间距。4. 如果页面上同时存在 Markdown 编辑器，检查 relation 小部件的自动补全下拉列表是否能正常显示在其他组件（如 Markdown 编辑器工具栏）之上，不被遮挡。5. 同样检查 text 小部件获得焦点时的样式表现。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "relation 小部件获得焦点时焦点环样式正常；加载图标与箭头图标之间布局合理，不会重叠；自动补全下拉列表的 z-index 足够高，不会被 Markdown 编辑器工具栏或其他元素遮挡；text 小部件焦点样式也正常。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

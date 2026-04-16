@@ -1,0 +1,26 @@
+{
+  "task_id": "open5e-694",
+  "repo": "open5e/open5e",
+  "issue_number": 694,
+  "pr_number": 697,
+  "buggy_commit": "ecb9addfbc",
+  "fix_commit": "a515b935c9",
+  "framework": "nuxt",
+  "deploy_commands": [
+    "git clone https://github.com/open5e/open5e.git",
+    "cd open5e",
+    "git checkout ecb9addfbc",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/monsters/srd_veteran",
+  "app_name": "nuxt-app",
+  "test_description_zh": "测试怪物详情页中语言字段的渲染功能。操作步骤：1. 打开应用首页，导航到怪物（Monsters）列表页面；2. 从列表中选择一个已知有语言信息的怪物（例如搜索 Veteran 或其他常见怪物），点击进入该怪物的详情页（/monsters/[id] 页面）；3. 在怪物的属性区块（stat-block）中找到 Languages（语言）字段；4. 验证语言字段是否正确显示了语言信息（例如显示 'any one language (usually Common)' 或具体语言名称列表），而不是空白或缺失内容；5. 如果可能，再查看一个不会说任何语言的怪物的详情页，确认语言字段显示为破折号（–）而非空白。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "怪物详情页的 Languages 字段应正确渲染语言信息：有语言字符串时显示对应文本（如 'any one language (usually Common)'），无字符串但有语言数据时显示逗号分隔的语言名称列表，完全没有语言时显示破折号（–）。语言字段不应为空白。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

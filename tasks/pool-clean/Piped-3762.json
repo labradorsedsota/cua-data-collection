@@ -1,0 +1,26 @@
+{
+  "task_id": "Piped-3762",
+  "repo": "TeamPiped/Piped",
+  "issue_number": 3762,
+  "pr_number": 3905,
+  "buggy_commit": "4f1c8e514c",
+  "fix_commit": "c2fa0045ad",
+  "framework": "vue",
+  "deploy_commands": [
+    "git clone https://github.com/TeamPiped/Piped.git",
+    "cd Piped",
+    "git checkout 4f1c8e514c",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/playlists",
+  "app_name": "piped",
+  "test_description_zh": "测试从CSV文件导入YouTube播放列表时播放列表名称的正确性。具体步骤：1. 打开浏览器访问应用首页。2. 导航到播放列表页面（/playlists）。3. 找到导入播放列表的功能入口。4. 准备一个CSV格式的播放列表文件，文件名为有意义的名称（例如 'My Favorite Music.csv'），文件内容包含YouTube视频ID列表。5. 通过导入功能上传该CSV文件。6. 导入完成后，查看播放列表页面中新导入的播放列表名称，验证播放列表名称是否使用了CSV文件的文件名（去掉.csv后缀），而不是时间戳格式的名称。如果可以的话，尝试导入多个不同文件名的CSV文件，确认每个导入的播放列表都正确使用了对应的文件名作为播放列表名称。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "导入CSV播放列表文件后，播放列表页面中显示的播放列表名称应为CSV文件的文件名（去掉.csv后缀），例如上传 'My Favorite Music.csv' 后播放列表名称应显示为 'My Favorite Music'，而非时间戳格式的名称。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

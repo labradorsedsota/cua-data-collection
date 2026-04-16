@@ -1,0 +1,26 @@
+{
+  "task_id": "kaneo-1129",
+  "repo": "usekaneo/kaneo",
+  "issue_number": 1129,
+  "pr_number": 1134,
+  "buggy_commit": "7938ca310e",
+  "fix_commit": "e563fb2e1f",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/usekaneo/kaneo.git",
+    "cd kaneo",
+    "git checkout 7938ca310e",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "kaneo",
+  "test_description_zh": "测试 Kaneo 项目看板通过公开链接分享后，自定义列的显示情况。具体步骤：1. 首先登录 Kaneo 系统，创建一个新项目。2. 在该项目的看板中，除了默认的标准列之外，添加若干自定义列（例如命名为 'Idea'、'Review' 等），并在自定义列中创建一些任务卡片。3. 将该项目的可见性设置为公开（Public），获取公开分享链接。4. 在一个未登录的浏览器窗口（或无痕模式）中打开该公开链接，查看看板页面。5. 验证公开链接页面中是否能看到所有列，包括标准列和自定义列，以及自定义列中的任务卡片是否正常显示。同时注意自定义列的列名称是否正确显示（而非显示类似 'status.xxx' 的内部标识符）。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在公开链接页面中，应能看到看板的所有列，包括用户自定义创建的列及其中的任务卡片，自定义列的名称应正确显示为用户设定的名称，而非内部标识符。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

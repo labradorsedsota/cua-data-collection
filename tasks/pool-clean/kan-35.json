@@ -1,0 +1,24 @@
+{
+  "task_id": "kan-35",
+  "repo": "kanbn/kan",
+  "issue_number": 35,
+  "pr_number": 36,
+  "buggy_commit": "6eb17529f1",
+  "fix_commit": "e53efe80c5",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/kanbn/kan.git",
+    "cd kan",
+    "git checkout 6eb17529f1",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "kan",
+  "test_description_zh": "测试公开看板中活动列表里评论的权限控制功能。步骤：1. 在未登录状态下访问一个公开看板页面（如果有公开看板入口的话）；2. 点击看板中的某个任务卡片，打开卡片详情；3. 查看卡片详情中的活动列表（Activity List）区域，找到其他用户发表的评论；4. 观察评论旁边是否显示编辑或删除按钮（三个点的菜单）；5. 验证在未登录或非评论作者的情况下，不应看到对他人评论的编辑/删除操作按钮。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在未登录状态下或非评论作者身份下查看公开看板的任务卡片详情时，活动列表中他人发表的评论不应显示编辑/删除操作按钮，只有自己发表的评论才能看到编辑/删除选项。",
+  "max_steps": 80,
+  "timeout_minutes": 15
+}

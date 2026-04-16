@@ -1,0 +1,24 @@
+{
+  "task_id": "maskito-2534",
+  "repo": "taiga-family/maskito",
+  "issue_number": 2534,
+  "pr_number": 2537,
+  "buggy_commit": "a6dd206638",
+  "fix_commit": "40ef2e03b8",
+  "framework": "angular",
+  "deploy_commands": [
+    "git clone https://github.com/taiga-family/maskito.git",
+    "cd maskito",
+    "git checkout a6dd206638",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:4200 | grep -q '<'",
+  "dev_url": "http://localhost:4200",
+  "test_page": "/edit/maskito-number-issue-2534-reproduction",
+  "app_name": "maskito",
+  "test_description_zh": "测试 Maskito Number 数字掩码输入框在有初始值时的选区替换功能。操作步骤：1. 打开页面，找到包含初始值 '123 456'（或 '123_456'）的数字输入框。2. 点击输入框使其获得焦点。3. 选中从第2个字符到末尾的文本（即选中 '3_456' 或 '3 456' 部分，保留前面的 '12'）。4. 按下数字键 '9'，用 '9' 替换选中的部分。5. 验证输入框中的值应为 '129'（即前面未选中的 '12' 加上输入的 '9'）。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在数字掩码输入框中选中部分文本后按数字键替换，输入框应正确显示未选中部分加上新输入的数字，即显示 '129'，前面未被选中的字符 '12' 应完整保留，不会丢失任何未选中的字符。",
+  "max_steps": 80,
+  "timeout_minutes": 15
+}

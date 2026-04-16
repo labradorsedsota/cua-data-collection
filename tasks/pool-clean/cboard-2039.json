@@ -1,0 +1,26 @@
+{
+  "task_id": "cboard-2039",
+  "repo": "cboard-org/cboard",
+  "issue_number": 2039,
+  "pr_number": 2042,
+  "buggy_commit": "18624cfdcd",
+  "fix_commit": "69e59e2523",
+  "framework": "cra",
+  "deploy_commands": [
+    "git clone https://github.com/cboard-org/cboard.git",
+    "cd cboard",
+    "git checkout 18624cfdcd",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/settings/speech",
+  "app_name": "cboard",
+  "test_description_zh": "测试在 Cboard 应用中登录后，ElevenLabs 语音功能是否正常工作。具体步骤：1. 打开应用首页，如果已登录则先登出。2. 进行登录操作（使用可用的测试账号登录）。3. 登录成功后，导航到「Settings」（设置）页面。4. 在设置页面中找到「Speech」（语音）相关选项并进入。5. 查看是否存在 ElevenLabs API Key 的配置项，如果有 API Key 已配置，检查语音列表中是否能正常显示 ElevenLabs 的可用语音选项。6. 打开语音（Voices）下拉列表，确认列表中是否包含 ElevenLabs 提供的语音选项。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "登录后进入 Settings → Speech 页面，如果已配置 ElevenLabs API Key，语音列表中应当能够正常显示 ElevenLabs 提供的所有可用语音选项，无需手动重新输入 API Key 即可看到这些语音。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

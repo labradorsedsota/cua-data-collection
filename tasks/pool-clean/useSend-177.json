@@ -1,0 +1,26 @@
+{
+  "task_id": "useSend-177",
+  "repo": "usesend/useSend",
+  "issue_number": 177,
+  "pr_number": 204,
+  "buggy_commit": "55d2a10f2f",
+  "fix_commit": "fcd48dbfea",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/usesend/useSend.git",
+    "cd useSend",
+    "git checkout 55d2a10f2f",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/join-team",
+  "app_name": "usesend",
+  "test_description_zh": "测试团队邀请链接的完整流程。步骤：1. 以管理员身份登录 unsend 仪表盘；2. 导航到 Settings 页面；3. 点击 Invite Members 按钮邀请一个新成员；4. 复制生成的邀请链接；5. 在新的浏览器窗口或无痕模式中打开该邀请链接；6. 使用其他账号（如 GitHub 凭据）登录；7. 验证登录后是否能正确加入团队，而不是被要求创建新团队。重点关注 /join-team 页面在携带邀请参数时的行为是否正确。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "通过邀请链接登录后，用户应被正确引导加入已有团队，而非被要求创建新团队或看到'No invites found'的错误信息。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}

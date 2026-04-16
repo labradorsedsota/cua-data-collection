@@ -1,0 +1,26 @@
+{
+  "task_id": "storefront-902",
+  "repo": "saleor/storefront",
+  "issue_number": 902,
+  "pr_number": 1012,
+  "buggy_commit": "89996c825c",
+  "fix_commit": "89aeaa8ff2",
+  "framework": "nextjs",
+  "deploy_commands": [
+    "git clone https://github.com/saleor/storefront.git",
+    "cd storefront",
+    "git checkout 89996c825c",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/checkout",
+  "app_name": "saleor-storefront",
+  "test_description_zh": "测试购物车为空时结账页面的显示效果。操作步骤：1. 在商店首页浏览商品，将至少1件商品添加到购物车；2. 进入购物车或结账页面（尝试访问 /checkout 路径）；3. 在结账页面中将所有商品的数量设置为0或移除所有商品，使购物车变为空；4. 观察空购物车提示信息（如 'your cart is empty' 或类似文案）及 'go back to store' 按钮的页面布局和对齐情况，确认这些元素在页面中居中对齐且布局合理，没有出现错位或页面被不合理地分割的现象。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当购物车为空时，结账页面上的空购物车提示文字和返回商店按钮应当在页面中正确对齐、居中显示，布局合理美观，页面背景一致，不存在内容偏移或页面被不合理分割的问题。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "backend_risk": true,
+  "backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙"
+}
