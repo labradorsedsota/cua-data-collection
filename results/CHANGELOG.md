@@ -74,3 +74,16 @@
 | 24 | rich-markdown-editor-538 | worker-09 | mano_cua.result=__MISSING__ |
 
 共 24 张卡。
+
+## 2026-04-17 16:27 — 移除 2 张 sess_id 不合规结果卡
+
+**操作人：** Pichai（林菡确认）
+**原因：** status=completed 但 sess_id 为 N/A（Tauri 桌面应用，浏览器不兼容，无有效 mano-cua session）
+**操作：** 移至 results_archive/trash/，dispatch-log 改回 unassigned
+
+| # | task_id | 原 Worker | 问题 |
+|---|---------|-----------|------|
+| 1 | BongoCat-509 | worker-08 | sess_id=N/A-tauri-app-browser-incompatible |
+| 2 | BongoCat-777 | worker-08 | sess_id=N/A-tauri-app-browser-incompatible |
+
+共 2 张卡。
