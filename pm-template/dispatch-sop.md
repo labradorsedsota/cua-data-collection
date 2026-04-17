@@ -110,7 +110,8 @@ unassigned → assigned（Pichai 选卡）→ dispatched（Mycroft 发送后 Pic
 4. 更新选中卡的状态为 `assigned`，填入 `worker`、`batch`、`assigned_at`
 5. 更新 `summary` 统计
 6. `git push`
-7. 通知 Mycroft 派发
+7. 通知 Mycroft 派发：**必须在「执行专用」子区（`19fe99c798914d5fac7d7de9e6fcc839____2043640961514344448`）@Mycroft 下达指令，不要发到主群**
+8. 指令中必须明确写：**"用你自己的 bot token 发送，不要用 Pichai 的 token"**
 
 ### 5.2 确认派发
 
