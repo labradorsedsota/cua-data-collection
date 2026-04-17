@@ -1,0 +1,18 @@
+{
+  "task_id": "TiddlyWiki5-9788",
+  "repo": "TiddlyWiki/TiddlyWiki5",
+  "worker": "worker-02",
+  "status": "completed",
+  "sess_id": "sess-20260417120013-8bbc68da61a74756b9f3bfc8828796e4",
+  "expected_result_used": true,
+  "duration_seconds": 420,
+  "timestamp": "2026-04-17T12:07:00+08:00",
+  "mano_cua": {
+    "status": "COMPLETED",
+    "total_steps": 24,
+    "last_action": "DONE",
+    "result": "abnormal",
+    "result_summary": "未加引号含冒号的宏参数无法正确解析——<<testmacro $:/some/path>>渲染为空值'param value is:'，而加引号版本<<testmacro \"$:/some/path\">>正确渲染为'param value is: $:/some/path'",
+    "last_reasoning": "Now I can clearly see the rendered output of the \"MacroColonTest\" tiddler:\n\n**Line 1:** `param value is:` ← (unquoted parameter: `<<testmacro $:/some/path>>`)\n**Line 2:** `param value is: $:/some/path` ← (quoted parameter: `<<testmacro \"$:/some/path\">>`)\n\nThis confirms the bug! The comparison clearly shows:\n\n1. **Unquoted parameter with colon** (`<<testmacro $:/some/path>>`): The parameter value `$:/some/path` is **NOT rendered**. The output is just \"param value is:\" with nothing after the colon.\n\n2. **Quoted parameter with colon** (`<<testmacro \"$:/some/path\">>`): The parameter value `$:/some/path` **IS rendered correctly**. The output is \"param value is: $:/some/path\" (shown as a link in blue).\n\nThis means:\n- ✅ Quoted parameters with colons: Work correctly\n- ❌ Unquoted parameters with colons: Do NOT work correctly (parameter is empty/missing)"
+  }
+}
