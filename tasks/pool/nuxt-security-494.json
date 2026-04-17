@@ -1,0 +1,34 @@
+{
+  "task_id": "nuxt-security-494",
+  "repo": "Baroshem/nuxt-security",
+  "issue_number": 494,
+  "pr_number": 502,
+  "buggy_commit": "7811a00397",
+  "fix_commit": "e6df1ace21",
+  "framework": "nuxt",
+  "deploy_commands": [
+    "git clone https://github.com/Baroshem/nuxt-security.git",
+    "cd nuxt-security",
+    "git checkout 7811a00397",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "nuxt-security",
+  "test_description_zh": "测试在页面中使用 NuxtIsland（服务端组件）时，CSP nonce 功能是否正常工作。操作步骤：1. 打开首页，该页面应包含一个服务端组件（ServerComponent）。2. 检查页面是否正常渲染，服务端组件内容是否正确显示。3. 打开浏览器开发者工具的网络（Network）面板，查看初始文档请求的响应头中 Content-Security-Policy 的 script-src 指令，确认其中包含正确的 nonce- 值。4. 检查页面 HTML 源码中 script 标签是否带有对应的 nonce 属性。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "页面正常渲染，服务端组件内容正确显示，初始文档请求的 CSP 响应头 script-src 中包含有效的 nonce- 值，页面中的 script 标签也带有对应的 nonce 属性。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 5872,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "nonce is missing when rendering a <NuxtIsland> component during SSR",
+    "summary": "feat: support server-only (NuxtIsland) components",
+    "changed_files": 9,
+    "ui_score": 5,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "karakeep-2396",
+  "repo": "karakeep-app/karakeep",
+  "issue_number": 2396,
+  "pr_number": 2429,
+  "buggy_commit": "42cdc937c8",
+  "fix_commit": "95bfa5691c",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/karakeep-app/karakeep.git",
+    "cd karakeep",
+    "git checkout 42cdc937c8",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/settings",
+  "app_name": "karakeep",
+  "test_description_zh": "测试「使用 AI 总结」功能是否遵循用户的语言设置。具体步骤：1. 首先登录应用（如果需要）。2. 进入用户设置页面，找到 AI 设置相关选项。3. 将「推理语言」（Inference Language）更改为「Simplified Chinese」（简体中文），保存设置。4. 返回首页，打开一篇已保存的文章/书签。5. 点击「Summarize with AI」（使用 AI 总结）按钮。6. 观察生成的摘要内容所使用的语言是否为简体中文。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在将推理语言设置为简体中文后，点击「Summarize with AI」生成的摘要内容应当以简体中文呈现。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 76043,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Summarize with AI does not respect language setting",
+    "summary": "fix: use user's preferred language for manual summarization",
+    "changed_files": 1,
+    "ui_score": 10,
+    "has_screenshot": false
+  },
+  "_backend_risk": true,
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

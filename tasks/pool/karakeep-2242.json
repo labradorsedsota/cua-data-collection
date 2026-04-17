@@ -1,0 +1,34 @@
+{
+  "task_id": "karakeep-2242",
+  "repo": "karakeep-app/karakeep",
+  "issue_number": 2242,
+  "pr_number": 2274,
+  "buggy_commit": "e842c5a7ac",
+  "fix_commit": "e53f3ae528",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/karakeep-app/karakeep.git",
+    "cd karakeep",
+    "git checkout e842c5a7ac",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/settings",
+  "app_name": "karakeep",
+  "test_description_zh": "测试设置页面的访问权限控制。步骤：1. 打开浏览器，不进行任何登录操作（或确保处于未登录状态）；2. 直接在地址栏访问 /settings 页面；3. 观察页面是否正常处理未认证用户的访问，例如是否正确重定向到登录页面或显示适当的提示信息，而不是显示服务器错误（如 500 错误页面或白屏）。4. 如果系统有登录功能，尝试登录后再访问 /settings 页面，确认已登录用户可以正常加载设置页面布局和内容。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "未登录用户访问 /settings 时应被正确重定向到登录页面或显示友好提示，不应出现 5xx 服务器错误；已登录用户访问 /settings 时应正常显示设置页面布局。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 76043,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "BUG Cannot install if user \"karakeep\" exist",
+    "summary": "fix: fix 5xx due to missing auth checks on settings layout",
+    "changed_files": 1,
+    "ui_score": 9,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}

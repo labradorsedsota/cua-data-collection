@@ -1,0 +1,36 @@
+{
+  "task_id": "apisix-dashboard-3321",
+  "repo": "apache/apisix-dashboard",
+  "issue_number": 3321,
+  "pr_number": 3325,
+  "buggy_commit": "58d593303d",
+  "fix_commit": "0913716a5a",
+  "framework": "react",
+  "deploy_commands": [
+    "git clone https://github.com/apache/apisix-dashboard.git",
+    "cd apisix-dashboard",
+    "git checkout 58d593303d",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/settings",
+  "app_name": "apisix-dashboard",
+  "test_description_zh": "测试 APISIX Dashboard 在不同语言环境下 Services 页面空状态提示信息的国际化显示。具体步骤：1. 打开 Dashboard 首页；2. 进入 Settings 页面，将语言切换为中文（Chinese）；3. 然后导航到左侧边栏的 Services 页面；4. 在 Services 列表为空的情况下，观察页面上是否正确显示中文的空状态提示信息（而非英文回退文本或空白）；5. 返回 Settings 页面，依次切换为德语（German）、西班牙语（Spanish）、土耳其语（Turkish），每次切换后都前往 Services 页面检查空状态提示是否以对应语言正确显示。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "在每种语言（中文、德语、西班牙语、土耳其语）下，Services 页面的空状态提示信息都应以对应语言正确显示，不应出现英文回退文本或空白缺失的情况。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 17159,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "fix(i18n): missing \"services.empty\" translation key in zh, de, es, and tr locales",
+    "summary": "fix(i18n): add missing services.empty translation key in zh, de, es, …",
+    "changed_files": 4,
+    "ui_score": 15,
+    "has_screenshot": false
+  },
+  "_backend_risk": true,
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

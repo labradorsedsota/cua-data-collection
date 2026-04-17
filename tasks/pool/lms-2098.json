@@ -1,0 +1,36 @@
+{
+  "task_id": "lms-2098",
+  "repo": "frappe/lms",
+  "issue_number": 2098,
+  "pr_number": 2120,
+  "buggy_commit": "c5145c6c24",
+  "fix_commit": "aa7ec019bc",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/frappe/lms.git",
+    "cd lms",
+    "git checkout c5145c6c24",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/lms/job-openings",
+  "app_name": "frappe_lms",
+  "test_description_zh": "测试 LMS 系统中 Jobs（职位）侧边栏选项的显示控制功能。操作步骤：1. 首先以管理员身份登录，进入 LMS Settings 页面，在 Sidebar 设置中确保 Jobs 选项被取消勾选（设为禁用/0），然后保存设置。2. 切换为普通学生账号（LMS Student 角色）登录系统。3. 观察侧边栏中是否还显示 Jobs 标签。4. 尝试手动访问 /lms/job-openings 页面，检查页面是否可以正常访问和交互。验证当 Jobs 在 LMS Settings 中被禁用时，已登录的认证用户（包括学生角色）在侧边栏中是否能看到 Jobs 标签，以及是否能访问职位相关页面。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "当 LMS Settings 中 Jobs 选项被取消勾选（禁用）后，所有用户（包括已登录的学生角色用户）的侧边栏中不应显示 Jobs 标签，且访问 /lms/job-openings 页面时应被正确限制或隐藏。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 99973,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "jobs: 0 in LMS Settings does not hide Jobs tab from authenticated users",
+    "summary": "fix: misc issues",
+    "changed_files": 10,
+    "ui_score": 7,
+    "has_screenshot": false
+  },
+  "_backend_risk": true,
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

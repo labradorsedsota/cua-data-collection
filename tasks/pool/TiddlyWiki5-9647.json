@@ -1,0 +1,34 @@
+{
+  "task_id": "TiddlyWiki5-9647",
+  "repo": "TiddlyWiki/TiddlyWiki5",
+  "issue_number": 9647,
+  "pr_number": 9648,
+  "buggy_commit": "0177f09823",
+  "fix_commit": "08f2b8bdf4",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/TiddlyWiki/TiddlyWiki5.git",
+    "cd TiddlyWiki5",
+    "git checkout 0177f09823",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "tiddlywiki",
+  "test_description_zh": "测试 TiddlyWiki 中函数/变量与动态委托的交互功能。具体步骤：1. 打开 TiddlyWiki 应用页面；2. 创建一个新的 tiddler；3. 在 tiddler 中输入以下 wikitext 内容：\\function xyz.one(elem) yes\\n\\function xyz.two(elem) no\\n\\function dyn-delegate() [variables[]prefix[xyz.]]:filter[function<currentTiddler>match[yes]]:then[[yes]]\\n\\function stat-delegate() [function[xyz.one]match[yes]][function[xyz.two]match[yes]]:then[[yes]]\\n\\ncalling dynamic version: {{{[function[dyn-delegate]]}}}<br>\\ncalling static version: {{{[function[stat-delegate]]}}}<br>\\nevaluating directly: {{{[variables[]prefix[xyz.]]:filter[function<currentTiddler>match[yes]]:then[[yes]]}}}；4. 保存该 tiddler 并查看渲染结果；5. 检查三行输出（dynamic version、static version、evaluating directly）是否都返回 yes。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "三行转换输出（calling dynamic version、calling static version、evaluating directly）应全部显示 yes。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 74009,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Report] Another weird behavior with functions/variables",
+    "summary": "Fixes variable enumeration in widgets",
+    "changed_files": 10,
+    "ui_score": 3,
+    "has_screenshot": false
+  },
+  "_description_source": "llm"
+}
