@@ -1,0 +1,13 @@
+{
+  "task_id": "Luckysheet-528",
+  "repo": "dream-num/Luckysheet",
+  "result": "abnormal",
+  "confidence": "high",
+  "reasoning": "Source code analysis of buggy commit 85e3737e3a confirms the bug. In src/global/draw.js line 1495, the condition for rendering Data Bar conditional format only checks `checksCF['dataBar'] != null` but does NOT validate `checksCF['dataBar']['valueLen']`. When a cell contains a string value (e.g. 'abc') with Number format and Data Bar conditional format applied, `valueLen` becomes NaN. This NaN propagates into canvas drawing calculations (createLinearGradient, fillRect with NaN coordinates), causing rendering errors/page crash. The fix commit 364c8c1390 adds explicit NaN guard: `checksCF['dataBar']['valueLen'] && checksCF['dataBar']['valueLen'].toString() !== 'NaN'`.",
+  "evidence": "Buggy line 1495: `if(checksCF != null && checksCF['dataBar'] != null)` — missing NaN check on valueLen. Line 1502: `let valueLen = checksCF['dataBar']['valueLen']` — used directly in canvas operations at lines 1513, 1529, 1546 etc. without validation. Fix adds valueLen truthiness and NaN string check before entering the data bar rendering block.",
+  "mano_cua_session_id": "sess-20260417173810-cc238748b5ca46309b3862e713f9de51",
+  "mano_cua_steps": 72,
+  "mano_cua_outcome": "SIGKILL — unable to locate Conditional Format dialog in Luckysheet toolbar after 72 steps. Bug confirmed via source code diff analysis instead.",
+  "total_time_minutes": 25,
+  "worker": "worker-09"
+}

@@ -1,0 +1,13 @@
+{
+  "task_id": "Starkiller-5",
+  "repo": "BC-SECURITY/Starkiller",
+  "result": "abnormal",
+  "confidence": "high",
+  "reasoning": "Source code analysis of buggy commit 1cf9d12c44 confirms the bug. In src/api/listener-api.js, the createListener function hardcodes the API endpoint as POST /listeners/http regardless of the listener type selected by the user. When a non-HTTP listener type (e.g. http_hop, http_mapi) is chosen, the request is still sent to /listeners/http, causing the backend to return a 400 error because the options don't match the http listener schema. The fix commit 36f9801201 changes the endpoint to use template literal /listeners/${type} so the correct listener type is passed to the API.",
+  "evidence": "Buggy: src/api/listener-api.js line 26: `return axios.post('/listeners/http', options)` — hardcoded 'http' type. ListenerForm.vue line 254: dispatches createListener with only `this.form` (no type). ListenerModule.js line 28: passes options directly without type. Fix: api accepts (type, options), uses `/listeners/${type}`. ListenerForm.vue passes {type: this.listenerType, options: this.form}. Store destructures {type, options} and forwards both.",
+  "mano_cua_session_id": null,
+  "mano_cua_steps": 0,
+  "mano_cua_outcome": "Skipped — Starkiller requires Empire C2 backend for login, cannot test frontend-only. Bug confirmed via source code diff.",
+  "total_time_minutes": 3,
+  "worker": "worker-09"
+}
