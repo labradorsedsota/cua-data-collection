@@ -37,3 +37,40 @@
 | 25 | rich-markdown-editor-489 | worker-09 | non-standard status: unclear |
 
 共 25 张卡。
+
+## 2026-04-17 16:23 — 移除 24 张 mano_cua.result 非标准结果卡
+
+**操作人：** Pichai（林菡确认）
+**原因：** status=completed 但 mano_cua.result 不在 {normal, abnormal, unclear} 标准值范围内
+**操作：** 从 results/{workerXX}/ 移至 results_archive/trash/，dispatch-log 状态改回 unassigned
+
+**影响卡列表：**
+
+| # | task_id | 原 Worker | 问题 |
+|---|---------|-----------|------|
+| 1 | lokus-15 | worker-02 | mano_cua.result=deploy_failed |
+| 2 | lokus-255 | worker-02 | mano_cua.result=deploy_failed |
+| 3 | lokus-259 | worker-02 | mano_cua.result=deploy_failed |
+| 4 | lokus-261 | worker-02 | mano_cua.result=deploy_failed |
+| 5 | lokus-283 | worker-02 | mano_cua.result=deploy_failed |
+| 6 | website-4776 | worker-04 | mano_cua.result=bug_found |
+| 7 | SvelteLab-194 | worker-06 | mano_cua.result=deploy_failed |
+| 8 | SvelteLab-289 | worker-06 | mano_cua.result=deploy_failed |
+| 9 | github-profile-readme-generator-249 | worker-06 | mano_cua.result=deploy_failed |
+| 10 | github-profile-readme-generator-382 | worker-06 | mano_cua.result=deploy_failed |
+| 11 | github-profile-readme-generator-93 | worker-06 | mano_cua.result=deploy_failed |
+| 12 | hermes-ide-75 | worker-06 | mano_cua.result=deploy_failed |
+| 13 | hermes-ide-78 | worker-06 | mano_cua.result=deploy_failed |
+| 14 | hermes-ide-87 | worker-06 | mano_cua.result=deploy_failed |
+| 15 | kan-35 | worker-06 | mano_cua.result=deploy_failed |
+| 16 | kan-376 | worker-06 | mano_cua.result=deploy_failed |
+| 17 | kan-70 | worker-06 | mano_cua.result=deploy_failed |
+| 18 | kan-71 | worker-06 | mano_cua.result=deploy_failed |
+| 19 | photon-345 | worker-06 | mano_cua.result=deploy_failed |
+| 20 | photon-543 | worker-06 | mano_cua.result=deploy_failed |
+| 21 | tabler-react-226 | worker-06 | mano_cua.result=deploy_failed |
+| 22 | tabler-react-238 | worker-06 | mano_cua.result=deploy_failed |
+| 23 | tabler-react-353 | worker-06 | mano_cua.result=deploy_failed |
+| 24 | rich-markdown-editor-538 | worker-09 | mano_cua.result=__MISSING__ |
+
+共 24 张卡。
