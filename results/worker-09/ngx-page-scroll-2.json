@@ -1,0 +1,18 @@
+{
+  "task_id": "ngx-page-scroll-2",
+  "repo": "Nolanus/ngx-page-scroll",
+  "worker": "worker-09",
+  "status": "completed",
+  "sess_id": null,
+  "expected_result_used": false,
+  "duration_seconds": 120,
+  "timestamp": "2026-04-17T05:57:00-07:00",
+  "mano_cua": {
+    "status": "SKIPPED",
+    "total_steps": 0,
+    "last_action": null,
+    "result": "abnormal",
+    "result_summary": "Bug confirmed via source code diff. In ng2-page-scroll.directive.ts, pageScrollFinish EventEmitter is created as new EventEmitter() without generic type parameter. In Angular, EventEmitter() without explicit generic defaults to async mode, causing pageScrollFinish events to not fire synchronously within router outlet change detection cycles. Fix changes to new EventEmitter<boolean>() which uses synchronous emission.",
+    "last_reasoning": "Single-line fix: new EventEmitter() → new EventEmitter<boolean>(). The missing generic type parameter causes Angular's EventEmitter constructor to use default isAsync=true behavior, breaking synchronous event propagation needed for page scroll completion within router outlets."
+  }
+}

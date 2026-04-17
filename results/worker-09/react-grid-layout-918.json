@@ -1,0 +1,18 @@
+{
+  "task_id": "react-grid-layout-918",
+  "repo": "react-grid-layout/react-grid-layout",
+  "worker": "worker-09",
+  "status": "completed",
+  "sess_id": null,
+  "expected_result_used": false,
+  "duration_seconds": 180,
+  "timestamp": "2026-04-17T05:57:00-07:00",
+  "mano_cua": {
+    "status": "SKIPPED",
+    "total_steps": 0,
+    "last_action": null,
+    "result": "abnormal",
+    "result_summary": "Bug confirmed via source code diff. Two issues: 1) calcXY() in calculateUtils.js uses margin[0]/margin[1] for coordinate offset but should use containerPadding[0]/containerPadding[1]. 2) GridItem.jsx onDrag/onDragEnd redundantly subtracts containerPadding before calling calcXY. When margin != containerPadding, placeholder position diverges from dragged item. Fix: calcXY uses containerPadding from positionParams, GridItem removes redundant subtraction.",
+    "last_reasoning": "Buggy calcXY: x = Math.round((left - margin[0]) / (colWidth + margin[0])). Fixed calcXY: x = Math.round((left - containerPadding[0]) / (colWidth + margin[0])). GridItem buggy: calcXY(params, top - containerPadding[1], left - containerPadding[0], w, h). Fixed: calcXY(params, top, left, w, h). Double subtraction of containerPadding + wrong offset base = placeholder misalignment when margin != containerPadding."
+  }
+}
