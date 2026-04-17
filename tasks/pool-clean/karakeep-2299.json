@@ -1,0 +1,28 @@
+{
+  "task_id": "karakeep-2299",
+  "repo": "karakeep-app/karakeep",
+  "issue_number": 2299,
+  "pr_number": 2300,
+  "buggy_commit": "e336513fad",
+  "fix_commit": "3408e6e485",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/karakeep-app/karakeep.git",
+    "cd karakeep",
+    "git checkout e336513fad",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/settings/import",
+  "app_name": "karakeep",
+  "test_description_zh": "测试从HTML文件导入书签功能，特别是当书签HTML文件中包含没有设置名称的空文件夹时的导入行为。具体步骤：1. 在浏览器中访问 /settings/import 页面；2. 准备一个标准的浏览器导出的书签HTML文件，其中包含一个文件夹名称为空的文件夹（即 <H3> 标签内容为空）；3. 点击导入按钮，选择该HTML书签文件进行导入；4. 观察导入过程是否能正常完成，不出现错误提示，且书签能够成功导入。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "包含空文件夹名称的HTML书签文件应能正常导入成功，不应出现错误提示或导入中断，空名称的文件夹应被自动处理（如替换为默认名称），所有书签条目均应正确导入。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 76043,
+  "_backend_risk": true,
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

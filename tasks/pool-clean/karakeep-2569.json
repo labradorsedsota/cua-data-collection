@@ -1,0 +1,28 @@
+{
+  "task_id": "karakeep-2569",
+  "repo": "karakeep-app/karakeep",
+  "issue_number": 2569,
+  "pr_number": 2589,
+  "buggy_commit": "c455f0a644",
+  "fix_commit": "645f2f0b2a",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/karakeep-app/karakeep.git",
+    "cd karakeep",
+    "git checkout c455f0a644",
+    "pnpm install --no-frozen-lockfile",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/settings",
+  "app_name": "karakeep",
+  "test_description_zh": "测试 RSS Feed 导入功能，验证添加外部 RSS 源后能否正确解析并导入条目。具体步骤：1. 打开应用首页并登录（如需要）。2. 导航到 Settings（设置）页面，找到 Feeds（订阅源）相关选项。3. 添加一个 RSS 订阅源（例如输入一个包含标准 RSS <item> 元素的 feed URL）。4. 在 Feeds 列表中找到刚添加的订阅源，点击 Fetch now（立即获取）按钮触发抓取。5. 观察抓取完成后，检查该订阅源的状态信息，确认是否成功导入了条目（entries 数量应大于 0）。6. 检查书签列表中是否出现了从该 RSS 源导入的新书签。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "RSS 订阅源抓取成功后，应能正确解析 feed 中的条目，显示导入的条目数量大于 0，并在书签列表中生成对应的新书签。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 76043,
+  "_backend_risk": true,
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}
