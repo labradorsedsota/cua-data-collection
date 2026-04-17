@@ -1,0 +1,36 @@
+{
+  "task_id": "lms-1583",
+  "repo": "frappe/lms",
+  "issue_number": 1583,
+  "pr_number": 2043,
+  "buggy_commit": "fb1e1ec2e4",
+  "fix_commit": "737993c543",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/frappe/lms.git",
+    "cd lms",
+    "git checkout fb1e1ec2e4",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/courses",
+  "app_name": "frappe_lms",
+  "test_description_zh": "测试课程页面和批次页面的筛选标签功能。操作步骤：1. 打开浏览器访问 /courses 页面；2. 观察页面上是否有筛选标签（如 All、Enrolled 等标签）；3. 如果已登录且有多个标签，依次点击各个筛选标签，观察课程列表是否随标签切换而正确变化；4. 特别点击 'Enrolled'（或对应的已注册/已报名）标签，确认列表是否正确筛选为用户已注册的课程；5. 然后导航到 /batches 页面，重复上述操作，点击各个筛选标签，确认批次列表是否随标签切换正确筛选；6. 验证每次点击标签后，页面内容确实发生了变化，而不是始终显示相同的默认列表。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "点击各个筛选标签后，课程/批次列表应正确根据所选标签进行筛选，特别是点击 Enrolled 标签后应仅显示用户已注册的课程或批次，而非显示默认的全部列表。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 99973,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "[Bug] Course and Batch filters (\"Enrolled\") fail in non-English languages due to hardcoded string",
+    "summary": "fix: filter tabs not working in non-english languages",
+    "changed_files": 2,
+    "ui_score": 10,
+    "has_screenshot": false
+  },
+  "_backend_risk": true,
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

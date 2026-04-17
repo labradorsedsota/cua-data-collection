@@ -1,0 +1,36 @@
+{
+  "task_id": "sorry-cypress-392",
+  "repo": "sorry-cypress/sorry-cypress",
+  "issue_number": 392,
+  "pr_number": 413,
+  "buggy_commit": "974bc43a95",
+  "fix_commit": "26b1a57733",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/sorry-cypress/sorry-cypress.git",
+    "cd sorry-cypress",
+    "git checkout 974bc43a95",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/runs",
+  "app_name": "sorry-cypress",
+  "test_description_zh": "测试 sorry-cypress 仪表盘中运行记录页面的 Git 提交详情链接功能。步骤：1. 在浏览器中打开应用首页，导航到 /runs 页面（或通过侧边栏/导航栏找到 Runs 列表页面）。2. 查找任意一条构建运行记录，点击进入其详情页面。3. 在详情页面中找到 Commit Details（提交详情）区域，检查其中显示的链接（包括 Origin 仓库链接、Commit 提交链接、Branch 分支链接）。4. 验证这些链接的 href 格式是否为正确的完整 URL（例如 https://github.com/org/repo 形式），而非错误的相对路径拼接形式。5. 如果页面上有可点击的提交详情链接，点击验证是否能正确跳转到对应的 GitHub 页面，而不是跳转到空白页面或错误页面。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "Commit Details 中的所有链接（Origin、Commit、Branch）应显示为正确的完整 GitHub URL 格式，点击后能正确导航到对应的 GitHub 页面，不应出现类似 http://example.com/git@github.com:org/repo.git 这样的错误拼接 URL，也不应跳转到空白页面。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 5905,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Git SSH URLs not properly handled",
+    "summary": "Handle SSH URLs",
+    "changed_files": 2,
+    "ui_score": 5,
+    "has_screenshot": false
+  },
+  "_backend_risk": true,
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}

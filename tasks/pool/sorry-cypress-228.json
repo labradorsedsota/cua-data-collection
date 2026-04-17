@@ -1,0 +1,36 @@
+{
+  "task_id": "sorry-cypress-228",
+  "repo": "sorry-cypress/sorry-cypress",
+  "issue_number": 228,
+  "pr_number": 505,
+  "buggy_commit": "2b02d56406",
+  "fix_commit": "ee601fd593",
+  "framework": "unknown",
+  "deploy_commands": [
+    "git clone https://github.com/sorry-cypress/sorry-cypress.git",
+    "cd sorry-cypress",
+    "git checkout 2b02d56406",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "sorry-cypress",
+  "test_description_zh": "测试在 sorry-cypress 仪表盘中，使用包含斜杠的项目名称（例如 'owner/my-project'）时的导航功能。具体步骤：1. 打开应用首页；2. 创建一个新项目，项目名称中包含斜杠，例如 'testowner/testproject'；3. 在侧边栏中找到该项目并点击进入项目详情页面；4. 在项目详情页面中，点击侧边栏的各个子菜单链接（如 Runs、Settings 等），验证每个链接都能正确导航到对应页面，页面能正常加载数据并显示内容；5. 确认侧边栏的详情菜单链接在项目名称包含斜杠时仍然正常工作。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "包含斜杠的项目名称创建后，在侧边栏中点击该项目及其子菜单链接时，页面能正常导航、正常请求 API 数据并正确显示项目详情内容，不会出现页面空白或无法加载的情况。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 5905,
+  "ground_truth": {
+    "bug_type": "",
+    "issue_title": "Projects names with slashes will break UI",
+    "summary": "Fix sidebar details menu links when projectId has slashes",
+    "changed_files": 1,
+    "ui_score": 4,
+    "has_screenshot": false
+  },
+  "_backend_risk": true,
+  "_backend_risk_note": "LLM判断此项目核心功能需要外部后端，Worker部署后可能遇到空壳页面/登录墙",
+  "_description_source": "llm"
+}
