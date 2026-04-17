@@ -1,0 +1,28 @@
+{
+  "task_id": "nuxt-security-610",
+  "repo": "Baroshem/nuxt-security",
+  "issue_number": 610,
+  "pr_number": 658,
+  "buggy_commit": "93e5dc279d",
+  "fix_commit": "1eba69ad67",
+  "framework": "nuxt",
+  "deploy_commands": [
+    "git clone https://github.com/Baroshem/nuxt-security.git",
+    "cd nuxt-security",
+    "git checkout 93e5dc279d",
+    "yarn install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "nuxt-security",
+  "test_description_zh": "测试 nuxt-security 模块的 CSP nonce 功能与 useHead 组合使用时的安全性。步骤：1. 打开应用首页；2. 检查页面渲染的 HTML 源码中 meta 标签和 link 标签是否正确处理了 nonce 属性；3. 验证当 useHead 中的 meta 或 link 标签的属性值包含特殊字符（如 HTML 标签字符 < >）时，页面不会出现意外的脚本执行（如弹出 alert 对话框）；4. 确认页面正常加载，没有 JavaScript alert 弹窗或其他异常脚本执行的迹象。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。",
+  "expected_result_zh": "页面正常加载，不会出现任何意外的 JavaScript alert 弹窗或脚本注入执行。meta 标签和 link 标签中包含特殊字符的属性值应被安全处理，nonce 属性只应添加到真正的顶层 script/style/link 标签上，而不应错误地添加到属性值内部的文本中。",
+  "max_steps": 80,
+  "timeout_minutes": 15,
+  "repo_size_kb": 5872,
+  "worker": "worker-06",
+  "status": "pending",
+  "batch": "small-batch-1"
+}
