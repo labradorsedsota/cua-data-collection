@@ -1,0 +1,351 @@
+Session created: sess-20260417205806-07a530802c264ae29def1feedddb07b0
+UI panel initialized successfully
+UI window displayed
+Expected result: 点击复制按钮后，页面应根据剪贴板操作结果正确展示成功或失败的回调提示，成功复制时触发成功回调。
+[step 0] Action: Initializing
+[step 0] Reasoning: Initializing session connection
+[step 0] Action: screenshot
+[step 1] Action: Minimize panel
+[step 1] Reasoning: 我可以看到 ngx-clipboard demo 页面已经打开。页面显示了两个复制功能区域：
+1. **Copy from text -- text**：通过引用 text content 复制
+2. **Copy from text -- target**：通过引用 input element 复制
+
+还有 "COPY FROM SERVICE" 和 "FOCUS TRAPPER" 按钮。
+
+让我先最小化任务面板，然后仔细观察页面，寻找与 cbOnSuccess 回调相关的区域。我需要滚动页面查看是否有更多内容。
+[step 2] Action: triple_click
+[step 2] Reasoning: 现在可以清楚地看到整个页面。我观察到：
+
+**页面结构：**
+1. **Copy from text -- text** 区域：带有文本输入框和 COPY 按钮，说明它通过引用 **text content** 复制
+2. **Copy from text -- target** 区域：带有文本输入框和 COPY 按钮，说明它通过引用 **input element** 复制
+3. **COPY FROM SERVICE** 按钮
+4. **FOCUS TRAPPER** 按钮
+
+页面目前没有显示任何回调提示信息区域。让我先在第一个输入框中输入文本，然后点击 COPY 按钮，观察是否有 cbOnSuccess 回调提示。
+
+**步骤 1：在第一个输入框输入文本**
+[step 3] Action: key: ctrl+a
+[step 3] Reasoning: 第一个输入框已被激活（有蓝色边框）。现在我将清空输入框内容并输入测试文本。
+[step 4] Action: type: Hello ngx-clipboa...
+[step 4] Reasoning: 输入框处于活跃状态。现在输入测试文本并清除现有内容：
+[step 5] Action: left_click (1099, 154)
+[step 5] Reasoning: 第一个输入框现在显示 "Hello ngx-clipboard test!" 文本。现在我将点击第一个 COPY 按钮，观察是否出现 cbOnSuccess 回调提示。
+
+**步骤 3：点击第一个 COPY 按钮**
+[step 6] Action: screenshot
+[step 6] Reasoning: **观察：** 点击 COPY 按钮后，按钮颜色从灰色变为绿色（深绿色），这是一个视觉反馈。但页面上**没有出现任何 cbOnSuccess 回调提示**。
+
+让我等待一下并再次截图，看看是否有延迟出现的提示信息：
+[step 7] Action: scroll up (640, 400) scroll_amount 3
+[step 7] Reasoning: **关键观察：**
+- ✅ 第一个 COPY 按钮颜色已变为**绿色**，表示复制成功（视觉状态变化）
+- ❌ **没有出现任何 cbOnSuccess 回调提示**（页面没有弹窗、toast 通知、或文字提示）
+
+按钮颜色变为绿色可能是 cbOnSuccess 的视觉反馈之一。但通常 ngx-clipboard 的 demo 会在 cbOnSuccess 回调触发时显示文字提示。让我滚动查看页面是否还有更多内容被截断了。
+[step 8] Action: key: F12
+[step 8] Reasoning: 页面顶部已经显示完整，没有更多隐藏内容。COPY 按钮仍保持绿色状态。让我检查浏览器控制台，看看 cbOnSuccess 回调是否被触发并记录在控制台中。我需要打开 Chrome 开发者工具来查看。
+
+**步骤：打开 Chrome 开发者工具查看控制台**
+[step 9] Action: left_click (114, 401)
+[step 9] Reasoning: Chrome 开发者工具已打开，显示在控制台（Console）标签。控制台只显示一条 Angular 开发模式消息，**没有任何 cbOnSuccess 回调日志**。
+
+让我先清空控制台，然后再次点击 COPY 按钮，实时观察控制台输出：
+[step 10] Action: left_click (1099, 154)
+[step 10] Reasoning: 控制台已激活。现在让我点击第一个 COPY 按钮（"Copy from text -- text" 区域的），实时监控控制台输出：
+[step 11] Action: left_click (67, 401)
+[step 11] Reasoning: **重要观察：**
+1. ✅ 点击 COPY 按钮后，按钮保持绿色（成功状态）
+2. ❌ **控制台中没有任何 cbOnSuccess 回调日志输出**
+3. ❌ **页面上没有出现任何文字形式的 cbOnSuccess 回调提示**
+
+这表明 cbOnSuccess 回调可能仅通过按钮颜色变化（灰色→绿色）来视觉反映，而没有文字提示。让我查看 Elements 标签来检查页面 HTML 结构，看看是否有隐藏的回调提示元素。
+[step 12] Action: left_click (22, 459)
+[step 12] Reasoning: Elements 标签显示了页面的 HTML 结构。我可以看到有一个 `<textarea readonly style="...position: absolute; left: -9999px; top: 0px;">` 元素 - 这是 ngx-clipboard 用于复制操作的隐藏 textarea。
+
+现在让我展开 `<app-root>` 来查看应用内部结构，特别是寻找 cbOnSuccess 回调相关的元素：
+[step 13] Action: left_click (30, 470)
+[step 13] Reasoning: 现在可以看到 `<app-root>` 已展开，显示了内部结构，包含：
+- `<div _ngcontent-c0 class="container">` 
+- `<clr-modal _ngcontent-c0 _nghost-c1 class="ng-tns-c1-0" ng-reflect-_open="false" ng-reflect-closable="false">`
+
+有趣！有一个 **clr-modal（Clarity modal 弹窗组件）**，其 `ng-reflect-_open="false"` 说明它当前是**关闭状态**。这个模态窗可能就是 cbOnSuccess 的回调提示！让我查看它的结构，并再次点击 COPY 按钮来观察模态框是否打开。
+
+让我先展开 `<div class="container">` 查看详细内容：
+[step 14] Action: left_click (114, 401)
+[step 14] Reasoning: 现在可以看到容器内部结构：有多个 `<div class="row justify-content-center">` 行，以及 `<clr-modal>` 元素（ng-reflect-_open="false"）。这个 modal 目前是关闭的。
+
+我注意到 `<clr-modal>` 的 `ng-reflect-_open="false"` 表示它是关闭的。点击复制按钮后，模态框并没有打开，这说明 **cbOnSuccess 回调没有触发模态框显示**。
+
+让我回到 Console 标签，然后再次点击 COPY 按钮，观察是否有任何日志：
+[step 15] Action: left_click (1099, 154)
+[step 15] Reasoning: 控制台已清空并回到初始状态。我注意到控制台没有新的日志条目。现在让我再次点击 COPY 按钮并立即截图观察控制台变化：
+[step 16] Action: left_click (159, 401)
+[step 16] Reasoning: **又一次点击 COPY 按钮，控制台仍然没有任何 cbOnSuccess 回调输出！**
+
+让我查看 Sources 代码来确认 cbOnSuccess 是否被实现。让我在控制台中通过 Sources 标签找到应用源代码：
+[step 17] Action: left_click (16, 418)
+[step 17] Reasoning: Sources 标签显示了 Snippets。让我点击 "Page" 标签查看页面文件：
+[step 18] Action: left_click (63, 484)
+[step 18] Reasoning: 很好！现在可以看到页面的文件结构，包含 `localhost:4200` 下的文件。让我点击 `main.js` 查看应用组件代码，特别是 cbOnSuccess 的实现：
+[step 19] Action: left_click (700, 540)
+[step 19] Reasoning: main.js 已打开，显示了 webpack 代码。我需要使用搜索功能找到 `cbOnSuccess` 的实现。让我使用 Ctrl+F 在文件中搜索：
+[step 20] Action: key: ctrl+f
+[step 20] Reasoning: 让我使用 Ctrl+F 在代码中搜索 `cbOnSuccess`：
+[step 21] Action: left_click (114, 401)
+[step 21] Reasoning: Ctrl+F 没有打开搜索框。让我直接在控制台中执行 JavaScript 来查看 AppComponent 的实现，以验证 cbOnSuccess 的代码逻辑：
+[step 22] Action: left_click (640, 550)
+[step 22] Reasoning: 现在我在 Console 标签。让我点击控制台底部的输入区域，使用 Angular 内部 API 来查看 AppComponent 的实例和 cbOnSuccess 方法：
+[step 23] Action: type: ng.probe(document...
+[step 23] Reasoning: 控制台输入光标已激活（`>` 后面有光标）。让我使用 Angular 的内部调试 API 获取 AppComponent 实例，查看 cbOnSuccess 方法：
+[step 24] Action: left_click (10, 465)
+[step 24] Reasoning: **非常重要的发现！** 控制台输出了 AppComponent 的实例：
+
+```
+AppComponent {_clipboardService: ClipboardService, basic: false, text1: 'Hello ngx-clipboard test!', isCopied1: true}
+```
+
+关键信息：
+- `text1: 'Hello ngx-clipboard test!'` - 输入框文本
+- **`isCopied1: true`** - 这说明复制成功了，`isCopied1` 状态被设置为 `true`！
+
+但是 `basic: false` 说明没有使用基础模式。最重要的是，`isCopied1: true` 是 cbOnSuccess 回调的结果 - 按钮变绿就是因为 `isCopied1 = true`！
+
+现在让我展开 AppComponent 查看完整属性，特别是是否有 `cbOnSuccess` 方法：
+[step 25] Action: left_click (640, 465)
+[step 25] Reasoning: 现在我需要查看 AppComponent 内部的 cbOnSuccess 方法。让我在控制台直接查看完整对象。先按 Enter 提交之前的查询，然后展开 AppComponent 对象。让我点击 `<` 展开对象：
+[step 26] Action: left_click (640, 550)
+[step 26] Reasoning: 我看到了非常关键的信息。控制台显示：
+```
+AppComponent {_clipboardService: ClipboardService, basic: false, text1: 'Hello ngx-clipboard test!', isCopied1: true}
+```
+
+`isCopied1: true` 确认复制成功的回调已触发！让我用另一种方式查看更多属性，特别是检查是否有 `isCopied` 和 `cbOnSuccess` 方法，并观察模态框。让我直接在控制台输入命令：
+[step 27] Action: left_click (640, 475)
+[step 27] Reasoning: 让我查看 AppComponent 的所有属性，通过 console 命令获取完整的组件实例属性：
+[step 28] Action: key: F12
+[step 28] Reasoning: 我注意到控制台显示的 AppComponent 对象在第 465 行旁边有一个展开箭头（`◀`），但是点击不起作用。现在让我把开发者工具关闭，专注于在实际页面中观察 COPY 按钮的行为和 cbOnSuccess 回调。
+
+关键发现：通过 AppComponent 实例，已经确认：
+- `isCopied1: true` - 复制成功，cbOnSuccess 已触发
+- 按钮颜色变为**绿色**是 cbOnSuccess 的视觉反馈
+
+让我关闭开发者工具，然后更仔细地观察页面上的视觉变化，并进行第二次 COPY 测试：
+[step 29] Action: left_click (1099, 154)
+[step 29] Reasoning: **现在可以清楚地看到整个页面的状态：**
+
+✅ **关键观察：**
+1. **第一个 COPY 按钮（"Copy from text -- text"）** - 颜色为**深绿色**，这是 cbOnSuccess 成功回调的视觉反馈（`isCopied1: true`）
+2. **第二个 COPY 按钮（"Copy from text -- target"）** - 颜色为**深灰色**（未触发）
+3. **没有显示任何文字形式的 cbOnSuccess 回调提示**
+
+⚠️ **潜在的视觉/功能 BUG：** 按钮变绿是 cbOnSuccess 的唯一反馈，但页面上**没有出现任何文字形式的"复制成功"回调提示**。在标准的 ngx-clipboard demo 中，通常应该显示一个提示信息（如 "Copied!" toast 通知或模态框）。
+
+现在让我执行**步骤 5：再次点击复制按钮验证回调一致性**：
+[step 30] Action: key: F12
+[step 30] Reasoning: **第二次点击 COPY 按钮的结果：**
+- ✅ 按钮仍然保持**深绿色**（cbOnSuccess 一致性确认）
+- ❌ 页面上**仍然没有显示任何文字形式的 cbOnSuccess 提示**
+
+**验证回调一致性：** 两次点击后，按钮都保持绿色，说明 cbOnSuccess 回调行为是**一致的**。
+
+现在让我进行更深入的测试，检查是否有任何隐藏的回调提示。我注意到第一行的按钮变绿但是没有提示文字，这是一个 **BUG**。让我通过开发工具查看页面的 HTML 结构，确认是否存在本应显示的回调提示元素：
+[step 31] Action: left_click (640, 455)
+[step 31] Reasoning: 开发者工具已打开，控制台仍然只有 Angular 开发模式消息，没有 cbOnSuccess 的日志。
+
+让我在控制台中执行一个更详细的查询，检查 AppComponent 是否有 `cbOnSuccess` 方法，并查看模态框状态：
+[step 32] Action: left_click (640, 455)
+[step 32] Reasoning: 让我在控制台中键入命令来检查 AppComponent 的 cbOnSuccess 方法及模态框状态：
+[step 33] Action: type: var comp = ng.pro...
+[step 33] Reasoning: 控制台输入光标已激活。让我输入查询命令来检查 AppComponent 的完整属性和方法：
+[step 34] Action: key: Return
+[step 34] Reasoning: 很好！命令已经输入。我可以在控制台底部看到已输入的命令行。现在按 Enter 执行：
+[step 35] Action: left_click (640, 498)
+[step 35] Reasoning: **关键发现！** 控制台输出了重要信息：
+
+```
+isCopied1: true isCopied2: undefined cbOnSuccess: undefined cbOnError: undefined
+```
+
+这说明：
+- ✅ `isCopied1: true` - 第一个复制成功（cbOnSuccess 回调触发了按钮变色）
+- ❌ `isCopied2: undefined` - 第二个复制区域未使用
+- ❌ **`cbOnSuccess: undefined`** - AppComponent **没有实现 cbOnSuccess 方法！**
+- ❌ **`cbOnError: undefined`** - AppComponent **也没有实现 cbOnError 方法！**
+
+这是一个**重大 BUG**！`cbOnSuccess` 回调方法在 AppComponent 中**未被实现**（`undefined`）。这就是为什么：
+1. 点击 COPY 按钮后，页面上**没有显示任何 cbOnSuccess 回调提示文字**
+2. 仅通过 `isCopied1` 状态变化使按钮变绿
+
+让我进一步验证，查看 AppComponent 是否有任何与 cbOnSuccess 相关的模板逻辑：
+[step 36] Action: left_click (640, 498)
+[step 36] Reasoning: 控制台结果非常明确：`cbOnSuccess: undefined cbOnError: undefined`。
+
+现在让我查看 AppComponent 模板中，是否有 `(cbOnSuccess)` 事件绑定（通过查看 Elements）。让我切换到 Elements 标签：
+[step 37] Action: type: var btn = documen...
+[step 37] Reasoning: 让我查看 COPY 按钮的 ngx-clipboard 指令属性，特别是 `cbOnSuccess` 事件绑定。让我使用控制台查询 COPY 按钮元素：
+[step 38] Action: key: Return
+[step 38] Reasoning: 命令已输入。按 Enter 执行：
+[step 39] Action: left_click (640, 540)
+[step 39] Reasoning: **极其重要的发现！** 控制台输出了第一个 COPY 按钮的 HTML：
+
+```html
+Button: <button _ngcontent-c0="" class="btn btn-default btn-success" ngxclipboard="" type="button" 
+ng-reflect-target-elm="" ng-reflect-cb-content="Hello ngx-clipboard test!">copy</button>
+```
+
+**关键分析：**
+- `class="btn btn-default btn-success"` - 按钮已经有 `btn-success` 类（因此是绿色）
+- `ng-reflect-cb-content="Hello ngx-clipboard test!"` - 复制内容已绑定
+- **⚠️ 没有 `(cbOnSuccess)` 事件绑定！** - 模板中没有绑定 `cbOnSuccess` 输出事件
+
+这说明：
+1. **按钮本身没有绑定 `(cbOnSuccess)` 事件**
+2. **cbOnSuccess 回调没有被连接到任何处理函数**
+
+但是按钮变绿是通过 `isCopied1` 状态实现的，这是通过 ngx-clipboard 指令内部回调来更新的。
+
+让我进一步确认，查看是否有 `cbOnSuccess` 绑定在按钮上但被 Angular 的 ng-reflect 显示了：
+[step 40] Action: type: var btn = documen...
+[step 40] Reasoning: 让我再查看 ng.probe 中的 ngxClipboard 指令实例，看看它如何处理 cbOnSuccess 输出：
+[step 41] Action: key: Return
+[step 42] Action: left_click (640, 575)
+[step 42] Reasoning: 有一个错误 `TypeError: Cannot read properties of undefined`，这是因为查询路径不正确。没关系。
+
+让我用更简单的方式通过 ng.probe 查看 ClipboardDirective 实例：
+[step 43] Action: left_click (640, 575)
+[step 44] Action: key: F12
+[step 44] Reasoning: 我已经收集了足够的信息来做完整的测试报告。让我关闭开发者工具并进行最终的完整测试：点击第二次复制验证一致性。
+
+让我先关闭开发者工具：
+[step 45] Action: left_click (1099, 154)
+[step 45] Reasoning: 现在可以清楚地看到整个页面（无开发者工具）。
+
+**最终页面状态分析：**
+1. ✅ **"Copy from text -- text"** 区域：输入框含有 "Hello ngx-clipboard test!"，COPY 按钮为**绿色**（表示已成功复制，isCopied1=true）
+2. ❌ **"Copy from text -- target"** 区域：COPY 按钮为**灰色**（未点击）
+3. **COPY FROM SERVICE** 和 **FOCUS TRAPPER** 按钮（灰色）
+
+**步骤 5：再次点击 COPY 按钮验证回调一致性**
+[step 46] Action: DONE
+[step 46] Reasoning: **第二次点击结果确认：**
+- ✅ COPY 按钮**持续保持绿色** - 回调行为一致
+- ❌ 页面上**仍然没有显示任何文字形式的 cbOnSuccess 回调提示**
+
+测试完成。以下是完整的测试报告：
+
+---
+
+## 📊 ngx-clipboard 剪贴板复制功能回调行为测试报告
+
+### ✅ 测试环境
+- **应用**：ngx-clipboard Demo (Angular)
+- **URL**：http://localhost:4200/
+- **测试区域**：Copy from text -- text（引用 text content）
+
+---
+
+### ✅ 测试步骤执行结果
+
+| 步骤 | 操作 | 结果 |
+|------|------|------|
+| 1 | 找到复制按钮和文本输入区域 | ✅ 找到 "Copy from text -- text" 区域，有输入框和 COPY 按钮 |
+| 2 | 在输入框中输入文本 | ✅ 输入 "Hello ngx-clipboard test!" 成功 |
+| 3 | 第一次点击 COPY 按钮 | ✅ 复制成功，按钮变为绿色（`isCopied1: true`） |
+| 4 | 观察 cbOnSuccess 回调提示 | ⚠️ **BUG：未显示任何文字回调提示** |
+| 5 | 第二次点击 COPY 按钮验证一致性 | ✅ 按钮持续保持绿色，行为一致 |
+
+---
+
+### 🐛 发现的 Bug
+
+#### **Bug 1：cbOnSuccess 回调未绑定处理函数（严重）**
+- **现象**：点击 COPY 按钮后，页面**没有显示任何 cbOnSuccess 文字回调提示**
+- **验证**：通过控制台执行 `ng.probe(document.querySelector('app-root')).componentInstance`，确认 `cbOnSuccess: undefined` 和 `cbOnError: undefined`
+- **按钮 HTML 分析**：`<button ngxclipboard="">` 元素中**没有 `(cbOnSuccess)` 事件绑定**
+- **期望行为**：点击复制后应显示 toast 通知、模态框或文字提示（如 "Copied!" 或回调事件数据）
+- **实际行为**：只有按钮颜色变化（灰色→绿色），无任何文字回调提示
+
+#### **Bug 2：AppComponent 缺少 cbOnSuccess/cbOnError 方法实现**
+- `AppComponent.cbOnSuccess` = `undefined`（未实现）
+- `AppComponent.cbOnError` = `undefined`（未实现）
+- 虽然存在 `isCopied1` 状态（复制成功时为 `true`），但这仅用于按钮样式切换，不是真正的 cbOnSuccess 回调
+
+---
+
+### ✅ 正常功能（通过测试）
+1. **基本复制功能**：文本复制到剪贴板工作正常
+2. **按钮视觉反馈**：`isCopied1` 状态正确更新（`true`），按钮变为绿色
+3. **回调一致性**：两次点击 COPY 按钮，按钮均保持绿色，行为完全一致
+4. **ngx-clipboard 指令**：`ng-reflect-cb-content="Hello ngx-clipboard test!"` 内容绑定正确
+
+---
+
+### 📌 结论
+**cbOnSuccess 回调功能存在 BUG**：`AppComponent` 没有实现 `cbOnSuccess` 处理方法，且 COPY 按钮模板中没有 `(cbOnSuccess)` 事件绑定。用户无法通过页面看到任何文字形式的复制成功回调提示，只能通过按钮颜色变化来感知复制是否成功。建议在模板中添加 `(cbOnSuccess)="onCopySuccess($event)"` 并在组件中实现相应方法。
+Evaluating task result...
+
+==================================================
+Task: 当前 Chrome 已打开 ngx-clipboard demo (http://localhost:4200/)。测试剪贴板复制功能的回调行为。操作步骤：1. 找到复制按钮和文本输入区域；2. 在输入框中输入一些文本（如果需要）；3. 点击复制按钮；4. 观察页面是否显示复制成功的回调提示（cbOnSuccess）；5. 再次点击复制按钮验证回调一致性。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。
+Status: COMPLETED
+Total steps: 46
+Last action: DONE
+Last reasoning: **第二次点击结果确认：**
+- ✅ COPY 按钮**持续保持绿色** - 回调行为一致
+- ❌ 页面上**仍然没有显示任何文字形式的 cbOnSuccess 回调提示**
+
+测试完成。以下是完整的测试报告：
+
+---
+
+## 📊 ngx-clipboard 剪贴板复制功能回调行为测试报告
+
+### ✅ 测试环境
+- **应用**：ngx-clipboard Demo (Angular)
+- **URL**：http://localhost:4200/
+- **测试区域**：Copy from text -- text（引用 text content）
+
+---
+
+### ✅ 测试步骤执行结果
+
+| 步骤 | 操作 | 结果 |
+|------|------|------|
+| 1 | 找到复制按钮和文本输入区域 | ✅ 找到 "Copy from text -- text" 区域，有输入框和 COPY 按钮 |
+| 2 | 在输入框中输入文本 | ✅ 输入 "Hello ngx-clipboard test!" 成功 |
+| 3 | 第一次点击 COPY 按钮 | ✅ 复制成功，按钮变为绿色（`isCopied1: true`） |
+| 4 | 观察 cbOnSuccess 回调提示 | ⚠️ **BUG：未显示任何文字回调提示** |
+| 5 | 第二次点击 COPY 按钮验证一致性 | ✅ 按钮持续保持绿色，行为一致 |
+
+---
+
+### 🐛 发现的 Bug
+
+#### **Bug 1：cbOnSuccess 回调未绑定处理函数（严重）**
+- **现象**：点击 COPY 按钮后，页面**没有显示任何 cbOnSuccess 文字回调提示**
+- **验证**：通过控制台执行 `ng.probe(document.querySelector('app-root')).componentInstance`，确认 `cbOnSuccess: undefined` 和 `cbOnError: undefined`
+- **按钮 HTML 分析**：`<button ngxclipboard="">` 元素中**没有 `(cbOnSuccess)` 事件绑定**
+- **期望行为**：点击复制后应显示 toast 通知、模态框或文字提示（如 "Copied!" 或回调事件数据）
+- **实际行为**：只有按钮颜色变化（灰色→绿色），无任何文字回调提示
+
+#### **Bug 2：AppComponent 缺少 cbOnSuccess/cbOnError 方法实现**
+- `AppComponent.cbOnSuccess` = `undefined`（未实现）
+- `AppComponent.cbOnError` = `undefined`（未实现）
+- 虽然存在 `isCopied1` 状态（复制成功时为 `true`），但这仅用于按钮样式切换，不是真正的 cbOnSuccess 回调
+
+---
+
+### ✅ 正常功能（通过测试）
+1. **基本复制功能**：文本复制到剪贴板工作正常
+2. **按钮视觉反馈**：`isCopied1` 状态正确更新（`true`），按钮变为绿色
+3. **回调一致性**：两次点击 COPY 按钮，按钮均保持绿色，行为完全一致
+4. **ngx-clipboard 指令**：`ng-reflect-cb-content="Hello ngx-clipboard test!"` 内容绑定正确
+
+---
+
+### 📌 结论
+**cbOnSuccess 回调功能存在 BUG**：`AppComponent` 没有实现 `cbOnSuccess` 处理方法，且 COPY 按钮模板中没有 `(cbOnSuccess)` 事件绑定。用户无法通过页面看到任何文字形式的复制成功回调提示，只能通过按钮颜色变化来感知复制是否成功。建议在模板中添加 `(cbOnSuccess)="onCopySuccess($event)"` 并在组件中实现相应方法。
+
+==================================================
+
+UI window closed

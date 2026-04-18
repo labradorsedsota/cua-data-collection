@@ -1,0 +1,371 @@
+Session created: sess-20260416235005-2f77a781009b445cbff286e186382cb7
+UI panel initialized successfully
+UI window displayed
+Expected result: 表情选择器完整渲染，各分类标签可正常切换，滚动列表时布局正确，浏览器控制台无 JavaScript 错误（特别是无 getBoundingClientRect 相关的 TypeError），点击表情可正常选中。
+[step 0] Action: Initializing
+[step 0] Reasoning: Initializing session connection
+[step 0] Action: screenshot
+[step 1] Action: Minimize panel
+[step 1] Reasoning: I can see the emoji-mart picker component is loaded in the browser. Let me minimize the task panel first to get a better view, then proceed with the testing steps.
+[step 2] Action: key: F12
+[step 2] Reasoning: Good, I can see the emoji picker is fully loaded with:
+- Category navigation tabs at the top (frequently used, smileys, animals, food, etc.)
+- Search bar
+- "Frequently Used" section with emoji icons
+- "Smileys & People" section with many emoji icons
+- A preview bar at the bottom showing "Your Title Here"
+
+**Step 1: Observation** - The emoji picker appears to be completely loaded and rendering normally. All emoji icons are visible in both the "Frequently Used" and "Smileys & People" sections.
+
+Now let me open DevTools Console to check for JavaScript errors.
+[step 3] Action: left_click (114, 498)
+[step 3] Reasoning: DevTools is now open. I can see the Console tab is active. I can see there are some errors - "Failed to load resource: net::ERR_CONNECTION_CLOSED" for two resources (octocat.png and shipit.png). Let me expand the console to see all messages more clearly. Let me click on the Console tab to ensure I'm on the right tab, and look for JavaScript errors more thoroughly.
+[step 4] Action: left_click (40, 567)
+[step 4] Reasoning: I can see the Console panel is showing some errors. The errors visible are:
+1. "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `octocat.png` 
+2. "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `shipit.png`
+
+There's also a collapsed item with "2 errors". Let me click on "2 errors" to expand and see if there are JavaScript errors, and also expand the third item to see the full console output.
+[step 5] Action: left_click (8, 567)
+[step 5] Reasoning: I see the same view. Let me expand all the console items by clicking on the triangle/expand arrows. I notice there are grouped items in the left panel. Let me click on the expand icon next to "2 errors" to see what errors they are.
+[step 6] Action: left_click (55, 538)
+[step 6] Reasoning: Now I can see the "2 errors" expanded to show:
+- `octoc...` (octocat.png)
+- `shipit.p...` (shipit.png)
+
+These are image resource loading failures (ERR_CONNECTION_CLOSED), not JavaScript TypeErrors. The "4 messages" and "2 user messages" sections also need to be checked. Let me look at the full console more carefully. Let me click on the right side of the console to see all console messages. Let me look at the main console area which shows only network errors so far. Let me clear the filter to see all messages and look for JavaScript errors specifically.
+
+Let me check all the console messages by clicking in the main console area and looking more carefully:
+[step 7] Action: left_click (8, 538)
+[step 7] Reasoning: Now I can see the full console output. The messages are:
+1. "Download the React DevTools for a better development experience: https://fb.me/react-devtools" (from react-dom.development.js:17210)
+2. "[HMR] connected" (from client.js:82)
+3. "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `octocat.png`
+4. "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `shipit.png` (collapsed)
+
+**Step 2 Analysis**: I don't see any JavaScript errors related to `getBoundingClientRect` or other TypeErrors. The errors are only network resource loading failures (PNG images). Let me also check if there are any other errors by scrolling down in the console.
+
+Let me also check the "2 user messages" section and "No warnings" section. Let me expand the left-side items to see everything:
+[step 8] Action: left_click (238, 104)
+[step 8] Reasoning: Now I can see the "4 messages" is expanded and shows:
+- `manage...`
+- `preview...`
+- `octoc...`
+- `shipit.p...`
+
+And the "2 errors" section:
+- `octoc...`
+- `shipit.p...`
+
+The console shows 4 issues (1 error, 1 warning, 2 others) in the top counter. The main errors are:
+1. "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `octocat.png` 
+2. "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `shipit.png`
+
+These are network failures, not JavaScript TypeErrors. The `[HMR] connected` message indicates the hot module replacement is working.
+
+Now I need to **Step 3**: Click different category tabs to switch categories. Let me click on the emoji picker area. First, let me look at the category tabs at the top of the emoji picker. I can see icons for different categories.
+
+Let me click on the animal/nature emoji category icon (looks like a dog/animal):
+[step 9] Action: left_click (260, 104)
+[step 9] Reasoning: Excellent! I clicked on the "Animals & Nature" category tab and the emoji picker successfully switched to show animal emojis. The category now shows "Animals & Nature" with many animal emojis. The console still shows only the same errors (network resource failures for PNG files), with no new JavaScript errors.
+
+Now let me click on the food category (the apple icon):
+[step 10] Action: left_click (217, 104)
+[step 10] Reasoning: Excellent! I clicked on the "Food & Drink" category and it successfully switched to show food and drink emojis. The console still shows only the same initial errors (network resource failures), no new JavaScript errors.
+
+Now let me click on the smiley faces category to go back:
+[step 11] Action: scroll down (292, 250) scroll_amount 3
+[step 11] Reasoning: I clicked on the "Smileys & People" category and it successfully switched back to show smiley face emojis. No new JavaScript errors appeared in the console.
+
+**Step 3 Complete**: Category switching works correctly - Animals & Nature ✓, Food & Drink ✓, Smileys & People ✓. No JavaScript errors during category switching.
+
+Now let me **Step 4**: Scroll the emoji list to test scrolling behavior.
+[step 12] Action: scroll up (292, 250) scroll_amount 3
+[step 12] Reasoning: The scrolling is working correctly. I can see:
+1. The emoji list scrolled down showing more emojis in the "Smileys & People" category
+2. The preview bar at the bottom is now showing "Pouting Face" with `:rage:` identifier (hover effect is active)
+3. The console shows no new JavaScript errors - still only the same 4 messages
+
+**Step 4 Complete**: Scrolling works correctly and no `getBoundingClientRect` TypeErrors or other JavaScript errors appeared.
+
+Let me scroll back up to see the full list and then click on an emoji to test **Step 5** (emoji selection):
+[step 13] Action: left_click (196, 178)
+[step 13] Reasoning: The scroll went up and now I can see the emoji list is showing "Smileys & People" with many emojis. The preview bar at the bottom shows "Zipper-Mouth Face" with `:zipper_mouth_face:` (hover preview is working). 
+
+Now let me **Step 5**: Click on an emoji to test selection. I'll click on the first emoji in the first row (the grinning face):
+[step 14] Action: screenshot
+[step 14] Reasoning: I can see that clicking on the "Grinning Face" emoji shows it in the preview bar at the bottom with the name "Grinning Face" and shortcode `:grinning:`. The emoji picker is showing that the emoji was selected (preview shows the grinning face).
+
+Let me check if the console shows any new errors after clicking:
+[step 15] Action: left_click (1107, 96)
+[step 15] Reasoning: The console still shows the same "4 Issues: 1 error, 1 warning, 2 others" count, with no new JavaScript errors after clicking the emoji. The preview bar still shows "Grinning Face" with `:grinning:`.
+
+Let me now check the "ACTION LOGGER" tab to verify the emoji click was registered as a selection event:
+[step 16] Action: left_click (1018, 119)
+[step 16] Reasoning: Excellent! The **ACTION LOGGER** tab confirms that the emoji selection event was fired successfully:
+- `selected: [Object]` - The emoji was selected and the `onEmojiSelect` callback was triggered
+- `clicked: [Object, "[SyntheticEvent]"]` - The click event was registered
+
+This confirms that **emoji selection is working correctly**!
+
+Let me expand the "selected" object to see more details about what was returned:
+[step 17] Action: left_click (1037, 515)
+[step 17] Reasoning: The ACTION LOGGER shows the events. The logs show:
+- `selected: [Object]` - selection was triggered
+- `clicked: [Object, "[SyntheticEvent]"]` - click event was triggered
+
+Now let me look at the full console to see if there are any getBoundingClientRect errors. Let me check the console more carefully. I notice the error count shows "4 Issues: 1 error, 1 warning, 2 others". Let me also check if there might be any hidden errors by clearing the console and re-testing:
+
+Let me also look more closely at the console panel by clicking on the error count:
+[step 18] Action: left_click (1192, 498)
+[step 18] Reasoning: I clicked on the "4 Issues" count and it opened a panel showing the issues. The issues panel now shows:
+1. "A form field element should have an id or name attribute used"
+2. "Deprecated feature used"
+3. "Incorrect use of `<lab...`" (truncated)
+4. "Session History Item Has Been Marked Skippable"
+
+These are NOT JavaScript TypeError or getBoundingClientRect errors! These are general web best-practice warnings/issues. Let me close this issues panel and go back to the console to double-check. Let me click on the "Console" button to go back:
+[step 19] Action: left_click (1261, 515)
+[step 19] Reasoning: The Issues panel is still showing on the right side. The console on the left shows:
+- "Download the React DevTools..." info message
+- "[HMR] connected" info message
+- "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `octocat.png` (2 times)
+
+The Issues panel shows:
+1. "A form field element should have an id or name attribute used" (accessibility warning)
+2. "Deprecated feature used" 
+3. "Incorrect use of `<lab...`" (label element issue)
+4. "Session History Item Has Been Marked Skippable"
+
+None of these are `getBoundingClientRect` TypeErrors. Let me close the Issues panel and check if there's a `Console` button I can click:
+[step 20] Action: left_click (113, 498)
+[step 20] Reasoning: The issues panel is still visible. Let me click on the "Console" tab to go back to the console view:
+[step 21] Action: left_click (8, 595)
+[step 21] Reasoning: The console is still showing the same messages. The "Issues" panel is shown on the right side of DevTools. The console shows:
+1. Info: "Download the React DevTools..."
+2. Info: "[HMR] connected"
+3. Error: "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `octocat.png`
+4. Error: "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `shipit.png`
+
+No `getBoundingClientRect` TypeError or other JavaScript runtime errors are present.
+
+Now let me also check the third expandable item in the left console tree that I haven't explored yet. Let me click on the collapsed arrow next to it:
+[step 22] Action: left_click (8, 611)
+[step 22] Reasoning: I can see the console continues to show the same messages. The "2 user me..." and "2 errors" sections in the left panel are shown. Let me click on the "2 user me..." to expand it:
+[step 23] Action: left_click (57, 625)
+[step 23] Reasoning: I can now see the "2 user me..." section is expanded and shows:
+- `manage...`
+- `preview...`
+
+These are user messages related to "manage" and "preview" in the console (likely the HMR/webpack manager and preview messages). The "2 errors" section is below with the `octoc...` and `shipit.p...` image resource failures.
+
+Let me click on the "manage..." item to see the full message:
+[step 24] Action: left_click (933, 515)
+[step 24] Reasoning: I see the console now shows "Custom levels" filter and the console appears to be filtered. I can see the filter has changed to "Custom levels" and shows "4 Issues: 1 error, 1 warning, 2" and "3 hidden". The main console shows only the "Download the React DevTools..." message, meaning some messages are filtered.
+
+Let me change the filter to "All levels" to see all messages. Let me click on the "Custom levels" dropdown:
+[step 25] Action: scroll down (630, 580) scroll_amount 2
+[step 25] Reasoning: The console shows the filter is "Custom levels" with 3 hidden messages. The console is showing only the "Download the React DevTools..." message. This is because the filter is not showing all messages. Let me scroll down in the console area to see if there are more messages visible:
+[step 26] Action: left_click (93, 549)
+[step 26] Reasoning: The console is only showing 1 message because the filter is "Custom levels" which is hiding some messages. The console is currently filtering to show only certain types. The "3 hidden" message confirms 3 messages are hidden. 
+
+The key issue here is that I need to change the log level filter to show ALL messages. I see the console has an expand arrow ">" on the "Download the React DevTools..." message. Let me click on the expand arrow (>) next to the message to see the full log output for ALL messages. Let me click on the ">" toggle button at the right of the React DevTools message:
+
+Let me click the ▶ to expand that message:
+[step 27] Action: left_click (932, 515)
+[step 27] Reasoning: The console looks the same. The filter is showing "Custom levels" and the "3 hidden" status. The issue is that the filter is hiding some messages. I can see the current console shows:
+- "Download the React DevTools..." info message (the only visible one)
+- "3 hidden" messages
+
+This is important! The "Custom levels" filter is hiding 3 messages. Let me change the filter to show all levels. Let me click on the "Custom levels" dropdown:
+[step 28] Action: left_click (500, 515)
+[step 28] Reasoning: The dropdown didn't open. Let me try a different approach - I'll use the keyboard shortcut to clear the filter or change log levels. Let me try clicking on the "Filter" text input and then clearing it:
+[step 29] Action: left_click (933, 515)
+[step 29] Reasoning: The filter input is now focused. I can see the console filter is showing "Filter" text input field. The "Custom levels" button is on the right side. Let me try clicking on the "Custom levels" dropdown to change the log level:
+[step 30] Action: left_click (50, 537)
+[step 30] Reasoning: The "Custom levels" dropdown is not responding to clicks. The console is showing "3 hidden" messages. The console is filtered and some messages are being hidden. The filter seems to be applied by the left-side tree navigation (where I clicked on "manage..." earlier). 
+
+Let me scroll up to look at the console messages again, and approach this differently. The key point is I need to verify if there are any `getBoundingClientRect` TypeErrors. Based on what I've seen so far:
+- Console shows: 2 error messages (both are resource loading failures for images, NOT JavaScript TypeErrors)
+- No `getBoundingClientRect` TypeError found
+
+Let me click on "4 messages" in the left tree to see all messages:
+[step 31] Action: left_click (238, 104)
+[step 31] Reasoning: Now I can see all 4 messages:
+1. **Info**: "Download the React DevTools for a better development experience: https://fb.me/react-devtools" (from react-dom.development.js:17210)
+2. **Info**: "[HMR] connected" (from client.js:82)
+3. **Error**: "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `octocat.png` (at octocat.png?v7:1)
+4. **Error**: "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `shipit.png` (at shipit.png?v7:1)
+
+**Key Finding**: There are **NO `getBoundingClientRect` TypeErrors** or any other JavaScript runtime errors. The only errors are network resource loading failures (PNG image files that couldn't be loaded due to connection closed).
+
+Now let me also try scrolling in the emoji picker list and clicking more categories to do a final comprehensive check. Let me click on "Animals & Nature" category:
+[step 32] Action: left_click (220, 177)
+[step 32] Reasoning: Excellent! The "Animals & Nature" category is now showing correctly with many animal emojis. The console still shows the same 4 messages with no new JavaScript errors. The "Animals & Nature" tab in the category bar is now highlighted (underlined).
+
+Let me now click on an animal emoji to test selection from this category:
+[step 33] Action: scroll down (292, 250) scroll_amount 3
+[step 33] Reasoning: Excellent! Another emoji was successfully selected! I can see:
+1. **Preview bar at bottom**: Shows the **Monkey** emoji 🐒 with its shortcode `:monkey:`
+2. **ACTION LOGGER** panel on the right: Now shows **4 entries**:
+   - `selected: [Object]` (first selection - grinning face)
+   - `clicked: [Object, "[SyntheticEvent]"]`
+   - `selected: [Object]` (second selection - monkey)
+   - `clicked: [Object, "[SyntheticEvent]"]`
+
+**Step 5 Complete**: Emoji selection works correctly from multiple categories!
+
+The console still shows only the same 4 messages - no new JavaScript errors were generated during any of the testing steps.
+
+Let me do a final scroll to verify scrolling works with no errors:
+[step 34] Action: scroll down (292, 250) scroll_amount 3
+[step 34] Reasoning: The scrolling is working perfectly! The emoji list has scrolled down in the "Animals & Nature" category, and I can see more emojis - including reptiles, sea creatures, birds, plants and flowers. The preview bar shows "Sauropod" with `:sauropod:` (hover preview is working during scroll).
+
+The console still shows only the same 4 messages with no new JavaScript errors generated during scrolling.
+
+Let me also scroll in the picker to test the transition between category sections:
+[step 35] Action: screenshot
+[step 35] Reasoning: The emoji list has scrolled further down, and I can now see:
+1. The bottom of the **Animals & Nature** section (showing plants, flowers, trees)
+2. The transition to a new section **Food & Drink** (with fruits and food emojis)
+3. The preview bar shows "Deciduous Tree" with `:deciduous_tree:` shortcode
+
+**Key Observation**: The category transition during scrolling works correctly! The section header "Food & Drink" appears properly after the "Animals & Nature" section ends. The layout is correct and no `getBoundingClientRect` TypeErrors appeared in the console.
+
+The console still shows only the same 4 messages - no new JavaScript errors.
+
+Let me take a final screenshot to get the complete picture:
+[step 36] Action: DONE
+[step 36] Reasoning: The final screenshot confirms everything is working correctly. Let me now provide a comprehensive summary of all the testing results:
+
+---
+
+## 📋 Emoji-Mart 测试报告
+
+### ✅ 测试结果总结
+
+#### 步骤 1：表情选择器加载观察
+**结果：PASS** ✅
+- 表情选择器完全正常加载
+- 分类导航栏（含图标的选项卡）正常显示
+- 搜索栏正常显示
+- "Smileys & People"等多个分类的表情图标全部正常渲染
+- 底部预览栏（"Your Title Here"）正常显示
+
+#### 步骤 2：DevTools Console 检查 JavaScript 错误
+**结果：PASS** ✅（无 getBoundingClientRect 相关错误）
+
+控制台消息列表：
+1. ℹ️ **Info**: "Download the React DevTools for a better development experience"（正常的开发提示）
+2. ℹ️ **Info**: "[HMR] connected"（热模块替换已连接，正常）
+3. ❌ **Error**: "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `octocat.png`（网络资源加载失败）
+4. ❌ **Error**: "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `shipit.png`（网络资源加载失败）
+
+**关键发现**：**没有发现任何 `getBoundingClientRect` 相关的 TypeError 或其他 JavaScript 运行时错误**。2个错误均为图片资源网络加载失败（非JS异常）。
+
+Issues 面板中的4个问题均为：HTML可访问性建议（form field id属性、label元素使用建议等），非运行时错误。
+
+#### 步骤 3：点击不同分类标签切换分类
+**结果：PASS** ✅
+- ✅ "Smileys & People"（😊）→ 正常显示人类表情
+- ✅ "Animals & Nature"（🐾）→ 成功切换并显示动物表情
+- ✅ "Food & Drink"（🍎）→ 成功切换并显示食物表情
+- 切换过程中控制台无任何新增报错
+
+#### 步骤 4：滚动表情列表验证
+**结果：PASS** ✅
+- 向下滚动：正常滚动，各分类逐渐进入视图
+- 分类间过渡（Animals & Nature → Food & Drink）正常渲染，section header 显示正确
+- 滚动时 hover 预览功能正常工作（显示 emoji 名称和 shortcode）
+- 滚动过程中控制台无任何新增 getBoundingClientRect 错误
+
+#### 步骤 5：点击选择表情
+**结果：PASS** ✅
+- 点击 😀 "Grinning Face"：底部预览显示正确，ACTION LOGGER 记录了 `selected: [Object]` 和 `clicked: [Object, "[SyntheticEvent]"]`
+- 点击 🐒 "Monkey"（Animals & Nature 分类）：底部预览显示 "Monkey / :monkey:"，ACTION LOGGER 再次正确记录事件
+
+### 🐛 已发现的问题
+
+**次要问题（非阻断性）**：
+1. 两个图片资源 `octocat.png` 和 `shipit.png` 加载失败（`ERR_CONNECTION_CLOSED`），可能是 GitHub custom emoji 的外部资源服务不可用
+2. HTML 无障碍警告：表单字段缺少 id/name 属性，`<label>` 元素使用不当
+
+### 🎯 最终结论
+emoji-mart 表情选择器组件**基本功能运行正常**：
+- ✅ 完整渲染
+- ✅ 无 `getBoundingClientRect` TypeError（无 JS 运行时错误）
+- ✅ 分类切换功能正常
+- ✅ 滚动功能正常
+- ✅ 表情选择功能正常，事件回调正确触发
+Evaluating task result...
+
+==================================================
+Task: 当前Chrome浏览器已打开@emoji-mart/monorepo网站，地址是http://localhost:6006。测试 emoji-mart 表情选择器组件的基本渲染和功能。操作步骤：1. 观察表情选择器是否完全加载；2. 打开 DevTools Console（按 F12，切到 Console 标签页），检查是否有 JavaScript 错误（特别是 getBoundingClientRect 相关的 TypeError）；3. 点击不同的分类标签（如笑脸、动物、食物等）切换分类，确认切换过程中组件正常渲染且控制台无报错；4. 滚动表情列表，验证滚动过程中各分类的尺寸计算和布局是否正常；5. 点击选择一个表情，确认选择功能正常工作。请始终在浏览器内操作，禁止打开 Terminal、Finder 或其他应用程序。如果在浏览器中找不到目标功能，直接标记 result 为 unclear，result_summary 写明'未在页面中找到目标功能入口'。
+Status: COMPLETED
+Total steps: 36
+Last action: DONE
+Last reasoning: The final screenshot confirms everything is working correctly. Let me now provide a comprehensive summary of all the testing results:
+
+---
+
+## 📋 Emoji-Mart 测试报告
+
+### ✅ 测试结果总结
+
+#### 步骤 1：表情选择器加载观察
+**结果：PASS** ✅
+- 表情选择器完全正常加载
+- 分类导航栏（含图标的选项卡）正常显示
+- 搜索栏正常显示
+- "Smileys & People"等多个分类的表情图标全部正常渲染
+- 底部预览栏（"Your Title Here"）正常显示
+
+#### 步骤 2：DevTools Console 检查 JavaScript 错误
+**结果：PASS** ✅（无 getBoundingClientRect 相关错误）
+
+控制台消息列表：
+1. ℹ️ **Info**: "Download the React DevTools for a better development experience"（正常的开发提示）
+2. ℹ️ **Info**: "[HMR] connected"（热模块替换已连接，正常）
+3. ❌ **Error**: "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `octocat.png`（网络资源加载失败）
+4. ❌ **Error**: "Failed to load resource: net::ERR_CONNECTION_CLOSED" for `shipit.png`（网络资源加载失败）
+
+**关键发现**：**没有发现任何 `getBoundingClientRect` 相关的 TypeError 或其他 JavaScript 运行时错误**。2个错误均为图片资源网络加载失败（非JS异常）。
+
+Issues 面板中的4个问题均为：HTML可访问性建议（form field id属性、label元素使用建议等），非运行时错误。
+
+#### 步骤 3：点击不同分类标签切换分类
+**结果：PASS** ✅
+- ✅ "Smileys & People"（😊）→ 正常显示人类表情
+- ✅ "Animals & Nature"（🐾）→ 成功切换并显示动物表情
+- ✅ "Food & Drink"（🍎）→ 成功切换并显示食物表情
+- 切换过程中控制台无任何新增报错
+
+#### 步骤 4：滚动表情列表验证
+**结果：PASS** ✅
+- 向下滚动：正常滚动，各分类逐渐进入视图
+- 分类间过渡（Animals & Nature → Food & Drink）正常渲染，section header 显示正确
+- 滚动时 hover 预览功能正常工作（显示 emoji 名称和 shortcode）
+- 滚动过程中控制台无任何新增 getBoundingClientRect 错误
+
+#### 步骤 5：点击选择表情
+**结果：PASS** ✅
+- 点击 😀 "Grinning Face"：底部预览显示正确，ACTION LOGGER 记录了 `selected: [Object]` 和 `clicked: [Object, "[SyntheticEvent]"]`
+- 点击 🐒 "Monkey"（Animals & Nature 分类）：底部预览显示 "Monkey / :monkey:"，ACTION LOGGER 再次正确记录事件
+
+### 🐛 已发现的问题
+
+**次要问题（非阻断性）**：
+1. 两个图片资源 `octocat.png` 和 `shipit.png` 加载失败（`ERR_CONNECTION_CLOSED`），可能是 GitHub custom emoji 的外部资源服务不可用
+2. HTML 无障碍警告：表单字段缺少 id/name 属性，`<label>` 元素使用不当
+
+### 🎯 最终结论
+emoji-mart 表情选择器组件**基本功能运行正常**：
+- ✅ 完整渲染
+- ✅ 无 `getBoundingClientRect` TypeError（无 JS 运行时错误）
+- ✅ 分类切换功能正常
+- ✅ 滚动功能正常
+- ✅ 表情选择功能正常，事件回调正确触发
+
+==================================================
+
+UI window closed

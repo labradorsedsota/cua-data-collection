@@ -1,0 +1,503 @@
+Session created: sess-20260417010849-ffeb6514fe2a447d9631e87de991ccb5
+UI panel initialized successfully
+UI window displayed
+Expected result: 禁用状态的选项在使用键盘上下箭头导航时应被跳过，不应被高亮聚焦；按 Enter 键时不应能选择禁用项。
+[step 0] Action: Initializing
+[step 0] Reasoning: Initializing session connection
+[step 0] Action: screenshot
+[step 1] Action: left_click (441, 516)
+[step 1] Reasoning: I can see the svelte-typeahead demo page. I can see there's a "Disable and filter items" section in the table of contents. Let me click on that link to navigate to the disabled items section.
+[step 2] Action: left_click (640, 212)
+[step 2] Reasoning: I can see the "Disable and filter items" section. There's a typeahead input box with "Search..." placeholder. The code shows that items with `state.length > 4` are disabled. Let me click on the first "Search..." input box and type something to trigger the dropdown list.
+[step 3] Action: type: a
+[step 3] Reasoning: The input box is now focused (highlighted in blue). Now let me type something to trigger the dropdown suggestion list. I'll type a common letter to get results.
+[step 4] Action: key: Down
+[step 4] Reasoning: A dropdown appeared with "Michigan" and "Nevada" as suggestions. I need to check if these items have disabled states. Looking at the code, `disable = (item) => item.state.length > 4`. Let me analyze:
+- "Michigan" has state = "Michigan" (8 characters > 4) → should be disabled
+- "Nevada" has state = "Nevada" (6 characters > 4) → should also be disabled
+
+Wait, looking more carefully - the code says `extract={(item) => item.state}` which means it's extracting the state name. The `disable` function checks `item.state.length > 4`. So these items show US states that contain the letter "a". 
+
+Both items appear to be showing in the list. Let me look more carefully at whether they appear visually disabled (grayed out or different styling). The items "Michigan" and "Nevada" both seem to appear at similar styling. Let me take a closer look by zooming in.
+
+Actually, looking at the items - "Michigan" appears slightly lighter/grayed compared to "Nevada". Let me check the visual difference more carefully. The text "Michigan" appears to be in a lighter gray color indicating it might be disabled, while "Nevada" appears in a darker color.
+
+Let me now use keyboard arrows to navigate and observe behavior:
+[step 5] Action: key: Down
+[step 5] Reasoning: Interesting! After pressing the Down arrow key, I can see that "Nevada" is now highlighted (it has a slightly highlighted background), while "Michigan" is not highlighted. This suggests that the keyboard navigation **skipped** "Michigan" (which appears to be disabled) and went directly to "Nevada". 
+
+Looking at the visual appearance:
+- "Michigan" appears in lighter gray text - suggesting it's a disabled item
+- "Nevada" is now highlighted in the dropdown - keyboard navigation went directly to it
+
+Let me now press the Down arrow again to see if the navigation wraps or goes further:
+[step 6] Action: key: Up
+[step 6] Reasoning: After pressing the Down arrow again, I can see that neither item is highlighted now - the focus seems to have moved back to no item being selected, or possibly wrapping around. Looking at the current state, both Michigan and Nevada don't appear highlighted. Let me try pressing Up arrow to navigate back:
+[step 7] Action: key: Return
+[step 7] Reasoning: After pressing Up, I can see Nevada is now highlighted again (it has the highlighted background). This confirms that:
+1. The first Down key press skipped "Michigan" (disabled) and went to "Nevada"
+2. The second Down key press moved focus away from all items
+3. The Up key press came back to "Nevada" and highlighted it
+
+Now let me try pressing Enter to attempt to select "Nevada" (which appears to be the currently highlighted non-disabled item):
+[step 8] Action: triple_click
+[step 8] Reasoning: "Nevada" was selected successfully when pressing Enter. The input field now shows "Nevada" and the dropdown has closed. This confirms that the Enter key works for selecting non-disabled items.
+
+Now I need to test specifically with the disabled item "Michigan". Let me reset the input and try to navigate to/select the disabled "Michigan" item. First, let me clear the input and type again:
+[step 9] Action: type: mich
+[step 9] Reasoning: The text "Nevada" is now selected (highlighted) in the input box. Let me type a new search query to get the dropdown with Michigan as the first item, so I can test keyboard navigation specifically on the disabled item:
+[step 10] Action: key: Down
+[step 10] Reasoning: Excellent! Now I can see "Michigan" is the only item in the dropdown and it appears in a lighter gray color, indicating it's a disabled item. The text "mich" is highlighted in yellow within "Michigan" showing it's the search result.
+
+Now let me test keyboard navigation with this disabled item. Let me press the Down arrow key:
+[step 11] Action: key: Return
+[step 11] Reasoning: Very important observation! After pressing the Down arrow key with only "Michigan" (disabled item) in the dropdown:
+- "Michigan" is NOT highlighted/focused - no visual highlight appeared on the item
+- The keyboard navigation **skipped** the disabled item completely
+- The input field still shows "mich"
+
+This confirms that the keyboard navigation skips disabled items. Now let me press Enter to see what happens when trying to "select" via keyboard when the focus is not on any item but the list only shows a disabled item:
+[step 12] Action: triple_click
+[step 12] Reasoning: This is a very important finding! After pressing Enter when the only option in the dropdown was the disabled "Michigan" item:
+- The input field now shows "Michigan" - the disabled item was selected!
+- The dropdown closed
+
+**This is a bug!** When the dropdown only contains disabled items and Enter is pressed, "Michigan" (a disabled item) was selected and filled into the input field. This suggests that pressing Enter when there's only a disabled item still "selects" it (at least fills the input), even though the keyboard navigation (arrow keys) correctly skips disabled items.
+
+Let me now do additional testing to verify this. Let me clear the field and do more thorough testing. Let me also check if there's a way to tell if the selection was truly "selected" or just the input text was updated:
+
+Wait, let me re-examine. In the first test with "a":
+- Down arrow → skipped Michigan, highlighted Nevada ✓
+- This behavior was correct
+
+In the second test with "mich" (only Michigan in list):
+- Down arrow → Michigan was NOT highlighted (correctly skipped)
+- But Enter was pressed → "Michigan" appeared in the input field (possibly a bug?)
+
+However, I need to reconsider - when you type "mich" and press Enter, it might be filling the input with the first match regardless of disabled state. Let me investigate more by re-testing to see if the dropdown actually dismisses with "Michigan" selected (vs just filling the text).
+
+Let me clear and retry:
+[step 13] Action: type: i
+[step 13] Reasoning: I can see "Michigan" is selected in the input (highlighted text). Let me now type a new search term to get a more comprehensive test. Let me try typing "i" to get more items with both disabled and enabled items so I can test keyboard navigation more thoroughly:
+[step 14] Action: triple_click
+[step 14] Reasoning: The dropdown didn't appear with "i". Let me check by looking at the data. The component's `filter = (item) => item.state.length > 8` filters out items with state length > 8. The `extract` is `item.state`. Let me try a different search term. The data appears to be US states. Let me try "o" to get states with "o":
+[step 15] Action: type: a
+[step 15] Reasoning: I see "i" is selected in the input box. Let me type a more specific query. Let me scroll up to understand the data better first. Actually, let me look at the source code link or scroll up to see what data is being used. But first, let me understand the key findings I've already gathered.
+
+Let me now do a more systematic test. Let me try typing "a" again to get both Michigan and Nevada:
+[step 16] Action: key: Return
+[step 16] Reasoning: I can see the dropdown again with "Michigan" (disabled, grayed out) and "Nevada" (enabled, darker text). Now let me try pressing Enter directly without pressing any arrow keys first, to see what happens:
+[step 17] Action: key: Escape
+[step 17] Reasoning: This is very interesting! When I pressed Enter without selecting any item (no arrow key navigation), the input filled with "Michigan" - the **first** item in the dropdown list, which is a **disabled** item! This is a clear bug.
+
+When pressing Enter without navigating with arrow keys:
+- The component selected the first item "Michigan" which is disabled
+- The dropdown closed and "Michigan" appeared in the input field
+
+This indicates a bug: **pressing Enter when no item is explicitly focused/navigated should not select a disabled item** (or perhaps should select the first non-disabled item instead).
+
+Let me now verify my understanding of the visual indicators - let me look at the source code in the browser to understand the structure better. But first, let me check if there's an actual difference in the data rendered for disabled vs enabled items. Let me scroll up to check if there's a "Basic" section with non-disabled search to compare:
+
+Let me first clear the input and do one more test - verify using DevTools or simply testing all the behaviors comprehensively:
+[step 18] Action: left_click (640, 212)
+[step 18] Reasoning: The Escape key cleared the input and brought it back to "Search..." state. Now let me look more carefully at the source code to understand what the actual disable function is doing - I can see it in the code:
+
+```javascript
+const disable = (item) => item.state.length > 4;
+const filter = (item) => item.state.length > 8;
+```
+
+So:
+- **filter** = `item.state.length > 8`: States with more than 8 characters are **filtered out** (not shown at all)
+- **disable** = `item.state.length > 4`: States with more than 4 characters are **disabled** (shown but grayed out)
+
+Wait - this means that states with more than 4 characters are disabled. But states also with more than 8 characters are filtered. So we would see in the dropdown:
+- States with name length <= 4: enabled (shown, selectable)
+- States with name length 5-8: disabled (shown, grayed out) 
+- States with name length > 8: filtered (not shown)
+
+"Michigan" = 8 characters → disabled (5-8 range)
+"Nevada" = 6 characters → disabled too!
+
+Wait, but earlier Nevada appeared in darker text compared to Michigan... Let me re-examine. Both Michigan (8 chars) and Nevada (6 chars) have length > 4, so they should both be disabled!
+
+But then why did Nevada appear to respond to keyboard navigation in my earlier test? Let me search again and test more carefully:
+[step 19] Action: type: o
+[step 19] Reasoning: Let me now search for a term that could include a short state name (4 characters or less) that would be ENABLED. US states with 4 letters or fewer include: Iowa, Ohio, Utah. Let me try "o" to find Ohio or Iowa:
+[step 20] Action: Open url: http://localhost:3000
+[step 20] Reasoning: Interesting - no dropdown appeared with "o". Let me scroll up to check the full page and data being used. Let me navigate to the top of the page to understand the full data being used in the demo:
+[step 21] Action: left_click (398, 441)
+[step 21] Reasoning: I can see the home page with a Table of Contents. The page is using Google Translate. I can see the "Basic" link which would show me the basic usage. Let me click on "Basic" to see the data set used:
+[step 22] Action: Open url: http://localhost:3000/#disable-and-filter-items
+[step 22] Reasoning: Now I can see the data set clearly:
+```javascript
+const data = [
+  { id: 0, state: "California" },
+  { id: 1, state: "North Carolina" },
+  { id: 2, state: "North Dakota" },
+  { id: 3, state: "South Carolina" },
+  { id: 4, state: "South Dakota" },
+  { id: 5, state: "Michigan" },
+  { id: 6, state: "Tennessee" },
+  { id: 7, state: "Nevada" },
+  { id: 8, state: "New Hampshire" },
+  { id: 9, state: "New Jersey" }
+];
+```
+
+Now let me analyze each state with the disable/filter rules from the "Disable and filter items" section:
+- **disable** = `item.state.length > 4` (items with state name > 4 chars are disabled)
+- **filter** = `item.state.length > 8` (items with state name > 8 chars are filtered out / hidden)
+
+Let me calculate:
+- "California" = 10 chars → filtered out (>8)
+- "North Carolina" = 14 chars → filtered out (>8)
+- "North Dakota" = 12 chars → filtered out (>8)
+- "South Carolina" = 14 chars → filtered out (>8)
+- "South Dakota" = 12 chars → filtered out (>8)
+- "Michigan" = 8 chars → disabled (>4, ≤8), SHOWN but disabled
+- "Tennessee" = 9 chars → filtered out (>8)
+- "Nevada" = 6 chars → disabled (>4, ≤8), SHOWN but disabled
+- "New Hampshire" = 13 chars → filtered out (>8)
+- "New Jersey" = 10 chars → filtered out (>8)
+
+So ALL visible items in the "Disable and filter items" typeahead will be **disabled** - there are NO enabled items! Both "Michigan" (8 chars) and "Nevada" (6 chars) are disabled.
+
+This explains the behavior I observed - both items in the dropdown were disabled, so:
+1. Arrow key navigation: SKIPPED disabled items and "highlighted" items (which appeared to be selected)
+2. Enter key: SELECTED the first item even though it was disabled
+
+Wait, let me re-examine. Earlier when I typed "a", I pressed Down arrow and it seemed to highlight "Nevada". But Nevada is also disabled (6 > 4). So either:
+1. The component actually does highlight disabled items with navigation (bug)
+2. Nevada was appearing as a non-disabled item due to a different logic
+
+Let me navigate back to the disable and filter section to test this more carefully:
+[step 23] Action: left_click (640, 212)
+[step 23] Reasoning: Good, I'm on the "Disable and filter items" page. Now let me click on the input and type "a" to trigger the dropdown with both Michigan and Nevada:
+[step 24] Action: type: a
+[step 24] Reasoning: The input is focused. Let me type "a" to trigger the dropdown:
+[step 25] Action: key: F12
+[step 25] Reasoning: Now I can see both items in the dropdown:
+- "Michigan" - appears in lighter gray/muted color (disabled visual indicator)
+- "Nevada" - appears in darker/normal color with "a" highlighted in yellow
+
+Wait, looking more carefully at the visual:
+- "Michigan" has slightly lighter/grayed text - DISABLED appearance
+- "Nevada" has "a" highlighted in yellow (matching the search) and appears in slightly darker text - but is it also disabled?
+
+Both should be disabled per the logic (`item.state.length > 4`). However, Nevada appears visually similar to a non-disabled item... 
+
+Let me check by zooming into the dropdown area using the browser's developer tools. Let me right-click on one of the items to inspect:
+[step 26] Action: left_click (67, 401)
+[step 26] Reasoning: The DevTools panel is now open at the bottom. Let me click on the "Elements" tab to inspect the DOM and look at the dropdown items' CSS classes:
+[step 27] Action: left_click (11, 401)
+[step 27] Reasoning: Good, the Elements panel is open. I can see the DOM structure. Let me use the inspector tool (the cursor icon at the top left of DevTools) to click on the "Michigan" item to inspect it. Let me click on the inspect element icon:
+[step 28] Action: left_click (386, 237)
+[step 28] Reasoning: The inspect element mode should be active (the cursor icon at the top-left of DevTools). Now let me click on the "Michigan" item in the dropdown to inspect it:
+[step 29] Action: key: F12
+[step 29] Reasoning: Excellent! Now I can see the DOM structure and CSS styles for the list items! Looking at the Elements panel, I can see:
+
+1. The selected element in the DOM breadcrumb at the bottom shows: `li#typeahead-0.nm25t9nlfjf-result-0.svelte-j5n77y.disabled.selected`
+
+This reveals that the "Michigan" item has BOTH the `disabled` AND `selected` CSS classes! This is very important - it means that clicking on Michigan (in inspect mode) selected it, and it was already marked as disabled.
+
+Looking at the CSS in the Styles panel:
+- `.disabled.svelte-j5n77y { opacity: 0.4; cursor: not-allowed; }` - disabled items have 40% opacity and "not-allowed" cursor
+- `.selected.svelte-j5n77y { background-color: #e5e5e5; }` - selected items have gray background
+
+Now let me look at the second list item (Nevada) to compare. Also I can see in the DOM:
+- `<li role="option" id="typeahead-0.nm25t9nlfjf-result-1" aria-selected="false" class="svelte-j5n77y disabled">` - Nevada also has the `disabled` class!
+
+So **BOTH Michigan and Nevada are disabled** as expected! 
+
+Now let me close the DevTools and re-test keyboard navigation. The key finding is:
+- "Michigan" = `disabled` class, shows with `opacity: 0.4` and `cursor: not-allowed`
+- "Nevada" = also `disabled` class, also shows with same opacity
+
+Wait, but why did Nevada appear darker in the visual? Let me check if clicking on Michigan selected it (aria-selected="true") while Nevada is aria-selected="false". Let me look again...
+
+The breadcrumb shows: `li#typeahead-0.nm25t9nlfjf-result-0.svelte-j5n77y.disabled.selected`
+
+The `.selected` class is on the first item (Michigan) which I clicked! So when I clicked on Michigan in inspect mode, it was "selected" (the component treated it as selected).
+
+This is a bug - clicking on a disabled item (Michigan) still selects it! The disabled item got the `selected` class.
+
+Let me close DevTools and test this systematically:
+[step 30] Action: left_click (640, 212)
+[step 30] Reasoning: DevTools is closed. I can see both "Michigan" and "Nevada" in the dropdown - both visually look similar now with lighter text. The input still has "a" in it. Now let me do the comprehensive keyboard navigation test.
+
+Let me click on the input to ensure it's focused and the dropdown is still visible, then test keyboard navigation:
+[step 31] Action: key: Down
+[step 31] Reasoning: The dropdown is showing with both "Michigan" and "Nevada". Both appear in lighter gray text. Now let me do the keyboard navigation test carefully and take screenshots after each key press:
+
+**Test 1: First Down Arrow key press**
+[step 32] Action: key: Down
+[step 32] Reasoning: After pressing the **Down arrow key once**:
+- "Michigan" - no visible highlight/selection (still lighter gray text)
+- "Nevada" - now has a **slightly lighter background highlight** indicating it's the focused item
+
+Wait - this is a critical observation! The Down arrow key **skipped** "Michigan" (the first disabled item) and directly focused/highlighted "Nevada" (also disabled). 
+
+Actually wait - is the highlight on Nevada? Let me look carefully... "Nevada" row appears slightly different from "Michigan". "Nevada" seems to have a very slight background shade. But both items are disabled!
+
+**The behavior:** The first Down arrow skipped Michigan and highlighted Nevada. BUT Nevada is also disabled. This suggests the component is incorrectly allowing keyboard navigation to focus a disabled item (Nevada).
+
+Let me press Down again to see what happens:
+
+**Test 2: Second Down Arrow key press**
+[step 33] Action: key: Up
+[step 33] Reasoning: After the **second Down arrow key press**:
+- Both "Michigan" and "Nevada" now appear with NO highlighting
+- The focus has moved beyond the list (both items have same appearance)
+- The dropdown is still visible but neither item is highlighted
+
+This confirms the component navigates through ALL items including disabled ones, but then after reaching the end, it wraps back to no selection.
+
+Let me now test pressing Up to go back, and then press Enter to see if the disabled item gets "selected":
+
+**Test 3: Up Arrow key press**
+[step 34] Action: key: Return
+[step 34] Reasoning: After pressing the **Up arrow key**:
+- "Nevada" is now highlighted (slightly lighter background) - it's the focused/selected item
+- "Michigan" has no highlight
+
+The Up arrow key moved the focus back to "Nevada" (the last visible item in the list). Now "Nevada" is highlighted.
+
+Now let me try pressing Enter to see if the disabled "Nevada" item gets selected:
+
+**Test 4: Enter key press when disabled item "Nevada" is highlighted**
+[step 35] Action: triple_click
+[step 35] Reasoning: **CRITICAL FINDING - BUG CONFIRMED!** 
+
+After pressing Enter when "Nevada" (a disabled item) was highlighted/focused:
+- The input field now shows **"Nevada"** - the disabled item was **SELECTED**!
+- The dropdown has closed
+- The selection was accepted even though Nevada is a disabled item
+
+This is a **confirmed bug**: The keyboard Enter key is able to select disabled items in the svelte-typeahead component. Disabled items should NOT be selectable via keyboard, just as they should not be selectable via mouse click.
+
+Let me now test the first navigation flow one more time to confirm the complete behavior. First let me clear the input:
+[step 36] Action: type: mich
+[step 36] Reasoning: I can see "Nevada" is selected in the input. The dropdown shows "Nevada" results. Let me now do a final comprehensive test - clear the input and test with only the "Michigan" disabled item visible:
+[step 37] Action: key: Down
+[step 37] Reasoning: I can see only "Michigan" in the dropdown (lighter gray text, indicating it's disabled). The letters "mich" are highlighted in the item text. Now let me test the Down arrow navigation:
+
+**Test with only Michigan (disabled) in the list:**
+[step 38] Action: key: Return
+[step 38] Reasoning: After pressing **Down arrow** with only "Michigan" (disabled) in the list:
+- "Michigan" does NOT have any highlight/selection visual indicator
+- The item appears unchanged (still the same lighter gray text)
+- No item appears to be selected/focused in the dropdown
+
+This confirms that when only disabled items are in the list:
+- **Down arrow**: Correctly skips the disabled item (no highlight on Michigan)
+
+Now let me press Enter to see if pressing Enter when no enabled item is focused selects or ignores the disabled item:
+[step 39] Action: DONE
+[step 39] Reasoning: **BUG CONFIRMED AGAIN!** 
+
+After pressing Down arrow (which showed no highlight on Michigan, the disabled item) and then pressing Enter:
+- The input field now shows **"Michigan"** - the disabled item was **SELECTED** via keyboard Enter!
+- The dropdown has closed
+- The text was set to "Michigan" even though it is a disabled item
+
+This is a **verified bug** in the svelte-typeahead component:
+1. **Arrow key navigation behavior**: The Down arrow key correctly does NOT highlight/visually focus disabled items in the dropdown list
+2. **BUT Enter key behavior**: Despite the disabled items not being highlighted, pressing Enter still selects the disabled item (fills the input with the disabled item's text and closes the dropdown)
+
+This is a critical bug because the component shows inconsistent behavior:
+- Arrow keys skip disabled items (correct behavior)
+- Enter key ignores the disabled state and selects disabled items anyway (incorrect behavior)
+
+Also, when disabled items ARE highlighted via keyboard navigation (as in the "Nevada" test case where the Down arrow actually DID highlight Nevada despite it being disabled), pressing Enter also selects them.
+
+Let me now provide a comprehensive summary of all the findings from this testing session.
+
+---
+
+## 测试结果总结
+
+以下是针对 svelte-typeahead 组件禁用项（disabled items）键盘导航和选择行为的完整测试结果：
+
+---
+
+### 📋 测试环境
+
+- **URL**: http://localhost:3000/#disable-and-filter-items
+- **测试区域**: "Disable and filter items" 示例
+- **禁用逻辑**: `disable = (item) => item.state.length > 4`（state名称长度>4的项被禁用）
+- **过滤逻辑**: `filter = (item) => item.state.length > 8`（state名称长度>8的项被过滤，完全不显示）
+
+---
+
+### 🔍 数据集分析
+
+| 州名 | 字符数 | 显示状态 | 禁用状态 |
+|------|--------|---------|---------|
+| Michigan | 8 | ✅ 显示 | ❌ 禁用 (>4) |
+| Nevada | 6 | ✅ 显示 | ❌ 禁用 (>4) |
+| 其余所有州 | >8 | 🚫 过滤掉 | - |
+
+**结论**：在该示例中，下拉列表中**所有可见项均为禁用项**，没有可选的启用项。
+
+---
+
+### 🎯 测试结果
+
+#### 1️⃣ 禁用项的视觉表现 ✅ 正常
+- 禁用项以**较浅的灰色文字**显示（通过 CSS `opacity: 0.4` 实现）
+- 鼠标悬停时显示 `cursor: not-allowed`（禁止符号光标）
+- 禁用项有明显的视觉区分，可以被用户识别
+
+#### 2️⃣ 键盘 Down/Up 箭头导航行为 ⚠️ 存在异常
+
+**测试场景：输入 "a"，出现 Michigan + Nevada 两个禁用项**
+
+| 操作 | 实际结果 | 预期结果 | 是否正确 |
+|------|---------|---------|---------|
+| 按第1次 Down | **Michigan(第1项)被跳过**，Nevada(第2项)被高亮 | 跳过所有禁用项，不应高亮任何项 | ❓ 部分正确：跳过了第1个，但高亮了第2个禁用项 |
+| 按第2次 Down | 没有任何项被高亮 | 同上 | ✅ |
+| 按 Up | Nevada 被重新高亮 | 不应高亮禁用项 | ❌ 错误：高亮了禁用项 |
+
+**测试场景：输入 "mich"，只有 Michigan 一个禁用项**
+
+| 操作 | 实际结果 | 预期结果 | 是否正确 |
+|------|---------|---------|---------|
+| 按 Down | Michigan 没有高亮 | 跳过所有禁用项，无高亮 | ✅ 正确 |
+
+**发现**：
+- 当只有一个禁用项时，Down 箭头能正确跳过，不会高亮禁用项
+- 当有多个禁用项时，Down 箭头**跳过第一个**但会**高亮第二个**禁用项（异常）
+- Up 箭头可以**高亮禁用项**（异常）
+
+#### 3️⃣ 键盘 Enter 键选择禁用项 🐛 **确认存在 BUG**
+
+| 测试场景 | 操作 | 实际结果 | 预期结果 | 结论 |
+|---------|------|---------|---------|------|
+| 只有 Michigan 禁用项，无高亮状态下按 Enter | Down → Enter | 输入框填充 **"Michigan"**，下拉关闭 | 不应选中禁用项 | ❌ **BUG** |
+| Nevada 禁用项被高亮时按 Enter | Down → Up → Enter | 输入框填充 **"Nevada"**，下拉关闭 | 不应选中禁用项 | ❌ **BUG** |
+
+---
+
+### 🐛 确认的 Bug
+
+**Bug 描述**: svelte-typeahead 组件中，**禁用项（disabled items）可以通过键盘 Enter 键被选中**，这违背了禁用状态的设计预期。
+
+**复现步骤**:
+1. 输入 "mich" 触发下拉，只显示禁用项 "Michigan"
+2. 按 Down 箭头键（Michigan 不会高亮，正常）
+3. 按 Enter 键
+4. **结果**: 输入框被填充为 "Michigan"，禁用项被成功"选中"
+
+**预期行为**: 禁用项不应该通过键盘（Enter 键）被选中，就像禁用项不应该通过鼠标点击被选中一样。
+
+**影响范围**: 所有使用 `disable` 属性的 svelte-typeahead 组件实例，当下拉列表中只有禁用项时，用户按 Enter 键会意外选中禁用项。
+Evaluating task result...
+
+==================================================
+Task: 当前Chrome浏览器已打开 svelte-typeahead 组件 demo 页面，地址是http://localhost:3000。测试 svelte-typeahead 组件中禁用项（disabled items）的键盘导航和选择行为。操作步骤：1. 打开页面，找到 typeahead 输入框；2. 在输入框中输入文字触发下拉建议列表；3. 观察列表中是否存在禁用状态的选项；4. 使用键盘上下箭头键在建议列表中导航，验证禁用项在键盘导航时的表现；5. 尝试通过键盘（如按 Enter 键）选择禁用项，验证禁用项是否可以被键盘选中。始终在浏览器内操作，禁止打开 Terminal、Finder 或其他应用程序。如果在浏览器中找不到目标功能，直接标记 result 为 unclear。
+Status: COMPLETED
+Total steps: 39
+Last action: DONE
+Last reasoning: **BUG CONFIRMED AGAIN!** 
+
+After pressing Down arrow (which showed no highlight on Michigan, the disabled item) and then pressing Enter:
+- The input field now shows **"Michigan"** - the disabled item was **SELECTED** via keyboard Enter!
+- The dropdown has closed
+- The text was set to "Michigan" even though it is a disabled item
+
+This is a **verified bug** in the svelte-typeahead component:
+1. **Arrow key navigation behavior**: The Down arrow key correctly does NOT highlight/visually focus disabled items in the dropdown list
+2. **BUT Enter key behavior**: Despite the disabled items not being highlighted, pressing Enter still selects the disabled item (fills the input with the disabled item's text and closes the dropdown)
+
+This is a critical bug because the component shows inconsistent behavior:
+- Arrow keys skip disabled items (correct behavior)
+- Enter key ignores the disabled state and selects disabled items anyway (incorrect behavior)
+
+Also, when disabled items ARE highlighted via keyboard navigation (as in the "Nevada" test case where the Down arrow actually DID highlight Nevada despite it being disabled), pressing Enter also selects them.
+
+Let me now provide a comprehensive summary of all the findings from this testing session.
+
+---
+
+## 测试结果总结
+
+以下是针对 svelte-typeahead 组件禁用项（disabled items）键盘导航和选择行为的完整测试结果：
+
+---
+
+### 📋 测试环境
+
+- **URL**: http://localhost:3000/#disable-and-filter-items
+- **测试区域**: "Disable and filter items" 示例
+- **禁用逻辑**: `disable = (item) => item.state.length > 4`（state名称长度>4的项被禁用）
+- **过滤逻辑**: `filter = (item) => item.state.length > 8`（state名称长度>8的项被过滤，完全不显示）
+
+---
+
+### 🔍 数据集分析
+
+| 州名 | 字符数 | 显示状态 | 禁用状态 |
+|------|--------|---------|---------|
+| Michigan | 8 | ✅ 显示 | ❌ 禁用 (>4) |
+| Nevada | 6 | ✅ 显示 | ❌ 禁用 (>4) |
+| 其余所有州 | >8 | 🚫 过滤掉 | - |
+
+**结论**：在该示例中，下拉列表中**所有可见项均为禁用项**，没有可选的启用项。
+
+---
+
+### 🎯 测试结果
+
+#### 1️⃣ 禁用项的视觉表现 ✅ 正常
+- 禁用项以**较浅的灰色文字**显示（通过 CSS `opacity: 0.4` 实现）
+- 鼠标悬停时显示 `cursor: not-allowed`（禁止符号光标）
+- 禁用项有明显的视觉区分，可以被用户识别
+
+#### 2️⃣ 键盘 Down/Up 箭头导航行为 ⚠️ 存在异常
+
+**测试场景：输入 "a"，出现 Michigan + Nevada 两个禁用项**
+
+| 操作 | 实际结果 | 预期结果 | 是否正确 |
+|------|---------|---------|---------|
+| 按第1次 Down | **Michigan(第1项)被跳过**，Nevada(第2项)被高亮 | 跳过所有禁用项，不应高亮任何项 | ❓ 部分正确：跳过了第1个，但高亮了第2个禁用项 |
+| 按第2次 Down | 没有任何项被高亮 | 同上 | ✅ |
+| 按 Up | Nevada 被重新高亮 | 不应高亮禁用项 | ❌ 错误：高亮了禁用项 |
+
+**测试场景：输入 "mich"，只有 Michigan 一个禁用项**
+
+| 操作 | 实际结果 | 预期结果 | 是否正确 |
+|------|---------|---------|---------|
+| 按 Down | Michigan 没有高亮 | 跳过所有禁用项，无高亮 | ✅ 正确 |
+
+**发现**：
+- 当只有一个禁用项时，Down 箭头能正确跳过，不会高亮禁用项
+- 当有多个禁用项时，Down 箭头**跳过第一个**但会**高亮第二个**禁用项（异常）
+- Up 箭头可以**高亮禁用项**（异常）
+
+#### 3️⃣ 键盘 Enter 键选择禁用项 🐛 **确认存在 BUG**
+
+| 测试场景 | 操作 | 实际结果 | 预期结果 | 结论 |
+|---------|------|---------|---------|------|
+| 只有 Michigan 禁用项，无高亮状态下按 Enter | Down → Enter | 输入框填充 **"Michigan"**，下拉关闭 | 不应选中禁用项 | ❌ **BUG** |
+| Nevada 禁用项被高亮时按 Enter | Down → Up → Enter | 输入框填充 **"Nevada"**，下拉关闭 | 不应选中禁用项 | ❌ **BUG** |
+
+---
+
+### 🐛 确认的 Bug
+
+**Bug 描述**: svelte-typeahead 组件中，**禁用项（disabled items）可以通过键盘 Enter 键被选中**，这违背了禁用状态的设计预期。
+
+**复现步骤**:
+1. 输入 "mich" 触发下拉，只显示禁用项 "Michigan"
+2. 按 Down 箭头键（Michigan 不会高亮，正常）
+3. 按 Enter 键
+4. **结果**: 输入框被填充为 "Michigan"，禁用项被成功"选中"
+
+**预期行为**: 禁用项不应该通过键盘（Enter 键）被选中，就像禁用项不应该通过鼠标点击被选中一样。
+
+**影响范围**: 所有使用 `disable` 属性的 svelte-typeahead 组件实例，当下拉列表中只有禁用项时，用户按 Enter 键会意外选中禁用项。
+
+==================================================
+
+UI window closed

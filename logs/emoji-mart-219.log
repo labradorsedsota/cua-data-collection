@@ -1,0 +1,914 @@
+Session created: sess-20260416230953-01c4bbcf80864a1783817e33a77013a8
+UI panel initialized successfully
+UI window displayed
+Expected result: emoji 选择器顶部的各个分类图标应该可以通过 Tab 键依次聚焦，聚焦时有可见的焦点样式，按 Enter/Space 可切换分类，分类导航区域应有合适的无障碍角色（如 nav）和可访问标题。
+[step 0] Action: Initializing
+[step 0] Reasoning: Initializing session connection
+[step 0] Action: screenshot
+[step 1] Action: Minimize panel
+[step 1] Reasoning: I can see the emoji picker component is visible on the page. I can see the category icons at the top of the picker (the row of small icons). Let me minimize the panel first, then interact with the emoji picker to test keyboard accessibility.
+[step 2] Action: left_click (291, 230)
+[step 2] Reasoning: Good, the panel is minimized. I can see the emoji picker clearly. I can see the category icons at the top of the picker - there's a row of small icons at the top of the picker. Let me zoom in to get a better look at those category icons, and then I'll click on the picker area to focus it before using Tab to navigate.
+
+Let me first click on the emoji picker area to focus it, then use Tab to navigate through the elements.
+[step 3] Action: key: F12
+[step 3] Reasoning: I need to inspect the category icons area at the top of the emoji picker more carefully. Let me zoom into that area. I can see there's a row of small icons at the top of the picker (around y=104). Let me use the browser's developer tools to inspect the HTML structure to understand the accessibility roles and element types.
+
+Let me first open the browser's developer tools to inspect the HTML structure of the category icons.
+[step 4] Action: left_click (976, 130)
+[step 4] Reasoning: The DevTools is now open. I can see it's showing the Console tab with some errors about failed resources. Let me switch to the Elements tab to inspect the HTML structure of the emoji picker's category icons.
+[step 5] Action: left_click (921, 130)
+[step 5] Reasoning: I can see the Elements tab is now active and showing the HTML structure. I can see the Accessibility panel is also showing. Let me use the element inspector to click on the category icons at the top of the emoji picker. I'll use the element picker tool to inspect the category icons directly.
+
+Let me use the inspector tool (the cursor icon at top-left of DevTools) to click on one of the category icons at the top of the emoji picker.
+[step 6] Action: left_click (196, 104)
+[step 6] Reasoning: Let me click on the category icon area (the icons at the top of the emoji picker) to inspect them. I'll click on the first category icon (the clock/recently used icon at the top of the picker).
+[step 7] Action: scroll up (1090, 200) scroll_amount 3
+[step 7] Reasoning: Now I can see the HTML structure. The DevTools shows the structure of the emoji category icons. I can see:
+
+1. There's a `div class="emoji-mart-bar"` containing `div class="emoji-mart-anchors"`
+2. Inside it, there's a `span` with `class="emoji-mart-anchor emoji-mart-anchor-selected"` - so the anchors are `span` elements, not `button` elements!
+3. The SVG icon inside the span has `Role: image` in the accessibility properties
+4. The Computed Properties shows "Name: ''" with no aria-labelledby or aria-label set
+
+This is a significant finding. Let me look more carefully at the HTML structure. Let me scroll up in the elements panel to see the full structure.
+[step 8] Action: left_click (1100, 277)
+[step 8] Reasoning: Now I can see the HTML structure more clearly. I can see:
+
+1. The emoji picker has `div class="emoji-mart"` 
+2. Inside there's `div class="emoji-mart-bar"`
+3. Inside the bar there's `div class="emoji-mart-anchors"` with the flex layout
+4. The category icons are `span` elements with `class="emoji-mart-anchor emoji-mart-anchor-selected"`
+
+The key issue I'm seeing is that the category icons are `span` elements, not `button` elements. Let me now click directly on one of the `span` elements to see its full properties. Let me click on the span element in the elements tree to inspect it.
+
+Let me click on the span element shown in the elements panel to see its full HTML attributes:
+[step 9] Action: left_click (1024, 130)
+[step 9] Reasoning: Excellent! Now I can see very important information about the category icon spans:
+
+**From the Accessibility panel:**
+- **ARIA Attributes**: No ARIA attributes
+- **Computed Properties**:
+  - Name: "" (empty)
+  - aria-labelledby: Not specified
+  - aria-label: Not specified
+  - Description: "Frequently Used"
+  - **Role: generic** (NOT button!)
+
+The element has:
+- `span.emoji-mart-anchor.emoji-mart-anchor-selected`
+- `data-index="1"` 
+- `title="Frequently Used"`
+- Role: **generic** (not button)
+- No ARIA attributes
+
+This confirms that the category icons are implemented as `span` elements with `role: generic`, NOT as proper button elements. This means they likely don't receive keyboard focus by default (since span elements are not focusable unless they have `tabindex`).
+
+Let me now use the Console to run JavaScript to check if these spans have a tabindex attribute, and then actually test the Tab key navigation.
+
+Let me use the Console tab to investigate:
+[step 10] Action: left_click (1090, 653)
+[step 10] Reasoning: Good, I'm now in the Console tab. Let me click on the console input area and run some JavaScript to inspect the category anchor elements more closely.
+[step 11] Action: scroll down (1090, 400) scroll_amount 5
+[step 11] Reasoning: I notice the page is inside an iframe (I saw "storybook-preview" in the context selector in the console). The emoji picker is inside an iframe. Let me scroll down to find the console input area and change the context to the iframe.
+[step 12] Action: left_click (951, 653)
+[step 12] Reasoning: I see the console is showing but I need to find the console input. Let me click on the Console tab again and look for the console input field.
+[step 13] Action: left_click_drag (910, 400)
+[step 13] Reasoning: I can see the console is already active but there doesn't seem to be a visible input area. I need to resize the DevTools panel to make the console input visible. Let me try to drag the DevTools panel up to make it taller.
+
+Let me try to drag the divider between the top and the DevTools to make the DevTools area taller.
+[step 14] Action: key: Escape
+[step 14] Reasoning: The DevTools panel layout hasn't changed. Let me try to undock the DevTools to get a bigger panel, or let me try using the keyboard shortcut to open the console. Let me try clicking in the area right below the "Console" tab to access the console input.
+[step 15] Action: left_click (1024, 130)
+[step 15] Reasoning: The console drawer seems to have disappeared. Let me click on the Console tab to bring it back and then look for the console input.
+[step 16] Action: scroll down (1150, 300) scroll_amount 5
+[step 16] Reasoning: I'm now in the Console tab. I can see the DevTools is now wider. I notice I'm in the "storybook-pre..." context. The console shows some messages. I need to find the console input area. Let me scroll down in the DevTools panel to find the console input.
+[step 17] Action: left_click (1150, 660)
+[step 17] Reasoning: The console doesn't seem to show a visible input area. The console panel seems to only show messages. The console input bar seems to be cut off by the screen boundaries. Let me try to undock the DevTools to get more space by pressing the shortcut or using the three-dot menu. Let me try to use `Ctrl+~` or click in the console area and type.
+
+Let me try clicking at the very bottom of the DevTools panel where the console input should be:
+[step 18] Action: left_click (1249, 130)
+[step 18] Reasoning: The DevTools console input area seems to be not visible. The console panel appears to be very small and the input is not shown. Let me try to use the keyboard shortcut to open a separate console drawer. First, let me try pressing `Ctrl+~` (tilde) when the DevTools is focused to toggle the console drawer.
+
+Let me try clicking directly in the DevTools console area and pressing Tab+Enter to try to navigate, but first let me undock DevTools to a separate window for more space. Let me try the 3-dot menu.
+
+Actually, looking at the current layout more carefully, the console input area should be at the bottom of the DevTools console tab. The console area appears very small. Let me try to undock the DevTools by right-clicking the DevTools panel and selecting "Undock into separate window."
+
+Let me try clicking the three-dot menu (more options) icon in the DevTools toolbar:
+[step 19] Action: left_click (1255, 153)
+[step 19] Reasoning: I can see the DevTools menu is now open. I can see "Dock side" options at the top. Let me click on the "undock into separate window" option (the last icon in the "Dock side" row). I can also see "Show console drawer" which will give me easier access to the console. Let me click on "Show console drawer" to show the console drawer.
+
+Actually, let me first undock the DevTools to a separate window for more space. I'll click the last dock option (separate window icon):
+[step 20] Action: left_click (1150, 170)
+[step 20] Reasoning: The DevTools seems to still be docked. I can see in the Filter area there's a small icon that appeared. Let me try to use the "Run command" option from the menu or just click in the console panel area. Actually, the console seems to be visible but I need to find the input area at the bottom.
+
+Let me try clicking at the bottom part of the console panel where the input should be:
+[step 21] Action: left_click (1063, 538)
+[step 21] Reasoning: Excellent! Now I can see a drawer has opened at the bottom showing "Console" and "Issues" tabs. I can see important accessibility issues listed:
+1. "A form field element should have an id or name attribute" 
+2. "Deprecated feature used"
+3. "Incorrect use of `<label for=FORM_ELEMENT>`"
+4. "Session History Item Has Been Marked..."
+
+Let me click on the "Console" tab in the drawer to access the console input:
+[step 22] Action: left_click (1150, 653)
+[step 22] Reasoning: I see the drawer shows "Console" and "Issues" tabs at the bottom. However, the console tab shows but doesn't seem to show the input area. This is because the console drawer might need to be scrolled or the console input is hidden below. Let me try scrolling in the bottom drawer to find the console input, or let me try to type directly after clicking in the console area.
+
+Let me try a different approach - let me click on the Elements tab to go to the HTML inspector and look at the structure of the category icons. Then I'll switch to the console and use JavaScript to inspect the elements.
+
+Let me first change the iframe context to the storybook preview iframe. I can see "storybook-pre..." in the context dropdown. Let me click on that dropdown to switch to the correct iframe context.
+
+Let me try to use the context selector for the console - first let me click in the console input area to type:
+[step 23] Action: left_click_drag (1150, 500)
+[step 23] Reasoning: I see the console drawer tab area but the console input isn't visible. The console panel needs to be larger. Let me try to resize the console drawer by dragging it up. I'll drag the resize handle at the top of the drawer upward.
+
+Let me try dragging the top edge of the bottom drawer upward to expand it:
+[step 24] Action: key: F12
+[step 24] Reasoning: The console drawer still seems to be very small and without visible input. Let me try a completely different approach. Let me close the DevTools and instead directly navigate to the storybook iframe URL to get a full-page view of the emoji picker.
+
+Let me close the DevTools and use keyboard navigation directly on the emoji picker:
+[step 25] Action: left_click (600, 400)
+[step 25] Reasoning: Now I can see the emoji picker clearly without the DevTools. I can see:
+- The emoji picker with category icons at the top row (small icons for different categories)
+- The "Frequently Used" section with emojis
+- The "Smileys & People" section with many emojis
+
+I can see the category icons at the top of the picker (the bar with small icons). Now let me do the actual keyboard accessibility testing. 
+
+First, let me navigate to the storybook preview iframe directly to test in a cleaner environment. But first, let me try to use Tab key to navigate to the emoji category icons. Let me click somewhere on the page first to set the focus, then use Tab to navigate.
+
+Let me click on the Storybook page area (not on the emoji picker itself), then press Tab repeatedly to navigate through the focusable elements:
+[step 26] Action: left_click (400, 62)
+[step 26] Reasoning: Now I need to look at the category icons area at the top of the emoji picker more carefully. I can see a row of small icons at the top of the picker (the icons row at the very top). Let me zoom in on that area.
+
+Looking at the emoji picker, I can see:
+- Top row: A series of small icons (category icons) at around y=104
+- Then the search bar at around y=135
+- Then "Frequently Used" section
+- Then emoji rows
+- Then "Smileys & People" section with more emojis
+
+Now let me actually test keyboard navigation. I'll click somewhere above the emoji picker to ensure focus is at the start of the page, then use Tab to navigate through all focusable elements:
+
+Let me first click somewhere at the top of the page (maybe the URL bar and then click back to the page area) and then use Tab:
+[step 27] Action: Open url: http://localhost:6006/iframe.html?id=picker--default&viewMode=story
+[step 27] Reasoning: Good, the URL bar is now focused. Now let me navigate to the storybook iframe page directly to test keyboard accessibility in a clean environment. I'll navigate to the iframe preview page directly:
+[step 28] Action: key: F12
+[step 28] Reasoning: Excellent! Now I can see the emoji picker in a full standalone page without the Storybook navigation. I can clearly see:
+1. The **category icons bar** at the top (row with icons at y=97)
+2. The **Search** input field
+3. **Frequently Used** section
+4. **Smileys & People** section
+5. **Your Title Here** preview section at the bottom
+
+I can also see there's a Google Translate toolbar at the top. The emoji picker is now in a clean view.
+
+Now let me inspect the category icons structure using DevTools. Let me open DevTools on this page:
+[step 29] Action: left_click (1139, 130)
+[step 29] Reasoning: Good, DevTools is open. I can see the Console tab is active but the console area isn't showing an input. I can see there's a "Console" link at the bottom left of the DevTools. Let me click on the Console tab in the bottom drawer. First, let me switch to the Console tab at the top (not the bottom drawer). The top tab shows "Console" which I'll click:
+[step 30] Action: left_click (1065, 652)
+[step 30] Reasoning: I can see the DevTools is showing the Console tab at the top and "Console" at the bottom left. The console shows some messages in a list but there's no visible input area. The console input appears to be hidden. Let me click on the "Console" link in the bottom-left drawer tab to use it:
+[step 31] Action: key: F12
+[step 31] Reasoning: The console tab is selected but still not showing the input area. The problem is the DevTools panel is too small. Let me try to undock the DevTools to a separate window to get more space. I'll use the keyboard shortcut `Ctrl+Shift+J` to open a standalone console:
+
+Actually, let me try a different approach. Let me use the Elements inspector to look at the HTML structure directly by clicking the element picker, or let me use the right-click inspect approach on a category icon.
+
+First, let me close the DevTools and use a right-click + inspect on one of the category icons:
+[step 32] Action: right_click (20, 97)
+[step 32] Reasoning: Now I can see the emoji picker standalone page without DevTools. I can clearly see the category icons row at the top. Let me right-click on one of the category icons to inspect it. I'll right-click on the first icon in the category icons row (the clock icon for "Frequently Used" at approximately x=20, y=97):
+[step 33] Action: left_click (40, 325)
+[step 33] Reasoning: A context menu appeared. I can see the option "检查" (Inspect) at the bottom. Let me click on it to inspect the element:
+[step 34] Action: scroll down (1150, 220) scroll_amount 2
+[step 34] Reasoning: Excellent! Now I can see very important information in the DevTools Elements panel with the Accessibility tab active. Let me analyze what I see:
+
+**HTML Structure visible:**
+```html
+<div id="root">
+  <div class="emoji-mart" style="width: 338px;">
+    <div class="emoji-mart-bar">
+      <div class="emoji-mart-anchors"> (flex)
+        <span title="Frequently Used" data-index="1"
+              class="emoji-mart-anchor emoji-mart-anchor-selected"
+              style="color: rgb(174, 181, 197);">
+          <div class="emoji-mart-anchor-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 viewBox="0 0 24 24" width="24" height="24">
+              ... </svg>
+```
+
+**Accessibility Analysis (from the Accessibility tab on the right):**
+- **ARIA Attributes**: "No ARIA attributes" - no ARIA attributes are set on the SVG
+- **Computed Properties**:
+  - Name: "" (empty string)
+  - aria-labelledby: Not specified
+  - aria-label: Not specified
+  - From title: Not specified
+  - title: (cut off)
+
+The selected element is the SVG inside the category anchor. Let me scroll down in the DevTools to see more of the computed properties, and then I need to click on the parent `<span>` element to see its accessibility properties.
+
+Let me click on the span element in the Elements panel to see its accessibility properties. First, let me scroll the Elements panel to see the full structure:
+[step 35] Action: left_click (1152, 147)
+[step 35] Reasoning: Now I can see more of the HTML structure. The Elements panel now shows:
+- The category anchors bar is highlighted at top of the emoji picker (shown in blue at the top of the emoji picker in the left panel)
+- The breadcrumb shows: `div.emoji-mart-anchors` is selected
+- I can see the `span` elements with `title="Frequently Used"` and `class="emoji-mart-anchor emoji-mart-anchor-selected"`
+- There's also another `span` with `title="Smileys & People"` visible
+
+The Accessibility panel still shows:
+- **No ARIA attributes**
+- **Computed Properties**: Name: "", aria-labelledby: Not specified, aria-label: Not specified, From title: Not specified
+
+Let me now click on the `<span title="Frequently Used">` element in the Elements panel to inspect its specific properties:
+[step 36] Action: left_click (1152, 163)
+[step 36] Reasoning: Now I can see important information about the `div.emoji-mart-bar` element:
+
+**For `div.emoji-mart-bar`:**
+- **No ARIA attributes**
+- **Computed Properties**: "Element not interesting for accessibility."
+- The breadcrumb shows: `nl > body > div#root > div.emoji-mart > div.emoji-mart-bar`
+
+Now I can also see the full structure more clearly:
+- `div.emoji-mart-anchors` (flex layout)
+  - `span title="Frequently Used" data-index="1" class="emoji-mart-anchor emoji-mart-anchor-selected" style="color: rgb(174, 181, 197);"`
+    - `div class="emoji-mart-anchor-icon"`
+      - `svg viewBox="0 0 24 24" width="24" height="24"`
+    - `span class="emoji-mart-anchor-bar" style="background-color: rgb(174, 181, 197)"`
+  - `span title="Smileys & People" data-index="..."`
+
+Now let me click on the `span.emoji-mart-anchor` element to see its accessibility properties:
+[step 37] Action: scroll up (1152, 200) scroll_amount 2
+[step 37] Reasoning: Now I can see the full accessibility properties of the `span.emoji-mart-anchor.emoji-mart-anchor-selected` element. This is crucial information:
+
+**Selected element**: `span.emoji-mart-anchor.emoji-mart-anchor-selected`
+- **Size**: 32.39 × 45.39 pixels
+- **ARIA Attributes**: "No ARIA attributes"
+- **Computed Properties**:
+  - **Name: ""** (empty string - no accessible name!)
+  - aria-labelledby: Not specified
+  - aria-label: Not specified
+  - **Description: "Frequently Used"** (from the `title` attribute)
+  - **Role: generic** (NOT button!)
+
+The breadcrumb shows: `span.emoji-mart-anchor.emoji-mart-anchor-selected`
+
+**Key findings so far:**
+1. ✗ The category anchors are `<span>` elements with **Role: generic** (NOT `<button>` elements)
+2. ✗ No `tabindex` attribute (they would not be keyboard focusable unless CSS or JavaScript adds tabindex)
+3. ✗ No ARIA attributes
+4. ✓ Has `title="Frequently Used"` (provides Description but not Name)
+5. ✗ Name is empty
+
+Now I need to check whether these span elements have a `tabindex` attribute (which would make them keyboard focusable). Let me look at the full attributes of the span element. Let me scroll up in the Elements panel to see the full span attributes:
+[step 38] Action: key: F12
+[step 38] Reasoning: Now I can see the full HTML structure of the `span.emoji-mart-anchor.emoji-mart-anchor-selected` element:
+
+```html
+<span title="Frequently Used" data-index="1"
+      class="emoji-mart-anchor emoji-mart-anchor-selected"
+      style="color: rgb(174, 181, 197);">
+  == $0
+```
+
+I can see:
+- `title="Frequently Used"` - provides tooltip text
+- `data-index="1"` - data attribute for JavaScript tracking
+- `class="emoji-mart-anchor emoji-mart-anchor-selected"` - CSS classes
+- `style="color: rgb(174, 181, 197);"` - inline styling
+
+**Important: NO `tabindex` attribute is visible!** This means the `<span>` element is NOT natively keyboard focusable (spans need `tabindex` to be focusable).
+
+Now let me perform the actual keyboard Tab navigation test. Let me close the DevTools first and then test Tab key navigation on the emoji picker directly:
+[step 39] Action: left_click (500, 400)
+[step 39] Reasoning: The DevTools is now closed. I can see the emoji picker clearly. Now let me test keyboard accessibility by:
+
+1. First, clicking somewhere before the emoji picker to set the focus point
+2. Then pressing Tab to navigate through focusable elements
+
+Let me click at the top-left of the page (before the emoji picker) and then press Tab:
+[step 40] Action: key: Tab
+[step 40] Reasoning: Good. Now I'll press Tab to start navigating through the focusable elements on the page. The first Tab press should bring focus to the first focusable element. Let me press Tab and then take a screenshot to see which element gets focus:
+[step 41] Action: key: Tab
+[step 41] Reasoning: After pressing Tab, I can see that focus went to the **Search** input field (the "Search" text input has a blue border/outline at the top of the emoji picker). The category icons row (the icons bar at the very top, above the search bar) was **skipped** entirely - Tab focus went directly to the Search input.
+
+This is a key finding! The category icons at the top of the emoji picker were NOT focused when pressing Tab. The first focusable element is the Search input, not the category icons.
+
+Let me now press Tab again to see what the next focusable element is:
+[step 42] Action: key: Tab
+[step 42] Reasoning: After the second Tab press, focus moved to the **emoji scrollable area/list** (the entire emoji list area has a blue border around it now - you can see a blue outline around the emoji area from "Frequently Used" to the last row). The focus is on the emoji list area, not on any individual category icon.
+
+**Critical finding**: The Tab key navigation went:
+1. First Tab → Search input box ✓ (visible focus)
+2. Second Tab → Emoji list area (the scrollable emoji container) ✓ (visible focus)
+3. The **category icons at the top were completely SKIPPED** - they receive no Tab focus!
+
+This means the category icon spans don't have `tabindex` and are not in the tab order.
+
+Let me press Tab once more to see if there are any other focusable elements:
+[step 43] Action: key: ctrl+u
+[step 43] Reasoning: After the third Tab press, focus jumped to the **browser URL bar** (I can see the URL bar is now highlighted/focused at the top of the browser). This confirms that after the emoji list area, Tab focus moves OUT of the emoji picker entirely to the browser chrome.
+
+**Complete Tab navigation cycle through the emoji picker:**
+1. First Tab → **Search input** (has visible focus indicator)
+2. Second Tab → **Emoji list/scroll area** (has visible focus indicator - blue border)
+3. Third Tab → **Browser URL bar** (focus exits the picker completely)
+
+**The category icons at the top were NEVER focused** at any point in the Tab navigation cycle.
+
+Now let me go back to inspect the HTML in the DevTools using the Console to check the view source code and confirm the element structure, especially to see if there are any aria attributes or tabindex on the anchor elements. Let me open the view-source directly:
+
+Let me use the "View Page Source" to check the HTML structure:
+[step 44] Action: key: F12
+[step 44] Reasoning: The view-source didn't open in a new tab. The Ctrl+U didn't open a source view. Since this is a JavaScript-rendered page, the source might not be the rendered DOM. 
+
+Let me try the DevTools again to inspect the full HTML, but this time I'll use the Elements panel and look at the source code directly. Let me open DevTools and use the Console with JavaScript to check all the anchor elements:
+[step 45] Action: left_click (1063, 653)
+[step 45] Reasoning: Good. DevTools is now open and shows the Console tab. I can see the console output with messages. But the console input area is still not visible at the bottom. Let me try to click on the "Console" tab in the bottom drawer to access the console:
+[step 46] Action: left_click (1150, 200)
+[step 46] Reasoning: The console drawer is still not showing an input area. The console panel appears very small at the bottom. The console input field appears to be cut off. Let me try using the keyboard shortcut `Ctrl+~` (or `Ctrl+backtick`) to open the drawer properly:
+[step 47] Action: left_click (1249, 130)
+[step 47] Reasoning: I can see the Console tab at the bottom right is still visible but I can't see the console input. The console items area (showing error messages etc.) fills the panel but there's no visible input. 
+
+Let me try undocking the DevTools to a separate window. I'll use the three-dot menu (⋮) in the DevTools toolbar:
+[step 48] Action: left_click (1254, 153)
+[step 48] Reasoning: I can see the three-dot menu is open. I can see the "Dock side" options at the top - there are 4 icons for different dock positions. The last icon (rightmost) should be "Undock into separate window". Let me click on it:
+[step 49] Action: left_click (1091, 130)
+[step 49] Reasoning: The DevTools is still docked to the right side. The undock option didn't work as expected (might have selected a different dock option). I can see a tooltip showing "e.g. /events/d -cdn.ur!a.com" suggesting the tab is over a URL.
+
+Let me try a different approach - let me use the "Elements" tab and then switch to the Accessibility tab within it to inspect the elements. Let me click on the "Elements" tab:
+[step 50] Action: scroll down (1150, 630) scroll_amount 3
+[step 50] Reasoning: Now I can see both the Elements panel AND the Console drawer. I can see:
+
+**Elements Panel:**
+- The HTML structure shows `<body> == $0` highlighted with `<div id="root">...</div>` inside
+- The accessibility tab shows "No ARIA attributes" and "Element not interesting for accessibility" for the `body` element
+
+**Console Drawer:**
+- The console drawer is now visible at the bottom!
+
+But I still can't see the console input area in the drawer (it's cut off). Let me scroll down in the console drawer to find the input. Let me try to resize the bottom drawer by dragging its top border upward:
+
+Actually, I can now see the Console input should be at the very bottom of the screen. Let me scroll down in the console drawer:
+[step 51] Action: left_click (1040, 188)
+[step 51] Reasoning: The console drawer is not showing the console input. The console input field appears to be completely cut off at the bottom of the screen. The console only shows error messages but no input field. This is a layout issue with the DevTools panel.
+
+Let me try a different approach. Instead of using the console drawer, I'll try clicking in the Elements panel and navigating to the anchor elements in the HTML tree. Let me click on the triangle to expand the `div#root` in the HTML panel:
+[step 52] Action: left_click (1047, 188)
+[step 52] Reasoning: I've now selected the `div#root` element. I can see on the left that the entire emoji picker is highlighted with a blue overlay. On the right in the Accessibility panel:
+- **Computed Properties**:
+  - Name: "" (empty)
+  - aria-labelledby: Not specified
+  - aria-label: Not specified
+  - **Role: generic**
+
+The breadcrumb shows: `html > body > div#root`
+
+Now I need to dig deeper into the HTML tree to find the category anchor elements. Let me click on the triangle/arrow next to `div id="root"` to expand it:
+[step 53] Action: left_click (1057, 199)
+[step 53] Reasoning: Now I can see the div#root is expanded and shows `div class="emoji-mart" style="width: 338px;"`. Let me click on the expand arrow next to the emoji-mart div to expand it further:
+[step 54] Action: left_click (1063, 220)
+[step 54] Reasoning: Excellent! Now I can see the full structure of the emoji-mart component:
+
+```html
+<div class="emoji-mart" style="width: 338px;">
+  ▶ <div class="emoji-mart-bar"> ··· </div>    ← Category anchors bar!
+  ▶ <div class="emoji-mart-search"> ··· </div>  ← Search input
+  ▶ <div class="emoji-mart-scroll"> ··· </div>  ← Emoji list (scroll)
+  ▶ <div class="emoji-mart-bar"> ··· </div>    ← Bottom bar
+</div>
+```
+
+I can see:
+1. **Two** `div class="emoji-mart-bar"` elements - one at the top (category icons) and one at the bottom
+2. `div class="emoji-mart-search"` - the search input
+3. `div class="emoji-mart-scroll"` - the scrollable emoji list
+
+The breadcrumb shows: `html > body > div#root > div.emoji-mart`
+
+Now let me click on the first `div class="emoji-mart-bar"` to expand it and inspect the category icon elements:
+[step 55] Action: left_click (1057, 209)
+[step 55] Reasoning: Now I can see the `div.emoji-mart-bar` is selected (highlighted in the breadcrumb at the bottom of the Elements panel: `html > body > div#root > div.emoji-mart > div.emoji-mart-bar`). I can also see the emoji picker category icons bar is highlighted on the left side.
+
+In the Accessibility panel:
+- **ARIA Attributes**: "No ARIA attributes"
+- **Computed Properties**: "Element not interesting for accessibility."
+- **Role**: (not shown explicitly, but "not interesting for accessibility" means it likely has generic role)
+
+The `div.emoji-mart-bar` does NOT have a `nav` role or any ARIA role! This is a significant finding.
+
+Now let me expand this element to see its children. Let me click the triangle next to `div class="emoji-mart-bar"`:
+[step 56] Action: left_click (1063, 209)
+[step 56] Reasoning: The element still shows as collapsed. The `div.emoji-mart-bar` shows `···` indicating it has content. Let me try clicking on the triangle (expand arrow) more precisely - I see the text `▶ <div class="emoji-mart-bar">`. The triangle should be at the left of the `▶` arrow:
+[step 57] Action: left_click (1069, 220)
+[step 57] Reasoning: Now I can see the `div.emoji-mart-bar` is expanded and shows its children:
+```
+▼ <div class="emoji-mart-bar"> == $0
+  ▶ <div class="emoji-mart-anchors"> ···
+    flex
+```
+
+I can see:
+- `div.emoji-mart-bar` contains `div class="emoji-mart-anchors"` (with `flex` layout)
+
+The breadcrumb shows: `html > body > div#root > div.emoji-mart > div.emoji-mart-bar`
+
+Now let me click on the `div.emoji-mart-anchors` to expand it and see the anchor span elements:
+[step 58] Action: left_click (1152, 240)
+[step 58] Reasoning: Excellent! Now I can see the full structure! The `div.emoji-mart-anchors` is now selected (highlighted in the Accessibility panel breadcrumb: `emoji-mart > div.emoji-mart-bar > div.emoji-mart-anchors`). And its children are now visible in the HTML panel:
+
+```html
+<div class="emoji-mart-anchors"> flex == $0
+  <span title="Frequently Used" data-index="1" 
+        class="emoji-mart-anchor emoji-mart-anchor-selected" 
+        style="color: rgb(174, 181, 197);">
+    ... </span>
+  <span title="Smileys & People" data-index="2" 
+        class="emoji-mart-anchor"> 
+    ... </span>
+  <span title="Animals & Nature" data-index...>
+```
+
+I can now confirm the structure. The `div.emoji-mart-anchors` has:
+- **No ARIA attributes** (confirmed in the Accessibility panel)
+- **Role**: "Element not interesting for accessibility" (generic role - it's just a div!)
+- **No nav role or aria-label for navigation**
+
+The category icons are `<span>` elements. Let me now click on the first `<span title="Frequently Used"...>` to check its accessibility properties:
+[step 59] Action: left_click (1184, 321)
+[step 59] Reasoning: Now I have a very clear view of the accessibility properties of the first category icon span element. This is the most critical finding so far:
+
+**For `span.emoji-mart-anchor.emoji-mart-anchor-selected` (the "Frequently Used" category icon):**
+
+**HTML attributes visible in Elements panel:**
+```html
+<span title="Frequently Used" data-index="1"
+      class="emoji-mart-anchor emoji-mart-anchor-selected"
+      style="color: rgb(174, 181, 197);">
+```
+
+**Accessibility panel:**
+- **ARIA Attributes**: "No ARIA attributes"
+- **Computed Properties**:
+  - **Name: ""** (empty string - NO accessible name!)
+  - aria-labelledby: Not specified
+  - aria-label: Not specified
+  - **Description: "Frequently Used"** (derived from the `title` attribute)
+  - **Role: generic** ← NOT a button role!
+
+**Breadcrumb**: `span.emoji-mart-anchor.emoji-mart-anchor-selected`
+
+**Size**: 32.39 × 45.39 pixels
+
+Also notice on the left page: the `span.emoji-mart-anchor...` element is highlighted in the browser (the first category icon - the clock icon in the top row of the emoji picker). The tooltip shows `span.emoji-mart-anchor.emoji-mart-anchor.emoji-mart-anchor-selected 32.39 × 45.39`.
+
+The emoji picker's category icons area at the top of the picker (with the small icons) corresponds to the "Frequently Used" category anchor being selected.
+
+**Summary of critical accessibility findings:**
+
+1. ✗ **NOT a button element**: Category icons are `<span>` elements with `Role: generic` (should be `<button>` or `role="button"`)
+2. ✗ **No tabindex**: Span elements without tabindex are NOT keyboard focusable - Tab key skips them entirely
+3. ✗ **No ARIA label**: `Name: ""` (empty) - no accessible name for screen readers
+4. ✗ **No nav role**: The container (`div.emoji-mart-anchors`) has no `role="navigation"` or `<nav>` element
+5. ✓ **Has tooltip text**: `title="Frequently Used"` provides Description but not accessible Name
+6. ✗ **Tab navigation test confirms**: Pressing Tab does NOT focus any category icons - they are completely inaccessible via keyboard
+
+Let me now verify by checking if there's a `tabindex` attribute on the span. I need to scroll the Elements panel to see the full attributes of the span. Let me look at the top of the span element to see all its attributes. I can see in the Elements panel:
+
+```
+<span title="Frequently Used" data-index="1" class="emoji-mart-anchor emoji-mart-anchor-selected" style="color: rgb(174, 181, 197);"> == $0
+```
+
+**NO `tabindex` attribute** is visible! This confirms the span elements are NOT keyboard focusable.
+
+Let me also check if there's any event listener on these spans that handles keyboard events. Let me click on the span element in the Elements panel and check the "Event Listeners" tab in the DevTools:
+[step 60] Action: left_click (1225, 321)
+[step 60] Reasoning: I see I'm still on the "Accessibility" sub-tab in the right panel. I need to look at the other sub-tabs. I can see sub-tabs: "Styles", "Computed", "Layout", "Accessibility". I want to click on "Styles" to see if there's any CSS that adds `outline` or `focus` styles to the span elements. But more importantly, I want to check if any event listeners are registered. Let me look for the "Event Listeners" tab.
+
+The DevTools sub-tabs visible are: "Styles", "Computed", "Layout", "Accessibility", and then ">>". Let me click on ">>" to see more tabs including "Event Listeners":
+[step 61] Action: left_click (1173, 328)
+[step 61] Reasoning: A dropdown menu appeared with three options:
+1. **Event Listeners** (with an arrow indicating more options)
+2. **DOM Breakpoints**
+3. **Properties**
+
+Let me click on "Event Listeners" to check what event listeners are attached to the span element:
+[step 62] Action: left_click (1119, 339)
+[step 62] Reasoning: Excellent! Now I can see the "Event Listeners" tab is active for the `span.emoji-mart-anchor.emoji-mart-anchor-selected` element. This is very revealing!
+
+I can see the following event listeners are registered (these are showing "Ancestors" are also included based on the "Ancestors: All" checkbox being checked):
+
+- **DOMContentLoaded**
+- **blur**
+- **change**
+- **click**
+- **focus**
+- **input**
+- **keydown**
+- **keyup**
+- **message**
+- **mouseout**
+- **mouseover**
+- **scroll**
+- **selectionchange**
+
+I can see there are **keydown** and **keyup** event listeners, which might handle keyboard events. However, since the span element has `Role: generic` and NO `tabindex` attribute, the span elements CANNOT receive keyboard focus through Tab navigation. The keyboard event listeners are likely registered on the document/window level or the emoji-mart container, not on the individual spans.
+
+Let me check the "Ancestors: All" toggle to see if these events are inherited from ancestors (document/window). Let me deselect "All" to only see events directly on this span:
+[step 63] Action: left_click (1130, 371)
+[step 63] Reasoning: A dropdown appeared showing filter options:
+- **All** (currently selected/highlighted)
+- **Passive**
+- **Blocking**
+
+The "All" option is highlighted in blue, meaning I'm already seeing all events including ancestors. The long list of events I saw (DOMContentLoaded, blur, change, click, etc.) are events registered on ancestor elements (document/window), not on the span itself. Let me select "Blocking" to see only blocking (direct) event listeners:
+[step 64] Action: left_click (1051, 339)
+[step 64] Reasoning: Interesting! The filter is now set to "Blocking" and the event list still shows many events including "DOMContentLoaded", "blur", "change", "click", "focus", "input", "keydown", "keyup", "message", "mouseout", "mouseover", "scroll", "selectionchange". The "change" event has a small "change" label next to it (indicating it's directly on this element or very close).
+
+However, the "Ancestors" checkbox is still checked. Let me UNCHECK the "Ancestors" checkbox to see ONLY the events directly on the selected span element (NOT inherited from parent elements):
+[step 65] Action: left_click (1184, 321)
+[step 65] Reasoning: Now I can see exactly what event listeners are **directly registered on the `span.emoji-mart-anchor.emoji-mart-anchor-selected` element** (with "Ancestors" unchecked):
+
+**Only ONE event listener is directly on the span:**
+- **click** - Only a click event listener!
+
+**No keyboard event listeners (keydown, keyup, keypress) are on the span itself!**
+
+This confirms that:
+1. The span only has a `click` event handler directly on it
+2. There are NO keyboard event handlers (keydown/keyup) directly on the span
+3. The span elements cannot receive keyboard focus (no tabindex, no button role)
+4. Even if somehow focused, pressing Enter/Space would not trigger the click event (no keyboard handler)
+
+Now let me do the actual keyboard accessibility test by closing DevTools and trying to use keyboard Tab and Enter/Space on the emoji picker. Let me also check the CSS to see if there's any `outline` styling for focus indicators:
+
+Let me switch back to the Accessibility tab to get the final summary:
+[step 66] Action: left_click (1041, 321)
+[step 66] Reasoning: I see I'm still on the Event Listeners tab. Let me click on the "Accessibility" tab to see the full accessibility summary. I notice the sub-tabs are: "Styles", "Computed", "Layout", "Event Listeners", ">>". The "Accessibility" tab seems to have disappeared from the visible tabs. Let me click on ">>" to find the Accessibility tab:
+
+Actually, I can see the "Event Listeners" tab IS selected showing that only `click` event is directly on the span. Now let me check the Styles tab to see if there's any CSS focus styling:
+[step 67] Action: scroll down (1150, 450) scroll_amount 3
+[step 67] Reasoning: Now I can see the **Styles** tab for the `span.emoji-mart-anchor.emoji-mart-anchor-selected` element. This is very informative! Let me read the CSS styles:
+
+```css
+/* Inline style */
+element.style {
+  color: rgb(174, 101, 197);   /* Inline color */
+}
+
+/* Hover & selected states */
+.emoji-mart-anchor:hover, .emoji-mart-anchor-selected {
+  color: #464646;   ← strikethrough (overridden)
+}
+
+/* Base anchor styles */
+.emoji-mart-anchor {
+  position: relative;
+  display: block;
+  flex: 1 1 auto;
+  text-align: center;
+  padding: 12px 4px;
+  overflow: hidden;
+  transition: color .1s ease-out;
+}
+
+/* More styles below... */
+.emoji-mart, .emoji-mart * {
+  box-sizing: border-box;  ← this is cut off
+```
+
+**Critical observation**: Looking at the CSS for `.emoji-mart-anchor`:
+- `position: relative`
+- `display: block`
+- `flex: 1 1 auto`
+- `text-align: center`
+- `padding: 12px 4px`
+- `overflow: hidden`
+- `transition: color .1s ease-out`
+
+**There is NO `:focus` styling defined for `.emoji-mart-anchor`!**
+
+This means:
+1. Even if the spans somehow received focus (which they can't via Tab because no tabindex)
+2. There would be NO visible focus indicator
+3. This is a major WCAG 2.1 violation
+
+Let me scroll down in the Styles panel to see if there are any `:focus` styles:
+[step 68] Action: scroll down (1150, 450) scroll_amount 3
+[step 68] Reasoning: Now I can see more CSS styles. I can see:
+
+**From `.emoji-mart-anchor`:**
+```css
+display: block;
+flex: 1 1 auto;
+text-align: center;
+padding: 12px 4px;
+overflow: hidden;
+transition: color .1s ease-out;
+```
+
+**From `.emoji-mart, .emoji-mart *`:**
+```css
+box-sizing: border-box;
+line-height: 1.15;
+```
+
+**Inherited from `div.emoji-mart-anchors`:**
+```css
+.emoji-mart-anchors {
+  display: flex;
+  flex-direction: row;  ← (strikethrough = overridden)
+  justify-content: space-between;  ← (strikethrough = overridden)
+  padding: 0 6px;
+  color: #858585;
+```
+
+**No `:focus` styles visible!** Let me scroll down to see if there are any `:focus` pseudo-class styles:
+[step 69] Action: key: F12
+[step 69] Reasoning: I can now see more CSS styles. The inherited styles from `.emoji-mart-anchors` include:
+```css
+.emoji-mart-anchors {
+  display: flex;
+  flex-direction: row; ← (strikethrough)
+  justify-content: space-between; ← (strikethrough)
+  padding: 0 6px;
+  color: #858585;
+  line-height: 0; ← (strikethrough)
+}
+```
+
+And inherited from `.emoji-mart`:
+```css
+.emoji-mart {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  display: inline-block;
+  color: #222427;
+  border-color: ...  ← (cut off)
+}
+```
+
+I can see there are NO `:focus` styles in the CSS! The category icon spans do not have any focus styling at all.
+
+Now I have enough information to write my comprehensive test report. Let me also do the actual keyboard navigation test one more time to confirm the behavior. Let me close the DevTools and test Tab navigation:
+[step 70] Action: left_click (500, 500)
+[step 70] Reasoning: Now I can see the emoji picker in a clean view without DevTools. I can clearly see:
+- **Top row**: Category icons (small icons at y≈97: frequently used, smileys, nature, foods, activity, places, objects, symbols, flags)
+- **Search input**: at y≈128
+- **Emoji sections**: "Frequently Used" and "Smileys & People" with emoji grids
+
+Now let me do the keyboard Tab navigation test. First, I'll click somewhere on the page to set the focus point (not on the emoji picker), then press Tab to navigate:
+
+Let me click on the empty space below the picker first, then Tab to navigate:
+[step 71] Action: key: Tab
+[step 71] Reasoning: Good. The page is now visible with no DevTools open. I can see the emoji picker with:
+- Category icons row at the top (visible at y≈97)
+- Search input (y≈127)
+- Emoji sections below
+
+I notice that there's NO visible focus indicator on any element after clicking on the empty space. Now let me press Tab to start keyboard navigation:
+
+**First Tab press:**
+[step 72] Action: key: Tab
+[step 72] Reasoning: After pressing Tab once, I can see that:
+- **The Search input has a cursor/focus**: The search input field now shows a text cursor (blinking cursor visible inside the "Search" text field at y≈127) and has a subtle focus outline
+- **The category icons bar at the top was SKIPPED**: No focus was placed on any category icon
+
+The first Tab press went directly to the **Search input**, completely bypassing the category icons. Let me now press Tab again to check the next focusable element:
+
+**Second Tab press:**
+[step 73] Action: key: Tab
+[step 73] Reasoning: After the second Tab press, I can see that:
+- **Focus moved to the emoji scroll area**: The entire emoji list area (from "Frequently Used" to the bottom) now has a visible blue border/outline around it - a blue rectangle outline is visible around the entire emoji content area from y≈140 to y≈325
+- **Category icons bar still has NO focus**: The top row with category icons (at y≈97) has no visible focus indicator
+- **Search input lost focus**: The search input no longer shows active cursor
+
+So the Tab key skipped the category icons and moved from the Search input to the entire emoji scroll area.
+
+Let me press Tab one more time to confirm what comes next:
+
+**Third Tab press:**
+[step 74] Action: left_click (42, 97)
+[step 74] Reasoning: After the third Tab press, I can see that:
+- **Focus moved to the browser URL bar**: The URL bar is now highlighted/focused (you can see the URL bar is now selected with the full URL shown)
+- **No element in the emoji picker has focus**: The emoji picker shows no visible focus indicator anywhere
+- **Category icons still never got focus**: Throughout all 3 Tab presses, not a single category icon received focus
+
+This confirms the complete Tab navigation order:
+1. Tab 1: **Search input** (has visible focus indicator - cursor appears)
+2. Tab 2: **Emoji scroll area** (has visible focus indicator - blue border around the entire list)
+3. Tab 3: **Browser URL bar** (focus exits the emoji picker)
+4. **Category icons: NEVER received focus** via Tab key
+
+Now let me also verify that the category icons work when CLICKED (to confirm the click interaction works at all):
+
+Let me click on one of the category icons (e.g., the "Smileys & People" icon - the second icon in the top row):
+[step 75] Action: DONE
+[step 75] Reasoning: I can see that clicking on the second category icon **DID work** - the emoji view changed to show "Smileys & People" section (I can see the emoji list now shows "Smileys & People" at the top with a full grid of smiley face emojis). Also, I can see the second icon in the category bar (at y≈97, x≈42) is now highlighted/selected (the "Smileys" face icon appears to be active/selected).
+
+This confirms:
+- ✓ **Mouse click works**: Clicking on category icons switches to the correct category
+- ✗ **Tab keyboard navigation does NOT work**: Category icons are never in the Tab order
+
+The function works with mouse but NOT with keyboard. This is a clear accessibility failure.
+
+Now let me also check if there's a visual focus indicator on a selected category icon by looking carefully at the icons in the top row. I can see the category icons are showing with a slightly different color for the active one. Let me look at the bottom blue bar (indicator bar) under the selected icon - this appears to be the "selected state" visual indicator, not a "focus state" indicator.
+
+Looking at the top row more carefully:
+- The second icon (😊 face) appears to be more colorful/darker than the others, indicating it's "selected" (active category)
+- There's a thin colored bar below the icon (the `span.emoji-mart-anchor-bar` element)
+- But this is the SELECTED state indicator for mouse interaction, NOT a FOCUS indicator for keyboard navigation
+
+Let me now also check the full Storybook page to see if there are any other related tests or stories. Let me go to the original Storybook URL:
+
+Based on my comprehensive testing, I now have all the information needed to write the final test report. Let me compile the findings:
+
+---
+
+## 🔍 **Comprehensive Accessibility Test Results for Emoji Picker Category Icons**
+
+### **Test: Keyboard Accessibility of Category Icons (Tab Navigation)**
+
+**URL tested**: `http://localhost:6006/iframe.html?id=picker--default&viewMode=story`
+
+---
+
+### **1. Element Structure (HTML)**
+
+The emoji picker category icons are implemented as:
+```html
+<div class="emoji-mart-bar">           ← NO role="navigation", NO aria-label
+  <div class="emoji-mart-anchors">     ← NO role, NO aria-label  
+    <span title="Frequently Used" 
+          data-index="1"
+          class="emoji-mart-anchor emoji-mart-anchor-selected"
+          style="color: rgb(174, 181, 197);">    ← NO tabindex, NO role="button"
+      <div class="emoji-mart-anchor-icon">
+        <svg>...</svg>                 ← NO aria-label, NO aria-hidden
+      </div>
+      <span class="emoji-mart-anchor-bar">...</span>
+    </span>
+    <span title="Smileys & People" ...>...</span>
+    <span title="Animals & Nature" ...>...</span>
+    ... etc.
+  </div>
+</div>
+```
+
+---
+
+### **2. Tab Navigation Test Results**
+
+| Tab Press | Focus Goes To | Notes |
+|-----------|--------------|-------|
+| Tab #1 | **Search input** | Has visible focus cursor indicator ✓ |
+| Tab #2 | **Emoji scroll area** | Has visible blue border focus indicator ✓ |
+| Tab #3 | **Browser URL bar** | Focus exits the picker entirely |
+| **Category icons** | **NEVER FOCUSED** | Completely absent from Tab order ✗ |
+
+---
+
+### **3. Accessibility Issues Found**
+
+| Issue | Severity | Finding |
+|-------|----------|---------|
+| **Not in tab order** | 🔴 Critical | Category icon `<span>` elements have NO `tabindex` attribute → NOT keyboard focusable |
+| **Wrong element type** | 🔴 Critical | Elements are `<span>` with `Role: generic`, NOT `<button>` or `role="button"` |
+| **No accessible name** | 🔴 Critical | `Name: ""` (empty) — only has `title` for Description, not Name |
+| **No focus indicator** | 🔴 Critical | No CSS `:focus` styles defined for `.emoji-mart-anchor` |
+| **No nav role** | 🟡 High | `div.emoji-mart-bar` and `div.emoji-mart-anchors` have NO `role="navigation"` or `<nav>` element |
+| **No ARIA attributes** | 🟡 High | No `role`, `aria-label`, `aria-labelledby` on the category icons container |
+| **Enter/Space does nothing** | 🔴 Critical | No keyboard event handlers on spans; only `click` handler; pressing Enter/Space can't activate (since elements are not focusable) |
+
+---
+
+### **4. Verification**
+
+- ✓ **Mouse click works**: Clicking category icons successfully switches emoji categories
+- ✗ **Tab navigation fails**: Category icons are NOT in the keyboard tab order
+- ✗ **Not button elements**: `<span>` with `Role: generic` instead of `<button>` or `role="button"`
+- ✗ **No ARIA roles**: No nav landmark, no navigation role, no button role
+- ✗ **No visible focus indicator**: No CSS focus styles defined
+- ✗ **Enter/Space activation fails**: No keyboard event handlers on category spans
+
+---
+
+Based on this comprehensive testing, the category icons in the emoji picker have **significant keyboard accessibility failures**. They are completely inaccessible via keyboard navigation.
+
+**RESULT: FAIL**
+
+The emoji picker's category icons at the top (Smileys, People, Nature, Foods, Activity, Places, Objects, Symbols, Flags):
+1. ❌ **Cannot be reached via Tab key** - not in tab order (no `tabindex`)
+2. ❌ **Not implemented as interactive button elements** - `<span>` with `Role: generic`
+3. ❌ **No visible focus indicator** - no CSS focus styles
+4. ❌ **Enter/Space cannot activate them** - no keyboard event handlers
+5. ❌ **No navigation accessibility landmark** - no `<nav>` or `role="navigation"`
+Evaluating task result...
+
+==================================================
+Task: 当前Chrome浏览器已打开@emoji-mart/monorepo网站，地址是http://localhost:6006。测试 emoji 选择器顶部分类图标的键盘可访问性。打开页面后，找到 emoji 选择器（emoji picker）组件，使用 Tab 键在页面中进行键盘导航，验证选择器顶部的分类图标（如 Smileys、People、Nature、Foods、Activity、Places、Objects、Symbols、Flags 等类别图标）是否可以通过 Tab 键聚焦到。检查这些分类图标是否表现为可交互的按钮元素，聚焦后是否有可见的焦点指示，并且按 Enter 或 Space 键是否能切换到对应的 emoji 分类。同时检查分类图标区域是否有适当的无障碍导航角色（如 nav 元素或相应的 aria 角色标记）。请始终在浏览器内操作，禁止打开 Terminal、Finder 或其他应用程序。如果在浏览器中找不到目标功能，直接标记 result 为 unclear，result_summary 写明'未在页面中找到目标功能入口'。
+Status: COMPLETED
+Total steps: 75
+Last action: DONE
+Last reasoning: I can see that clicking on the second category icon **DID work** - the emoji view changed to show "Smileys & People" section (I can see the emoji list now shows "Smileys & People" at the top with a full grid of smiley face emojis). Also, I can see the second icon in the category bar (at y≈97, x≈42) is now highlighted/selected (the "Smileys" face icon appears to be active/selected).
+
+This confirms:
+- ✓ **Mouse click works**: Clicking on category icons switches to the correct category
+- ✗ **Tab keyboard navigation does NOT work**: Category icons are never in the Tab order
+
+The function works with mouse but NOT with keyboard. This is a clear accessibility failure.
+
+Now let me also check if there's a visual focus indicator on a selected category icon by looking carefully at the icons in the top row. I can see the category icons are showing with a slightly different color for the active one. Let me look at the bottom blue bar (indicator bar) under the selected icon - this appears to be the "selected state" visual indicator, not a "focus state" indicator.
+
+Looking at the top row more carefully:
+- The second icon (😊 face) appears to be more colorful/darker than the others, indicating it's "selected" (active category)
+- There's a thin colored bar below the icon (the `span.emoji-mart-anchor-bar` element)
+- But this is the SELECTED state indicator for mouse interaction, NOT a FOCUS indicator for keyboard navigation
+
+Let me now also check the full Storybook page to see if there are any other related tests or stories. Let me go to the original Storybook URL:
+
+Based on my comprehensive testing, I now have all the information needed to write the final test report. Let me compile the findings:
+
+---
+
+## 🔍 **Comprehensive Accessibility Test Results for Emoji Picker Category Icons**
+
+### **Test: Keyboard Accessibility of Category Icons (Tab Navigation)**
+
+**URL tested**: `http://localhost:6006/iframe.html?id=picker--default&viewMode=story`
+
+---
+
+### **1. Element Structure (HTML)**
+
+The emoji picker category icons are implemented as:
+```html
+<div class="emoji-mart-bar">           ← NO role="navigation", NO aria-label
+  <div class="emoji-mart-anchors">     ← NO role, NO aria-label  
+    <span title="Frequently Used" 
+          data-index="1"
+          class="emoji-mart-anchor emoji-mart-anchor-selected"
+          style="color: rgb(174, 181, 197);">    ← NO tabindex, NO role="button"
+      <div class="emoji-mart-anchor-icon">
+        <svg>...</svg>                 ← NO aria-label, NO aria-hidden
+      </div>
+      <span class="emoji-mart-anchor-bar">...</span>
+    </span>
+    <span title="Smileys & People" ...>...</span>
+    <span title="Animals & Nature" ...>...</span>
+    ... etc.
+  </div>
+</div>
+```
+
+---
+
+### **2. Tab Navigation Test Results**
+
+| Tab Press | Focus Goes To | Notes |
+|-----------|--------------|-------|
+| Tab #1 | **Search input** | Has visible focus cursor indicator ✓ |
+| Tab #2 | **Emoji scroll area** | Has visible blue border focus indicator ✓ |
+| Tab #3 | **Browser URL bar** | Focus exits the picker entirely |
+| **Category icons** | **NEVER FOCUSED** | Completely absent from Tab order ✗ |
+
+---
+
+### **3. Accessibility Issues Found**
+
+| Issue | Severity | Finding |
+|-------|----------|---------|
+| **Not in tab order** | 🔴 Critical | Category icon `<span>` elements have NO `tabindex` attribute → NOT keyboard focusable |
+| **Wrong element type** | 🔴 Critical | Elements are `<span>` with `Role: generic`, NOT `<button>` or `role="button"` |
+| **No accessible name** | 🔴 Critical | `Name: ""` (empty) — only has `title` for Description, not Name |
+| **No focus indicator** | 🔴 Critical | No CSS `:focus` styles defined for `.emoji-mart-anchor` |
+| **No nav role** | 🟡 High | `div.emoji-mart-bar` and `div.emoji-mart-anchors` have NO `role="navigation"` or `<nav>` element |
+| **No ARIA attributes** | 🟡 High | No `role`, `aria-label`, `aria-labelledby` on the category icons container |
+| **Enter/Space does nothing** | 🔴 Critical | No keyboard event handlers on spans; only `click` handler; pressing Enter/Space can't activate (since elements are not focusable) |
+
+---
+
+### **4. Verification**
+
+- ✓ **Mouse click works**: Clicking category icons successfully switches emoji categories
+- ✗ **Tab navigation fails**: Category icons are NOT in the keyboard tab order
+- ✗ **Not button elements**: `<span>` with `Role: generic` instead of `<button>` or `role="button"`
+- ✗ **No ARIA roles**: No nav landmark, no navigation role, no button role
+- ✗ **No visible focus indicator**: No CSS focus styles defined
+- ✗ **Enter/Space activation fails**: No keyboard event handlers on category spans
+
+---
+
+Based on this comprehensive testing, the category icons in the emoji picker have **significant keyboard accessibility failures**. They are completely inaccessible via keyboard navigation.
+
+**RESULT: FAIL**
+
+The emoji picker's category icons at the top (Smileys, People, Nature, Foods, Activity, Places, Objects, Symbols, Flags):
+1. ❌ **Cannot be reached via Tab key** - not in tab order (no `tabindex`)
+2. ❌ **Not implemented as interactive button elements** - `<span>` with `Role: generic`
+3. ❌ **No visible focus indicator** - no CSS focus styles
+4. ❌ **Enter/Space cannot activate them** - no keyboard event handlers
+5. ❌ **No navigation accessibility landmark** - no `<nav>` or `role="navigation"`
+
+==================================================
+
+UI window closed
