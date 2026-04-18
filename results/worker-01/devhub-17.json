@@ -2,17 +2,20 @@
   "task_id": "devhub-17",
   "repo": "devhubapp/devhub",
   "worker": "worker-01",
-  "status": "completed",
-  "sess_id": "sess-20260418102112-f4daeac16ff14f60a52bbea081a4f6f6",
-  "expected_result_used": true,
-  "duration_seconds": 181,
+  "status": "failed",
+  "expected_result_used": false,
+  "sess_id": null,
+  "duration_seconds": 0,
   "timestamp": "2026-04-18T10:24:00+08:00",
-  "mano_cua": {
-    "status": "COMPLETED",
-    "total_steps": 19,
-    "last_action": "DONE",
-    "result": "deploy_failed",
-    "result_summary": "monorepo workspace构建失败。@devhub/core模块未编译（packages/components依赖core但core未build），webpack报Module not found: Can't resolve '@devhub/core'。页面仅显示红色编译错误，无任何UI渲染。yarn install OOM导致无法完整执行monorepo构建流程。Node 25不兼容(http_parser removed)，Node 18报OpenSSL错误，Node 16可启动但core模块缺失。",
-    "last_reasoning": "页面显示webpack编译错误：Module not found @devhub/core。这是monorepo依赖链断裂：core包未编译，components包引用core失败，web包依赖components也失败。整个UI无法渲染。"
+  "mano_cua": null,
+  "failure": {
+    "type": "deploy_failed",
+    "symptom": "monorepo @devhub/core模块未编译，webpack报Module not found，页面仅显示红色编译错误无UI",
+    "attempted": [
+      "yarn install（OOM SIGKILL）",
+      "npm install成功但core包未build",
+      "Node 25（http_parser removed）→ Node 18（OpenSSL错误）→ Node 16（可启动但core缺失）"
+    ],
+    "recommendation": "需完整yarn workspace构建链，当前机器内存不足"
   }
 }

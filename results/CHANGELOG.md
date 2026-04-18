@@ -1,5 +1,51 @@
 # Results CHANGELOG
 
+## 2026-04-18 11:15 — worker-01 合规修复 16 张结果卡
+
+**操作人：** worker-01（林菡确认）
+**原因：** Pichai 合规扫描发现 worker-01 提交的 57 张结果中 16 张不符合 `worker-execution-guide.md` 标准 schema（failure.type 非法值、status/结构错误、sess_id 格式错误）
+**审计报告：** `reports/worker-01-audit.md`
+
+**修复分类：**
+
+| 类型 | 数量 | 修复方式 |
+|------|------|----------|
+| failure.type `deploy_blocked` → `deploy_failed` | 4 | 字段值替换 |
+| completed+mano_cua.result=deploy_failed → failed 格式 | 11 | 重构为 status=failed + failure 对象，mano_cua=null |
+| sess_id 格式错误（多段拼接） | 1 | 从原始 log 提取正确 sess_id |
+
+**修复后 status 分布（57 张）：**
+
+| status | 数量 |
+|--------|------|
+| completed | 38 |
+| failed | 19 |
+
+**影响卡清单（16 张）：**
+
+| # | 文件 | 修复前问题 | 修复后 status | 修复方式 |
+|---|------|-----------|---------------|----------|
+| 1 | `Semantic-UI-React-3502.json` | failure.type=`deploy_blocked`（非法值） | failed (deploy_failed) | `deploy_blocked` → `deploy_failed` |
+| 2 | `Semantic-UI-React-3552.json` | failure.type=`deploy_blocked`（非法值） | failed (deploy_failed) | `deploy_blocked` → `deploy_failed` |
+| 3 | `Semantic-UI-React-3581.json` | failure.type=`deploy_blocked`（非法值） | failed (deploy_failed) | `deploy_blocked` → `deploy_failed` |
+| 4 | `Semantic-UI-React-3669.json` | failure.type=`deploy_blocked`（非法值） | failed (deploy_failed) | `deploy_blocked` → `deploy_failed` |
+| 5 | `animate-ui-129.json` | sess_id 格式错误：多了一段时间戳拼接 | completed (abnormal) | 从 log 提取正确 sess_id：`sess-20260417183909-4fe90955a8a841be8809c20c50b9bc63` |
+| 6 | `devhub-17.json` | status=completed + mano_cua.result=`deploy_failed`（非法值） | failed (deploy_failed) | 重构为 failed 格式，symptom/attempted/recommendation 从原 result_summary 迁移 |
+| 7 | `docz-985.json` | sess_id 为空 + mano_cua.result=`deploy_failed`（非法值） | failed (deploy_failed) | 重构为 failed 格式 |
+| 8 | `photon-330.json` | sess_id 为空 + mano_cua.result=`deploy_failed`（非法值） | failed (deploy_failed) | 重构为 failed 格式 |
+| 9 | `photon-526.json` | sess_id 为空 + mano_cua.result=`deploy_failed`（非法值） | failed (deploy_failed) | 重构为 failed 格式 |
+| 10 | `shopify-223.json` | sess_id 为空 + mano_cua.result=`deploy_failed`（非法值） | failed (deploy_failed) | 重构为 failed 格式 |
+| 11 | `shopify-259.json` | sess_id 为空 + mano_cua.result=`deploy_failed`（非法值） | failed (deploy_failed) | 重构为 failed 格式 |
+| 12 | `shopify-264.json` | sess_id 为空 + mano_cua.result=`deploy_failed`（非法值） | failed (deploy_failed) | 重构为 failed 格式 |
+| 13 | `shopify-267.json` | sess_id 为空 + mano_cua.result=`deploy_failed`（非法值） | failed (deploy_failed) | 重构为 failed 格式 |
+| 14 | `shopify-269.json` | sess_id 为空 + mano_cua.result=`deploy_failed`（非法值） | failed (deploy_failed) | 重构为 failed 格式 |
+| 15 | `shopify-274.json` | sess_id 为空 + mano_cua.result=`deploy_failed`（非法值） | failed (deploy_failed) | 重构为 failed 格式 |
+| 16 | `shopify-293.json` | sess_id 为空 + mano_cua.result=`deploy_failed`（非法值） | failed (deploy_failed) | 重构为 failed 格式 |
+
+共 16 张卡，修复后 57/57 通过合规检查。
+
+---
+
 ## 2026-04-18 11:10 — worker-02 合规修复 77 张结果卡
 
 **操作人：** worker-02（林菡确认）
