@@ -1,0 +1,193 @@
+Session created: sess-20260419020542-91fa1cdfda234bfaa9d217e6663a7c19
+UI panel initialized successfully
+UI window displayed
+Expected result: DateTimePicker组件通过箭头或下拉菜单切换月份/年份进行日历导航时，应仅更新日历视图的显示月份，不应触发日期选择变更回调。只有用户明确点击选择具体日期时才触发日期变更。
+[step 0] Action: Initializing
+[step 0] Reasoning: Initializing session connection
+[step 0] Action: screenshot
+[step 1] Action: Open url: http://localhost:3000/docs/components/date-time-picker
+[step 1] Reasoning: I can see the shadcn-ui expansions page. I need to navigate to the DateTimePicker component. Let me navigate to the DateTimePicker page directly.
+[step 2] Action: Open url: http://localhost:3000/docs/components/datetime-picker
+[step 2] Reasoning: The URL returned a 404. Let me try different URL patterns to find the DateTimePicker component.
+[step 3] Action: Open url: http://localhost:3000/docs
+[step 3] Reasoning: Still a 404. Let me go back to the main page and navigate through the sidebar to find the DateTimePicker component.
+[step 4] Action: left_click (251, 262)
+[step 4] Reasoning: I can see the docs page with a sidebar. I can see "Datetime Picker" in the sidebar. Let me click on it.
+[step 5] Action: scroll down (640, 400) scroll_amount 3
+[step 5] Reasoning: I found the Datetime Picker component page. I can see a "Pick a date" button at the bottom. I can see it mentions:
+- Supports year, Month dropdown menu for quick navigation to a specific date.
+- Listens to keydown events.
+- Supports arrow navigation.
+
+Let me scroll down to see the full demo area and then click on "Pick a date" to open the calendar.
+[step 6] Action: left_click (706, 507)
+[step 6] Reasoning: I can see the DateTimePicker demo area with a "Pick a date" button. Let me click on it to open the calendar popup.
+[step 7] Action: left_click (705, 369)
+[step 7] Reasoning: The calendar popup is now open. I can see:
+- Month/Year header showing "April 2026" with left/right chevron arrows
+- A calendar grid showing days of the week (Su, Mo, Tu, We, Th, Fr, Sa)
+- Days of April 2026
+- A time picker at the bottom (00:00:00)
+- The "18" appears to be highlighted (today's date - April 18, 2026)
+- Month and Year dropdown selectors
+
+Let me first select a date. I'll click on April 15 to select a specific date.
+[step 8] Action: left_click (633, 254)
+[step 8] Reasoning: Excellent! I can see that:
+1. April 15 has been selected (shown highlighted in the calendar)
+2. The button at the bottom now shows "April 15th, 2026 00:00:00" - confirming the date was correctly selected
+
+Now let me test the left/right chevron arrows to navigate between months. I'll click the left chevron (previous month) to go to March 2026.
+[step 9] Action: left_click (777, 254)
+[step 9] Reasoning: The left chevron worked correctly:
+1. The calendar now shows "March 2026" - successfully navigated to the previous month
+2. **Crucially, the button at the bottom still shows "April 15th, 2026 00:00:00"** - the previously selected date was NOT changed by the month navigation. This is the correct behavior!
+
+Now let me click the right chevron to go forward (to April 2026 again).
+[step 10] Action: left_click (681, 254)
+[step 10] Reasoning: The right chevron worked correctly:
+1. The calendar is back to "April 2026" 
+2. April 15 is highlighted as selected (dark circle on 15)
+3. **The button still shows "April 15th, 2026 00:00:00"** - confirming that navigating with chevrons does NOT change the selected date
+
+Now let me test the month dropdown selector. I can see "April" has a dropdown indicator. Let me click on the "April" dropdown.
+[step 11] Action: left_click (703, 391)
+[step 11] Reasoning: The month dropdown is now open, showing all months (January through November visible, and there seems to be a scroll indicator at the bottom). April is currently selected (checkmark next to April). Let me select "June" to change the month via dropdown.
+[step 12] Action: left_click (724, 254)
+[step 12] Reasoning: Excellent! The month dropdown worked correctly:
+1. The calendar now shows "June 2026" - successfully switched to June via the month dropdown
+2. **The button at the bottom still shows "April 15th, 2026 00:00:00"** - the previously selected date was NOT changed by the month dropdown navigation. This is correct behavior!
+
+Now let me test the year dropdown. I'll click on "2026" to open the year dropdown.
+[step 13] Action: left_click (743, 456)
+[step 13] Reasoning: The year dropdown is now open, showing a list of years (2016-2026 visible with scroll indicators at top and bottom). The current year 2026 is checked/selected. Let me select year 2024 to change the year.
+[step 14] Action: screenshot
+[step 14] Reasoning: The year dropdown worked correctly:
+1. The calendar now shows "June 2024" - successfully changed to year 2024 via the year dropdown
+2. **The button at the bottom still shows "April 15th, 2026 00:00:00"** - the previously selected date was NOT changed by the year dropdown navigation. This is the correct behavior!
+
+Let me now take a comprehensive screenshot to confirm all the current state, and also check if there are any visual anomalies.
+[step 15] Action: DONE
+[step 15] Reasoning: The testing is complete. Let me compile a comprehensive summary of my findings:
+
+---
+
+## 测试报告：DateTimePicker 组件日历导航行为测试
+
+### 测试环境
+- 页面：`http://localhost:3000/docs/datetime-picker`
+- 组件：Datetime Picker（shadcn/ui expansions）
+
+### 测试步骤与结果
+
+#### ✅ 步骤1：找到 DateTimePicker 组件
+- 从首页 `localhost:3000` 导航到 `localhost:3000/docs`，在左侧边栏找到 "Datetime Picker" 并点击
+- 注：直接使用 URL `/docs/components/date-time-picker` 或 `/docs/components/datetime-picker` 均返回 404，正确 URL 为 `/docs/datetime-picker`
+
+#### ✅ 步骤2：点击打开日历弹窗
+- 点击 "Pick a date" 按钮，日历弹窗成功打开
+- 弹窗内包含：月/年切换下拉选择器、左右 Chevron 箭头、日历网格、时间选择器（00:00:00）
+
+#### ✅ 步骤3：选择日期（April 15）
+- 点击日历中的 "15"，日期被正确选中（圆形高亮标记）
+- 底部输入框成功更新为 **"April 15th, 2026 00:00:00"** ✅
+
+#### ✅ 步骤4：左右 Chevron 箭头导航月份
+- **点击左箭头（◀）**：日历视图从 April 2026 切换到 March 2026 ✅
+  - 底部输入框仍显示 "April 15th, 2026 00:00:00"，**选中日期未改变** ✅
+- **点击右箭头（▶）**：日历视图从 March 2026 切换回 April 2026 ✅
+  - April 15 仍然高亮显示，**选中日期未改变** ✅
+
+#### ✅ 步骤5：月份下拉选择器切换
+- 点击 "April" 下拉选择器，弹出月份列表（January~December），April 旁有 ✓ 标记
+- 选择 "June"，日历视图切换至 June 2026 ✅
+  - 底部输入框仍显示 "April 15th, 2026 00:00:00"，**选中日期未改变** ✅
+
+#### ✅ 步骤6：年份下拉选择器切换
+- 点击 "2026" 下拉选择器，弹出年份列表（2016~2026+），2026 旁有 ✓ 标记
+- 选择 "2024"，日历视图切换至 June 2024 ✅
+  - 底部输入框仍显示 "April 15th, 2026 00:00:00"，**选中日期未改变** ✅
+
+---
+
+### 核心验证结论（步骤6核心要求）
+
+**✅ 行为符合预期**：在仅进行月份/年份导航切换（非点击日期）时，组件：
+- 正确更新了日历视图的显示月份/年份
+- **没有触发日期选择变更回调** —— 底部显示的已选日期 "April 15th, 2026 00:00:00" 在所有导航操作后始终保持不变
+
+### 视觉异常观察
+- 无明显的布局错误或视觉异常
+- 日历弹窗、下拉菜单均正常显示
+- 月份/年份下拉列表有滚动指示器，显示正常
+
+### 总体评估：**PASS** ✅
+
+DateTimePicker 组件的日历导航行为（Chevron 箭头、月份下拉、年份下拉）均工作正常，月份/年份切换仅更新日历视图，不触发日期选择变更，符合预期行为。
+Evaluating task result...
+
+==================================================
+Task: 当前Chrome浏览器已打开shadcn-ui-expansions组件库页面，地址是http://localhost:3000/。测试DateTimePicker组件在日历导航时的行为。步骤：1. 在页面中找到DateTimePicker组件的演示区域（可能需要滚动页面或导航到对应章节）。2. 点击DateTimePicker打开日历弹窗。3. 选择一个日期，确认日期被正确选中。4. 使用日历中左右箭头(Chevron)切换月份，观察行为是否正常。5. 如有月份/年份下拉选择器，尝试通过下拉切换月份或年份。6. 验证在仅进行月份/年份导航切换（非点击日期）时，组件显示和交互是否符合预期——仅更新日历视图的显示月份，不应触发日期选择变更回调。始终在浏览器内操作，禁止打开Terminal。如果找不到目标功能直接报告unclear。
+Status: COMPLETED
+Total steps: 15
+Last action: DONE
+Last reasoning: The testing is complete. Let me compile a comprehensive summary of my findings:
+
+---
+
+## 测试报告：DateTimePicker 组件日历导航行为测试
+
+### 测试环境
+- 页面：`http://localhost:3000/docs/datetime-picker`
+- 组件：Datetime Picker（shadcn/ui expansions）
+
+### 测试步骤与结果
+
+#### ✅ 步骤1：找到 DateTimePicker 组件
+- 从首页 `localhost:3000` 导航到 `localhost:3000/docs`，在左侧边栏找到 "Datetime Picker" 并点击
+- 注：直接使用 URL `/docs/components/date-time-picker` 或 `/docs/components/datetime-picker` 均返回 404，正确 URL 为 `/docs/datetime-picker`
+
+#### ✅ 步骤2：点击打开日历弹窗
+- 点击 "Pick a date" 按钮，日历弹窗成功打开
+- 弹窗内包含：月/年切换下拉选择器、左右 Chevron 箭头、日历网格、时间选择器（00:00:00）
+
+#### ✅ 步骤3：选择日期（April 15）
+- 点击日历中的 "15"，日期被正确选中（圆形高亮标记）
+- 底部输入框成功更新为 **"April 15th, 2026 00:00:00"** ✅
+
+#### ✅ 步骤4：左右 Chevron 箭头导航月份
+- **点击左箭头（◀）**：日历视图从 April 2026 切换到 March 2026 ✅
+  - 底部输入框仍显示 "April 15th, 2026 00:00:00"，**选中日期未改变** ✅
+- **点击右箭头（▶）**：日历视图从 March 2026 切换回 April 2026 ✅
+  - April 15 仍然高亮显示，**选中日期未改变** ✅
+
+#### ✅ 步骤5：月份下拉选择器切换
+- 点击 "April" 下拉选择器，弹出月份列表（January~December），April 旁有 ✓ 标记
+- 选择 "June"，日历视图切换至 June 2026 ✅
+  - 底部输入框仍显示 "April 15th, 2026 00:00:00"，**选中日期未改变** ✅
+
+#### ✅ 步骤6：年份下拉选择器切换
+- 点击 "2026" 下拉选择器，弹出年份列表（2016~2026+），2026 旁有 ✓ 标记
+- 选择 "2024"，日历视图切换至 June 2024 ✅
+  - 底部输入框仍显示 "April 15th, 2026 00:00:00"，**选中日期未改变** ✅
+
+---
+
+### 核心验证结论（步骤6核心要求）
+
+**✅ 行为符合预期**：在仅进行月份/年份导航切换（非点击日期）时，组件：
+- 正确更新了日历视图的显示月份/年份
+- **没有触发日期选择变更回调** —— 底部显示的已选日期 "April 15th, 2026 00:00:00" 在所有导航操作后始终保持不变
+
+### 视觉异常观察
+- 无明显的布局错误或视觉异常
+- 日历弹窗、下拉菜单均正常显示
+- 月份/年份下拉列表有滚动指示器，显示正常
+
+### 总体评估：**PASS** ✅
+
+DateTimePicker 组件的日历导航行为（Chevron 箭头、月份下拉、年份下拉）均工作正常，月份/年份切换仅更新日历视图，不触发日期选择变更，符合预期行为。
+
+==================================================
+
+UI window closed

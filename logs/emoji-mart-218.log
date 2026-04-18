@@ -1,265 +1,1288 @@
-Session created: sess-20260418021954-2d45420970a944f0b6a2214b69cbf1b2
+Session created: sess-20260419002118-f313f134aa5a4447ab0acd192ef22012
 UI panel initialized successfully
 UI window displayed
-Expected result: 方向键应能在emoji间导航。如果无法导航则为abnormal。
+Expected result: 搜索输入框获得焦点后，使用键盘方向键能够在 emoji 列表中的各个 emoji 之间导航移动焦点；搜索输入框和 emoji 列表应具有适当的 ARIA combobox 相关角色属性；emoji 列表应有无障碍标题标注。
 [step 0] Action: Initializing
 [step 0] Reasoning: Initializing session connection
-[step 0] Action: Open url: http://localhost:3000
-[step 0] Reasoning: I'll help you test the emoji picker keyboard navigation. Let me start by opening the browser and navigating to the URL.
-[step 1] Action: screenshot
-[step 1] Reasoning: I can see the Storybook is already open and the Picker section is visible in the left sidebar with "Default" already selected. Let me take a screenshot to see the current state better and look for the emoji picker in the main area.
-[step 2] Action: left_click (179, 405)
-[step 2] Reasoning: I can see the Storybook page is open. The "Picker" section is expanded and "Default" story is selected. However, I notice the right side shows KNOBS and ACTION LOGGER tabs, but I don't see the actual emoji picker preview. This appears to be a Storybook interface. The emoji picker preview must be in an iframe somewhere. Let me click on "Default" in the Picker section to make sure it's properly selected, and then look for the emoji picker.
-[step 3] Action: scroll up (400, 400) scroll_amount 5
-[step 3] Reasoning: I can see the Storybook is showing the Picker > Default story, but the emoji picker preview is not visible in the current view. This Storybook layout seems to have the story panel on the left and the KNOBS/ACTION LOGGER on the right. The actual emoji picker preview must be in an iframe below. I need to scroll up or check if there's a canvas area. Let me look at the current URL and try to navigate to see the emoji picker. It seems the layout might have the emoji picker in an area I'm not seeing. Let me try scrolling up in the page to find the preview area.
+[step 0] Action: screenshot
+[step 1] Action: Minimize panel
+[step 1] Reasoning: I can see the Storybook is already open with the Picker component displayed. I can see the emoji picker with a search input box and emoji grid. Let me first minimize the task panel and then navigate to get a better view of the picker. I can see the "Default" story under "Picker" is already selected.
 
-Actually, looking at the interface more carefully, this appears to be an older Storybook (v4/v5) layout where the story preview is typically at the top left and the sidebar is on the right or the layout is different. The URL shows `localhost:3000` with query parameters, suggesting this might be a specific layout. Let me scroll up to see if there's a preview area.
-[step 4] Action: left_click (625, 140)
-[step 4] Reasoning: I see the same layout. It appears that the emoji picker preview isn't visible in this view. The layout seems unusual - the left panel shows the story list and filter, and the right panel shows KNOBS. The actual story preview/canvas seems to be missing from this view. This might be because the story preview is in an iframe that loads separately or there's a different layout. 
+Let me first minimize the panel and then interact with the emoji picker.
+[step 2] Action: left_click (291, 135)
+[step 2] Reasoning: The panel is minimized. I can now see the Storybook clearly with:
+- Left sidebar: "Picker" > "Default" is selected (and other stories like Custom "Not found" component, Custom category icons, Custom skin emoji)
+- The emoji picker component is displayed in the center
+- The picker shows a search input box and emoji grid
 
-Let me check if there's a way to see the story preview. In Storybook v5, there's usually a canvas area. Let me try navigating directly to the iframe URL to see the emoji picker. Or maybe the emoji picker is embedded in the left side but we need to scroll down in the story panel. Let me look at the "CONTRIBUTE ON GITHUB" and the "⌘" button - the ⌘ button might toggle the layout.
-[step 5] Action: key: Escape
-[step 5] Reasoning: A keyboard shortcuts dialog appeared. I can see various Storybook keyboard shortcuts. Let me close this dialog and look for the actual story preview area. The emoji picker should be in the main canvas area of Storybook. Let me press Escape to close this dialog.
-[step 6] Action: Open url: http://localhost:3000/iframe.html?id=picker--default
-[step 6] Reasoning: I notice the layout is showing the sidebar and KNOBS panel but no main canvas/preview area. This seems like this is a Storybook v4 layout where the preview is embedded in the page. The layout currently has the left panel for navigation (Filter, Picker > Default, etc.) and the right panel for KNOBS. The actual emoji picker preview appears to not be visible because the iframe might be hidden.
+I'm currently on the "Default" story under "Picker". Now let me:
 
-Looking at the URL, it seems to be a Storybook with specific parameters. The layout is split - left has navigation, right has knobs. Let me try navigating to the iframe version of the story by modifying the URL to access the canvas.
+**Step 1**: The Picker story is already selected and I can see the emoji picker component.
 
-Actually, let me try to look for a resizable divider between the left panel and what might be the main canvas. The vertical gray line at x≈680 seems to be a divider. The preview might be in the area between the left panel and the KNOBS panel, but it's collapsed. Let me look more carefully.
+**Step 2**: Click on the search input box to give it focus.
+[step 3] Action: key: Down
+[step 3] Reasoning: I can see the search input box appears to have focus (there's a cursor visible). However, the emoji picker is shown inside an iframe in Storybook. I need to inspect the ARIA attributes and test keyboard navigation. 
 
-Looking at the screenshot again, I see:
-- Left part (0-680px width): Storybook sidebar with story navigation
-- Right part (680-1280px): KNOBS and ACTION LOGGER
+Let me first check the ARIA attributes by opening the browser's developer tools. But first, let me test the keyboard navigation by pressing arrow keys while the search box is focused.
 
-There's a middle column that should contain the actual story preview canvas. Let me try to access the iframe URL directly.
-[step 7] Action: left_click (471, 281)
-[step 7] Reasoning: Excellent! Now I can see the emoji picker! It's showing:
-- Category icons at the top (Frequently Used, Smileys & People, Animals, Food, Travel, etc.)
-- A search box labeled "Search"
+**Step 3**: Testing keyboard navigation with arrow keys in the emoji list.
+
+First, let me press the Down arrow key to see if focus moves to the emoji list:
+[step 4] Action: key: Right
+[step 4] Reasoning: I notice no visible change in the emoji grid when pressing the Down arrow key. The emoji picker component is embedded inside an iframe in Storybook. The keyboard events might not be reaching the iframe. Let me try to interact with the emoji picker more directly by opening it in a standalone frame or by clicking directly inside the picker iframe.
+
+Let me try pressing the arrow keys again and observe if any emoji gets highlighted (focused):
+[step 5] Action: screenshot
+[step 5] Reasoning: No visible change. The keyboard navigation doesn't seem to be working visually. This could be because the Storybook embeds the component inside an iframe, and my keyboard events may not be reaching the picker's iframe. Let me try to access the picker directly by opening it in a new frame/URL or by using the Storybook's "Open canvas in new tab" option.
+
+Actually, let me first try to interact with the search box directly within the iframe context. The Storybook's canvas might be inside an iframe. Let me check the URL to understand the structure better, and try opening the story in a full-screen canvas view.
+
+Let me look for the "Open in new tab" button in Storybook to get the component in isolation:
+[step 6] Action: Open url: http://localhost:6006/iframe.html?id=picker--default
+[step 6] Reasoning: I can see the emoji picker is inside the Storybook preview area. The component is likely inside an iframe. I need to check if the keyboard events are reaching the iframe. Let me try opening the canvas in a new tab to test it in isolation. I'll look for the "Open canvas in new tab" button in Storybook's toolbar area.
+
+Looking at the toolbar area (the row with icons at the top including emoji categories), I need to find the "New Tab" or "Open in new tab" icon. Let me check the toolbar icons more carefully. The icons at the top appear to be emoji category navigation icons, not Storybook toolbar icons.
+
+Let me try to access the iframe directly by opening the story's iframe URL. Looking at the current URL: `localhost:6006/?knob-Highlight%20color=...`, the iframe URL for Storybook is usually at `localhost:6006/iframe.html`.
+
+Let me try opening the picker's iframe URL directly to test keyboard navigation:
+[step 7] Action: left_click (113, 128)
+[step 7] Reasoning: Excellent! Now I can see the emoji picker in isolation in its own tab. The picker component is now directly accessible without the Storybook iframe wrapper. I can see:
+- A search input at the top
+- Category navigation icons
 - "Frequently Used" section with emojis
 - "Smileys & People" section with emojis
+- A footer with "Your Title Here"
 
-The emoji picker is loading correctly. Now I need to go back to the Storybook interface and test the keyboard navigation. But actually, I can test the keyboard navigation directly here in the iframe view. Let me click on the search box first and then try arrow key navigation.
+Now let me click on the search input to focus it and then test keyboard navigation:
 
-Wait, actually the task says to "find the Picker story in Storybook and click it". I've already found and clicked Default, but let me go back to the main Storybook page and do it properly. However, since I can see the emoji picker working here, let me test the keyboard navigation directly.
-
-Let me click on the Search box first:
+**Step 2**: Click on the search input box to give it focus.
 [step 8] Action: key: Down
-[step 8] Reasoning: I've clicked on the Search box and it now has focus (I can see the cursor blinking in the search box). Now I need to navigate properly. The task requires me to:
-1. Find the Picker story in Storybook and click it
-2. Click on the search box in the emoji picker
-3. Use arrow keys to navigate in the emoji list
-4. Observe if focus moves between emojis
+[step 8] Reasoning: I can see the search input is now focused (there's a cursor/caret visible in the search box). Now let me test the keyboard navigation:
 
-I'm currently looking at the iframe version. Let me go back to the main Storybook page first to follow the task requirements properly, then test the keyboard navigation.
+**Step 3**: Test keyboard navigation using arrow keys.
 
-Actually, I'm currently in the iframe view which IS the emoji picker. Let me proceed with testing keyboard navigation from here. The search box is focused. Let me try pressing the Down arrow key to see if focus moves to the emoji list.
+Let me press Down arrow to see if focus moves to the emoji list:
+[step 9] Action: key: Right
+[step 9] Reasoning: I pressed the Down arrow key but no emoji appears to be highlighted/focused. The visual state of the emoji grid didn't change. Let me try pressing the arrow keys a few more times and see if any visual indicator (highlighted/focused emoji) appears:
+[step 10] Action: key: F12
+[step 10] Reasoning: No visual change occurred when pressing the Right arrow key either. The emoji grid is not showing any focused/highlighted state when arrow keys are pressed. 
 
-Let me first press Enter or some key to trigger navigation, then try arrow keys:
-[step 9] Action: Open url: http://localhost:3000
-[step 9] Reasoning: I pressed the Down arrow key and the search box lost its cursor focus indicator. The emoji list doesn't appear to have received focus either - no emoji appears highlighted. Let me re-click on the search box to focus it again and try different approaches.
+Let me now inspect the ARIA attributes of the search input and emoji list by using Chrome DevTools. I'll open the DevTools and check the DOM structure:
 
-However, I first need to go back to the main Storybook page to follow the task instructions properly. Let me navigate back to the main Storybook URL and then find the Picker story.
-[step 10] Action: screenshot
-[step 10] Reasoning: The page is loading. Let me wait for it to load.
-[step 11] Action: wait
-[step 11] Reasoning: The page is still loading. Let me wait a bit more.
-[step 12] Action: wait
-[step 12] Reasoning: The page is still loading and showing blank. This is taking longer than expected. Let me wait a bit more.
-[step 13] Action: left_click (350, 33)
-[step 13] Reasoning: The page is still loading and blank. This might be a loading issue with the new tab. Let me switch to one of the existing Storybook tabs instead.
-[step 14] Action: left_click (680, 400)
-[step 14] Reasoning: I'm back to the Storybook page with the Picker > Default story selected. I can see the left panel with the story navigation and the right panel with KNOBS. The layout seems to only show the sidebar and knobs panel. The emoji picker canvas/preview area must be embedded in an iframe in the middle area.
+**Step 4**: Check ARIA roles and attributes via Chrome DevTools.
+[step 11] Action: left_click (114, 401)
+[step 11] Reasoning: DevTools is now open. I can see the Elements panel. Let me use the Console to examine the ARIA attributes programmatically. Let me switch to the Console tab to run JavaScript queries:
+[step 12] Action: left_click (640, 497)
+[step 12] Reasoning: I can see the Console tab is now active. I can see some errors about failing to load resources (octocat.png and shipit.png) and a connection error. Let me now run JavaScript to check the ARIA attributes on the search input and emoji list:
+[step 13] Action: left_click (640, 497)
+[step 13] Reasoning: I need to click on the console input area at the bottom. Let me click on the ">" prompt at the bottom:
+[step 14] Action: left_click (20, 497)
+[step 14] Reasoning: I see the console is showing but I need to click right on the ">" prompt area which is at the very bottom. Let me try clicking directly on that area:
+[step 15] Action: type: document.querySel...
+[step 15] Reasoning: I can see the console prompt is now active (cursor is blinking at the ">"). Let me type a JavaScript command to check the ARIA roles on the search input:
+[step 16] Action: left_click (640, 530)
+[step 16] Reasoning: I can see the command was executed and it found the input element with id `input#emoji-mart-search-1`. The search input is highlighted in the picker above. I can also see that the element is an `input` with class `emoji-mart-search-1`. Now I can see the search input element was found.
 
-Looking more carefully at this layout - the left side (0-680px) is the navigation sidebar, and the right side (680-1280px) is the knobs/addons panel. The actual story preview should be in a separate iframe. The current URL structure suggests that the main Storybook view is showing the story picker in an embedded iframe between these two panels.
+Now let me run a more comprehensive query to get the ARIA attributes of this input and the emoji list:
+[step 17] Action: left_click (640, 525)
+[step 17] Reasoning: Let me type the next JavaScript command to check all ARIA attributes of the search input:
+[step 18] Action: left_click (100, 510)
+[step 18] Reasoning: I need to click directly on the console input prompt to focus it. Let me try clicking just after the ">" character at the very bottom:
+[step 19] Action: type: var inp = documen...
+[step 19] Reasoning: I see there's a ">" prompt at the bottom which indicates the console is active. The previous result showed `input#emoji-mart-search-1` which means the search input was found. Now I need to type in the console. It seems the console might already be focused. Let me type the next command to check ARIA attributes:
+[step 20] Action: key: Return
+[step 20] Reasoning: I can see the command is typed in the console. Let me press Enter to execute it:
+[step 21] Action: left_click (640, 532)
+[step 21] Reasoning: I see there's an error: "Uncaught SyntaxError: Unexpected token 'var'". This is because the single quotes in the string got confused with the outer single quotes. Let me simplify the command - I'll use a different approach to check the attributes:
+[step 22] Action: left_click (640, 532)
+[step 22] Reasoning: I see the console is still open with the ">" prompt visible. Let me try a simpler command to get the search input's attributes:
+[step 23] Action: type: document.querySel...
+[step 23] Reasoning: The console is now active with the cursor in the ">" area. Let me type a simpler command to get all the ARIA-related attributes of the search input:
+[step 24] Action: left_click (640, 560)
+[step 24] Reasoning: Excellent! I can see the result in the console:
+```
+< "<input type="search" id="emoji-mart-search-1" placeholder="Search">"
+```
 
-Wait - I realize that the layout I'm seeing is abnormal. In standard Storybook, there should be a main canvas area where the story renders. In this layout, the canvas seems to be completely hidden or collapsed. 
+This is very important! The search input has:
+- `type="search"` 
+- `id="emoji-mart-search-1"`
+- `placeholder="Search"`
+- **No `role` attribute** (no explicit `role="combobox"`)
+- **No `aria-label` attribute**
+- **No `aria-autocomplete` attribute**
+- **No `aria-controls` attribute**
+- **No `aria-expanded` attribute**
 
-Let me try looking at the layout more carefully. The vertical divider at x≈680 seems to be the boundary between the sidebar and a different section. The "middle" canvas area might be completely missing or the layout is very different.
+The search input is missing all ARIA attributes that would be needed for proper combobox accessibility!
 
-Let me try clicking in the area between the Filter panel and the KNOBS panel to see if there's a hidden canvas:
-[step 15] Action: left_click (478, 33)
-[step 15] Reasoning: I see the layout is the same. The Storybook canvas seems to be missing from the main view. This is unusual. The layout normally would have the emoji picker displayed in the canvas area between the navigation panel and the addons panel. But in this case, the canvas area seems to have zero width - the sidebar and the addons panel are directly adjacent.
+Now let me check the emoji list/grid ARIA attributes. Let me look at the parent container and the emoji list:
+[step 25] Action: left_click (640, 560)
+[step 25] Reasoning: Now let me check the emoji list container. I'll inspect the section containing the emoji items to check if they have proper ARIA roles:
+[step 26] Action: left_click (640, 545)
+[step 26] Reasoning: I need to click on the console input area. Let me try clicking on the ">" prompt area at the bottom:
+[step 27] Action: left_click (20, 545)
+[step 27] Reasoning: I can see the "> " prompt at the bottom of the console. But I need to click right on it to focus the console input. Let me try clicking on the last visible ">" area at the very bottom:
+[step 28] Action: type: document.querySel...
+[step 28] Reasoning: Good, the console is focused on the ">" prompt at the bottom of the visible console area. I now see the "> " cursor at the bottom. Let me look at the emoji list more carefully. The search result showed:
+```
+<input type="search" id="emoji-mart-search-1" placeholder="Search">
+```
 
-This could be a **visual bug** in the Storybook layout - the canvas/preview panel may have been collapsed to zero width.
+This confirms the search input has **no ARIA role** and **no ARIA attributes**. Now let me check the emoji list ARIA structure:
+[step 29] Action: key: Escape
+[step 29] Reasoning: I can see the console is now showing the command I typed but it seems to have appended to the previous command. The console shows: `> document.querySelector("#emoji-mart-search-1").outerHTMLdocument.querySelector(".emoji-mart-scroll, .emoji-mart-list, [role='listbox'], [role='grid']")`
 
-Let me look at the URL parameters in the address bar more carefully. I see there's an `addonPanel=storybook%2Factions%2Factions-panel` parameter. Let me try to see the story preview by accessing it directly.
+This happens because I clicked on the ">" area which may have placed the cursor after the previous command result's ">" or the console clicked somewhere that didn't clear it. Let me press Escape to cancel and then click on the console area again more carefully:
+[step 30] Action: key: ctrl+a
+[step 30] Reasoning: Good, now the DevTools has been popped out into its own panel (I can see a "Console" header tab). I can see the console now has the previous command showing in the input area. I can see that the last command in the input area ("> " line) shows the partially typed command. Let me clear it and type a fresh command:
+[step 31] Action: left_click (570, 533)
+[step 31] Reasoning: I see the console area is still showing that partially typed command. Let me click directly on the input area at the bottom of the console (the ">" prompt area) and then clear it:
+[step 32] Action: key: ctrl+a
+[step 32] Reasoning: I can see the ">" prompt area at the bottom of the console. It appears the command input is at the very bottom, around `y=533`. Let me try clicking on the console input and using keyboard shortcuts to clear and enter a new command:
+[step 33] Action: triple_click
+[step 33] Reasoning: I can see the console input has the previously typed command from earlier. I need to clear the current input and type a fresh command. Let me try to select all and delete:
+[step 34] Action: key: ctrl+a
+[step 34] Reasoning: I can see the console input area at the bottom with the command highlighted. The input shows: `document.querySelector("#emoji-mart-search-1").outerHTMLdocument.querySelector(".emoji-mart-scroll, .emoji-mart-list, [role='listbox'], [role='grid']")`. I can see the text is selected. Let me press Delete to clear it:
+[step 35] Action: key: ctrl+l
+[step 35] Reasoning: I can see the console area still has the command displayed. I can see the "> " prompt line at the bottom. Let me try a different approach - I'll click on "Clear console" button (the 🚫 icon), or use the keyboard shortcut Ctrl+L to clear the console, and then type fresh commands:
+[step 36] Action: left_click (350, 436)
+[step 36] Reasoning: The console is now cleared. I can see the console area is mostly clear and just shows the current command in the input area. The "> " prompt shows the command:
+`document.querySelector("#emoji-mart-search-1").outerHTMLdocument.querySelector(".emoji-mart-scroll, .emoji-mart-list, [role='listbox'], [role='grid']")`
 
-Actually, let me try a different approach - let me use the existing Storybook tabs I can see in the tab bar. There are multiple Storybook tabs open. Let me try clicking on one of the other Storybook tabs to see if they have a different view.
+I need to clear this input and start fresh. The Ctrl+L cleared the console output but left the input. Let me select all and delete in the input area:
+[step 37] Action: key: ctrl+a
+[step 37] Reasoning: I can see the console has been cleared of logs but still shows the input command at the "> " prompt. Let me use Ctrl+A to select all and then Delete:
+[step 38] Action: key: Delete
+[step 38] Reasoning: I can see the console input area at the bottom shows the command:
+`> document.querySelector("#emoji-mart-search-1").outerHTMLdocument.querySelector(".emoji-mart-scroll, .emoji-mart-list, [role='listbox'], [role='grid']")`
 
-**Visual anomaly noted**: The Storybook layout is broken - the canvas/preview panel appears to have zero width, with the navigation sidebar and addons panel directly adjacent to each other. The emoji picker preview component should be visible in a canvas area.
+This command was concatenated from two separate commands. I need to clear this and start fresh. Looking at the console, I can see the cursor may be in the console input area. Let me try pressing the Home key to go to the start, then use Shift+End to select all text and then delete:
+[step 39] Action: key: End
+[step 39] Reasoning: I can see the first character was deleted (the 'd' became 'ocument...'). The cursor is in the console input. Let me select all the text in the input area and clear it:
+[step 40] Action: key: Home
+[step 40] Reasoning: Good, I can see the cursor is now at the end of the input text (marked by the "|" at the end: `{[role='grid']")|"`). The text I need to clear is the entire input. Let me select all and delete:
+[step 41] Action: key: shift+End
+[step 41] Reasoning: I can see the cursor is at the beginning of the command text now. Let me press Shift+End to select all the text in the input:
+[step 42] Action: type: document.querySel...
+[step 42] Reasoning: The text appears selected (the text in the console input looks highlighted). Now let me type the new command to replace the selected text:
+[step 43] Action: left_click (640, 460)
+[step 43] Reasoning: Excellent! I can now see the result of the console command:
+```
+< "<input type="search" id="emoji-mart-search-1" placeholder="Search">"
+```
 
-Let me try one of the other Storybook tabs:
-[step 16] Action: scroll up (471, 400) scroll_amount 5
-[step 16] Reasoning: Excellent! This is the iframe view of the emoji picker (`localhost:3000/iframe.html?id=picker--default`). Now I can see the emoji picker properly! I can see:
+This confirms my earlier observation. The search input element has:
+- `type="search"`
+- `id="emoji-mart-search-1"` 
+- `placeholder="Search"`
+- **NO `role` attribute** (no `role="combobox"`)
+- **NO `aria-label` attribute**
+- **NO `aria-autocomplete` attribute**
+- **NO `aria-controls` attribute**
+- **NO `aria-expanded` attribute**
+
+This is a **critical accessibility issue** - the search input is missing all ARIA combobox attributes that would be expected for proper keyboard accessibility.
+
+Now let me check the emoji list/grid ARIA structure. Let me type the next command:
+[step 44] Action: left_click (640, 475)
+[step 44] Reasoning: I can see the command input in the console. The console now shows:
+- Command: `document.querySelector("#emoji-mart-search-1").outerHTML`
+- Result: `"<input type="search" id="emoji-mart-search-1" placeholder="Search">"`
+
+Now let me click on the input area below the result and enter a new command to check the emoji list structure. Let me click on the empty area below the result to get the prompt:
+[step 45] Action: type: document.querySel...
+[step 45] Reasoning: I can see the console has the result `"<input type="search" id="emoji-mart-search-1" placeholder="Search">"`. The console output shows the search input element does NOT have any ARIA attributes. Now I need to check the emoji list container for ARIA structure.
+
+Let me check where the new command input is now. The console prompt `>` should appear. I'll type a new command to check the emoji list:
+[step 46] Action: key: Return
+[step 46] Reasoning: I can see the console input shows the command (but it's again appended to the previous query text). The input at the `>` shows:
+`document.querySelector("#emoji-mart-search-1").outerHTMLdocument.querySelector(".emoji-mart-scroll").getAttribute("role")`
+
+This is the same problem - when I clicked in the console area, it didn't create a new prompt; instead it appended to the existing command. Let me try pressing Enter to see if this combined command runs or fails, and then start fresh:
+
+The issue is that I need to clear the current input first before typing. Let me press Escape to clear the current input line, or use Ctrl+A then type to replace:
+
+Let me use a different strategy - press Enter on the current command (which will likely fail or run), then type a fresh command:
+[step 47] Action: left_click (640, 471)
+[step 47] Reasoning: I can see there's a new `>` prompt at the bottom! The previous command ran and threw an error:
+`Uncaught TypeError: Cannot read properties of undefined (reading 'getAttribute')`
+
+This error tells us that `document.querySelector(".emoji-mart-scroll")` returned `null` - meaning **there is no element with class "emoji-mart-scroll" in the DOM**! 
+
+Now there's a fresh `>` prompt. Let me type a new command to explore the DOM structure:
+[step 48] Action: type: document.querySel...
+[step 48] Reasoning: I can see the `>` prompt at the bottom of the console (near y=471). The console is ready for input. Now let me query for the emoji container to find the class names used:
+[step 49] Action: left_click (640, 500)
+[step 49] Reasoning: Excellent! Now I can see the console result. I can read part of the output:
+```
+"<div class="emoji-mart-bar"><nav class="emoji-mart-anchors" aria-label="Emoji categories"><button aria-label="Frequently Used" title="Frequently Used" data-index="1" class="emoji-mart-anchor emoji-mart-anchor-selected" style="color: rgb(174, 101, 197..."
+```
+
+This is very informative! I can see:
+- The emoji picker has a nav bar with `class="emoji-mart-anchors"` and `aria-label="Emoji categories"` - **this is good!**
+- The buttons in the nav have `aria-label` attributes like "Frequently Used" - **good!**
+
+Now I need to check more of the structure, especially the emoji list. Let me click on the console output to expand it or get more information. Let me type another command to check the scrollable area structure:
+[step 50] Action: type: Array.from(docume...
+[step 50] Reasoning: I can see the console with the previous results. Now I need to type more commands. Let me use the console input to check the complete structure. I see that clicking at y=500 didn't create a new prompt. Let me type in the existing prompt:
+[step 51] Action: key: Return
+[step 51] Reasoning: I can see the command in the console input (concatenated again with the previous command). This is the combined command from the previous `.emoji-mart` innerHTML query and my new command. The command in the prompt shows the concatenated text. Let me press Enter to execute it - the part after `500)` is my new command which will work on its own since the `substring` call chains:
+
+Wait, looking at the command at the `>` line, I can read it better: it shows:
+`document.querySelector(".emoji-mart").innerHTML.substring(0, 500)Array.from(document.querySelectorAll("[role]"))...`
+
+This means both commands got combined because the previous command's cursor was at the prompt and I clicked there and typed. This will definitely throw a syntax error. But that's okay - let me press Enter and then type a fresh command with a clean prompt:
+[step 52] Action: left_click (640, 502)
+[step 52] Reasoning: I can see:
+1. The second error: `Uncaught SyntaxError: Unexpected identifier 'Array'` - confirming the concatenation happened.
+2. A fresh `>` prompt at the bottom!
+
+Now I can see there's a clean `>` prompt at the bottom. Let me click directly on it and type a fresh command:
+[step 53] Action: type: JSON.stringify([....
+[step 53] Reasoning: I can see the `>` prompt at the bottom (around y=502). The console is ready for input. The cursor should be at the `>` prompt. Now let me type the command carefully:
+[step 54] Action: left_click (640, 530)
+[step 54] Reasoning: I can see the command was executed! The result is:
+```
+< "[]"
+```
+
+**This is a critical finding!** The result `"[]"` means there are **NO elements with a `role` attribute** in the entire emoji picker DOM! Let me read what I can see at `y=515`:
+- Command: `JSON.stringify([...document.querySelectorAll("[role]")].map(e=>({tag:e.tagName,role:e.getAttribute("role"),label:e.getAttribute("aria-label")})))`  
+- Result: `< "[]"`
+
+This means **absolutely NO ARIA roles are defined** in the emoji picker component! Wait, but earlier I saw from the innerHTML that there was `aria-label="Emoji categories"` on the nav element. Let me also check `aria-label` attributes to see what ARIA is present:
+
+Let me now click on the console and type a new command to check aria-label attributes:
+[step 55] Action: type: JSON.stringify([....
+[step 55] Reasoning: Wait, I notice the result at the bottom of the console shows `< "[]"` after the last command! This means no elements have `role` attributes. But I also need to check aria-label and see the category nav structure.
+
+Let me look at the expanded result of the innerHTML command. I can see in the partial result earlier: `aria-label="Emoji categories"` was present on the nav. So `aria-label` is used but NOT `role`. Let me now check the section headings and emoji items:
+
+Let me type in the console to check for elements with aria-label attributes:
+[step 56] Action: key: Return
+[step 56] Reasoning: Again, the new command was appended to the previous command. I can see in the console input line the concatenated command:
+`JSON.stringify([...document.querySelectorAll("[role]")].map(e=>({tag:e.tagName,role:e.getAttribute("role"),label:e.getAttribute("aria-label")})))JSON.stringify([...document.querySelectorAll("[aria-label]")].map(e=>({tag:e.tagName,label:e.getAttribute("aria-label")}))).substring(0,800)`
+
+Let me press Enter and this time I'll see if the result executes with a syntax error, then use the fresh prompt:
+[step 57] Action: type: JSON.stringify([....
+[step 57] Reasoning: I can see a fresh `>` prompt at the bottom! And there's an error: `Uncaught SyntaxError: Unexpected identifier 'JSON'`. Now I have a clean prompt. 
+
+I realize the problem - when I click in the console area, the cursor goes to the EXISTING command input, not a new one. So I must make sure the console input is truly empty when I type. Let me now type in the fresh `>` prompt:
+
+This time I can see the cursor is at `> |` (the caret is right after `> `). I'll now type my aria-label query command directly:
+[step 58] Action: left_click (570, 552)
+[step 58] Reasoning: Excellent! Now I can see the result! At the bottom of the console:
+```
+< "[{"tag":"NAV","label":"Emoji categories"},{"tag":"BUTTON","label":"Frequently Used"},{"tag":"BUTTON","label":"Smileys & People"},{"tag":"BUTTON","label":"Animals & Nature"},{"tag":"BUTTON","label":"Food & Drink"},{"tag":"BUTTON","label":"Activity"},...
+```
+
+This is **very important ARIA information**! I can see:
+1. **NAV** element with `aria-label="Emoji categories"` - ✅ Good!
+2. **BUTTON** elements for each category with individual `aria-label` values:
+   - "Frequently Used"
+   - "Smileys & People"
+   - "Animals & Nature" 
+   - "Food & Drink"
+   - "Activity"
+   - ...more categories
+
+This shows the category navigation has good ARIA labels. But what about the emoji items themselves? Let me scroll the result to see if there are more items listed, specifically for the emoji items.
+
+Let me click on the result to expand it and see all items:
+[step 59] Action: scroll down (640, 500) scroll_amount 3
+[step 59] Reasoning: I can see the result at the bottom of the console shows:
+```
+"[{"tag":"NAV","label":"Emoji categories"},{"tag":"BUTTON","label":"Frequently Used"},{"tag":"BUTTON","label":"Smileys & People"},{"tag":"BUTTON","label":"Animals & Nature"},{"tag":"BUTTON","label":"Food & Drink"},{"tag":"BUTTON","label":"Activity"},...
+```
+
+The result appears to only contain the NAV and category BUTTON elements, plus maybe more at the end. I need to scroll right in the console to see the full result or click on the result to expand. Let me scroll right in the result to see if emoji items have aria-labels too.
+
+Actually, looking at the data from the console result, I can see the result is a long string that's cut off with "..." at the end. The result only shows the NAV and BUTTON elements with aria-labels. The emoji items themselves likely don't have aria-labels visible yet. Let me check the emoji button elements specifically.
+
+Let me now type in the console to check the emoji item attributes. First, I need to get a fresh prompt. The current console should be at a point after the previous command finished. Let me scroll down to see if there's a new `>` prompt:
+
+Looking at the screenshot, I can see the console result is at the bottom and there might be a `>` prompt just below or just below the visible area. Let me scroll down in the console:
+[step 60] Action: left_click (67, 401)
+[step 60] Reasoning: I can see the same view. The last result at the bottom is the line showing the JSON array with NAV and BUTTON elements. Looking at the console, the `>` prompt should be somewhere below the visible area. Let me try to click on the ">" prompt area below the result line to get the console input:
+
+I notice that the result string appears to be cut off. The result line at the bottom shows:
+```
+"[{"tag":"NAV","label":"Emoji categories"},{"tag":"BUTTON","label":"Frequently Used"},{"tag":"BUTTON","label":"Smileys & People"},{"tag":"BUTTON","label":"Animals & Nature"},{"tag":"BUTTON","label":"Food & Drink"},{"tag":"BUTTON","label":"Activity"},...
+```
+
+I see that the result contains button elements for category navigation. Now I need to check if the emoji items (the actual emoji buttons in the grid) also have aria-labels. Let me look at the emoji structure using the Elements tab. Let me switch to Elements tab and navigate to the emoji items:
+
+Actually, let me try a better approach. I'll open the console panel and use the correct way to use it. I need to make sure I'm clicking on the actual console input line (the last line with `>`). Let me look at the very bottom of the DevTools console area:
+
+The result shows there are many BUTTON elements with aria-labels for the categories. But there are clearly no section labels or emoji-item labels in the result so far (truncated). Let me now switch to the Elements panel to visually inspect the DOM structure:
+[step 61] Action: left_click (22, 447)
+[step 61] Reasoning: I can now see the Elements panel is open. I can see the DOM structure:
+- `<!DOCTYPE html>`
+- `<html>`
+- `<head>` ... `</head>`
+- `<body>`
+  - `<div id="root">` ... `</div>`
+  - `<div id="error-display"></div>`
+  - `<script src="static/preview.bundle.js"></script>`
+- `</body>`
+- `</html>`
+
+I can see the DOM tree. I need to expand the `<div id="root">` element to see the emoji picker's DOM structure. Let me click on the triangle/arrow to expand it:
+[step 62] Action: left_click (36, 459)
+[step 62] Reasoning: I can see the entire `<body>` element is highlighted (orange/blue border visible around the page preview). The DOM shows:
+- `<body>` (currently highlighted - 1904 x 426.7)
+  - `<div id="root">` ... `</div>`
+  - `<div id="error-display"></div>`
+  - `<script src="static/preview.bundle.js"></script>`
+
+I see the elements tree shows the body is selected. The `<div id="root">` has a triangle indicating it's collapsible. Let me click on the arrow next to the `<div id="root">` to expand it and see the emoji picker's structure:
+[step 63] Action: left_click (27, 458)
+[step 63] Reasoning: I can see the `<div id="root">` is now selected/highlighted (shown in the breadcrumb as `html > body > div#root`) and the element shows `1904 × 426.7`. The Elements tree shows:
+- `<div id="root">` ... `</div>` ← still collapsed (`▶` arrow still there)
+
+The `<div id="root">` is still collapsed with its content hidden. Let me click on the triangle/arrow to expand it:
+[step 64] Action: left_click (89, 458)
+[step 64] Reasoning: The `<div id="root">` still appears to be collapsed. The Elements tree shows it with the `▶ <div id="root">` ... `</div>` format. Let me try using the keyboard instead to expand it - pressing the Right arrow key when the element is selected should expand its children:
+[step 65] Action: key: Right
+[step 65] Reasoning: I can see the `<div id="root">` element is selected (highlighted in blue in the Elements tree). The breadcrumb at the bottom shows `html > body > div#root`. The `<div id="root">` element appears to be collapsed with the little triangle (▶) icon. Let me try using the keyboard Right arrow key to expand it:
+[step 66] Action: left_click (38, 469)
+[step 66] Reasoning: Excellent! Now the `<div id="root">` has been expanded! I can see the structure:
+- `▼ <div id="root">` == $0
+  - `▶ <div class="emoji-mart" style="width: 338px;"> ...</div>`
+  - `</div>`
+
+I can see there's a `<div class="emoji-mart" ...>` element. This is the main container for the emoji picker. Let me expand this element to see its children:
+[step 67] Action: key: Right
+[step 67] Reasoning: Now I can see the `<div class="emoji-mart" style="width: 338px;">` is selected (== $0). The breadcrumb shows `html > body > div#root > div.emoji-mart`. The emoji picker container shows:
+- `width: 338px` 
+- Styles show `.emoji-mart` with font-family, font-size, color, border, border-radius, background properties
+
+I can see the `<div class="emoji-mart">` element is now selected. I need to expand it to see its children. Let me press the Right arrow key to expand it:
+[step 68] Action: left_click (36, 491)
+[step 68] Reasoning: Now I can see the expanded `<div class="emoji-mart">` element structure:
+- `▼ <div class="emoji-mart" style="width: 338px;">` == $0
+  - `▶ <div class="emoji-mart-bar">` ▸...`</div>`
+  - `▶ <div class="emoji-mart-search">` ▸...`</div>`
+  - `▶ <div class="emoji-mart-scroll">` **scroll** ▸...`</div>`
+  - `▶ <div class="emoji-mart-bar">` ▸...`</div>`
+
+This shows the structure:
+1. `.emoji-mart-bar` - Top bar (likely the category navigation)
+2. `.emoji-mart-search` - Search container
+3. `.emoji-mart-scroll` - The scrollable emoji list (**note the "scroll" badge**)
+4. `.emoji-mart-bar` - Bottom bar (the "Your Title Here" footer)
+
+Wait - earlier when I queried `document.querySelector(".emoji-mart-scroll")`, it returned `null`! But now in the Elements panel, I can clearly see a `<div class="emoji-mart-scroll">`. 
+
+This is odd - either the console command was run when the component hadn't fully loaded, or there was an error in the query. Let me note this discrepancy.
+
+Now let me expand the search element to check its structure. Let me click on `<div class="emoji-mart-search">` to expand it:
+[step 69] Action: left_click (140, 544)
+[step 69] Reasoning: Now I can see the expanded `<div class="emoji-mart-search">` (shown in the breadcrumb as `html > body > div#root > div.emoji-mart > div.emoji-mart-search`). The structure shows:
+- `▼ <div class="emoji-mart-search">` == $0
+  - `<input type="search" id="emoji-mart-search-1" placeholder="Search">`
+  - `<label class="emoji-mart-sr-only" for="emoji-mart-search-1">Search</label>`
+  - `▶ <button class="emoji-mart-search-icon" aria-label="Clear" disabled>` ▸...`</button>`
+  - `</div>`
+
+This is very important information! Let me analyze the search section ARIA attributes:
+
+1. **Search Input**: `<input type="search" id="emoji-mart-search-1" placeholder="Search">`
+   - Has `type="search"` ✅
+   - Has `id="emoji-mart-search-1"` ✅ (for label association)
+   - Has `placeholder="Search"` ✅
+   - **NO `role` attribute** ❌
+   - **NO `aria-label` attribute** (but has label via `<label for="...">`) ✅ (sort of)
+   - **NO `aria-autocomplete`** ❌
+   - **NO `aria-controls`** ❌
+   - **NO `aria-expanded`** ❌
+   - **NO `aria-haspopup`** ❌
+
+2. **Label**: `<label class="emoji-mart-sr-only" for="emoji-mart-search-1">Search</label>`
+   - Provides the accessible name for the input ✅
+   - The `emoji-mart-sr-only` class means it's screen reader only (visually hidden) ✅
+
+3. **Clear button**: `<button class="emoji-mart-search-icon" aria-label="Clear" disabled>`
+   - Has `aria-label="Clear"` ✅
+   - Has `disabled` state ✅
+
+The search input is **NOT** a combobox - it's just a plain search input without combobox ARIA attributes. This is a **major accessibility gap** for a component that's supposed to function as an emoji search combobox.
+
+Now let me check the emoji list container (`.emoji-mart-scroll`). Let me click on that element:
+[step 70] Action: left_click (114, 401)
+[step 70] Reasoning: Now I can see the `<div class="emoji-mart-scroll">` element is selected (highlighted in blue, shown in breadcrumb as `html > body > div#root > div.emoji-mart > div.emoji-mart-scroll`). The tooltip shows `div.emoji-mart-scroll 336 × 270`.
+
+In the preview area, the entire emoji grid area (the "Frequently Used" and "Smileys & People" sections with all the emoji) is highlighted with a blue overlay, confirming this is the correct scroll container.
+
+The Styles panel shows for `.emoji-mart-scroll`:
+- `overflow-y: scroll` ✅ (it's a scrollable container)
+- `height: 270px`
+- `padding: ► 8 6px 6px 6px`
+- `will-change: transform`
+
+**However, the key issue is - does the `.emoji-mart-scroll` div have any ARIA attributes?** Looking at the Elements tree, I can see:
+`▶ <div class="emoji-mart-scroll">` ... `</div>` scroll == $0
+
+I don't see any attributes like `role`, `aria-label`, `aria-multiselectable`, etc. on this element. Let me check its attributes by clicking on it to see if any ARIA attributes are visible in the element properties panel. Let me switch to the Console to check this more thoroughly:
+
+Let me switch to the Console tab and run some more targeted queries now that I know the element structure:
+[step 71] Action: left_click (640, 568)
+[step 71] Reasoning: Excellent! Now I can see the Console tab is active and I can see the history of previous commands. The console shows:
+
+1. `document.querySelector("#emoji-mart-search-1").outerHTMLdocument.querySelector(".emoji-mart-scroll").getAttribute("role")` → Error: `Uncaught TypeError: Cannot read properties of undefined (reading 'queryS...')` (at <anonymous>:65)
+
+2. `.emoji-mart.innerHTML.substring(0, 500)Array.from...` → Error: `Uncaught SyntaxError: Unexpected identifier 'Array'`
+
+3. `JSON.stringify([...document.querySelectorAll("[role]")].map(e=>({tag:e.tagName,role:e.getAttribute("role"),label:e.getAttribute("aria-label")})))JSON.stringify([...document.querySelectorAll("[aria-label]")].map(e=>({tag:e.tagName,label:e.getAttribute("aria-label")})).substring(0,800)` → Error: `Uncaught SyntaxError: Unexpected identifier 'JSON'`
+
+4. `JSON.stringify([...document.querySelectorAll("[aria-label]")].map(e=>({tag:e.tagName,label:e.getAttribute("aria-label")})))` → **Result** shown at bottom: `"[{"tag":"NAV","label":"Emoji categories"},{"tag":"BUTTON","label":"Smileys & People"},{"tag":"BUTTON","label":"Animals & Nature"},{"tag":"BUTTON","label":"Food & Drink"},{"tag":"BUTTON","label":"Activity"},...]`
+
+Now the console is showing me the complete output! I can see the last result shows the NAV and BUTTON elements with aria-labels. The console input area appears to be at the bottom. Let me now type fresh commands. I can see the ">" prompt at the very bottom. Let me click on the console input area at the bottom:
+[step 72] Action: left_click (640, 640)
+[step 72] Reasoning: I can see the console shows the last result at line `< '[{"tag":"NAV","label":"Emoji categories"},{"tag":"BUTTON","label":"Frequently Used"},{"tag":"BUTTON","label":"Smileys & People"},{"tag":"BUTTON","label":"Animals & Nature"},{"tag":"BUTTON","label":"Food & Drink"},{"tag":"BUTTON","label":"Activity"},...'`
+
+The result doesn't show any emoji BUTTON items with aria-labels (only category nav buttons). This means the actual emoji items don't have `aria-label` attributes! 
+
+Now I need to click directly on the console input area. Looking at the console, there's a `>` prompt at the very bottom that I need to click on. The last visible item in the console is at around y=552. The console input (">") should be just below. Let me try clicking below the last visible console output:
+[step 73] Action: scroll down (640, 550) scroll_amount 3
+[step 73] Reasoning: I can see the console area but the `>` prompt appears to not be visible in the current view. The console seems to end with the previous result. I notice the last line shows `> JSON.stringify([...document.querySelectorAll("[aria-label]")].map(e=>({tag:e.tagName,label:e.getAttribute("aria-label")})))` and `< '[{"tag":"NAV","label":"Emoji categories"},...Activity"},{...` 
+
+The cursor appears to be somewhere below the visible area. Let me scroll down in the console:
+[step 74] Action: left_click (570, 560)
+[step 74] Reasoning: I can see the console is showing the same view. The console appears to have its input at the very bottom, below the visible area. Let me try a different approach - I'll use the Console panel directly from the "Console" tab that appears separately on the right side. 
+
+Wait, looking at the DevTools layout, I see there's a separate "Console" pane visible on the right side of the screen. The console input should be somewhere. The bottom of the screen shows the console output. 
+
+Let me try using keyboard shortcut - just clicking once in the console area and pressing a key should focus the console:
+[step 75] Action: left_click (1190, 550)
+[step 75] Reasoning: I can see the console is showing the same view. The console log history includes all the commands. The console area at the bottom seems to extend below the visible frame. I notice there's also a separate "Console" panel visible in the right side (with "All levels" dropdown visible at top right).
+
+Let me try a completely different approach - I'll close the DevTools and instead open a new Chrome DevTools console using keyboard shortcut, and use the console that appears at the bottom of the full screen:
+
+Actually, I notice the issue - the current DevTools is showing both the Elements panel on the left and the Console panel on the right side of the DevTools area. The console is always at the bottom in this layout. Let me try using the Console panel directly by right-clicking on the console in the right panel:
+
+Let me try clicking on the right-side Console panel area and type there:
+[step 76] Action: left_click (570, 563)
+[step 76] Reasoning: I can see the DevTools is still in the same state. The Console panel on the left shows the previous commands and their results. Looking at the console carefully, I can see the last line of the console content is:
+`< '[{"tag":"NAV","label":"Emoji categories"},{"tag":"BUTTON","label":"Frequently Used"},{"tag":"BUTTON","label":"Smileys & People"},{"tag":"BUTTON","label":"Animals & Nature"},{"tag":"BUTTON","label":"Food & Drink"},{"tag":"BUTTON","label":"Activity"},...`
+
+And there seems to be a cursor below it. Let me try pressing a key to see if the console prompt is actually focused and ready to receive input. Let me try pressing a simple character and see if it appears in the console:
+
+Let me try using the "Escape" key to close the current selection and then try the console drawer to the right side which seems to have a separate "Console" panel. Actually, looking at the layout again:
+
+- LEFT SIDE: Elements/Console/Sources/etc. tab area (the main DevTools panel)
+- RIGHT SIDE: A separate floating Console panel (visible by the "Console" button and "All levels" dropdown at the top right)
+
+The layout has TWO consoles:
+1. The main Console tab (currently selected in the left DevTools panel)
+2. A right-side "drawer" Console panel
+
+Let me try clicking on the last line (the result showing `< '[...]`) to see if I can place the cursor in the console and type:
+
+Wait, I see a new `>` prompt is visible below the result! Looking at the screenshot more carefully at the very bottom of the console area, I can see `> JSON.stringify(...)` is the last command and `< '[...]'` is the result. There should be a new `>` prompt just below the result.
+
+Let me try clicking exactly below the result line at y=560 (below the last result):
+[step 77] Action: key: F12
+[step 77] Reasoning: I see the console is not scrolling or adding a new input line. Looking carefully at the current console layout, the console shows several entries but no visible `>` prompt at the bottom. The console might be limited in height and the prompt is hidden below the visible area.
+
+Let me try a completely different approach. I'll close the DevTools (F12), then reopen them with `Ctrl+Shift+J` which opens the DevTools with the Console tab as the primary view, and hopefully the console input will be visible and accessible:
+[step 78] Action: key: ctrl+shift+j
+[step 78] Reasoning: The DevTools has been closed. Now I can see the emoji picker in full view:
+- The search input at the top (appears to have a cursor in it, suggesting it's focused!)
+- Category navigation icons at the top
 - "Frequently Used" section with emojis
-- "Smileys & People" section with many emojis
-- One emoji (the laughing face 😆 at position 5 in "Frequently Used") appears to have a **blue highlight ring around it** - this might indicate it has focus!
+- "Smileys & People" section with emojis
+- "Your Title Here" footer at the bottom
 
-Wait, this is very interesting! The 😆 emoji in "Frequently Used" section has a circular highlight/focus indicator (gray ring) around it. This might be a result of my earlier Down arrow key press when the search box was focused.
+Now let me open the DevTools Console more efficiently using `Ctrl+Shift+J`:
+[step 79] Action: left_click (640, 400)
+[step 79] Reasoning: The DevTools didn't open. The keyboard shortcut `Ctrl+Shift+J` may not have worked because the browser focus was on the page content. Let me click somewhere on the browser window first (outside the picker) and then try to open the DevTools:
+[step 80] Action: left_click (113, 128)
+[step 80] Reasoning: Good, I can see the emoji picker is fully visible now. The browser page is showing the picker without DevTools. The search input at the top has a cursor `|` visible in it, suggesting it has focus.
 
-But I need to follow the full test procedure from the main Storybook page. The emoji picker iframe tab is already open and showing the picker. Let me scroll up to find the search box in this tab.
-[step 17] Action: left_click (350, 33)
-[step 17] Reasoning: Now I can see:
-1. The category icons at the top
-2. The Search box
-3. "Frequently Used" section
-4. "Smileys & People" section
+Let me try to test the keyboard navigation directly now (Steps 2 and 3 from the task). Since the search box appears to have focus (cursor visible), let me test keyboard navigation from the search box:
 
-I can see that the **5th emoji** in the "Frequently Used" row (😆) has a **circular gray highlight** around it, which appears to be a focus indicator. This happened from my earlier Down arrow key press! 
+First, let me verify the search input has focus by checking the search box in the picker. The search box shows a cursor `|` inside it. Now let me test keyboard navigation using arrow keys to see if they navigate through the emoji grid:
 
-Also, I notice there's a **blue border around the emoji list area** (the lower section from "Frequently Used" to "Smileys & People"). This blue border indicates the emoji list container has focus.
+**Test: Press Down arrow to move from search to emoji grid**
 
-Now I need to properly test this. Let me:
-1. First go back to the main Storybook to follow the task instructions
-2. Find the Picker story and click it
-3. Then test keyboard navigation
+Let me first click directly on the search box to make sure it has focus:
+[step 81] Action: key: Down
+[step 81] Reasoning: I can see the search input has a cursor visible in it (the text cursor `|` is visible at the left of "Search"). The search input has focus. Now let me test the keyboard arrow key navigation:
 
-But actually, since this is the Picker > Default iframe and the task says to find the Picker story in Storybook and click it, let me navigate back to the main Storybook page.
+**Step 3 Test - Down arrow from search input:**
+[step 82] Action: key: Right
+[step 82] Reasoning: I pressed the Down arrow key, but **nothing changed** in the emoji picker! No emoji in the grid was highlighted or focused. The search input still appears to have focus and no visual change occurred in the emoji grid. This confirms that **arrow key navigation from the search input to the emoji grid does NOT work**.
 
-Let me first click on the Storybook tab that has the main interface:
-[step 18] Action: left_click (180, 405)
-[step 18] Reasoning: I'm back to the main Storybook page. I can see the Picker > Default is already selected (shown in bold). The layout still shows the two-panel view without a canvas area. This is the **visual anomaly** I noted before - the canvas area is missing.
+Let me try other arrow keys:
+[step 83] Action: right_click (113, 128)
+[step 83] Reasoning: The Right arrow key also had **no effect** - no emoji was highlighted or focused in the grid. The picker looks exactly the same. This confirms that **keyboard arrow key navigation is NOT working** in the emoji picker.
 
-The URL shows this is the main Storybook page, but the canvas area (where the emoji picker would be rendered) is completely absent. This appears to be a layout bug in the Storybook UI.
+Let me now open the DevTools to do more thorough ARIA attribute checking. I'll right-click on the page to open the inspect element option:
+[step 84] Action: left_click (133, 363)
+[step 84] Reasoning: A context menu has appeared with Chinese text! I can see the following options:
+- 表情符号与符号 (Emoji & Symbols)
+- 选择密码 (Select Password)
+- 撤消 (Undo)
+- 重做 (Redo)
+- 剪切 (Cut)
+- 复制 (Copy)
+- 粘贴 (Paste)
+- 粘贴并匹配样式 (Paste and Match Style)
+- 全选 (Select All)
+- 在阅读模式下打开 (Open in Reading Mode)
+- 语言设置 (Language Settings)
+- 书写方向 (Writing Direction)
+- **检查** (Inspect Element) ← This is what I need!
+- 自动填充 (Auto-fill)
 
-**Key observations so far:**
-1. **Visual bug**: The Storybook layout doesn't show the canvas/preview area - only the sidebar and addons panel are visible.
-2. The emoji picker is accessible through the iframe URL directly (`localhost:3000/iframe.html?id=picker--default`).
+Let me click on "检查" (Inspect) to open the DevTools:
+[step 85] Action: left_click (1040, 660)
+[step 85] Reasoning: Excellent! Now the DevTools is open and I can see the Elements panel with the DOM structure clearly visible. The Elements panel shows:
 
-Now let me properly follow the task:
-1. ✅ Opened `http://localhost:3000`
-2. ✅ Found Picker story in left sidebar and clicked Default
+```html
+<!DOCTYPE html>
+<html>
+  <head>...</head>
+  <body>
+    <div id="root">
+      <div class="emoji-mart" style="width: 338px;">
+        ▶ <div class="emoji-mart-bar">...</div>
+        ▼ <div class="emoji-mart-search">
+            <input type="search" id="emoji-mart-search-1" placeholder="Search"> == $0
+            <label class="emoji-mart-sr-only" for="emoji-mart-search-1">Search</label>
+            ▶ <button class="emoji-mart-search-icon" aria-label="Clear" disabled>...</button>
+          </div>
+        ▶ <div class="emoji-mart-scroll">...</div> scroll
+        ▶ <div class="emoji-mart-bar">...</div>
+      </div>
+    </div>
+    <div id="error-display"></div>
+    <script src="static/preview.bundle.js"></script>
+  </body>
+</html>
+```
 
-Now I need to test the keyboard navigation. Since the canvas is not visible in the main view, I'll use the iframe tab. But first, let me try clicking on "Default" again to ensure it's properly selected and see if anything changes:
-[step 19] Action: left_click (478, 33)
-[step 19] Reasoning: I can see at the bottom of the screen the URL being shown when hovering over "Default" - it shows the full story URL. This confirms "Default" is selected. The canvas area is still missing from this view.
+**Critical findings from the Elements panel:**
 
-Looking at the layout more carefully - the layout shows the sidebar (0-680px) and the KNOBS panel (680-1280px) side by side. There is NO canvas/preview area visible in this tab. This is a layout bug.
+1. **Search Input** (`input#emoji-mart-search-1`): 
+   - `type="search"` ✅
+   - `placeholder="Search"` ✅  
+   - **NO** `role` attribute ❌
+   - **NO** `aria-label` attribute ❌ (but has associated `<label>` element ✅)
+   - **NO** `aria-autocomplete` ❌
+   - **NO** `aria-controls` ❌
+   - **NO** `aria-expanded` ❌
+   - **NO** `aria-haspopup` ❌
 
-Now, let me switch to the iframe tab which shows the actual emoji picker, and properly test keyboard navigation. The emoji picker is properly visible there.
+2. **Search Label** (`label.emoji-mart-sr-only`):
+   - `for="emoji-mart-search-1"` ✅ - properly associated with input
+   - `class="emoji-mart-sr-only"` - visually hidden but accessible to screen readers ✅
 
-Let me switch to the iframe tab:
-[step 20] Action: scroll up (471, 300) scroll_amount 5
-[step 20] Reasoning: I'm now in the iframe tab showing the emoji picker (`localhost:3000/iframe.html?id=picker--default`). I can see:
+3. **Clear Button** (`button.emoji-mart-search-icon`):
+   - `aria-label="Clear"` ✅
+   - `disabled` ✅
 
-1. The **Search** text box is visible
-2. The **emoji list area** has a **blue border** around it (indicating it may currently have focus)
-3. "Frequently Used" section with emojis
-4. "Smileys & People" section with emojis
+4. **Emoji Scroll Container** (`div.emoji-mart-scroll`):
+   - Has "scroll" badge indicating it's a scroll container
+   - **NO** `role` attribute (no `role="listbox"` or `role="grid"`)
+   - **NO** `aria-label` attribute
 
-**Visual anomaly noted**: The previous focus indicator (circular gray ring around the 😆 emoji) is no longer visible. The blue border around the emoji list area is still present.
+**No combobox-related ARIA attributes are present on the search input!**
 
-Now I need to scroll up to see the full picker with the category icons at the top, and then click on the search box:
-[step 21] Action: left_click (471, 280)
-[step 21] Reasoning: Now I can see the full emoji picker including:
-1. **Category icons row** at the top (10 category icons: Add/Recently Used, Smileys, Animals, Food, Activities, Travel, Objects, Symbols, Flags, Custom)
-2. A **purple/pink progress bar** below the categories (indicating the scroll position within the "Frequently Used" category)
-3. **Search box** labeled "Search"
-4. **Emoji list** with a blue border containing:
-   - "Frequently Used" section with 9 emojis
-   - "Smileys & People" section with emojis
+Now let me check the Styles panel on the right side. I can see `.emoji-mart-search input` styles:
+- `font-size: 16px`
+- `display: block`
+- `width: 100%`
+- `padding: ► 5px 25px 6px 10px`
+- `border-radius: 5px`
+- `border: 1px solid #d9d9d9`
+- `outline: 0`
 
-**Visual observations**:
-- The emoji list container has a **blue border** around it
-- The progress bar under category icons is purple/pink
-- The layout looks proper
+This is just CSS, no ARIA info there. 
 
-Now let me click on the **Search box** to give it focus:
-[step 22] Action: key: Down
-[step 22] Reasoning: I can see the Search box now has a text cursor (blinking `|` before "Search") and the **blue border around the emoji list has disappeared**. This indicates the search box now has focus. The search box is showing a cursor which confirms focus is on the search input.
+Now let me also look at the right side - there's a Console panel visible on the right. I can see the ">" prompt there. Let me click on the right-side Console panel to type commands:
+[step 86] Action: left_click (114, 401)
+[step 86] Reasoning: I can see the DevTools layout with the Elements panel on the left and the Styles panel on the right. The right side console area at the very bottom shows ">" prompts but they might be in the Styles panel area. I see `> .emoji-mart, .emoji-mart * { box-sizing: border-box` at the bottom of the Styles panel.
 
-**Observations**:
-- Search box now has focus (cursor `|` visible)
-- The blue border around the emoji list container disappeared when search box gained focus
-- This is expected behavior - the emoji list lost focus
+Wait, I see the Console panel icon on the right side (the "Console" button in the top-right of the DevTools). Let me click on the "Console" tab in the main DevTools toolbar (not the floating one):
+[step 87] Action: left_click (20, 435)
+[step 87] Reasoning: Excellent! Now I can see the Console tab is selected and it's showing a **CLEAN** console! I can see just the ">" prompt at the very top of the console area (at around y=435). The console is completely empty (no previous commands) and the cursor is at the `>` prompt.
 
-Now let me try pressing the **Down arrow key** to see if focus moves from the search box to the emoji list:
-[step 23] Action: key: Down
-[step 23] Reasoning: Interesting! After pressing the **Down arrow key**, I can observe:
-1. The search box **no longer shows a cursor** (the `|` cursor disappeared)
-2. **No emoji appears to be highlighted/focused** with a visible indicator
-3. The blue border that previously appeared around the emoji list is NOT shown
+Now let me type my JavaScript commands to comprehensively check the ARIA attributes. I can see the console input cursor is at the `>` prompt. Let me click on the `>` prompt to focus it:
+[step 88] Action: type: document.querySel...
+[step 88] Reasoning: Now I can see the console is focused - there's a blinking cursor `|` right after the `>` prompt at `y=435`! The console is ready for input. The console is clean and empty. Let me now type the comprehensive ARIA query command:
 
-This suggests that pressing the Down arrow from the search box moved focus somewhere, but it's not clear where. There's no visible focus indicator on any emoji. Let me press Down again to see if focus moves to an emoji:
-[step 24] Action: left_click (471, 280)
-[step 24] Reasoning: Interesting! After pressing **Down arrow** a second time, the cursor in the search box **returned** (`|` cursor is visible again before "Search"). This seems like the focus is cycling between the search box and some other element. 
+**Check 1: Get search input outerHTML to see all its attributes:**
+[step 89] Action: left_click (640, 460)
+[step 89] Reasoning: I can now clearly see the console output:
 
-The pattern appears to be:
-- First Down arrow: Focus moves somewhere (search box loses cursor, but no emoji appears focused)
-- Second Down arrow: Focus returns to search box
+```
+> document.querySelector("#emoji-mart-search-1").outerHTML
+< "<input type="search" id="emoji-mart-search-1" placeholder="Search">"
+```
 
-This is very unusual behavior. Let me try a different approach - let me click on the search box first, then check if pressing Down arrow should move to emoji list. Maybe I need to type something in the search first to see emojis in search results, and then use arrow keys to navigate.
+**CONFIRMED: The search input has ONLY 3 attributes:**
+1. `type="search"` ✅
+2. `id="emoji-mart-search-1"` ✅  
+3. `placeholder="Search"` ✅
 
-Actually, wait - looking more carefully, it seems the first Down press moved focus from the search box to the emoji list container (blue border appeared previously), and the second Down press returned focus to the search box. But there was NO visible focus indicator on any specific emoji.
+**MISSING ARIA attributes (accessibility issues):**
+- ❌ `role` - not set (should be `role="combobox"` for a search-with-suggestions pattern)
+- ❌ `aria-label` (relies only on the associated `<label>` element)
+- ❌ `aria-autocomplete`
+- ❌ `aria-controls`
+- ❌ `aria-expanded`
+- ❌ `aria-haspopup`
+- ❌ `aria-activedescendant`
 
-Let me try clicking the search box, then pressing the arrow keys multiple times while observing the behavior closely:
-[step 25] Action: key: Down
-[step 25] Reasoning: The search box now has focus (cursor `|` is visible). Now let me press **Down arrow** once and take a careful screenshot to observe what happens:
-[step 26] Action: left_click (471, 280)
-[step 26] Reasoning: **Important observation!** After pressing Down arrow:
-- The search box **STILL shows the cursor** (`|` is visible in the search box)
-- **NO emoji is highlighted** with a focus indicator
-- The cursor in the search box appears to still be there
+Now let me also check the emoji scroll container and emoji items. Let me type the next command:
+[step 90] Action: left_click (20, 462)
+[step 90] Reasoning: I can see the console shows:
+- Line 1: `> document.querySelector("#emoji-mart-search-1").outerHTML`
+- Line 2: `< "<input type="search" id="emoji-mart-search-1" placeholder="Search">"`
 
-Wait - looking at the tab bar, the active tab shows `|` (a thin cursor icon) which is the favicon of the tab, indicating the page is in a loading/processing state. Let me look more carefully.
+The console area below this (around y=460) appears to be blank - I need to click somewhere in the console to get a new prompt. The cursor should be at the blank area below the result. Let me look for the prompt more carefully at y=460:
 
-Actually, the `|` symbol in the tab bar is a favicon indicator showing the page might be in a state of activity. But the cursor in the search box is still showing.
+It looks like there should be a `>` prompt after the result. The console area just shows the two lines and then blank space below. Let me click just below the result area to focus the new prompt:
+[step 91] Action: left_click (570, 550)
+[step 91] Reasoning: I can see that after clicking, there's no visible cursor in the console input area. The console shows the previous command and result but doesn't seem to have moved to a new prompt. The console appears to be at the blank area below the result. 
 
-This is very peculiar behavior. The Down arrow key from the search box is NOT moving focus to the emoji list - instead, it seems the focus is staying in the search box or moving somewhere not visually indicated.
+I notice the console layout: The console header shows "top" dropdown and "All levels" dropdown with "1 Issue: 1" indicator. The console content area shows:
+- Line 1: `document.querySelector("#emoji-mart-search-1").outerHTML`
+- Line 2: `< "<input type="search" id="emoji-mart-search-1" placeholder="Search">"`
+- Empty space below
 
-Let me try pressing Tab key instead to see if that moves focus to the emoji list:
-[step 27] Action: key: Tab
-[step 27] Reasoning: Good, the search box is focused (cursor visible). Now let me try pressing **Tab** to see where focus moves:
-[step 28] Action: key: Right
-[step 28] Reasoning: Excellent! **Very significant observation!** After pressing **Tab** from the search box:
+There should be a `>` prompt somewhere. Let me scroll the console up to see if the prompt is hidden:
 
-1. The page **scrolled down** to show the emoji list
-2. The emoji list container now has a **blue border** around it (the entire list container is outlined in blue)
-3. The category icons and search box scrolled out of view
-4. The emoji list is now showing "Frequently Used" with 9 emojis and "Smileys & People" with multiple rows
+Actually, looking at the console more carefully, I notice the `>` prompt is on line 1 BEFORE the command (it shows `> document.querySelector...`). After the result on line 2 (`< "<input..."`), there should be a new `>` prompt. The cursor should be in the blank area below line 2.
 
-**However**, there is still **NO specific emoji highlighted** with a focus indicator. The blue border is on the entire emoji list container, but no individual emoji has a focus ring or highlight.
+Let me try clicking on the blank area in the console below the result:
+[step 92] Action: type: document.querySel...
+[step 92] Reasoning: The console still shows the same result without a visible cursor. The console output area is:
+- `> document.querySelector("#emoji-mart-search-1").outerHTML`
+- `< "<input type="search" id="emoji-mart-search-1" placeholder="Search">"`
+- (blank space below)
 
-Now let me try pressing the **Arrow keys** (Down, Right, Left, Up) to navigate between individual emojis and observe if any emoji gets a focus indicator:
-[step 29] Action: key: Down
-[step 29] Reasoning: After pressing the **Right arrow key**:
-- The emoji list still has the **blue border** around it
-- **Still NO individual emoji is highlighted/focused**
-- The view looks the same as before
+There should be a `>` prompt below the result. The console might be rendering the input prompt in the blank space but I can't see it. Let me try just typing and see if the text appears:
+[step 93] Action: key: Escape
+[step 93] Reasoning: I can see the problem! The console input at the `>` prompt now shows the concatenated command:
+```
+> document.querySelector("#emoji-mart-search-1").outerHTMLdocument.querySelector(".emoji-mart-scroll").outerHTML.substring(0,100)
+```
 
-This is a **navigation bug** - pressing arrow keys when the emoji list has focus should move focus to individual emojis, but no focus indicator appears on any emoji. Let me try pressing **Down arrow**:
-[step 30] Action: key: Left
-[step 30] Reasoning: After pressing **Down arrow**:
-- The emoji list **scrolled down** slightly (the "Frequently Used" section emojis are now smaller at the top, suggesting the list scrolled)
-- The **blue border** is still around the entire emoji list
-- **Still NO individual emoji is highlighted/focused**
+The text was appended to the previous command that was still in the input! This is the same problem as before. The console's input prompt at `>` was still showing the previous command and my typing appended to it.
 
-This is a critical observation! The Down arrow key is **scrolling the emoji list** (moving the viewport) instead of moving focus to individual emojis. This is a **keyboard navigation bug** - the arrow keys should move focus between emojis, not scroll the container.
+Let me press Escape to cancel and then use the Up arrow to navigate to the previous command in history, then clear it, or use Ctrl+A and then delete to clear the input:
+[step 94] Action: key: ctrl+a
+[step 94] Reasoning: I can now see the console clearly showing the concatenated command in the `>` prompt area:
+```
+> document.querySelector("#emoji-mart-search-1").outerHTMLdocument.querySelector(".emoji-mart-scroll").outerHTML.substring(0,100)
+```
 
-Let me try pressing **Left arrow**:
-[step 31] Action: key: Up
-[step 31] Reasoning: After pressing **Left arrow**:
-- The view looks **identical** to the previous screenshot
-- The blue border is still around the emoji list
-- **NO individual emoji highlighted/focused**
-- Left arrow had no visible effect on the view
+I need to clear this and start fresh. The cursor should be in the console input. The layout changed slightly - the DevTools now shows the right-side floating Console panel is gone (no separate console panel on the right). The console is now embedded in the main devtools tab.
 
-Let me try pressing **Up arrow** now:
+Looking at line 1 of the console (the `>` prompt), it shows the full concatenated command. Let me use Ctrl+A to select all the text in the console input and then type a fresh command:
+[step 95] Action: key: Return
+[step 95] Reasoning: I can see the console input at line 1 still shows the concatenated command. The Ctrl+A didn't seem to select all the text in the console input. The cursor appears to be in the console area at the `>` prompt.
+
+Let me try a more direct approach - I'll press Enter to execute the concatenated command (which will likely produce a result or error), and then I'll get a clean `>` prompt to type fresh commands:
+[step 96] Action: left_click (20, 474)
+[step 96] Reasoning: Now I can see:
+1. The concatenated command ran: `document.querySelector("#emoji-mart-search-1").outerHTMLdocument.querySelector(".emoji-mart-scroll").outerHTML.substring(0,100)`
+2. **Error result**: `Uncaught TypeError: Cannot read properties of undefined (reading 'querySelector')`
+
+**IMPORTANT NEW FINDING!** The error says it cannot read `querySelector` of `undefined`. This happens at line 65 in the anonymous function. This error suggests that `document.querySelector("#emoji-mart-search-1").outerHTML` returns a string (the HTML markup), and then JavaScript tries to call `.querySelector()` on that string, which fails because strings don't have `querySelector`.
+
+This is expected - the concatenation created a JavaScript expression where:
+- `document.querySelector("#emoji-mart-search-1").outerHTML` returns a string `"<input...>"`
+- Then `document.querySelector(...)` was treated as a property access on the string, failing
+
+**But there's something else interesting here!** This also confirms that `.emoji-mart-scroll` exists! Because the error was from trying to call `.querySelector()` on the result of `.outerHTML` (a string), not from `.emoji-mart-scroll` not being found.
+
+But wait - earlier when I typed `document.querySelector(".emoji-mart-scroll").getAttribute("role")` it returned `null` or an error about `null` not having `getAttribute`. Let me re-examine this...
+
+Actually looking at the error message: `Uncaught TypeError: Cannot read properties of undefined (reading 'querySelector')` - this means `document.querySelector("#emoji-mart-search-1").outerHTML` (which is a string `"<input..."`) tried to access `.querySelector` on the string, which returned `undefined`. Then `.getAttribute("role")` was attempted on that `undefined`. This is the explanation.
+
+Now I can see the fresh `> |` prompt at line 3 (at y=474). The cursor is visible there. Now I have a clean prompt. Let me type the emoji scroll container query:
+[step 97] Action: type: document.querySel...
+[step 97] Reasoning: I can see the `> |` prompt at y=474 and the cursor appears to be positioned there. The console now shows:
+1. Previous command (concatenated)
+2. Error: `Uncaught TypeError: Cannot read properties of undefined (reading 'querySelector')`
+3. `> |` (fresh prompt with cursor)
+
+The cursor is now in the fresh prompt! Let me type the command to check the emoji scroll container:
+[step 98] Action: left_click (20, 504)
+[step 98] Reasoning: Excellent! Now I can see the console result clearly! The command ran successfully and returned:
+
+```
+< '<div class="emoji-mart-scroll"><div class="emoji-mart-category" style="display: none;"><div data-name="Search" class="emoji-mart-category-label"><span'
+```
+
+**CRITICAL FINDINGS from this output:**
+
+1. The **emoji scroll container** (`div.emoji-mart-scroll`):
+   - Class: `emoji-mart-scroll`
+   - **NO `role` attribute** ❌
+   - **NO `aria-label` attribute** ❌
+
+2. The **first child** inside the scroll container is:
+   - `<div class="emoji-mart-category" style="display: none;">` - This is the "Search" category (hidden initially because no search has been performed yet)
+   - Inside it: `<div data-name="Search" class="emoji-mart-category-label"><span...` 
+   - This search results section is **hidden** (`display: none`) by default
+
+3. The structure shows `class="emoji-mart-category"` and `class="emoji-mart-category-label"` 
+
+**Important observations:**
+- The search results category has `data-name="Search"` attribute
+- The category label div exists but is currently `display: none`
+- **No ARIA roles are applied to the emoji categories or their labels**
+- The emoji list doesn't have `role="grid"`, `role="listbox"`, or any other accessibility role
+
+Now let me run one more command to check the emoji items themselves:
+[step 99] Action: left_click (640, 500)
+[step 99] Reasoning: The console shows the same view. The last result is visible:
+```
+< '<div class="emoji-mart-scroll"><div class="emoji-mart-category" style="display: none;"><div data-name="Search" class="emoji-mart-category-label"><span'
+```
+
+The fresh `>` prompt should be below this at around y=500. Let me click right below the result to position the cursor there:
+
+Actually, I can see there's a blank line at y=497 and y=504 which might be where the fresh prompt is. Let me click directly on it:
+[step 100] Action: type: document.querySel...
+[step 100] Reasoning: I can see the console is still showing the same state. I notice that the console output shows:
+- Line 1: `> document.querySelector("#emoji-mart-search-1").outerHTMLdocument.querySelector(".emoji-mart-scroll").outerHTML.substring(0,100)` (previous concatenated command)
+- Line 2: `⊗ Uncaught TypeError: Cannot read properties of undefined (reading 'querySelector')` with `VM104:1` link
+- Line 3: `&emsp; at <anonymous>:1:65`
+- Line 4: `> document.querySelector(".emoji-mart-scroll").outerHTML.substring(0,150)` (my successful command)
+- Line 5: `< '<div class="emoji-mart-scroll"><div class="emoji-mart-category" style="display: none;"><div data-name="Search" class="emoji-mart-category-label"><span'`
+
+And there should be a `>` prompt below line 5. Looking at the blank area below y=487, the `>` prompt is somewhere in the blank white space. 
+
+Let me try a different strategy. Instead of trying to click on the blank area, let me just type without clicking and see if the console is already focused and receiving keystrokes:
+[step 101] Action: key: Return
+[step 101] Reasoning: I can see that the text was typed but again appended to the previous command! The console prompt at line 4 shows:
+`> document.querySelector(".emoji-mart-scroll").outerHTML.substring(0,150)document.querySelector(".emoji-mart-category-label").outerHTML`
+
+This is the concatenated command again. The previous command's result `< '<div class="emoji-mart-scroll">...'` was on line 4, and then my new command was appended to the prompt that was showing from line 4.
+
+It appears that the console is not properly showing the separate `>` prompt for a fresh input after a result. The result from the previous command seems to have replaced the prompt position.
+
+I think I understand the issue now - when I run a command and get a result, the console shows:
+- `> command`
+- `< result`
+- and then the `>` prompt for the NEXT command is at the SAME level as the `> command` line, not below the `< result`.
+
+This means when I type again, it goes into the `>` line that's actually at the line level where the PREVIOUS command was shown, not after the result. The console is showing the prompt at the same position as the previous command, not below the result.
+
+Actually, looking at it more carefully - the `>` at the beginning of the line might be a toggle indicator (the collapse/expand arrow for the result), and the actual input prompt might be something different.
+
+Let me try a fresh approach. I'll press Enter to execute the concatenated command (it will fail), and then look for the actual fresh `>` prompt:
+[step 102] Action: type: document.querySel...
+[step 102] Reasoning: Now I can clearly see the pattern! Looking at the console output:
+
+Line 1: `> document.querySelector("#emoji-mart-search-1").outerHTMLdocument.querySelector(".emoji-mart-scroll").outerHTML.substring(0,100)` ← **Input line (had `>` toggle)**
+Line 2: `⊗ Uncaught TypeError: Cannot read properties of undefined (reading 'querySelector')` `VM104:1` ← **Error result**
+Line 3: `&emsp; at <anonymous>:1:65`
+Line 4: `> document.querySelector(".emoji-mart-scroll").outerHTML.substring(0,150)document.querySelector(".emoji-mart-category-label").outerHTML` ← **Input line (concatenated)**
+Line 5: `⊗ Uncaught SyntaxError: Unexpected identifier 'document'` `VM112:1` ← **Error result**
+Line 6: `> |` ← **Fresh prompt with cursor** (at y=503)
+
+Now I can see the fresh `>` prompt at line 6 (y=503) and there's a cursor `|` visible right after it! The cursor is there and I can type a fresh command now.
+
+But wait - looking at lines 1 and 4, they both have `>` at the beginning. These `>` are NOT the input prompts - they are the **toggle arrows** (▶/▼) that allow you to expand/collapse the command/result. The actual INPUT prompt (`> |` with cursor) is at the very last line (line 6, y=503).
+
+Now I understand the layout better. The cursor is at the fresh `> |` prompt at y=503. Let me type a fresh command:
+[step 103] Action: left_click (640, 535)
+[step 103] Reasoning: Excellent! Now I can see a new result at the bottom of the console:
+
+```
+> document.querySelector(".emoji-mart-category-label").outerHTML
+< "<div data-name="Search" class="emoji-mart-category-label"><span>Search Results</span></div>"
+```
+
+**CRITICAL FINDING #5 - Category Label Structure:**
+
+The search results category label element is:
+```html
+<div data-name="Search" class="emoji-mart-category-label">
+  <span>Search Results</span>
+</div>
+```
+
+This shows:
+- The "Search Results" section label uses `data-name="Search"` attribute
+- The label text is "Search Results"
+- **NO ARIA attributes**: No `role`, no `aria-label`, no `id` (for reference by other ARIA attributes)
+
+Now this is the label for the search results section. The emoji list doesn't have proper ARIA sectioning with `aria-labelledby` or `role="group"` to associate labels with their content.
+
+Let me also check one of the emoji items directly to see if they have ARIA attributes. Let me check the emoji button elements:
+[step 104] Action: type: document.querySel...
+[step 104] Reasoning: I can see the console output clearly:
+- Line 5: `> document.querySelector(".emoji-mart-category-label").outerHTML`
+- Line 6: `< "<div data-name="Search" class="emoji-mart-category-label"><span>Search Results</span></div>"`
+
+The result shows `"<div data-name="Search" class="emoji-mart-category-label"><span>Search Results</span></div>"`.
+
+Now I need to find the fresh `>` prompt. Based on the pattern I see, after the last result line (line 6), there should be a new `>` prompt somewhere below. Looking at the bottom of the console area, there seems to be empty white space after line 6.
+
+Let me look at the area just below line 6 (below y=516). The fresh `>` prompt should be there. Based on my earlier observation of the console layout, the `>` prompt is typically at around y=533 (one line height below the last result). Let me try clicking directly at around y=533 to position the cursor at the new prompt:
+
+Wait, I see that at line 5 there's `> document.querySelector(".emoji-mart-category-label").outerHTML` - this is the LAST executed command. And at line 6 there's `< "<div data-name="Search"...` - this is the result. The next prompt should be at around y=530 (the blank space just below line 6). Let me just type the next command directly without clicking, since the console should already be focused:
+[step 105] Action: key: Return
+[step 105] Reasoning: I can see the console is now showing the combined command at line 5:
+```
+> document.querySelector(".emoji-mart-category-label").outerHTMLdocument.querySelector(".emoji-mart-category").querySelector("button, .emoji-mart-emoji").outerHTML
+```
+
+The problem is recurring - the command was appended to the previous result line's `>` (which appears to be the collapse/expand toggle arrow for the previous command line).
+
+Wait - looking more carefully at the console output now, I notice that line 5 shows:
+`> document.querySelector(".emoji-mart-category-label").outerHTMLdocument.querySelector(".emoji-mart-category").querySelector("button, .emoji-mart-emoji").outerHTML`
+
+This is a concatenation! The `>` at the beginning of line 5 is NOT the console input prompt - it's the **toggle arrow** for collapsing/expanding the previous command's output. When I click in the empty area below the result, I'm actually clicking on the previous command's toggle/expand area, not a fresh prompt.
+
+So the pattern is:
+1. `▶ previous-concatenated-command` (line 1 - with toggle arrow `▶`)  
+2. `⊗ Error: ...` (lines 2-3 - the error result)
+3. `▶ second-command` (line 4 - with toggle arrow `▶`)
+4. `⊗ Error: ...` (line 5)
+5. `▶ third-command` (THIS IS WHERE THE CONSOLE INPUT CURSOR IS)
+
+The `▶` toggle arrows at the beginning of lines are actually the **console input cursor positioned at the BEGINNING of each command line**! When I click in the "empty" area below the last result, I'm actually clicking at the beginning of the command text on line 4 or 5, which then causes me to type AFTER the existing text on that line.
+
+I need a different strategy to get a fresh console input. Let me try pressing Enter to execute the current concatenated command (it will fail), and then I'll get the actual fresh `>` prompt at the very end:
+[step 106] Action: type: document.querySel...
+[step 106] Reasoning: Now I can see the console layout much more clearly! The last result shows:
+- `⊗ Uncaught TypeError: Cannot read properties of undefined (reading 'querySelector')` `VM119:1`
+- `&emsp; at <anonymous>:1:71`
+- `> ` ← **This is the fresh input prompt!** (at y=540)
+
+The fresh `>` prompt is at the very bottom of the console at y=540. I can now see the cursor is at the fresh prompt (it's visible as `> ` with a blinking cursor after it). Let me now type my commands carefully.
+
+The key insight I have from all the previous failed queries (due to concatenation):
+- **The console is showing the previous command text at the `>` line**
+- **When I click in the "blank area" below a result, I'm actually clicking on the previous command line**
+- **To type in the fresh prompt, I need to wait for the `Enter` to create a new line and then type immediately**
+
+Now the cursor should be at the `> ` prompt at y=540. Let me type the command for checking emoji button structure:
+[step 107] Action: left_click (113, 128)
+[step 107] Reasoning: Now I can see the command ran successfully and produced a result! The console shows:
+
+Line 5: `> document.querySelectorAll(".emoji-mart-emoji")[0].outerHTML.substring(0,300)` (the command)
+Line 6: `< '<span class="emoji-mart-emoji emoji-mart-emoji-native"><span style="font-size: 24px; display: inline-block; width: 24px; height: 24px; word-break: keep-all;">😀</span></span>'`
+
+**CRITICAL FINDING #6 - Emoji Item Structure:**
+
+The emoji item is structured as:
+```html
+<span class="emoji-mart-emoji emoji-mart-emoji-native">
+  <span style="font-size: 24px; display: inline-block; width: 24px; height: 24px; word-break: keep-all;">😀</span>
+</span>
+```
+
+This is very significant! The emoji items are:
+- **`<span>` elements** (not `<button>` elements) ❌
+- **NO `role` attribute** (not `role="option"`, not `role="gridcell"`, not `role="button"`) ❌
+- **NO `aria-label` attribute** (no accessible name for the emoji!) ❌
+- **NO `tabindex` attribute** (not keyboard focusable) ❌
+- **NO `title` attribute** visible in this snippet
+
+The emoji items are completely inaccessible to keyboard users and screen reader users! They have:
+- No ARIA role (screen readers can't identify them as interactive elements)
+- No accessible name (no aria-label, no title showing the emoji name)
+- No focus management (no tabindex)
+
+Let me now do Step 5 - type in the search box and test keyboard navigation with filtered results. Let me first close/minimize DevTools and interact with the emoji picker:
+
+Let me type "smile" in the search input and then test arrow key navigation. First, I need to click on the search input in the picker:
+[step 108] Action: type: smile
+[step 108] Reasoning: I clicked on the search input in the emoji picker and I can see the cursor is now in the search box (there's a text cursor visible in the "Search" text box). The picker is visible with "Frequently Used" and "Smileys & People" sections. The DevTools is still open at the bottom showing the previous console results.
+
+Now let me type "smile" in the search box to filter emoji results:
+[step 109] Action: key: Down
+[step 109] Reasoning: Excellent! Now I can see the emoji picker has updated with the search results! The picker shows:
+- Search input with "smile" typed in it and a "×" (clear) button
+- "Search Results" heading
+- A grid of emoji results (about 18 emojis matching "smile") - showing faces with various smiling expressions
+- "Your Title Here" footer
+
+The search functionality is working! The emoji list now shows filtered results. 
+
+**Important visual observation**: The "Search Results" section label (`<div data-name="Search" class="emoji-mart-category-label"><span>Search Results</span></div>`) is now visible in the picker! The category heading "Search Results" is displayed as text above the emoji grid.
+
+Now let me **test keyboard navigation in the filtered results**. The search input currently has "smile" typed in it and has focus. Let me press the Down arrow key to try to move focus to the emoji grid:
+
+**Step 5 Test - Arrow key navigation with filtered results:**
+[step 110] Action: key: Right
+[step 110] Reasoning: The Down arrow key was pressed while the search input had focus (showing "smile"). The result: **NO change in the emoji grid** - no emoji was highlighted or focused. The emoji grid looks exactly the same as before with no visual indication of keyboard focus on any emoji. 
+
+**CONFIRMED BUG: Arrow key navigation from search input to emoji grid DOES NOT WORK.**
+
+Let me also try the Right, Left, and Up arrow keys:
+[step 111] Action: left_click (67, 401)
+[step 111] Reasoning: **No change again!** The Right arrow key moved the text cursor within the search input ("smile|" → cursor moved right, but since it's at the end it didn't go further). No emoji was focused or highlighted. The arrow keys only navigate within the text input and don't move to the emoji grid.
+
+Now let me check the Accessibility panel in DevTools to see a comprehensive accessibility audit. Let me click on the search input area in DevTools to get the accessibility info:
+
+Let me switch to the Elements tab to check the accessibility attributes:
+[step 112] Action: left_click (1199, 419)
+[step 112] Reasoning: Now I can see the Elements panel with the full DOM structure! This is very clear and I can read the structure perfectly:
+
+**DOM Structure visible in Elements panel:**
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>...</head>
+  <body>
+    <div id="root">
+      <div class="emoji-mart" style="width: 338px;">
+        <div class="emoji-mart-bar">...</div>       ← Category nav bar (top)
+        <div class="emoji-mart-search">
+          <input type="search" id="emoji-mart-search-1" placeholder="Search"> == $0   ← Currently selected!
+          <label class="emoji-mart-sr-only" for="emoji-mart-search-1">Search</label>  ← Screen reader label
+          <button class="emoji-mart-search-icon" aria-label="Clear">...</button>       ← Clear button
+        </div>
+        <div class="emoji-mart-scroll">...</div>    ← Emoji list container
+        <div class="emoji-mart-bar">...</div>       ← Footer bar (bottom)
+      </div>
+    </div>
+    <div id="error-display"></div>
+    <script src="static/preview.bundle.js"></script>
+  </body>
+</html>
+```
+
+The breadcrumb at the bottom confirms:
+`html > body > div#root > div.emoji-mart > div.emoji-mart-search > input#emoji-mart-search-1`
+
+The currently selected element in the DOM is `input#emoji-mart-search-1` (highlighted in blue) which is the search input.
+
+**Looking at the search input element directly:**
+`<input type="search" id="emoji-mart-search-1" placeholder="Search">` == $0
+
+I can confirm:
+- ✅ `type="search"` - correct type
+- ✅ `id="emoji-mart-search-1"` - for label association
+- ✅ `placeholder="Search"` - placeholder text
+- ❌ **NO `role` attribute** - missing combobox role
+- ❌ **NO `aria-label`** - but has `<label>` element for association ✅
+- ❌ **NO `aria-autocomplete`** - missing
+- ❌ **NO `aria-controls`** - missing
+- ❌ **NO `aria-expanded`** - missing
+- ❌ **NO `aria-activedescendant`** - missing
+
+**Accessibility panel check** - I can see the Styles panel on the right. Let me check if there's an "Accessibility" sub-panel available. I notice there are tabs on the right side: "Styles", "Computed", "Layout", ">>" (which might have more tabs including Accessibility). Let me click on ">>" to see if there's an Accessibility tab:
+[step 113] Action: left_click (1139, 474)
+[step 113] Reasoning: I can see a dropdown menu appeared with additional options:
+- Event Listeners
+- DOM Breakpoints
+- Properties
+- **Accessibility** ← This is what I need!
+
+Let me click on "Accessibility":
+[step 114] Action: scroll down (1170, 600) scroll_amount 3
+[step 114] Reasoning: **CRITICAL ACCESSIBILITY INFORMATION REVEALED!** The Accessibility panel is now showing for the selected `input#emoji-mart-search-1` element. I can read the following information:
+
+**Accessibility Tree for `input#emoji-mart-search-1`:**
+
+1. **ARIA Attributes section:**
+   - **"No ARIA attributes"** ❌ - This confirms no ARIA attributes are set on the search input!
+
+2. **Computed Properties section:**
+   - **Name: "Search"** ✅ - The accessible name is "Search" (derived from the associated `<label>` element)
+   - `aria-labelledby: Not specified` ❌ - No aria-labelledby
+   - `aria-label: Not specified` ❌ - No aria-label
+   - `From label (for= attribute): ...` ← The name "Search" comes from the `<label for="emoji-mart-search-1">Search</label>` element ✅
+   - `title: Not specified` ❌ - No title attribute
+   - `placeholder: "Search"` ✅ - placeholder exists (shown in strikethrough, meaning the label takes precedence)
+   - `aria-placeholder: Not specified` ❌ - No aria-placeholder
+   - `title: Not specified` ❌ - No title (again)
+   - `Value: "smile"` ✅ - Current value shows the text "smile" that was typed
+
+3. **What's MISSING (key findings):**
+   - **NO `role` attribute** - The search input is identified as a plain `<input type="search">` with NO combobox role
+   - **NO `aria-autocomplete`** - Missing
+   - **NO `aria-controls`** - Missing  
+   - **NO `aria-expanded`** - Missing
+   - **NO `aria-haspopup`** - Missing
+   - **NO `aria-activedescendant`** - Missing
+
+The message **"No ARIA attributes"** in the ARIA Attributes section is the clearest possible confirmation that the search input **completely lacks ARIA role and state attributes**.
+
+Now let me scroll down in the Accessibility panel to see if there are more computed properties, particularly the role:
+[step 115] Action: left_click (125, 544)
+[step 115] Reasoning: Now I can see the complete **Computed Properties** section in the Accessibility panel for the search input `input#emoji-mart-search-1`:
+
+**Computed Properties (full list):**
+- **Name: "Search"** ✅ - accessible name is "Search"
+  - `aria-labelledby: Not specified` ❌
+  - `aria-label: Not specified` ❌
+  - `From label (for= attribute): ...` ✅ - name derived from `<label>`
+  - `title: Not specified` ❌
+  - ~~`placeholder: "Search"`~~ - strikethrough means it's not the primary source
+  - `aria-placeholder: Not specified` ❌
+  - `title: Not specified` ❌
+- **Value: "smile"** ✅ - current value is "smile" (what was typed)
+- **Role: searchbox** ✅ - The implicit ARIA role is `searchbox`! This is the COMPUTED (implicit) role from `type="search"`
+- **Invalid user entry: false** ✅
+- **Focusable: true** ✅ - The element is focusable
+- **Focused: true** ✅ - The element is currently focused (we were looking at it)
+- **Editable: plaintext** ✅
+- **Can set value: true** ✅
+- **Labeled by: label.emoji-mart-sr-only** ✅ - Labeled by the screen reader only label element
+
+**KEY FINDING: Role is `searchbox` (implicit)**
+
+The search input's computed role is `searchbox` (not `combobox`). This is the browser's implicit ARIA role for `<input type="search">`. The component is using the implicit `searchbox` role, which is semantically appropriate for a search field, BUT:
+
+1. **Missing combobox pattern**: The emoji picker's search input functions as a combobox (search field + dropdown suggestions/results), but it's NOT implemented as a combobox pattern. A proper combobox would need:
+   - `role="combobox"` (not `searchbox`) 
+   - `aria-expanded="true/false"` (to indicate if the listbox is shown)
+   - `aria-controls="[listbox-id]"` (to reference the results listbox)
+   - `aria-autocomplete="list"` (to indicate autocomplete behavior)
+
+2. **The emoji list lacks proper ARIA roles**: The scroll container and emoji items don't have proper roles (`role="listbox"`, `role="option"`, `role="grid"`, `role="gridcell"`)
+
+3. **Keyboard navigation is broken**: Arrow keys don't move focus from search to emoji grid
+
+Now let me also check the emoji scroll container's accessibility properties. Let me click on `<div class="emoji-mart-scroll">` in the Elements tree:
+[step 116] Action: left_click (1041, 430)
+[step 116] Reasoning: **CRITICAL ACCESSIBILITY FINDING for the emoji scroll container!**
+
+The Accessibility panel now shows for `div.emoji-mart-scroll` (the emoji list container):
+
+**ARIA Attributes:**
+- **"No ARIA attributes"** ❌ - Confirmed: no ARIA attributes on the scroll container
+
+**Computed Properties:**
+- **"Element not interesting for accessibility."** ❌ - Chrome DevTools accessibility engine considers this element "not interesting" for accessibility!
+
+This is extremely significant! Chrome's accessibility engine is EXCLUDING the emoji scroll container from the accessibility tree entirely because:
+1. It has no ARIA role (like `role="listbox"`, `role="grid"`, `role="list"`)
+2. It contains no natively focusable/interactive elements that screen readers would pick up
+3. All the emoji items inside it are just `<span>` elements with no interactive roles
+
+The DevTools shows:
+- Breadcrumb: `html > body > div#root > div.emoji-mart > div.emoji-mart-scroll`
+- ARIA Attributes: "No ARIA attributes"
+- Computed Properties: "Element not interesting for accessibility."
+
+The emoji preview shows the entire scroll area with the "Search Results" heading and the emoji grid (18 emojis matching "smile"). All this content is being marked as "NOT INTERESTING" for accessibility by Chrome's engine.
+
+**This is the core accessibility bug: The entire emoji list is invisible to screen readers and keyboard navigation is completely broken.**
+
+Now let me also check the "Search Results" heading area and the emoji items. But first, let me scroll up in the Accessibility panel to see if there's also the Accessibility Tree:
+
+I notice there's a message at the top of the Accessibility panel: "The accessibility tree moved to the top right corner of the DOM tree. Send us your feedback." This suggests the full accessibility tree is available in the top-right area. Let me click on the element inspector icon (the person/figure icon) in the top-right of the DevTools to see the full accessibility tree:
+[step 117] Action: scroll up (540, 540) scroll_amount 5
+[step 117] Reasoning: Now I can see the **Accessibility Tree** view on the left side! This is an incredibly valuable view. The Accessibility Tree shows the full accessibility representation of the emoji picker page:
+
+Looking at the accessibility tree:
+
+```
+Ignored ← (some elements are "Ignored")
+  StaticText "Search Results"
+    InlineTextBox "Search Results"
+  StaticText "😀"
+    InlineTextBox "😀"
+  StaticText "😺"
+    InlineTextBox "😺"
+  StaticText "😸"
+    InlineTextBox "😸"
+  StaticText "😹"
+    InlineTextBox "😹"
+  StaticText "😻"
+    InlineTextBox "😻"
+  StaticText "😼"
+    InlineTextBox "😼"
+  StaticText "😽"
+    InlineTextBox "😽"
+  StaticText "🙈"
+    InlineTextBox "🙈"
+  StaticText "🙉"
+    InlineTextBox "🙉"
+  ...more emoji...
+```
+
+**CRITICAL ANALYSIS OF THE ACCESSIBILITY TREE:**
+
+1. **"Ignored"** at the top - The `div.emoji-mart` container or some parent element is **IGNORED** by the accessibility tree (this corresponds to the "Element not interesting for accessibility" we saw earlier)
+
+2. **"Search Results"** is shown as `StaticText` - The category heading is accessible as static text, which is good but it's not structured as a heading (no `role="heading"` or `<h1>`-`<h6>`)
+
+3. **Emoji items are shown as `StaticText`** with just the emoji character - Each emoji is represented as:
+   - `StaticText "😀"` with `InlineTextBox "😀"` inside
+   
+   This means emoji are just static text characters! They have **NO interactive role** (not `button`, not `option`, not `link`). They are just text content with the emoji character as the accessible name.
+
+**This confirms the complete lack of keyboard navigation support:**
+- Emoji items are `StaticText` (not interactive elements)
+- Users can't tab to them, use arrow keys to navigate between them, or activate them with keyboard
+- The emoji items have the emoji character as their "name" (e.g., "😀") but no descriptive name like "grinning face"
+
+Now I can also see there's a tooltip showing "Switch to DOM Tree view" when I hovered over the icon. Let me scroll up in the accessibility tree to see the full tree structure including the search input:
+[step 118] Action: scroll up (540, 540) scroll_amount 5
+[step 118] Reasoning: Excellent! Now I can see the **complete Accessibility Tree** structure for the emoji picker! This is a goldmine of accessibility information. Let me read the complete accessibility tree:
+
+**Accessibility Tree (complete structure visible):**
+
+1. (Scrolled up in tree showing category buttons)
+   - `button "Food & Drink" focusable: true` ✅
+   - `button "Activity" focusable: true` ✅
+   - `button "Travel & Places" focusable: true` ✅
+   - `button "Objects" focusable: true` ✅
+   - `button "Symbols" focusable: true` ✅
+   - `button "Flags" focusable: true` ✅
+   - `button "Custom" focusable: true` ✅
+
+2. **`searchbox "Search" focusable: true focused: true settable: true`** ✅/❌
+   - `StaticText "smile"` (the current search text)
+
+3. **`LabelText ""`** 
+   - `StaticText "Search"` 
+
+4. **`button "Clear" focusable: true`** ✅
+   - `image ""`
+
+5. **`Ignored`** ← The `div.emoji-mart-scroll` container! **This is the key problem!**
+   - `StaticText "Search Results"`
+     - `InlineTextBox "Search Results"`
+   - `StaticText "😀"`
+     - `InlineTextBox "😀"`
+   - `StaticText "😺"`
+     - `InlineTextBox "😺"`
+   - `StaticText "😸"`
+     - `InlineTextBox "😸"`
+   - ... (more emojis)
+
+**COMPREHENSIVE ACCESSIBILITY ANALYSIS:**
+
+**What's working:**
+- ✅ **Category navigation buttons** are properly accessible with labels like "Food & Drink", "Activity", etc. (they appear as `button "X" focusable: true`)
+- ✅ **Search input** has correct implicit role `searchbox` with accessible name "Search"
+- ✅ **Clear button** is accessible with `aria-label="Clear"`
+- ✅ **"Search Results" label** is visible in the accessibility tree as StaticText
+
+**Critical accessibility failures:**
+- ❌ **The emoji scroll container is "Ignored"** - The `div.emoji-mart-scroll` container is excluded from the accessibility tree!
+- ❌ **Emoji items are `StaticText`** (not interactive elements like `button`, `option`, or `link`) - they cannot be activated by keyboard
+- ❌ **No keyboard navigation** - Arrow keys don't navigate between emoji
+- ❌ **No `role="combobox"` on the search input** - Although the implicit `searchbox` role is present, it lacks the combobox pattern attributes (`aria-expanded`, `aria-controls`, `aria-autocomplete`)
+- ❌ **No `aria-label` on emoji items** - Emojis only show as their Unicode character (e.g., "😀") without a descriptive name (should be "Grinning Face" etc.)
+- ❌ **No section/group structure** - The "Search Results" heading is not associated with the emoji list as a proper group
+- ❌ **No `aria-live` region** - When search results change, screen readers are not notified
+
+The presence of `searchbox "Search" focusable: true focused: true settable: true` in the accessibility tree shows the search input IS accessible (it has the implicit `searchbox` role from `type="search"`). But the critical functionality for a proper combobox/emoji picker is completely missing.
+
+Now let me also scroll up further to see the very top of the accessibility tree to understand the overall structure:
+[step 119] Action: scroll down (540, 540) scroll_amount 3
+[step 119] Reasoning: Now I can see the **complete accessibility tree from the top**! This gives the full picture:
+
+**Complete Accessibility Tree Structure:**
+
+```
+RootWebArea "Storybook" focusable: true url: http://localhost:6006/iframe.html?id=picker--default
+  └─ Ignored
+     └─ Ignored
+        └─ generic ""
+           └─ navigation "Emoji categories"    ← aria-label="Emoji categories" ✅
+              ├─ button "Frequently Used" focusable: true     ✅
+              ├─ button "Smileys & People" focusable: true    ✅
+              ├─ button "Animals & Nature" focusable: true    ✅
+              ├─ button "Food & Drink" focusable: true        ✅
+              ├─ button "Activity" focusable: true            ✅
+              ├─ button "Travel & Places" focusable: true     ✅
+              ├─ button "Objects" focusable: true             ✅
+              ├─ button "Symbols" focusable: true             ✅
+              ├─ button "Flags" focusable: true               ✅
+              └─ button "Custom" focusable: true              ✅
+           searchbox "Search" focusable: true focused: true settable: true  ← search input ✅ (partially)
+              └─ StaticText "smile"
+           LabelText ""
+              └─ StaticText "Search"
+           button "Clear" focusable: true  ← clear button ✅
+              └─ image ""
+```
+
+I notice something important in the tree:
+
+1. **`Ignored → Ignored → generic ""`** - The outer containers (`html`, `body`, `div#root`, `div.emoji-mart`) are ignored but eventually a `generic ""` element is shown (this is the `div.emoji-mart` or its parent)
+
+2. **`navigation "Emoji categories"`** - The nav element has proper `aria-label="Emoji categories"` and all category buttons are properly labeled ✅
+
+3. **`searchbox "Search"`** - The search input is properly identified as a `searchbox` with accessible name "Search" and is focused ✅ (but missing combobox attributes)
+
+4. **`LabelText ""`** - The label element is present but has an empty name (`""`) - this seems odd, the label text "Search" should be here but it appears under `StaticText "Search"`
+
+5. **`button "Clear"`** - The clear button is accessible ✅
+
+**CRITICAL MISSING: The emoji scroll container is NOT in the accessibility tree!**
+
+After the `button "Clear"`, I can see the tree continues (scrollable), but based on what I saw earlier, the emoji list section is marked as `Ignored`. The emoji items are `StaticText` only, not interactive.
+
+I also notice the accessibility tree tooltip shows a category button is highlighted in the picker: `button.emoji-mart-anchor 32.41 × 45.31`.
+
+Now I have enough information to compose a comprehensive test report. Let me take a final screenshot to capture the current state:
 
 ==================================================
-Task: 测试emoji选择器键盘导航。浏览器打开 http://localhost:3000。在Storybook左侧找到Picker故事并点击。然后在emoji picker中点击搜索框，使用键盘上下左右方向键尝试在emoji列表中导航。观察焦点是否在emoji间移动。始终在浏览器内操作，禁止打开Terminal。
-Status: STOPPED_BY_USER
-Total steps: 31
-Last action: key: Up
-Last reasoning: After pressing **Left arrow**:
-- The view looks **identical** to the previous screenshot
-- The blue border is still around the emoji list
-- **NO individual emoji highlighted/focused**
-- Left arrow had no visible effect on the view
+Task: 当前Chrome浏览器已打开 emoji-mart 的 Storybook，地址是 http://localhost:6006。测试 emoji 选择器的键盘无障碍访问功能。操作步骤：1. 在 Storybook 左侧导航栏找到 Picker 相关的 story，点击进入 emoji picker 组件展示页面。2. 找到 emoji picker 组件，点击搜索输入框使其获得焦点。3. 使用键盘方向键（上下左右箭头）尝试在 emoji 列表中进行导航，验证焦点是否能通过键盘箭头键在各个 emoji 之间移动。4. 检查搜索输入框和 emoji 列表是否具有正确的 ARIA 角色属性（如 combobox 相关角色），以及 emoji 列表是否有无障碍标题。5. 在搜索框中输入关键词后，再次使用方向键验证能否在筛选后的 emoji 结果中进行键盘导航。始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到目标功能，直接报告 unclear。
+Status: ERROR
+Total steps: 119
+Last action: scroll down (540, 540) scroll_amount 3
+Last reasoning: Now I can see the **complete accessibility tree from the top**! This gives the full picture:
 
-Let me try pressing **Up arrow** now:
+**Complete Accessibility Tree Structure:**
 
+```
+RootWebArea "Storybook" focusable: true url: http://localhost:6006/iframe.html?id=picker--default
+  └─ Ignored
+     └─ Ignored
+        └─ generic ""
+           └─ navigation "Emoji categories"    ← aria-label="Emoji categories" ✅
+              ├─ button "Frequently Used" focusable: true     ✅
+              ├─ button "Smileys & People" focusable: true    ✅
+              ├─ button "Animals & Nature" focusable: true    ✅
+              ├─ button "Food & Drink" focusable: true        ✅
+              ├─ button "Activity" focusable: true            ✅
+              ├─ button "Travel & Places" focusable: true     ✅
+              ├─ button "Objects" focusable: true             ✅
+              ├─ button "Symbols" focusable: true             ✅
+              ├─ button "Flags" focusable: true               ✅
+              └─ button "Custom" focusable: true              ✅
+           searchbox "Search" focusable: true focused: true settable: true  ← search input ✅ (partially)
+              └─ StaticText "smile"
+           LabelText ""
+              └─ StaticText "Search"
+           button "Clear" focusable: true  ← clear button ✅
+              └─ image ""
+```
+
+I notice something important in the tree:
+
+1. **`Ignored → Ignored → generic ""`** - The outer containers (`html`, `body`, `div#root`, `div.emoji-mart`) are ignored but eventually a `generic ""` element is shown (this is the `div.emoji-mart` or its parent)
+
+2. **`navigation "Emoji categories"`** - The nav element has proper `aria-label="Emoji categories"` and all category buttons are properly labeled ✅
+
+3. **`searchbox "Search"`** - The search input is properly identified as a `searchbox` with accessible name "Search" and is focused ✅ (but missing combobox attributes)
+
+4. **`LabelText ""`** - The label element is present but has an empty name (`""`) - this seems odd, the label text "Search" should be here but it appears under `StaticText "Search"`
+
+5. **`button "Clear"`** - The clear button is accessible ✅
+
+**CRITICAL MISSING: The emoji scroll container is NOT in the accessibility tree!**
+
+After the `button "Clear"`, I can see the tree continues (scrollable), but based on what I saw earlier, the emoji list section is marked as `Ignored`. The emoji items are `StaticText` only, not interactive.
+
+I also notice the accessibility tree tooltip shows a category button is highlighted in the picker: `button.emoji-mart-anchor 32.41 × 45.31`.
+
+Now I have enough information to compose a comprehensive test report. Let me take a final screenshot to capture the current state:
+
+Error: Task execution failed: Request step failed: HTTPSConnectionPool(host='mano.mininglamp.com', port=443): Max retries exceeded with url: /v1/sessions/sess-20260419002118-f313f134aa5a4447ab0acd192ef22012/step (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))
 ==================================================
 
 UI window closed
