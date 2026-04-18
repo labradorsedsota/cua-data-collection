@@ -1,0 +1,381 @@
+Session created: sess-20260416204627-181dac7d2ff642c6806868e582df1882
+UI panel initialized successfully
+UI window displayed
+Expected result: 应用首页能正常渲染，不出现空白页面，浏览器控制台无SyntaxError等JavaScript错误，所有静态资源正确加载，刷新后页面仍正常显示。
+[step 0] Action: Initializing
+[step 0] Reasoning: Initializing session connection
+[step 0] Action: screenshot
+[step 1] Action: key: F12
+[step 1] Reasoning: 页面已正常加载，显示了Cboard的主页内容（CBOARD CLASSIC HOME），包含各种图标卡片（yes、no、quick chat、time、food、drinks等）。页面没有出现空白，内容渲染正常。
+
+现在按F12打开开发者工具，检查Console面板：
+[step 2] Action: left_click (847, 114)
+[step 2] Reasoning: 开发者工具已打开，Console面板显示了一些信息。我需要仔细查看控制台内容。目前可以看到：
+- 8 messages
+- 4 user messages  
+- 5 errors（红色）
+- 3 warnings（黄色）
+
+让我点击Console标签并仔细检查是否有JavaScript语法错误（SyntaxError）。先关闭顶部的通知横幅，然后切换到Console面板：
+[step 3] Action: left_click (1025, 130)
+[step 3] Reasoning: Console面板已显示。我可以看到控制台中有各种信息，包括5个errors和3个warnings。需要仔细检查是否有JavaScript语法错误（SyntaxError）。让我点击Console标签确保在Console面板，然后清除筛选器查看所有错误：
+[step 4] Action: scroll up (1090, 400) scroll_amount 5
+[step 4] Reasoning: 我现在在Console面板。让我仔细查看控制台中显示的错误内容。我需要查看这些错误消息的详细内容。让我滚动到控制台顶部查看所有内容，并特别关注是否有SyntaxError。当前可见的错误包括：
+
+1. **CSP错误**：连接到 `api.localhost:3000/location` 和 `api.localhost:3000/subscription/list` 违反了Content Security Policy
+2. **error during localization** (App.actions.js:139)
+3. **Warning**：componentWillReceiveProps已被重命名（React生命周期警告）
+4. **Network Error**：SubscriptionProvider.actions.js:326
+5. **Failed to load**：www.paypal.com/sdk/js?tent=subscription:1 - ERR_TIMED_OUT
+
+让我滚动控制台查看是否有更多错误，特别是SyntaxError类型的错误：
+[step 5] Action: scroll down (1090, 400) scroll_amount 3
+[step 5] Reasoning: 重要发现！在控制台底部我看到了一个关键错误：
+- **"Failed to load the PayPal JS SDK script. TypeError: Failed to fetch"** - 在 `react-paypal-js.js:1059`
+
+这里出现了 **TypeError**，是一个JavaScript运行时错误，但不是SyntaxError语法错误。这是因为PayPal SDK脚本加载失败（网络连接问题）。
+
+让我向下滚动查看更多错误，并查看是否有SyntaxError：
+[step 6] Action: left_click (975, 130)
+[step 6] Reasoning: 现在我可以清晰地看到控制台中的所有错误。让我详细截图分析控制台状态，然后切换到Network面板查看资源加载情况。
+
+控制台错误汇总：
+1. **CSP错误** (x2)：连接到 `api.localhost:3000/location` 和 `api.localhost:3000/subscription/list` 违反内容安全策略
+2. **error during localization** (App.actions.js:139)
+3. **Warning**：componentWillReceiveProps 已被重命名（React生命周期警告，出现在 react-dom.development.js:67）
+4. **Network Error** (SubscriptionProvider.actions.js:326)
+5. **Failed to load** www.paypal.com/sdk/js (x2) - ERR_TIMED_OUT
+6. **Failed to load the PayPal JS SDK script. TypeError: Failed to fetch** (react-paypal-js.js:1059)
+
+**没有发现 JavaScript SyntaxError（语法错误）**。
+
+现在切换到Network面板检查静态资源加载状态：
+[step 7] Action: key: Escape
+[step 7] Reasoning: 我不小心点击到了Elements面板。我需要点击Network面板标签。让我找到Network标签并点击它：
+[step 8] Action: screenshot
+[step 8] Reasoning: 开发者工具现在显示的是Elements面板。我需要找到并点击Network标签。看起来标签栏在顶部，但当前只显示了Elements和Console。我需要查找更多面板选项，Network可能被隐藏了：
+[step 9] Action: key: ctrl+shift+j
+[step 9] Reasoning: 我看到开发者工具现在显示的是Elements面板，标签栏只显示了"Elements"和"Console"，Network面板被隐藏了。我需要点击">>"或使用快捷键Ctrl+Shift+J来打开Network面板。让我尝试按Ctrl+Shift+J来切换到Console，或直接点击菜单查找Network面板：
+[step 10] Action: Minimize panel
+[step 10] Reasoning: 开发者工具面板太窄，只显示Elements和Console标签。我需要找到Network标签，它可能在右侧被截断了。让我先最小化任务面板，然后尝试将开发者工具调整为底部显示模式，这样可以显示更多的标签选项：
+[step 11] Action: left_click (1109, 130)
+[step 11] Reasoning: 任务面板已最小化，现在可以看到开发者工具的完整标签栏，包括：Elements、Console、Sources、**Network**、以及错误计数（7错误、3警告、2信息）。我现在点击Network标签：
+[step 12] Action: left_click (1094, 573)
+[step 12] Reasoning: Network面板已打开，但显示"Currently recording network activity - Perform a request or reload the page by using the 'Reload page' button or by pressing ⌘ R."
+
+这是因为Network面板在开发者工具打开后才开始记录，之前的网络请求没有被记录。我需要点击"Reload page"按钮或按F5刷新页面来捕获网络请求，这正好也符合步骤4（关闭开发者工具，按F5刷新页面）的要求。让我点击"Reload page"按钮：
+[step 13] Action: scroll up (1090, 450) scroll_amount 10
+[step 13] Reasoning: Network面板现在显示了页面加载的所有资源！可以清楚地看到：
+
+- **大量SVG图像文件**（body_outline.svg、generic_clothes.svg、people.svg等）都以 **状态码 304**（Not Modified，使用缓存）加载
+- 所有这些资源都成功加载（304是正常状态码，表示使用了缓存）
+- 底部显示：42 requests，13.2 kB transferred，28.5 MB resources，Finish: 1.59s
+
+让我滚动到顶部查看主要的JS和CSS文件的加载状态：
+[step 14] Action: scroll up (1090, 450) scroll_amount 10
+[step 14] Reasoning: 可以看到更多网络请求，包括：
+- 大量SVG图像文件，状态码都是 **304**（缓存）
+- `list` - **状态码 200**（xhr请求）
+- `collect?v=2&tid=G-60S7926...` - **状态码 204**（fetch请求，Google Analytics）
+
+让我继续向上滚动查看JS和CSS文件的加载状态：
+[step 15] Action: scroll up (1090, 450) scroll_amount 15
+[step 15] Reasoning: 网络请求还在继续加载。我可以看到一些pending状态的请求（store.js:28, js?client-id=A22vK0luRWMX...）。让我继续向上滚动找到主要的JS和CSS资源：
+[step 16] Action: left_click (1044, 201)
+[step 16] Reasoning: 列表没有再向上滚动，说明SVG图像文件可能是列表中最前面的部分。我注意到列表中的第一项是sports.svg，但这不是JS/CSS资源。让我切换到JS过滤器查看JS资源的加载状态：
+[step 17] Action: left_click (1021, 201)
+[step 17] Reasoning: 现在JS过滤器已激活，可以清晰看到JS资源的加载状态：
+
+| 资源名 | 状态码 | 类型 | 来源 |
+|--------|--------|------|------|
+| js?id=UA-108091601-1 | **200** | script | root:57 (disk cache) |
+| bundle.js | **304** | script | root:67 |
+| js?id=G-60S79265FY&cx=c&... | **200** | script | js?id=UA-108091 |
+| analytics.js | **200** | script | js?id=UA-108091 (disk cache) |
+| src_translations_en-US_json... | **304** | script | load·script:41 |
+| js?client-id=A22vK0luRWMX... | **(failed)...** | script | store.js:28 |
+
+关键发现：
+- **bundle.js** - 304（缓存命中，正常）✅
+- **js?id=UA-108091601-1** - 200（正常）✅
+- **analytics.js** - 200（disk cache，正常）✅
+- **src_translations_en-US_json** - 304（缓存命中，正常）✅
+- **js?client-id=A22vK0luRWMX** - **(failed)** ❌（PayPal SDK加载失败）
+
+让我也检查CSS资源：
+[step 18] Action: left_click (921, 201)
+[step 18] Reasoning: 有趣的发现！CSS过滤器显示 **0 / 48 requests** - 也就是说应用中没有单独的CSS文件被加载！这说明CSS可能是内联在bundle.js中（通过CSS-in-JS方案，如styled-components或CSS modules），或者CSS被打包进了JS bundle中。这是React应用的常见做法，不是错误。
+
+现在让我切换回"All"查看所有资源，然后检查Console面板的详细错误信息：
+[step 19] Action: scroll up (1090, 450) scroll_amount 20
+[step 19] Reasoning: 现在可以看到All面板中，在底部有两个标红的失败请求：
+- `js?client-id=A22vK0luRWMX...` - **(failed)** - fetch - store.js:28 - 30.01s
+- `js?client-id=A22vK0luRWMX...` - **(failed)** - preflight - Preflight - 30.0s
+
+这两个是PayPal SDK相关的请求失败，因为本地环境无法访问外部PayPal服务。
+
+让我向上滚动到顶部查看最开始加载的资源，包括HTML文档本身：
+[step 20] Action: left_click (1025, 130)
+[step 20] Reasoning: 可以看到Network面板无法进一步向上滚动了，说明sports.svg就是列表中可见的第一个资源（HTML文档、JS和CSS可能在更早的时间段）。让我切换回Console面板查看详细的错误信息，然后执行步骤4（按F5刷新页面）：
+
+现在让我先查看Console面板中的详细错误，切换到Console标签：
+[step 21] Action: key: F12
+[step 21] Reasoning: 现在Console面板清晰展示了所有错误和警告信息。我可以详细读取所有控制台内容：
+
+**错误列表（7 errors）：**
+1. ❌ **CSP Error** (api.js:526): 连接到 `http://api.localhost:3000/location` 违反 CSP (Content Security Policy): "connect-src 'self' https://* localhost:* 127.0.0.1:* wss: ws: blob:". The action has been blocked.
+2. ❌ **CSP Error** (api.js:629): 连接到 `http://api.localhost:3000/subscription/list` 违反 CSP.
+3. ❌ **error during localization** (App.actions.js:139): unlogged user
+4. ❌ **Network Error** (SubscriptionProvider.actions.js:326)
+5. ❌ **GET https://www.paypal.com/sdk/js?client-id=A22vK0luRWMX9z... ERR_TIMED_OUT** (store.js:28)
+6. ❌ **GET https://www.paypal.com/sdk/js?client-id=A22vK0luRWMX9z... ERR_TIMED_OUT** (store.js:28)
+7. ❌ **Failed to load the PayPal JS SDK script. TypeError: Failed to fetch** (store.js:28)
+
+**警告列表（3 warnings）：**
+1. ⚠️ `withMobileDialog` function is deprecated (MUI)
+2. ⚠️ Manifest: property 'start_url' ignored (manifest.json:1)
+3. ⚠️ **componentWillReceiveProps** has been renamed (LanguageProvider.container.js:61): Update ReactGridLayout, ResponsiveReactGridLayout
+
+**没有任何 JavaScript SyntaxError（语法错误）！**
+
+现在按照步骤4，关闭开发者工具，按F5刷新页面：
+[step 22] Action: key: F5
+[step 22] Reasoning: 开发者工具已关闭，页面显示正常。现在页面清晰显示了CBOARD CLASSIC HOME，包含所有图标卡片（yes、no、quick chat、time、food、drinks、snacks、activities、emotions、body、clothing、people、describe、kitchen、school、animals、technology、weather等）。
+
+现在按F5刷新页面（步骤4）：
+[step 23] Action: DONE
+[step 23] Reasoning: F5刷新后，页面依然完整正常显示，与首次加载内容完全一致：
+- 页面标题：**CBOARD CLASSIC HOME** ✅
+- 所有图标卡片都正常显示：yes、no、quick chat、time、food、drinks、snacks、activities、emotions、body、clothing、people、describe、kitchen、school、animals、technology、weather ✅
+- 页面布局和视觉效果与首次加载一致 ✅
+
+所有测试步骤已完成。以下是完整的测试报告：
+
+---
+
+## 🧪 Cboard 首次加载和Service Worker缓存功能测试报告
+
+### 📋 测试环境
+- 应用地址：`http://localhost:3000`
+- 浏览器：Chrome (macOS)
+- 测试日期：2026年4月16日
+
+---
+
+### ✅ 步骤1：页面首次加载渲染检查
+**结果：PASS**
+- 页面正常渲染，显示 **CBOARD CLASSIC HOME** 主页
+- 包含18个图标卡片（yes、no、quick chat、time、food、drinks、snacks、activities、emotions、body、clothing、people、describe、kitchen、school、animals、technology、weather）
+- **无空白页面**，内容完整渲染
+
+---
+
+### ⚠️ 步骤2：Console面板 - JavaScript错误检查
+**结果：PASS（无SyntaxError）/ 发现其他类型错误**
+
+**❌ 7个错误（Errors）：**
+| # | 错误类型 | 描述 | 来源 |
+|---|---------|------|------|
+| 1 | **CSP Error** | 连接到 `http://api.localhost:3000/location` 违反Content Security Policy | api.js:526 |
+| 2 | **CSP Error** | 连接到 `http://api.localhost:3000/subscription/list` 违反CSP | api.js:629 |
+| 3 | **Application Error** | `error during localization` - unlogged user | App.actions.js:139 |
+| 4 | **Network Error** | 网络请求失败 | SubscriptionProvider.actions.js:326 |
+| 5 | **Network Error** | `GET https://www.paypal.com/sdk/js ERR_TIMED_OUT` | store.js:28 |
+| 6 | **Network Error** | `GET https://www.paypal.com/sdk/js ERR_TIMED_OUT`（重复） | store.js:28 |
+| 7 | **TypeError** | `Failed to load the PayPal JS SDK script. TypeError: Failed to fetch` | store.js:28 |
+
+**⚠️ 3个警告（Warnings）：**
+| # | 警告类型 | 描述 |
+|---|---------|------|
+| 1 | **Deprecated API** | `withMobileDialog` 函数已废弃（MUI） |
+| 2 | **Manifest** | `start_url` 属性在manifest.json中被忽略 |
+| 3 | **React Lifecycle** | `componentWillReceiveProps` 已重命名，影响 ReactGridLayout, ResponsiveReactGridLayout |
+
+> 🔍 **关键结论：未发现 JavaScript SyntaxError（语法错误）**。所发现的错误主要是：
+> - **CSP配置问题**：API服务器地址不在白名单中
+> - **外部服务不可用**：PayPal SDK无法在本地环境加载（网络超时）
+> - **非致命性应用错误**：本地化错误（unlogged user）
+
+---
+
+### ✅ 步骤3：Network面板 - 静态资源加载检查
+**结果：PASS（核心资源加载正常）**
+
+**JS资源加载状态：**
+| 资源 | 状态码 | 说明 |
+|------|--------|------|
+| `bundle.js` | **304** ✅ | 主JS包，使用缓存（Not Modified） |
+| `js?id=UA-108091601-1` | **200** ✅ | Google Analytics UA，从磁盘缓存加载 |
+| `js?id=G-60S79265FY...` | **200** ✅ | Google Analytics GA4 |
+| `analytics.js` | **200** ✅ | 分析脚本，磁盘缓存 |
+| `src_translations_en-US_json` | **304** ✅ | 翻译文件，使用缓存 |
+| `js?client-id=A22vK0luRWMX...` | **failed** ❌ | PayPal SDK，网络超时（外部服务不可达） |
+
+**SVG图像资源：**
+- 所有SVG图像（sports.svg、people.svg、weather.svg等约30+个文件）均以 **304 Not Modified** 状态加载 ✅
+
+**CSS资源：**
+- CSS过滤器显示 **0 个CSS文件**（CSS已内联打包进bundle.js，这是React应用的正常行为）✅
+
+**汇总：**
+- 总请求数：48
+- 传输大小：735 kB
+- 资源大小：29.5 MB
+- 完成时间：约1分钟（含PayPal SDK超时等待30s）
+
+---
+
+### ✅ 步骤4：F5刷新页面检查
+**结果：PASS**
+- 按F5后页面正常重新加载
+- **无空白页面**，应用仍能正常显示
+
+---
+
+### ✅ 步骤5：刷新后内容一致性对比
+**结果：PASS**
+- 刷新后页面与首次加载内容完全一致
+- 标题：CBOARD CLASSIC HOME ✅
+- 所有图标卡片（18个）均完整显示 ✅
+- 布局和视觉效果保持一致 ✅
+
+---
+
+### 📊 总体测试结论
+
+| 测试项 | 结果 |
+|-------|------|
+| 页面首次加载渲染 | ✅ PASS |
+| JavaScript SyntaxError检查 | ✅ PASS（无语法错误） |
+| 静态JS/CSS资源加载（200/304） | ✅ PASS（核心资源正常） |
+| F5刷新后页面正常显示 | ✅ PASS |
+| 刷新前后内容一致性 | ✅ PASS |
+
+**⚠️ 发现的问题（非致命性）：**
+1. **PayPal SDK加载失败**：本地开发环境无法访问外部PayPal服务（ERR_TIMED_OUT），导致3个TypeError/Network Error，但不影响主要功能
+2. **CSP配置问题**：API服务器（api.localhost:3000）未被CSP白名单允许，导致2个CSP错误
+3. **React组件生命周期警告**：ReactGridLayout使用了已废弃的componentWillReceiveProps API
+4. **视觉观察**：顶部有一个"×"关闭按钮的通知横幅（右上角），这可能是某类提示或广告，功能上不影响使用
+Evaluating task result...
+
+==================================================
+Task: 当前Chrome浏览器已打开Cboard应用，地址是http://localhost:3000。测试Cboard应用的首次加载和Service Worker缓存功能。操作步骤：1. 在浏览器中打开应用首页，检查页面是否能正常渲染，不出现空白页面。2. 按F12打开开发者工具，切换到Console面板，检查浏览器控制台是否有JavaScript语法错误(SyntaxError等)。3. 切换到Network面板，检查应用的静态资源（JS、CSS等）能否正确加载（状态码200或304）。4. 关闭开发者工具，按F5刷新页面，确认再次加载时应用仍能正常显示。5. 观察刷新后页面内容是否与首次加载一致。始终在浏览器内操作，禁止打开Terminal、Finder或其他应用程序。如果找不到目标功能，直接标记result为unclear。
+Status: COMPLETED
+Total steps: 23
+Last action: DONE
+Last reasoning: F5刷新后，页面依然完整正常显示，与首次加载内容完全一致：
+- 页面标题：**CBOARD CLASSIC HOME** ✅
+- 所有图标卡片都正常显示：yes、no、quick chat、time、food、drinks、snacks、activities、emotions、body、clothing、people、describe、kitchen、school、animals、technology、weather ✅
+- 页面布局和视觉效果与首次加载一致 ✅
+
+所有测试步骤已完成。以下是完整的测试报告：
+
+---
+
+## 🧪 Cboard 首次加载和Service Worker缓存功能测试报告
+
+### 📋 测试环境
+- 应用地址：`http://localhost:3000`
+- 浏览器：Chrome (macOS)
+- 测试日期：2026年4月16日
+
+---
+
+### ✅ 步骤1：页面首次加载渲染检查
+**结果：PASS**
+- 页面正常渲染，显示 **CBOARD CLASSIC HOME** 主页
+- 包含18个图标卡片（yes、no、quick chat、time、food、drinks、snacks、activities、emotions、body、clothing、people、describe、kitchen、school、animals、technology、weather）
+- **无空白页面**，内容完整渲染
+
+---
+
+### ⚠️ 步骤2：Console面板 - JavaScript错误检查
+**结果：PASS（无SyntaxError）/ 发现其他类型错误**
+
+**❌ 7个错误（Errors）：**
+| # | 错误类型 | 描述 | 来源 |
+|---|---------|------|------|
+| 1 | **CSP Error** | 连接到 `http://api.localhost:3000/location` 违反Content Security Policy | api.js:526 |
+| 2 | **CSP Error** | 连接到 `http://api.localhost:3000/subscription/list` 违反CSP | api.js:629 |
+| 3 | **Application Error** | `error during localization` - unlogged user | App.actions.js:139 |
+| 4 | **Network Error** | 网络请求失败 | SubscriptionProvider.actions.js:326 |
+| 5 | **Network Error** | `GET https://www.paypal.com/sdk/js ERR_TIMED_OUT` | store.js:28 |
+| 6 | **Network Error** | `GET https://www.paypal.com/sdk/js ERR_TIMED_OUT`（重复） | store.js:28 |
+| 7 | **TypeError** | `Failed to load the PayPal JS SDK script. TypeError: Failed to fetch` | store.js:28 |
+
+**⚠️ 3个警告（Warnings）：**
+| # | 警告类型 | 描述 |
+|---|---------|------|
+| 1 | **Deprecated API** | `withMobileDialog` 函数已废弃（MUI） |
+| 2 | **Manifest** | `start_url` 属性在manifest.json中被忽略 |
+| 3 | **React Lifecycle** | `componentWillReceiveProps` 已重命名，影响 ReactGridLayout, ResponsiveReactGridLayout |
+
+> 🔍 **关键结论：未发现 JavaScript SyntaxError（语法错误）**。所发现的错误主要是：
+> - **CSP配置问题**：API服务器地址不在白名单中
+> - **外部服务不可用**：PayPal SDK无法在本地环境加载（网络超时）
+> - **非致命性应用错误**：本地化错误（unlogged user）
+
+---
+
+### ✅ 步骤3：Network面板 - 静态资源加载检查
+**结果：PASS（核心资源加载正常）**
+
+**JS资源加载状态：**
+| 资源 | 状态码 | 说明 |
+|------|--------|------|
+| `bundle.js` | **304** ✅ | 主JS包，使用缓存（Not Modified） |
+| `js?id=UA-108091601-1` | **200** ✅ | Google Analytics UA，从磁盘缓存加载 |
+| `js?id=G-60S79265FY...` | **200** ✅ | Google Analytics GA4 |
+| `analytics.js` | **200** ✅ | 分析脚本，磁盘缓存 |
+| `src_translations_en-US_json` | **304** ✅ | 翻译文件，使用缓存 |
+| `js?client-id=A22vK0luRWMX...` | **failed** ❌ | PayPal SDK，网络超时（外部服务不可达） |
+
+**SVG图像资源：**
+- 所有SVG图像（sports.svg、people.svg、weather.svg等约30+个文件）均以 **304 Not Modified** 状态加载 ✅
+
+**CSS资源：**
+- CSS过滤器显示 **0 个CSS文件**（CSS已内联打包进bundle.js，这是React应用的正常行为）✅
+
+**汇总：**
+- 总请求数：48
+- 传输大小：735 kB
+- 资源大小：29.5 MB
+- 完成时间：约1分钟（含PayPal SDK超时等待30s）
+
+---
+
+### ✅ 步骤4：F5刷新页面检查
+**结果：PASS**
+- 按F5后页面正常重新加载
+- **无空白页面**，应用仍能正常显示
+
+---
+
+### ✅ 步骤5：刷新后内容一致性对比
+**结果：PASS**
+- 刷新后页面与首次加载内容完全一致
+- 标题：CBOARD CLASSIC HOME ✅
+- 所有图标卡片（18个）均完整显示 ✅
+- 布局和视觉效果保持一致 ✅
+
+---
+
+### 📊 总体测试结论
+
+| 测试项 | 结果 |
+|-------|------|
+| 页面首次加载渲染 | ✅ PASS |
+| JavaScript SyntaxError检查 | ✅ PASS（无语法错误） |
+| 静态JS/CSS资源加载（200/304） | ✅ PASS（核心资源正常） |
+| F5刷新后页面正常显示 | ✅ PASS |
+| 刷新前后内容一致性 | ✅ PASS |
+
+**⚠️ 发现的问题（非致命性）：**
+1. **PayPal SDK加载失败**：本地开发环境无法访问外部PayPal服务（ERR_TIMED_OUT），导致3个TypeError/Network Error，但不影响主要功能
+2. **CSP配置问题**：API服务器（api.localhost:3000）未被CSP白名单允许，导致2个CSP错误
+3. **React组件生命周期警告**：ReactGridLayout使用了已废弃的componentWillReceiveProps API
+4. **视觉观察**：顶部有一个"×"关闭按钮的通知横幅（右上角），这可能是某类提示或广告，功能上不影响使用
+
+==================================================
+
+UI window closed
