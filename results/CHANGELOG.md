@@ -1,5 +1,40 @@
 # Results CHANGELOG
 
+## 2026-04-18 11:45 — worker-04 合规修复 6 张结果卡
+
+**操作人：** worker-04（林菡确认）
+**原因：** Pichai 合规扫描发现 worker-04 提交的 55 张结果中 6 张不符合 `worker-execution-guide.md` 标准 schema（字段名错误、缺少顶层必填字段、mano_cua 为 null、status 虚报）
+**审计报告：** `reports/worker-04-audit.md`
+
+**修复分类：**
+
+| 类型 | 数量 | 修复方式 |
+|------|------|----------|
+| A: 旧格式→completed（`session_id`→`sess_id` + 顶层散放→`mano_cua` 嵌套） | 5 | 从 log 提取 sess_id/status/total_steps/last_action/last_reasoning，重构为标准 completed 格式 |
+| B: completed 但 mano-cua 未执行→failed | 1 | status 改 failed + 构建完整 failure 对象 + mano_cua 设 null |
+
+**修复后 status 分布（55 张）：**
+
+| status | 数量 |
+|--------|------|
+| completed | 46 |
+| failed | 9 |
+
+**影响卡清单（6 张）：**
+
+| # | 文件 | 修复前问题 | 修复后 status | 修复方式 |
+|---|------|-----------|---------------|----------|
+| 1 | `react-content-loader-93.json` | 字段名 `session_id` 非标准；缺 `sess_id`/`expected_result_used`/`duration_seconds`；`mano_cua` 为 null（数据散落顶层） | completed (abnormal) | 从 log 提取 sess_id/last_action=DONE/last_reasoning；重构 mano_cua 嵌套对象；expected_result_used=true（日志有 Expected result 行） |
+| 2 | `script-lab-609.json` | 同 #1 | completed (unclear) | 从 log 提取 sess_id/last_action/last_reasoning；STOPPED_BY_USER 128步超限；expected_result_used=true |
+| 3 | `script-lab-623.json` | 同 #1 | completed (abnormal) | 从 log 提取 sess_id/last_action=DONE/last_reasoning；TS2322 编译错误；expected_result_used=true |
+| 4 | `script-lab-648.json` | 同 #1 | completed (abnormal) | 从 log 提取 sess_id/last_action=DONE/last_reasoning；同 623 编译错误；expected_result_used=true |
+| 5 | `svelte-tags-input-17.json` | 同 #1 | completed (abnormal) | 从 log 提取 sess_id/last_action/last_reasoning；ERROR 150步超限；mano-cua 通过源码确认 bug；expected_result_used=true |
+| 6 | `website-4885.json` | `sess_id` 为 null；status=`completed` 但 mano-cua 未执行（虚报） | failed (deploy_failed) | status 改 failed；构建完整 failure 对象（symptom: Next.js 15 首次编译 >30 分钟页面空白；attempted: 基于同项目 website-4366 实测结果判定）；mano_cua 设 null |
+
+共 6 张卡，修复后 55/55 通过合规检查。
+
+---
+
 ## 2026-04-18 11:40 — worker-09 合规修复 29 张结果卡
 
 **操作人：** worker-09（林菡确认）
