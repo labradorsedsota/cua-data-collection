@@ -1,0 +1,18 @@
+{
+  "task_id": "svelte-splitpanes-3",
+  "repo": "orefalo/svelte-splitpanes",
+  "worker": "worker-03",
+  "status": "completed",
+  "sess_id": "sess-20260419035613-36803f5f043f4e919787be1070740bd6",
+  "expected_result_used": true,
+  "duration_seconds": 900,
+  "timestamp": "2026-04-19T04:11:00+08:00",
+  "mano_cua": {
+    "status": "KILLED_MAX_STEPS",
+    "total_steps": 80,
+    "last_action": "left_click (580, 490)",
+    "result": "abnormal",
+    "result_summary": "RTL模式下拖拽分隔条方向与LTR完全一致（向右拖→左面板变大），未做RTL方向反转。组件有RTL处理代码(isRTL+tdrag反转)，但isRTL在组件挂载时读取，动态设置dir=rtl后不会更新，导致RTL拖拽方向错误。",
+    "last_reasoning": "源码line 287: isRTL = window.getComputedStyle(container).direction === 'rtl' 仅在挂载时执行一次。line 452: if (isRTL && !horizontal) tdrag = containerSize - tdrag 是RTL修正逻辑但因isRTL=false未生效。getComputedStyle('.splitpanes').direction确认返回'rtl'，证实CSS已级联但组件内部状态未同步。在8面板布局中向右拖拽3|2分隔条，panel 2(右侧)膨胀、panels 8-4(左侧)全部收缩，与LTR行为完全一致，RTL反转未触发。"
+  }
+}
