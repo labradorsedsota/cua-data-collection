@@ -1,5 +1,115 @@
 # Results CHANGELOG
 
+## 2026-04-18 11:10 — worker-02 合规修复 77 张结果卡
+
+**操作人：** worker-02（林菡确认）
+**原因：** Pichai 合规扫描发现 worker-02 提交的 127 张结果中 77 张不符合 `worker-execution-guide.md` 标准 schema（缺少顶层必填字段、status 非法值、failure 为 null、sess_id 格式错误等）
+**操作：** 就地修复 77 张 JSON 文件，将旧格式字段映射为标准 schema，修复后全部通过合规检查（127/127）
+
+**修复脚本：** `scripts/fix-compliance.py`（可复现）
+**验证脚本：** `scripts/check-compliance.py`（修复后 127/127 通过）
+
+**修复分类：**
+
+| 类型 | 数量 | 修复方式 |
+|------|------|----------|
+| 旧格式+有log→completed | 33 | 从 log 解析 sess_id/duration/last_reasoning，status 映射为 completed，重构 mano_cua 对象 |
+| 旧格式+无session→failed | 21 | 转 status=failed + failure 对象，sess_id=null, mano_cua=null, duration_seconds=0 |
+| 旧格式+有log+缺字段→completed/failed | 18 | 从 log/任务卡补字段（repo 等），按是否有 mano-cua session 分 completed/failed |
+| sess_id 格式错误（vue-pdf-179/189） | 2 | 转 status=failed + failure.type=other（未跑 mano-cua） |
+| failure 为 null（website-4566/4776/4780） | 3 | 重构 failure_reason/failure_detail 为标准 failure 对象，sess_id N/A→null |
+
+**修复后 status 分布：**
+
+| status | 数量 | mano_cua.result / failure.type 分布 |
+|--------|------|-------------------------------------|
+| completed | 78 | abnormal: 47, unclear: 20, normal: 11 |
+| failed | 49 | deploy_failed: 47, other: 2 |
+
+**影响卡清单（77 张）：**
+
+| # | 文件 | 修复前问题 | 修复后 status |
+|---|------|-----------|---------------|
+| 1 | `Analog-259.json` | status=error, 缺必填字段 | failed (deploy_failed) |
+| 2 | `BongoCat-431.json` | status=error, 缺必填字段 | failed (deploy_failed) |
+| 3 | `BongoCat-437.json` | status=error, 缺必填字段 | failed (deploy_failed) |
+| 4 | `BongoCat-438.json` | status=error, 缺必填字段 | failed (deploy_failed) |
+| 5 | `BongoCat-499.json` | status=error, 缺必填字段 | failed (deploy_failed) |
+| 6 | `BongoCat-509.json` | status=error, 缺必填字段 | failed (deploy_failed) |
+| 7 | `BongoCat-592.json` | status=error, 缺必填字段 | failed (deploy_failed) |
+| 8 | `BongoCat-777.json` | status=error, 缺必填字段 | failed (deploy_failed) |
+| 9 | `ByteStash-156.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 10 | `ByteStash-157.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 11 | `ByteStash-171.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 12 | `ByteStash-173.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 13 | `ByteStash-46.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 14 | `ByteStash-58.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 15 | `Dante-128.json` | status=error, 缺必填字段 | failed (deploy_failed) |
+| 16 | `Luckysheet-528.json` | status=unclear, 缺必填字段 | completed (unclear) |
+| 17 | `Markpad-21.json` | status=unclear, 缺必填字段 | completed (unclear) |
+| 18 | `Notpad-195.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 19 | `Notpad-268.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 20 | `Semantic-UI-React-3864.json` | status=normal, 缺必填字段 | completed (normal) |
+| 21 | `Semantic-UI-React-3994.json` | status=normal, 缺必填字段 | completed (normal) |
+| 22 | `Semantic-UI-React-4005.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 23 | `Semantic-UI-React-4083.json` | status=unclear, 缺必填字段 | completed (unclear) |
+| 24 | `Semantic-UI-React-4110.json` | status=unclear, 缺必填字段 | completed (unclear) |
+| 25 | `Silex-743.json` | status=None, 缺必填字段 | failed (deploy_failed) |
+| 26 | `Silex-843.json` | status=None, 缺必填字段 | failed (deploy_failed) |
+| 27 | `angular-datatables-1605.json` | status=None, 缺必填字段 | completed (abnormal) |
+| 28 | `angular-datatables-1723.json` | status=None, 缺必填字段 | completed (abnormal) |
+| 29 | `angular-datepicker-112.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 30 | `angular-gridster2-377.json` | status=None, 缺必填字段 | failed (deploy_failed) |
+| 31 | `angular-gridster2-529.json` | status=None, 缺必填字段 | failed (deploy_failed) |
+| 32 | `cryptgeon-150.json` | status=None, 缺必填字段 | failed (deploy_failed) |
+| 33 | `emoji-mart-218.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 34 | `emoji-mart-219.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 35 | `emoji-mart-220.json` | status=unclear, 缺必填字段 | completed (unclear) |
+| 36 | `emoji-mart-254.json` | status=normal, 缺必填字段 | completed (normal) |
+| 37 | `emoji-mart-327.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 38 | `emoji-mart-762.json` | status=unclear, 缺必填字段 | completed (unclear) |
+| 39 | `flitter-68.json` | status=None, 缺 repo/必填字段 | completed (unclear) |
+| 40 | `kan-206.json` | status=None, 缺 repo/必填字段 | failed (deploy_failed) |
+| 41 | `kan-23.json` | status=None, 缺 repo/必填字段 | failed (deploy_failed) |
+| 42 | `kan-242.json` | status=None, 缺 repo/必填字段 | failed (deploy_failed) |
+| 43 | `kan-27.json` | status=None, 缺 repo/必填字段 | failed (deploy_failed) |
+| 44 | `kan-30.json` | status=None, 缺 repo/必填字段 | failed (deploy_failed) |
+| 45 | `kan-35.json` | status=None, 缺 repo/必填字段 | failed (deploy_failed) |
+| 46 | `kan-70.json` | status=None, 缺 repo/必填字段 | failed (deploy_failed) |
+| 47 | `karakeep-2395.json` | status=deploy_failed, 缺必填字段 | completed (unclear) |
+| 48 | `karakeep-2396.json` | status=deploy_failed, 缺必填字段 | failed (deploy_failed) |
+| 49 | `karakeep-2493.json` | status=deploy_failed, 缺必填字段 | failed (deploy_failed) |
+| 50 | `next-redux-wrapper-325.json` | status=None, 缺必填字段 | failed (deploy_failed) |
+| 51 | `onlook-2587.json` | status=None, 缺必填字段 | failed (deploy_failed) |
+| 52 | `onlook-2908.json` | status=None, 缺必填字段 | failed (deploy_failed) |
+| 53 | `open5e-622.json` | status=None, 缺 repo/必填字段 | completed (abnormal) |
+| 54 | `open5e-655.json` | status=None, 缺 repo/必填字段 | completed (abnormal) |
+| 55 | `open5e-694.json` | sess_id=inferred, 缺必填字段 | failed (deploy_failed) |
+| 56 | `open5e-695.json` | status=None, 缺 repo/必填字段 | completed (abnormal) |
+| 57 | `open5e-716.json` | status=None, 缺 repo/必填字段 | completed (abnormal) |
+| 58 | `open5e-721.json` | status=None, 缺 repo/必填字段 | completed (abnormal) |
+| 59 | `open5e-747.json` | status=None, 缺 repo/必填字段 | completed (abnormal) |
+| 60 | `open5e-775.json` | status=None, 缺 repo/必填字段 | completed (abnormal) |
+| 61 | `open5e-799.json` | status=None, 缺 repo/必填字段 | completed (unclear) |
+| 62 | `open5e-803.json` | status=None, 缺 repo/必填字段 | completed (abnormal) |
+| 63 | `padloc-427.json` | status=None, 缺必填字段 | failed (deploy_failed) |
+| 64 | `padloc-638.json` | status=None, 缺必填字段 | failed (deploy_failed) |
+| 65 | `script-lab-667.json` | status=None, 缺必填字段 | completed (normal) |
+| 66 | `script-lab-672.json` | status=None, 缺必填字段 | completed (abnormal) |
+| 67 | `script-lab-732.json` | status=abnormal, 缺必填字段 | completed (abnormal) |
+| 68 | `shopware-pwa-1537.json` | status=deploy_failed, 缺必填字段 | failed (deploy_failed) |
+| 69 | `shopware-pwa-1665.json` | status=deploy_failed, 缺必填字段 | failed (deploy_failed) |
+| 70 | `signature_pad-120.json` | status=normal, 缺必填字段 | completed (normal) |
+| 71 | `signature_pad-656.json` | status=unclear, 缺必填字段 | completed (unclear) |
+| 72 | `slickgpt-38.json` | status=None, 缺必填字段 | completed (unclear) |
+| 73 | `vue-pdf-179.json` | sess_id=N/A-code-review, 缺 last_reasoning | failed (other) |
+| 74 | `vue-pdf-189.json` | sess_id=N/A-code-review, 缺 last_reasoning | failed (other) |
+| 75 | `website-4566.json` | failure 为 null | failed (deploy_failed) |
+| 76 | `website-4776.json` | failure 为 null | failed (deploy_failed) |
+| 77 | `website-4780.json` | failure 为 null | failed (deploy_failed) |
+
+共 77 张卡。
+
 ## 2026-04-17 16:07 — 移除 25 张非标准 schema 结果卡
 
 **操作人：** Pichai（林菡确认）

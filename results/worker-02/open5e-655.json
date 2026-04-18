@@ -1,22 +1,18 @@
 {
   "task_id": "open5e-655",
-  "result": "abnormal",
-  "confidence": "high",
-  "result_summary": "怪物详情页面主内容区域完全空白，无法渲染任何怪物信息。测试了srd_adult-bronze-dragon、srd-2024_adult-bronze-dragon、srd_aboleth等多个怪物详情页，均出现相同问题。URL和面包屑正确更新但内容区域无内容。由于整个statblock未渲染，无法测试Actions按类型分组显示功能。",
-  "observation_log": [
-    "step 0-1: 导航到/monsters/srd_adult-bronze-dragon，页面内容区域空白",
-    "step 2-9: 多次刷新(F5、Cmd+R)、等待、滚动，内容始终为空",
-    "step 10-14: 通过怪物列表搜索Adult Bronze Dragon，点击SRD-2014版本，URL正确但内容仍空白",
-    "step 15-18: 测试其他怪物(SRD-2024版、Aboleth SRD-2014)，均为空白，确认是普遍性问题",
-    "step 19-25: 直接在地址栏输入URL导航，内容仍为空白。滚动10次未发现任何内容"
-  ],
-  "reproduction_steps": [
-    "打开 http://localhost:3000/monsters/srd_adult-bronze-dragon",
-    "观察主内容区域完全空白",
-    "面包屑显示ADULT BRONZE DRAGON (SRD)但无statblock内容"
-  ],
-  "sess_id": "sess-20260418062148-beb8802e12534d9dae4f0df55233e00e",
-  "total_steps": 25,
+  "repo": "open5e/open5e",
   "worker": "worker-02",
-  "timestamp": "2026-04-18T06:30:00+08:00"
+  "status": "completed",
+  "sess_id": "sess-20260418062148-beb8802e12534d9dae4f0df55233e00e",
+  "expected_result_used": false,
+  "duration_seconds": 0,
+  "timestamp": "2026-04-18T06:30:00+08:00",
+  "mano_cua": {
+    "status": "COMPLETED",
+    "total_steps": 25,
+    "last_action": "DONE",
+    "result": "abnormal",
+    "result_summary": "",
+    "last_reasoning": "向下滚动10次后，页面内容区域仍然完全空白。没有任何怪物详情内容。\n\n这是一个明确的**功能性Bug**：`http://localhost:3000/monsters/srd_adult-bronze-dragon` 页面的主内容区域（怪物详情区域）完全没有渲染任何内容。\n\n由于怪物详情页面的内容区域完全空白，无法查看Actions区域，更无法测试动作按类型分组显示的功能（Actions、Legendary Actions等标题）。\n\n---\n\n## 测试结果总结\n\n### 🔴 严重功能性Bug：怪物详情页面内容区域完全空白\n\n**测试步骤**：\n1. ✅ 成功导航到 `http://localhost:3000/monsters/srd_adult-bronze-dragon`\n2. ❌ 页面主内容区域完全空白，没有任何怪物信息渲染\n\n**Bug描述**：\n- **URL**：`http://localhost:3000/monsters/srd_adult-bronze-dragon`\n- **面包屑**：正确显示 `HOME / MONSTERS / ADULT BRONZE DRAGON (SRD)`\n- **主内容区域**：完全空白，没有怪物名称、属性、描述、Actions、Legendary Actions等任何内容\n\n**影响范围**：\n- 经测试，多个怪物的详情页（`srd_adult-bronze-dragon`、`srd-2024_adult-bronze-dragon`、`srd_aboleth`）均出现相同问题\n- 这是一个普遍性的怪物详情页面渲染失败问题\n\n**测试目标（步骤2和3）无法执行**：\n- ❌ 无法向下滚动到 Actions 区域（内容为空）\n- ❌ 无法检查不同类型动作是否分别归类显示（Actions、Legendary Actions等标题）\n- ❌ 无法确认传奇动作是否显示在单独的 Legendary Actions 标题下\n\n**结论**：怪物详情页面存在严重渲染Bug，内容区域完全空白，\"动作按类型分组显示\"功能无法测试和验证。"
+  }
 }

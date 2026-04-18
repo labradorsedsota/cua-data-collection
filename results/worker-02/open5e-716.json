@@ -1,23 +1,18 @@
 {
   "task_id": "open5e-716",
-  "result": "abnormal",
-  "confidence": "high",
-  "result_summary": "子职业页面/classes/warlock/ancient-dragons无法正常加载。1) URL被重定向到search页面，显示0 results。2) API调用GET api.open5e.com/v2/classes/ancient-dragons/?is_subclass=true&subclass_of=warlock返回400 Bad Request。3) NavBar.vue:100 TypeError: Cannot set properties of undefined (setting 'subroutes')。4) Warlock职业页面Class Features表格存在滚动捕获问题，无法滚动到表格下方查看更多内容。",
-  "observation_log": [
-    "step 0-1: 直接访问/classes/warlock/ancient-dragons，被重定向到search页面，显示0 results",
-    "step 2-10: 通过Classes列表导航到Warlock，发现NavBar.vue:100 TypeError",
-    "step 11-23: 尝试通过UI找到Ancient Dragons子职业，URL重定向到search",
-    "step 28: DevTools Console确认TypeError: Cannot set properties of undefined (setting 'subroutes')",
-    "step 35: 确认API调用ancient-dragons返回400 Bad Request",
-    "step 49-54: 确认Warlock页面表格滚动被捕获，无法滚动到子职业区域"
-  ],
-  "reproduction_steps": [
-    "访问 http://localhost:3000/classes/warlock/ancient-dragons",
-    "页面被重定向到/search?text=/?is_subclass=true&subclass_of=warlock...",
-    "显示0 results而非子职业特性页面"
-  ],
-  "sess_id": "sess-20260418063439-5f2286c497d44436947c59ee5dc98be9",
-  "total_steps": 67,
+  "repo": "open5e/open5e",
   "worker": "worker-02",
-  "timestamp": "2026-04-18T07:00:00+08:00"
+  "status": "completed",
+  "sess_id": "sess-20260418063439-5f2286c497d44436947c59ee5dc98be9",
+  "expected_result_used": false,
+  "duration_seconds": 0,
+  "timestamp": "2026-04-18T07:00:00+08:00",
+  "mano_cua": {
+    "status": "COMPLETED",
+    "total_steps": 90,
+    "last_action": "DONE",
+    "result": "abnormal",
+    "result_summary": "",
+    "last_reasoning": "I have successfully completed the testing of the subclass page. Here is the comprehensive test report:\n\n---\n\n## 测试报告 - Warlock Ancient Dragons 子职业页面测试\n\n### 测试环境\n- **应用**: Open5e (http://localhost:3000)\n- **测试页面**: Warlock - Ancient Dragons 子职业页面\n\n---\n\n### 测试步骤与结果\n\n#### 步骤1: 导航到指定页面\n\n**直接URL `/classes/warlock/ancient-dragons` 测试：**\n- ❌ **失败** - 页面重定向到搜索页 `localhost:3000/search?text=/?is_subclass=true&subclass_of=warlock&fields=name,key,features`\n- 控制台显示 `400 Bad Request`：`GET https://api.open5e.com/v2/classes/ancient-dragons/?is_subclass=true&subclass_of=warlock&fields=name,key,features`\n- 根因：URL路由错误，应用将 `warlock` 当作类别slug而非 `srd_warlock`\n\n**通过API查找正确URL：**\n- 正确的 Ancient Dragons 子职业 key 为 `toh_ancient-dragons`（来自 Tome of Heroes 书源）\n- 父职业为 Warlock (SRD)，key 为 `srd_warlock`\n- 正确访问路径：`/classes/srd_warlock/toh_ancient-dragons`\n\n---\n\n#### 步骤2: 页面加载验证\n\n页面 `localhost:3000/classes/srd_warlock/toh_ancient-dragons`：\n- ✅ 面包屑导航正确显示：HOME / CLASSES / WARLOCK (SRD) / **ANCIENT DRAGONS (TOH)**\n- ❌ **页面内容区域永久停留在 \"Loading...\" 状态**（超过6秒仍未加载）\n- ❌ **特性列表无法正常显示**\n\n---\n\n#### 步骤3: 特性排序功能验证\n\n❌ **排序功能崩溃！** 页面无法完成渲染，特性列表未能显示。\n\n---\n\n#### 步骤4: DevTools Console TypeError 检查\n\nDevTools Console 发现 **2个 TypeError 错误**：\n\n### 🔴 Bug #1 - NavBar.vue (次要)\n```\nUncaught (in promise) TypeError: Cannot set properties of undefined (setting 'subroutes')\n  at ComputedRefImpl.fn (NavBar.vue:100:7)\n```\n- 位置：`NavBar.vue:100`\n- 影响：导航栏的子路由设置失败\n\n---\n\n### 🔴 Bug #2 - [subclass].vue (主要，直接导致页面崩溃)\n```\nUncaught (in promise) TypeError: Cannot read properties of undefined (reading 'level')\n  at [subclass].vue:46:30\n  at Array.sort (<anonymous>)\n  at ComputedRefImpl.fn ([subclass].vue:45:24)\n  at Proxy._sfc_render ([subclass].vue:9:17)\n```\n- 位置：`[subclass].vue:46`\n- **根本原因**：在 `Array.sort()` 排序函数中，对特性按 `level` 排序时，代码 `a.gained_at[0].level` 访问了一个空数组（`gained_at` 为空数组或 undefined），导致 `undefined.level` 抛出 TypeError\n\n**问题代码**（在 `[subclass].vue` 第45-46行）：\n```javascript\nreturn [...features].sort(\n  (a, b) => a.gained_at[0].level - b."
+  }
 }
