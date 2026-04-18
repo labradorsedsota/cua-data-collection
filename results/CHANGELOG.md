@@ -118,6 +118,22 @@
 
 ---
 
+## 2026-04-18 14:05 — worker-05 补充修复 2 张结果卡（BongoCat）
+
+**操作人：** worker-05（Pichai 确认）
+**原因：** push 前自查发现 batch 7 已完成的 BongoCat-777、BongoCat-509 存在与审计修复同类的合规问题
+
+**影响卡清单（2 张）：**
+
+| # | 文件 | 修复前问题 | 修复后 status | 修复方式 |
+|---|------|-----------|---------------|----------|
+| 1 | `BongoCat-777.json` | status=completed 但 mano-cua 未执行（sess_id=null, total_steps=0, status=SKIPPED）；mano_cua.result=unclear 但实际未跑；含非标字段 deploy_notes | failed (mano_cua_error) | status 改 failed；mano_cua 设 null；删 deploy_notes；构建 failure 对象（屏幕分辨率不匹配导致无法交互） |
+| 2 | `BongoCat-509.json` | 含非标字段 deploy_notes | completed (unclear) | 删除 deploy_notes，其余字段保持不变 |
+
+共 2 张卡。
+
+---
+
 ## 2026-04-18 12:10 — worker-05 合规修复 8 张结果卡
 
 **操作人：** worker-05（林菡确认）
