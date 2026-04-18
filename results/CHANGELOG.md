@@ -1,5 +1,57 @@
 # Results CHANGELOG
 
+## 2026-04-18 12:35 — worker-fabrice 合规修复 20 张结果卡
+
+**操作人：** worker-fabrice（林菡确认，Pichai 评审方案）
+**原因：** Pichai 合规扫描发现 worker-fabrice 提交的 51 张结果中 20 张不符合 `worker-execution-guide.md` 标准 schema（mano_cua 缺字段、sess_id 格式错误、缺少顶层必填字段、failure 为 null）
+**审计报告：** `reports/worker-fabrice-audit.md`
+**修复脚本：** `scripts/fix-worker-fabrice.py`（可复现）
+
+**修复分类：**
+
+| 类型 | 数量 | 修复方式 |
+|------|------|----------|
+| A: mano_cua 缺字段（status/last_action/last_reasoning） | 3 | 从 log 提取缺失字段补全 |
+| B1: sess_id 格式错误 | 1 | 从 log 提取真实 sess_id 替换 |
+| B2: completed+SKIPPED→failed（批量跳过未跑 mano-cua） | 3 | status 改 failed；mano_cua 设 null；构建标准 failure 对象（type=other） |
+| C: 旧格式→标准 failed（缺字段+非标字段名） | 13 | 删 failure_reason/failure_detail；构建标准 failure 对象；补 sess_id/expected_result_used/duration_seconds/mano_cua |
+
+**修复后 status 分布（51 张）：**
+
+| status | 数量 |
+|--------|------|
+| completed | 35 |
+| failed | 16 |
+
+**影响卡清单（20 张）：**
+
+| # | 文件 | 修复前问题 | 修复后 status | 修复方式 |
+|---|------|-----------|---------------|----------|
+| 1 | `Notpad-195.json` | mano_cua 缺 status/last_action/last_reasoning | completed (abnormal) | 从 log 提取：status=COMPLETED, last_action=DONE, last_reasoning 补全 |
+| 2 | `PeaNUT-35.json` | mano_cua 缺 status/last_action/last_reasoning | completed (normal) | 从 log 提取：status=COMPLETED, last_action=DONE, last_reasoning 补全 |
+| 3 | `Piped-3715.json` | mano_cua 缺 status/last_action/last_reasoning | completed (unclear) | 从 log 提取：status=COMPLETED, last_action=DONE, last_reasoning 补全 |
+| 4 | `accounts-ui-173.json` | sess_id 格式错误：`sess-accounts-ui-173`（手写非标准） | completed (unclear) | sess_id 更正为 `sess-20260418000814-4fddf69768d24fcc9176ea4ffbf0451f`（从 log 提取） |
+| 5 | `accounts-ui-191.json` | status=completed 但 mano-cua 未执行（SKIPPED，0步）；缺 sess_id；mano_cua 缺 last_action/last_reasoning | failed (other) | completed→failed；mano_cua 设 null；构建 failure 对象（symptom: 认证墙，同仓库 accounts-ui-173 已确认需 Zesty.io 后端登录） |
+| 6 | `accounts-ui-203.json` | 同 #5 | failed (other) | 同 #5 |
+| 7 | `accounts-ui-204.json` | 同 #5 | failed (other) | 同 #5 |
+| 8 | `commercejs-nextjs-demo-store-40.json` | 缺 sess_id/expected_result_used/duration_seconds；status=failed 但 failure 为 null；使用非标字段 failure_reason/failure_detail | failed (deploy_failed) | 删旧字段；构建标准 failure 对象（symptom: node-sass 原生编译失败）；补 sess_id=null, expected_result_used=false, duration_seconds=0, mano_cua=null |
+| 9 | `commercejs-nextjs-demo-store-59.json` | 同 #8 | failed (deploy_failed) | 同 #8 |
+| 10 | `commercejs-nextjs-demo-store-85.json` | 同 #8 | failed (deploy_failed) | 同 #8 |
+| 11 | `commercejs-nextjs-demo-store-88.json` | 同 #8 | failed (deploy_failed) | 同 #8 |
+| 12 | `commercejs-nextjs-demo-store-93.json` | 同 #8 | failed (deploy_failed) | 同 #8 |
+| 13 | `commercejs-nextjs-demo-store-130.json` | 同 #8 | failed (deploy_failed) | 同 #8 |
+| 14 | `commercejs-nextjs-demo-store-156.json` | 同 #8 | failed (deploy_failed) | 同 #8 |
+| 15 | `commercejs-nextjs-demo-store-175.json` | 同 #8 | failed (deploy_failed) | 同 #8 |
+| 16 | `commercejs-nextjs-demo-store-221.json` | 同 #8 | failed (deploy_failed) | 同 #8 |
+| 17 | `nuxt-studio-149.json` | 缺 sess_id/expected_result_used/duration_seconds；status=failed 但 failure 为 null；使用非标字段 | failed (deploy_failed) | 删旧字段；构建标准 failure 对象（symptom: EMFILE + OOM）；补缺失字段 |
+| 18 | `nuxt-studio-81.json` | 同 #17（同仓库同原因） | failed (deploy_failed) | 同 #17 |
+| 19 | `photon-342.json` | 缺 sess_id/expected_result_used/duration_seconds；status=failed 但 failure 为 null；使用非标字段 | failed (deploy_failed) | 删旧字段；构建标准 failure 对象（symptom: mono-svelte 依赖已从 npm 删除）；补缺失字段 |
+| 20 | `photon-478.json` | 同 #19（同仓库同原因） | failed (deploy_failed) | 同 #19 |
+
+共 20 张卡，修复后 51/51 通过合规检查。
+
+---
+
 ## 2026-04-18 12:20 — worker-08 合规修复 36 张结果卡
 
 **操作人：** worker-08（林菡确认）
