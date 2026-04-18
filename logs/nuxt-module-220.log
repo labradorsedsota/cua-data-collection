@@ -1059,3 +1059,331 @@ All three are displaying the logo correctly, just with different styling/present
 - Image 3: `v-card` with `prepend-avatar` (using `$setup.prependAvatar`) = shows the same as image 2
 
 Now I have all the information needed to write a comprehensive test report. Let me scroll down to see the rest of the page.
+[step 94] Action: scroll down (640, 400) scroll_amount 5
+[step 94] Reasoning: I can see more of the page now. I can see:
+- SSR Client Hints Headers JSON data
+- "useDisplay" section: `1920 x 876 (md false?)` 
+- "useTheme: 'light'" with "TOGGLE THEME" button
+- Locale section: `Vuetify useLocale(): en-US`, `$i18n current: en-US`, `$vuetify.locale.current: en-US`
+- Translation outputs: "t without locale: Favorite", "t with I18N locale: Favorite", etc.
+- Language dropdown "English (US)"
+- Text input field showing "Favorite"
+- "name 1" with two "FAVORITE" buttons and a person icon
+- isRtl checkbox (unchecked)
+
+Let me scroll down more to see if there are any more images or v-img components lower on the page.
+[step 95] Action: scroll down (640, 400) scroll_amount 5
+[step 95] Reasoning: I can see more of the page:
+- "useDisplay" section with `1920 x 876 (md false?)`
+- "useTheme: "light"" with "TOGGLE THEME" button
+- Locale information
+- Language dropdown "English (US)"
+- Text input "Favorite"
+- "name 1" with two "FAVORITE" buttons and a person icon
+- Checkbox "isRtl" (unchecked) ×2
+- "SELECT DATE" header
+- "Enter date" date picker starting April 2026
+
+No images visible in this section. Let me scroll down a bit more to see if there are more sections.
+[step 96] Action: scroll up (640, 400) scroll_amount 20
+[step 96] Reasoning: Now I can see the full date picker section:
+- "SELECT DATE" header
+- "Enter date" date picker
+- April 2026 calendar showing full month
+- Today (19) is highlighted with a circle
+
+No images or v-img components in this lower section.
+
+This confirms the page layout:
+- **Top section**: Navigation link + 3 v-img components
+- **Middle section**: SSR Client Hints data, useDisplay, useTheme, i18n/locale info, buttons, inputs
+- **Bottom section**: Date picker calendar
+
+Let me scroll back to the top to see the three v-img components one final time for documentation.
+[step 97] Action: DONE
+[step 97] Reasoning: I can now see the complete top section of the page with all three images clearly visible:
+
+**Three images at top:**
+1. **Image 1** (y≈130): `v-img` component with `--contain` - Shows the Nuxt+Vuetify combined diamond logo in **solid blue/teal colors**. The logo shows clearly: green Nuxt mountain on top + blue Vuetify diamond below. ✅
+2. **Image 2** (y≈165): `v-card` with `prepend-avatar` - Shows the logo in a circular avatar context. Appears to have a circular border/ring visible, with the logo displayed inside. ✅  
+3. **Image 3** (y≈200): `v-card` with `prepend-avatar` (using `$setup.prependAvatar`) - Shows another version of the logo, appears slightly different from #2 in visual weight/opacity. ✅
+
+All three images are **displaying correctly** - no broken image icons, no empty placeholders, no loading failures visible.
+
+Now I have all the data I need to compile a comprehensive test report. Let me provide the final assessment.
+
+---
+
+## 🔍 测试报告：v-img 组件资源路径解析功能测试
+
+### 环境信息
+- **测试 URL**: `http://localhost:3000`
+- **框架**: Vuetify Nuxt Module playground
+- **测试时间**: 2026年4月18日 19:31-33
+
+---
+
+### 步骤1：页面中的 v-img 组件
+
+页面顶部包含 **3个 v-img 相关组件**，均使用本地资源 `~/assets/logo.svg`：
+
+1. **v-img 组件**（直接使用）- `src: _imports_0`（Vite 静态编译导入），`object-fit: contain`，48×48px
+2. **v-card 组件**（prepend-avatar）- `prepend-avatar: _imports_0`，内部生成 v-img，`object-fit: cover`，40×40px 头像
+3. **v-card 组件**（prepend-avatar）- `prepend-avatar: $setup.prependAvatar`，使用运行时动态导入（`import prependAvatar from "/_nuxt/assets/logo.svg?import"`），40×40px 头像
+
+---
+
+### 步骤2-3：图片显示状态检查
+
+**✅ 所有图片正常显示，无破损**
+
+通过 JavaScript 控制台验证：
+```javascript
+JSON.stringify(Array.from(document.querySelectorAll('img')).map(img => ({
+  src: img.src.replace('http://localhost:3000',''),
+  cls: img.className,
+  nW: img.naturalWidth,
+  ok: img.complete
+})))
+```
+
+**结果**：
+```json
+[
+  {"src":"/_nuxt/assets/logo.svg","cls":"v-img__img v-img__img--contain","nW":300,"ok":true},
+  {"src":"/_nuxt/assets/logo.svg","cls":"v-img__img v-img__img--cover","nW":300,"ok":true},
+  {"src":"/_nuxt/assets/logo.svg","cls":"v-img__img v-img__img--cover","nW":300,"ok":true}
+]
+```
+
+- 所有3张图片的 `naturalWidth=300`（不为0，表示加载成功）✅
+- 所有3张图片的 `complete=true`（加载完毕）✅
+- 图片视觉上正常显示 Nuxt + Vuetify 组合 Logo（绿色 Nuxt 山峰 + 蓝色 Vuetify 菱形）✅
+
+---
+
+### 步骤4：Console 错误信息检查
+
+**✅ Console 无任何错误**
+
+Console 显示 **"No Issues"**，仅有正常的初始化信息：
+- `[vite] connecting...` / `[vite] connected.` ✅
+- `vuetify:plugin:hook` / `vuetify:ready` ✅
+- `Vuetify 3 initialized` ✅
+- `isRtl false` ✅
+
+**无 404 错误，无图片加载失败错误**
+
+---
+
+### 步骤5：Network 面板检查
+
+**✅ 图片请求全部成功**
+
+筛选 "Img" 类型请求：
+| 请求 | 状态码 | 类型 | 大小 |
+|------|--------|------|------|
+| `data:image/svg+xml;...` × 5 | **200** (memory cache) | svg+xml | 0ms |
+| **`logo.svg`** | **304** Not Modified | svg+xml | 0.1 kB, 2ms |
+
+- `logo.svg` 的 HTTP 304 表示"未修改/使用缓存"，这是**正常的缓存行为**，并非错误 ✅
+- 请求 URL: `http://localhost:3000/_nuxt/assets/logo.svg` ✅
+- 无任何 404 或其他失败请求 ✅
+
+---
+
+### 步骤6：本地资源路径解析（关键测试点）
+
+**✅ v-img 组件正确解析 `~/assets/` 路径**
+
+从源代码分析（Sources 面板 → `index.vue`）：
+- Vite 将模板中的 `~/assets/logo.svg` 静态编译为 `import _imports_0 from "/_nuxt/assets/logo.svg"` ✅
+- 运行时导入 `import prependAvatar from "/_nuxt/assets/logo.svg?import"` 也正确解析 ✅
+- 两种导入方式最终都生成 `src="/_nuxt/assets/logo.svg"` 的 img 标签 ✅
+- 本地 SVG 文件被 Vite dev server 正确提供服务 ✅
+
+---
+
+### 步骤7：v-img 组件 vs 普通 img 标签对比
+
+**⚠️ 页面上不存在普通 `<img>` 标签用于对比**
+
+页面的全部 3 个 img 元素都是 v-img 组件内部生成的（均含 `v-img__img` 类）。没有单独的普通 `<img>` 标签用于对比测试。因此**无法进行直接对比**。
+
+但从功能角度：
+- v-img 组件最终渲染为 `<img src="/_nuxt/assets/logo.svg">` 标签
+- 该 URL 在浏览器新标签页中直接访问可正常加载 SVG 图片 ✅
+
+---
+
+### 视觉观察
+
+**⚠️ 轻微视觉差异（非 Bug）**：
+- Image 1（v-img，contain）：完整显示 Nuxt+Vuetify 组合 Logo，蓝绿色实体图形
+- Image 2 & 3（v-card prepend-avatar，cover）：图片在圆形头像裁切框内显示，appear with circular border, 外观略有不同（这是 `object-fit: cover` + 圆形裁切的预期行为）
+
+---
+
+### 最终结论：**PASS ✅**
+
+**v-img 组件在开发模式下的资源路径解析功能工作正常**：
+- `~/assets/logo.svg` 路径被正确解析为 `/_nuxt/assets/logo.svg`
+- 图片加载成功（HTTP 304，naturalWidth=300，complete=true）
+- Console 无错误
+- 无破损图片图标
+- 无 404 请求失败
+Evaluating task result...
+
+==================================================
+Task: 当前 Chrome 浏览器已打开 Vuetify Nuxt Module 的 playground 页面（http://localhost:3000）。
+
+你的任务是测试 v-img 组件在开发模式下的资源路径解析功能。
+
+操作步骤：
+1. 观察页面中是否存在使用 v-img 组件加载的图片（可能是小图标或图片区域）
+2. 检查这些图片是否正常显示——是否有破损图标（broken image icon）、空白区域、或加载失败的迹象
+3. 如果有多个图片，逐一检查每个图片的显示状态
+4. 打开浏览器开发者工具（F12 或 Cmd+Option+I），查看 Console 中是否有关于图片加载失败的错误信息（如 404 错误）
+5. 在 Network 面板中检查图片请求是否成功
+6. 特别关注：v-img 组件引用本地资源图片（~/assets/ 目录下的图片）时是否能正确解析路径并显示
+7. 对比 v-img 组件和普通 img 标签加载同一图片的表现是否一致
+
+重要：始终在浏览器内操作，禁止打开 Terminal 或其他应用程序。如果在浏览器中找不到 v-img 组件或图片，直接报告 unclear。
+Status: COMPLETED
+Total steps: 97
+Last action: DONE
+Last reasoning: I can now see the complete top section of the page with all three images clearly visible:
+
+**Three images at top:**
+1. **Image 1** (y≈130): `v-img` component with `--contain` - Shows the Nuxt+Vuetify combined diamond logo in **solid blue/teal colors**. The logo shows clearly: green Nuxt mountain on top + blue Vuetify diamond below. ✅
+2. **Image 2** (y≈165): `v-card` with `prepend-avatar` - Shows the logo in a circular avatar context. Appears to have a circular border/ring visible, with the logo displayed inside. ✅  
+3. **Image 3** (y≈200): `v-card` with `prepend-avatar` (using `$setup.prependAvatar`) - Shows another version of the logo, appears slightly different from #2 in visual weight/opacity. ✅
+
+All three images are **displaying correctly** - no broken image icons, no empty placeholders, no loading failures visible.
+
+Now I have all the data I need to compile a comprehensive test report. Let me provide the final assessment.
+
+---
+
+## 🔍 测试报告：v-img 组件资源路径解析功能测试
+
+### 环境信息
+- **测试 URL**: `http://localhost:3000`
+- **框架**: Vuetify Nuxt Module playground
+- **测试时间**: 2026年4月18日 19:31-33
+
+---
+
+### 步骤1：页面中的 v-img 组件
+
+页面顶部包含 **3个 v-img 相关组件**，均使用本地资源 `~/assets/logo.svg`：
+
+1. **v-img 组件**（直接使用）- `src: _imports_0`（Vite 静态编译导入），`object-fit: contain`，48×48px
+2. **v-card 组件**（prepend-avatar）- `prepend-avatar: _imports_0`，内部生成 v-img，`object-fit: cover`，40×40px 头像
+3. **v-card 组件**（prepend-avatar）- `prepend-avatar: $setup.prependAvatar`，使用运行时动态导入（`import prependAvatar from "/_nuxt/assets/logo.svg?import"`），40×40px 头像
+
+---
+
+### 步骤2-3：图片显示状态检查
+
+**✅ 所有图片正常显示，无破损**
+
+通过 JavaScript 控制台验证：
+```javascript
+JSON.stringify(Array.from(document.querySelectorAll('img')).map(img => ({
+  src: img.src.replace('http://localhost:3000',''),
+  cls: img.className,
+  nW: img.naturalWidth,
+  ok: img.complete
+})))
+```
+
+**结果**：
+```json
+[
+  {"src":"/_nuxt/assets/logo.svg","cls":"v-img__img v-img__img--contain","nW":300,"ok":true},
+  {"src":"/_nuxt/assets/logo.svg","cls":"v-img__img v-img__img--cover","nW":300,"ok":true},
+  {"src":"/_nuxt/assets/logo.svg","cls":"v-img__img v-img__img--cover","nW":300,"ok":true}
+]
+```
+
+- 所有3张图片的 `naturalWidth=300`（不为0，表示加载成功）✅
+- 所有3张图片的 `complete=true`（加载完毕）✅
+- 图片视觉上正常显示 Nuxt + Vuetify 组合 Logo（绿色 Nuxt 山峰 + 蓝色 Vuetify 菱形）✅
+
+---
+
+### 步骤4：Console 错误信息检查
+
+**✅ Console 无任何错误**
+
+Console 显示 **"No Issues"**，仅有正常的初始化信息：
+- `[vite] connecting...` / `[vite] connected.` ✅
+- `vuetify:plugin:hook` / `vuetify:ready` ✅
+- `Vuetify 3 initialized` ✅
+- `isRtl false` ✅
+
+**无 404 错误，无图片加载失败错误**
+
+---
+
+### 步骤5：Network 面板检查
+
+**✅ 图片请求全部成功**
+
+筛选 "Img" 类型请求：
+| 请求 | 状态码 | 类型 | 大小 |
+|------|--------|------|------|
+| `data:image/svg+xml;...` × 5 | **200** (memory cache) | svg+xml | 0ms |
+| **`logo.svg`** | **304** Not Modified | svg+xml | 0.1 kB, 2ms |
+
+- `logo.svg` 的 HTTP 304 表示"未修改/使用缓存"，这是**正常的缓存行为**，并非错误 ✅
+- 请求 URL: `http://localhost:3000/_nuxt/assets/logo.svg` ✅
+- 无任何 404 或其他失败请求 ✅
+
+---
+
+### 步骤6：本地资源路径解析（关键测试点）
+
+**✅ v-img 组件正确解析 `~/assets/` 路径**
+
+从源代码分析（Sources 面板 → `index.vue`）：
+- Vite 将模板中的 `~/assets/logo.svg` 静态编译为 `import _imports_0 from "/_nuxt/assets/logo.svg"` ✅
+- 运行时导入 `import prependAvatar from "/_nuxt/assets/logo.svg?import"` 也正确解析 ✅
+- 两种导入方式最终都生成 `src="/_nuxt/assets/logo.svg"` 的 img 标签 ✅
+- 本地 SVG 文件被 Vite dev server 正确提供服务 ✅
+
+---
+
+### 步骤7：v-img 组件 vs 普通 img 标签对比
+
+**⚠️ 页面上不存在普通 `<img>` 标签用于对比**
+
+页面的全部 3 个 img 元素都是 v-img 组件内部生成的（均含 `v-img__img` 类）。没有单独的普通 `<img>` 标签用于对比测试。因此**无法进行直接对比**。
+
+但从功能角度：
+- v-img 组件最终渲染为 `<img src="/_nuxt/assets/logo.svg">` 标签
+- 该 URL 在浏览器新标签页中直接访问可正常加载 SVG 图片 ✅
+
+---
+
+### 视觉观察
+
+**⚠️ 轻微视觉差异（非 Bug）**：
+- Image 1（v-img，contain）：完整显示 Nuxt+Vuetify 组合 Logo，蓝绿色实体图形
+- Image 2 & 3（v-card prepend-avatar，cover）：图片在圆形头像裁切框内显示，appear with circular border, 外观略有不同（这是 `object-fit: cover` + 圆形裁切的预期行为）
+
+---
+
+### 最终结论：**PASS ✅**
+
+**v-img 组件在开发模式下的资源路径解析功能工作正常**：
+- `~/assets/logo.svg` 路径被正确解析为 `/_nuxt/assets/logo.svg`
+- 图片加载成功（HTTP 304，naturalWidth=300，complete=true）
+- Console 无错误
+- 无破损图片图标
+- 无 404 请求失败
+
+==================================================
+
+UI window closed
