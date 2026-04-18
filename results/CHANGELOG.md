@@ -1,5 +1,37 @@
 # Results CHANGELOG
 
+## 2026-04-18 12:05 — worker-07 合规修复 2 张结果卡
+
+**操作人：** worker-07（林菡确认）
+**原因：** Pichai 合规扫描发现 worker-07 提交的 43 张结果中 2 张不符合 `worker-execution-guide.md` 标准 schema（status 非法值、缺少顶层必填字段、JSON 解析失败）
+**审计报告：** `reports/worker-07-audit.md`
+
+**修复分类：**
+
+| 类型 | 数量 | 修复方式 |
+|------|------|----------|
+| A: 旧格式→completed（重构为标准 schema） | 1 | 从 log 提取 sess_id/status/total_steps/last_action/last_reasoning，重构为标准 completed 格式 |
+| B: JSON 控制字符修复 | 1 | 删除 \r (0x0D) 控制字符 |
+
+**修复后 status 分布（43 张）：**
+
+| status | 数量 |
+|--------|------|
+| completed | 18 |
+| failed | 25 |
+
+**影响卡清单（2 张）：**
+
+| # | 文件 | 修复前问题 | 修复后 status | 修复方式 |
+|---|------|-----------|---------------|----------|
+| 1 | `angular-calendar-1396.json` | 缺少顶层字段 `sess_id`/`expected_result_used`/`duration_seconds`；status 非法值 `tool_error`（应为 completed/failed） | completed (unclear) | 从 log 提取 sess_id=`sess-20260416210830-0e98dd7e18ce46c6a6aa62da2ae829c2`；status 改 `completed`；重构 mano_cua 对象（result=unclear，3次尝试均因点击无响应失败）；补 expected_result_used=true, duration_seconds=1800 |
+| 2 | `react-date-picker-110.json` | JSON 解析失败：sess_id 字符串末尾含 `\r` (0x0D) 控制字符（Invalid control character at line 6 column 67） | completed (normal) | 删除 `\r` 控制字符，内容无其他变更 |
+
+共 2 张卡，修复后 43/43 通过合规检查。
+
+---
+
+
 ## 2026-04-18 11:50 — worker-06 合规修复 5 张结果卡
 
 **操作人：** worker-06（林菡确认）
