@@ -1,209 +1,379 @@
-Session created: sess-20260417023051-b67c0c10027b4cefad2fdf22daebe47e
+Session created: sess-20260419025007-01646bfd60c34cd4b7dfb7d9203031f6
 UI panel initialized successfully
 UI window displayed
-Expected result: 修改粘贴链接的锚文本后，链接的URL应保持不变，锚文本应正确更新为用户输入的新文本，两个字段互不影响。
+Expected result: 修改链接的锚文本后，链接URL保持不变(https://example.com)，显示文本正确更新为新设置的文本(Demo Page)，两个字段互不影响。
 [step 0] Action: Initializing
 [step 0] Reasoning: Initializing session connection
 [step 0] Action: screenshot
-[step 1] Action: Minimize panel
-[step 1] Reasoning: I can see the MDX Editor Ladle demo page is open, currently showing the "Basics--bare" story. I need to navigate to "Toolbar > Basics" to find the editor with a toolbar. Let me look at the left navigation panel more carefully.
-[step 2] Action: scroll down (1190, 400) scroll_amount 5
-[step 2] Reasoning: I can see the navigation panel on the right side. I can see "Basics" section is expanded with items like Bare, Break example, Code, etc. I need to scroll down in the navigation to find "Toolbar" section, or navigate to it. Let me scroll down in the navigation to look for the Toolbar section.
-[step 3] Action: left_click (1157, 613)
-[step 3] Reasoning: I can now see the "Toolbar" section in the navigation. Let me click on it to expand it.
-[step 4] Action: scroll down (560, 400) scroll_amount 10
-[step 4] Reasoning: I clicked on "Toolbar" and it navigated directly to the "Toolbar > Basics" page (I can see in the URL bar: `localhost:61000/?story=toolbar--basics`). The editor is showing with a toolbar at the top with various formatting options. I can see the editor content with "Some informative text", "A link", "horizontal rule", code blocks, headings, etc.
+[step 1] Action: left_click (68, 203)
+[step 1] Reasoning: The page shows "Story not found" - the story `editor--demo` doesn't exist. I can see a sidebar with various story options. Let me look for an "Editor" or "Demo" story in the sidebar. I can see items like "Link dialog" which might be relevant. Let me first check what stories are available by clicking "Back to home" or looking at the sidebar more carefully.
+[step 2] Action: scroll up (1180, 400) scroll_amount 5
+[step 2] Reasoning: I can see the home page with a sidebar. I need to scroll up in the sidebar to find an "Editor" category. I can see the sidebar has items like "Link", "Lists", etc. under a category. Let me scroll up in the sidebar to find the Editor story.
+[step 3] Action: scroll up (1180, 400) scroll_amount 10
+[step 3] Reasoning: The sidebar didn't scroll up - it seems the list still starts the same. The items visible are part of the "Basics" category. I need to scroll up more to find the "Editor" category. Let me try scrolling up more in the sidebar.
+[step 4] Action: scroll down (1180, 400) scroll_amount 5
+[step 4] Reasoning: The sidebar seems to already be at the top. I notice the list has categories like "Basics" (with items like Conditional rendering, Custom code block, etc.), "Bug 683", "Bug 97", "Cm merge", "Colors", etc. I don't see "Editor" category here. Let me scroll down in the sidebar to look for an "Editor" category.
+[step 5] Action: scroll down (1180, 400) scroll_amount 5
+[step 5] Reasoning: Now I can see the sidebar better. I can see categories like "Bug 683", "Bug 97", "Cm merge", "Colors", "Controlled mode", "Diff source", "Directives", "Error handling", "Get selection markdown", "Html", "I18n", "Images", "Insert markdown", "Jsx", "Link dialog", "Maxlength", "Mermaid", "Nested jsx elements", "Nested lists", "Print", "Realm plugin", "Remote". 
+
+I don't see an "Editor" category with a "demo" story directly. The URL `editor--demo` suggests a story path like "Editor > Demo". Let me scroll down more to see if there are more categories.
+[step 6] Action: left_click (1135, 429)
+[step 6] Reasoning: Now I can see the full list. There is no "Editor" category - the story `editor--demo` doesn't exist in this Ladle instance. The available categories include: "Cm merge", "Colors", "Controlled mode", "Diff source", "Directives", "Error handling", "Get selection markdown", "Html", "I18n", "Images", "Insert markdown", "Jsx", "Link dialog", "Maxlength", "Mermaid", "Nested jsx elements", "Nested lists", "Print", "Realm plugin", "Remote", "Site demo", "Table of contents", "Toolbar", "Within dialog".
+
+There's no "Editor" category with a "Demo" story. However, there IS a "Link dialog" category which is very relevant to the task. Let me click on "Link dialog" to expand it and see what stories are available.
+
+Also, I notice the task says the URL is `http://localhost:61000/?story=editor--demo`. Let me try to navigate there and also check the "Link dialog" story. The "Link dialog" might have what we need for testing the link editing functionality. Let me click on "Link dialog" to expand it.
+[step 7] Action: screenshot
+[step 7] Reasoning: I can see the "Link dialog" category is expanded and it has navigated to `link-dialog--basics`. Under "Link dialog" I can see:
+- **Basics** (currently selected)
+- Editor in a form
+- Parent offset of anchor
+- Read only
+- With nested editors
+- Without link title field
+
+The current page shows "Hello world link" in the editor. This "Basics" story seems to be exactly what I need - it has a link dialog. Let me now navigate to the actual URL mentioned in the task (`editor--demo`) first to see if it exists or redirects. Actually, the story doesn't exist. 
+
+However, the task asks me to test the link editing functionality. The "Link dialog > Basics" story seems to have an editor with a link. Let me use this story to test the functionality. The URL is now `localhost:61000/?story=link-dialog--basics`.
+
+Let me look at the current page - it shows "Hello world link". I need to:
+1. Click in the editor
+2. Type 'Click here'
+3. Select it
+4. Click the link button
+5. Enter URL
+6. Modify anchor text
+
+But first, let me check if there's actually an editor visible on the page. Let me take a screenshot to see the current state better.
+[step 8] Action: left_click (62, 648)
+[step 8] Reasoning: I can see the page shows "Hello world link" - this appears to be an MDX editor display but I'm not seeing the actual editor interface with a toolbar. The page seems to be showing just a preview. The editor might be hidden or this story might just show the rendered output.
+
+Let me try to use the "expand" view mode (the icon at the bottom left) to see the full story, or let me try clicking "fullscreen" icon to see the editor better. Actually, looking at the bottom of the page, I see some icons for view modes. Let me try clicking the expand/fullscreen icon.
+
+But wait - the task specifically says to go to `http://localhost:61000/?story=editor--demo` and the story "editor--demo" doesn't exist. The task is to test the functionality on that specific page. Since that story doesn't exist, I should check if there's a way to test this with the available stories.
+
+Let me try the URL directly to see the current state again, and also check if there's an editor with a toolbar in this Link dialog > Basics view by scrolling up in the main content area or by using the expand view mode.
+
+Actually, the page shows just "Hello world link" but I need to see the actual editor. Let me try clicking the expand icon to get the full view.
+[step 9] Action: left_click (14, 62)
+[step 9] Reasoning: Now in preview mode, I can see "Hello world link" but there's no visible editor with a toolbar. This story just shows the rendered output. The editor isn't visible in this view.
+
+Let me go back and try a different approach. I need to look at a story that shows the actual MDX editor with a toolbar. Let me navigate to the "Basics" story inside the link dialog, which should show the editor with the link editing capability. Let me go back to the story view.
+
+Let me navigate back and try to find the actual editor. The task says `editor--demo` doesn't exist. But I need to test a similar story. Let me look at what's available in the "Basics" section under the MDX editor. Let me navigate back.
+[step 10] Action: left_click (67, 134)
+[step 10] Reasoning: I can see the "Link dialog > Basics" story shows "Hello world link" but the main content area doesn't have the editor with a toolbar. The story seems to only show rendered content without an edit interface. 
+
+Let me think about this differently. The URL given in the task is `http://localhost:61000/?story=editor--demo`. This story doesn't exist according to the "Story not found" message I saw initially. The stories available are under various categories but not "Editor > Demo".
+
+However, looking at the structure, the Ladle URL format `editor--demo` would correspond to a story named "Demo" inside a category called "Editor". This doesn't exist in the current application.
+
+But wait - I see the sidebar has items but maybe the "Basics" story in the "Basics" section (scroll up) could be what we need. Let me scroll up to find the Basics category.
+
+Actually, looking at the full list again: the categories are Basics (with many items), Bug 683, Bug 97, Cm merge, Colors, Controlled mode, Diff source, Directives, Error handling, Get selection markdown, Html, I18n, Images, Insert markdown, Jsx, Link dialog (with Basics, Editor in a form, Parent offset of anchor, Read only, With nested editors, Without link title field), Maxlength, Mermaid, Nested jsx elements, Nested lists, Print, Realm plugin, Remote, Site demo, Table of contents, Toolbar, Within dialog.
+
+The "Basics" story in "Link dialog" shows "Hello world link". The page content area at `localhost:61000/?story=link-dialog--basics` shows only `Hello world link` text. But this is a Ladle story frame - the actual editor with toolbar must be inside an iframe or the content is embedded differently.
+
+Wait, I see the "Hello world link" text with a blue "link" link. This is the rendered editor output. The editor itself with toolbar might need a click to activate it. Let me click on the main content area - particularly around the "Hello world link" text to see if there's an editor to interact with.
+[step 11] Action: scroll up (500, 300) scroll_amount 5
+[step 11] Reasoning: I clicked on the "Hello" text and I can see a cursor is now placed in the text. The editor seems to be active! The text area now shows a cursor. But I don't see a toolbar appearing. Let me scroll up in the sidebar to see if there's a "Basics" or "Demo" story under another category, or scroll up in the main content area to check for a toolbar.
+
+Wait - this is a Ladle story frame. The sidebar on the right is the Ladle navigation panel. The main content area on the left is the story preview. In Ladle, the story is rendered in the main area. I need to scroll up in the main content area to see if there's a toolbar above.
+
+Let me scroll up in the main content area to see if there's an editor toolbar.
+[step 12] Action: scroll up (1180, 400) scroll_amount 10
+[step 12] Reasoning: The main content area only shows "Hello world link" text with no toolbar. This story appears to only show the rendered output without the editor toolbar. 
+
+The story might be rendered inside an iframe. Let me try a different approach - let me use the "Toolbar" story to see what's available. But actually, the task specifically asks about the "editor--demo" story which doesn't exist.
+
+Let me try scrolling up in the sidebar to find the "Basics" category which might have some editor story. Let me scroll to the top of the sidebar to see all available stories.
+[step 13] Action: scroll down (1180, 400) scroll_amount 5
+[step 13] Reasoning: The sidebar is not scrolling up further. It seems the list already starts from the "Cm merge" category. Let me look at the "Toolbar" story - it might have the full editor with toolbar. Also, I should note that this is a Ladle app where the story is rendered inside an iframe.
+
+Let me try to look at this differently. In Ladle, the sidebar on the right shows the navigation, but the actual story content is rendered in the main page area. However, the content might be in an iframe. Let me check what's happening in the iframe. 
+
+Actually, I realize I need to approach this differently. Looking at the URL structure, the story content at `story=link-dialog--basics` shows "Hello world link". But this should be an editor component - not just static text. Maybe I need to click on the editor to make the toolbar appear, or maybe the toolbar appears at the top when the editor is focused.
+
+Let me try clicking in the editor area and see if a toolbar appears above the text content area, or check if the toolbar might be hidden somewhere else. Let me also try right-clicking or looking at the DOM.
+
+Actually, looking at the screenshots more carefully - when I clicked on "Hello world" text earlier, I saw the cursor placed between 'Hello' and 'world'. This suggests the text IS the editor. But the toolbar might not be visible because this is a specific story that doesn't include the toolbar.
+
+The task mentions the `editor--demo` story which doesn't exist. Let me try to find stories that have a full editor with toolbar. Let me try the "Toolbar" story from the sidebar. Let me scroll down to find it.
+[step 14] Action: left_click (1127, 602)
+[step 14] Reasoning: Now I can see the "Toolbar" story in the sidebar. Let me click on it to see if it has a full editor with toolbar.
+[step 15] Action: left_click (93, 163)
+[step 15] Reasoning: Excellent! Now I can see the "Toolbar > Basics" story which shows a full MDX editor with a toolbar! The toolbar has many buttons including what appears to be a link button (chain icon). The editor content shows "Some informative text", "A link", "horizontal rule", "Block of code:", code blocks, "Heading 1", bullets, etc.
+
+This is the correct editor to test link editing. The toolbar has:
+- Undo/Redo buttons
+- Bold, Italic, Underline, Code, Highlight buttons
+- Strikethrough, Superscript, Subscript buttons
+- Bullet list, ordered list, task list
+- Block type selector
+- Link button (chain icon - visible in the toolbar)
+- Image, table, etc. buttons
 
 Now I need to:
-1. Click at the end of the text in the editor to position the cursor
-2. Press Enter to create a new line
-3. Type the URL
+1. Click in the editor area to enter edit mode
+2. Type 'Click here'
+3. Select 'Click here'
+4. Click the link button
+5. Enter URL https://example.com
+6. Save
+7. Click the link to get the edit dialog
+8. Modify anchor text to 'Demo Page'
+9. Verify URL is still https://example.com and text changed
 
-Let me scroll down to find the bottom of the editor content first, then click to position the cursor there.
-[step 5] Action: scroll down (560, 400) scroll_amount 10
-[step 5] Reasoning: I can see the editor content. There's a "React Sandpack" section with TypeScript code. Let me continue scrolling to find the end of the editor content.
-[step 6] Action: scroll down (560, 400) scroll_amount 10
-[step 6] Reasoning: I can see more content. Let me continue scrolling to find the end of the editor content.
-[step 7] Action: scroll up (560, 400) scroll_amount 15
-[step 7] Reasoning: The page seems to not scroll further. The editor content area appears to have a React Sandpack component (code editor and preview). Below that there's Lorem Ipsum text. 
+Let me start by clicking in the editor area to position the cursor. I'll click at the beginning of the content area and type 'Click here'.
 
-Looking at the content, I can see the editor has various sections. Rather than scrolling to the bottom, let me use a simpler approach - click on a simple text area in the editor (like the "Some informative text" at the top or the "A link" section), and then use keyboard shortcuts to navigate to the end.
+Let me click at the beginning of the "Some informative text" line to place the cursor there.
+[step 16] Action: left_click (40, 163)
+[step 16] Reasoning: I clicked in the "Some informative text" area. The Block type changed to "Paragraph" indicating I clicked in the editor area. Now I need to type 'Click here' in the editor. But first, I should go to a clean spot. 
 
-Let me scroll back up to find a simple text area to click on.
-[step 8] Action: left_click (74, 147)
-[step 8] Reasoning: I'm back at the top. I can see "Some informative text" and "A link" in the editor. Let me click on "Some informative text" to position the cursor there, then use Ctrl+End to go to the end of the document.
+Instead of editing in the middle of existing content, let me click at the very beginning of the "Some informative text" line and then use Home to go to the beginning, and then add a new line at the top to type 'Click here'.
 
-Actually, let me click on the "Some informative text" line first.
-[step 9] Action: key: cmd+End
-[step 9] Reasoning: I've clicked on the "Some informative text" line and I can see the toolbar shows "Paragraph" in the block type dropdown, which means the cursor is now positioned in the editor. Now I need to use Cmd+End to go to the end of the document (on Mac, that's Cmd+End or Cmd+Down).
+Actually, let me use a simpler approach:
+1. Click at the beginning of the first line
+2. Press Home to go to line start
+3. Type 'Click here' and Enter (to create a new paragraph)
 
-Let me press Cmd+End to move the cursor to the end of the document.
-[step 10] Action: left_click (74, 147)
-[step 10] Reasoning: The page didn't seem to scroll to the bottom. The approach of going to the end of the document might place the cursor in a complex component. Let me try a different approach - I'll click on the "Some informative text" line, go to the end of that line, then press Enter, and type the URL. This is a simpler, more reliable approach for testing the link insertion functionality.
+But actually the task says to type 'Click here' in the editor. Let me place my cursor at the start of "Some informative text" and then type.
 
-Let me click on "Some informative text" and navigate to the end of that line.
-[step 11] Action: key: End
-[step 11] Reasoning: Good, I've clicked on "Some informative text". Now let me press End to go to the end of that line, then press Enter to create a new line, and type the URL.
-[step 12] Action: scroll up (560, 400) scroll_amount 15
-[step 12] Reasoning: Interesting - pressing End caused the page to scroll to the bottom and it seems the cursor moved to the end of the document (to the Lorem Ipsum text area). The page scrolled down significantly. I can see the Sandpack code editor and then Lorem Ipsum text.
+Let me first go to the beginning of the line by pressing Home key, then type 'Click here' followed by Enter.
 
-It seems Cmd+End actually moved the cursor to the end of the document (the Lorem Ipsum area). But the Lorem Ipsum text appears to be outside the editor (it looks like explanatory text below the editor). 
+Wait - I should think about this more carefully. The task wants me to:
+1. Type 'Click here' as a new text
+2. Select it
+3. Add link
 
-Let me scroll up and take a cleaner approach. I'll click directly on "Some informative text", go to the end of that line, press Enter to create a new line, and type the URL.
+Let me click at the beginning of "Some informative text" and insert 'Click here' + Enter before it, OR let me simply select all the text in a line, delete it, and type 'Click here'. 
 
-Let me scroll back up to "Some informative text".
-[step 13] Action: left_click (115, 147)
-[step 13] Reasoning: Good, I'm back at the top. I can see "Some informative text" and "A link". The toolbar is visible at the top with "Paragraph" shown as the block type. I need to click on "Some informative text" to position the cursor in that paragraph, then navigate to end of the line, and press Enter to create a new line.
+Actually, the simplest approach: click at the start of "Some informative text" line, press Home, type 'Click here', then Enter to create a new line. Then I'll have 'Click here' as the first paragraph.
 
-Let me click on the end of "Some informative text":
-[step 14] Action: key: Return
-[step 14] Reasoning: I can see the cursor is now positioned at the end of "Some informative text" (there's a cursor blinking after "text"). The toolbar shows "Paragraph" as the block type. Now let me press Enter to create a new line, then type the URL.
-[step 15] Action: type: https://mdxeditor...
-[step 15] Reasoning: A new line was created after "Some informative text". I can see the cursor is now on a new empty line. The editor looks good. Now let me type the URL `https://mdxeditor.dev/editor/demo`.
-[step 16] Action: left_click (147, 187)
-[step 16] Reasoning: Excellent! I can see that the URL `https://mdxeditor.dev/editor/demo` has been automatically recognized as a link and a tooltip/popover has appeared below it showing the URL with three action buttons (what appears to be an external link icon, a copy icon, and an unlink icon, plus an edit/pencil icon). The text shows as a blue link.
+Let me click on "Some informative text":
+[step 17] Action: key: Home
+[step 17] Reasoning: Good, I'm in the editor with cursor in "Some informative text". Now I'll press Home key to go to the beginning of the line, then type 'Click here' and Enter.
+[step 18] Action: type: Click here
 
-I can see:
-- The URL has been entered and automatically converted to a link: `https://mdxeditor.dev/editor/demo`
-- A link tooltip appeared below showing: `https://mdxeditor.dev/editor/demo` with some action icons
+[step 18] Reasoning: Good, the cursor is now at the beginning of the "Some informative text" line. Now I'll type 'Click here' and then press Enter to push the existing content down.
+[step 19] Action: left_click (40, 163)
+[step 19] Reasoning: I can see "Click here" has been typed as the first line in the editor. The cursor is now on the "Some informative text" line. The text "Click here" appears at the top of the editor content.
 
-Let me take a closer look at the tooltip to find the edit (pencil) button. The tooltip shows at the bottom with icons. I can see there's a link tooltip popup with the URL and some buttons. Let me click the pencil/edit icon to open the link edit dialog.
+Now I need to select "Click here" text. I'll double-click on it to select the word, but since it's two words, I'll need to use click and drag or use Shift+Home after clicking at the end of "here". 
 
-Looking at the screenshot, I can see:
-- The link is: `https://mdxeditor.dev/editor/demo` 
-- The tooltip shows: `https://mdxeditor.dev/editor/demo` with icons at approximately y=187
+Let me double-click on "Click here" text to select it. Since it's two words, I'll need to click at the start of "Click" and then shift+click at the end of "here".
 
-The icons appear to be at the right side of the tooltip. Let me click on the pencil/edit icon. The edit icon appears to be around coordinate (147, 187).
-[step 17] Action: triple_click
-[step 17] Reasoning: A link edit dialog has appeared! I can see:
-- **URL** field: `https://mdxeditor.dev/editor/demo` (showing as `https://mdxeditor.dev/editor/demod` - seems to have an extra 'd' at the end, but let me zoom in to confirm)
-- **Anchor text** field: `https://mdxeditor.dev/editor/demo` 
+Let me first click at the beginning of "Click" and then use Shift+End to select the whole line:
+[step 20] Action: key: Home
+[step 20] Reasoning: Good. I can see the cursor is in the "Click here" line. Now I'll press Home to go to the beginning of the line, then Shift+End to select the entire line:
+[step 21] Action: key: shift+End
+[step 21] Reasoning: Good. Now let me use Shift+End to select the entire "Click here" text:
+[step 22] Action: scroll up (500, 300) scroll_amount 10
+[step 22] Reasoning: Shift+End selected a lot of text - it seems to have scrolled down and selected a large portion of the content rather than just "Click here". The view jumped to a different location with "And note admonition" selected at the top. This is unexpected. 
+
+The Shift+End selection seemed to select text that includes way more than "Click here". The view is now showing "And note admonition" and there's a long Lorem ipsum text selected at the bottom. This happened because the editor might interpret Shift+End differently or the cursor was at a different position.
+
+Let me scroll back to the top and try a different approach - double-clicking on "Click here" text to select just the word, or using click+drag to select both words.
+
+Let me scroll up to find the "Click here" text:
+[step 23] Action: scroll up (500, 300) scroll_amount 10
+[step 23] Reasoning: I can see the text is selected (highlighted in blue) including many items - "Heading 1", bullet items, Heading 2, "And note admonition", "A link", etc. This massive selection was from the Shift+End command. I need to scroll further up to find "Click here".
+
+Let me scroll up more:
+[step 24] Action: left_click (500, 400)
+[step 24] Reasoning: Now I can see the text is mostly selected (shown in blue highlight) and "Click here" is visible at the top. I can see the text "Click here" is selected (it has a blue highlight). The selection seems to have started from "Click here" going down.
+
+Wait - looking again, "Click here" at the top looks like it's NOT highlighted (the text appears normal/dark without blue background), but the content below ("Some informative text", "A link", "horizontal rule", "Block of code:", "JS:", code blocks, "CSS:", code blocks, "Heading 1", bullets, etc.) IS highlighted in blue.
+
+It seems the cursor was at the start of the first line but my Shift+End selection ended at the end of the entire document rather than the end of the first line.
+
+I need to try a completely different approach. Let me click somewhere to deselect everything, then use a click+drag approach to select just "Click here".
+[step 25] Action: scroll up (500, 300) scroll_amount 5
+[step 25] Reasoning: Good, I can see the "Click here" text at the top. I've clicked in the CSS code block area and the selection is cleared. Now I can see the editor clearly with "Click here" as the first line.
+
+Now I need to scroll up to reach the "Click here" text and then select it precisely. Let me scroll up a bit and then click+drag on the "Click here" text.
+[step 26] Action: scroll up (500, 300) scroll_amount 3
+[step 26] Reasoning: Good, I can see "Click here" at the top of the editor. The toolbar is not visible though - it seems to be off-screen. Let me scroll up a bit more to see the toolbar.
+[step 27] Action: left_click (64, 163)
+[step 27] Reasoning: The toolbar is still not showing and "Click here" is visible at the top but the toolbar should be above the content area. The page seems to have a "Code block language" selector visible at the top but not the main editor toolbar.
+
+This is strange. The toolbar must have scrolled out of view. I notice that the page is scrollable and the toolbar at the very top of the editor might be out of view. Let me try clicking on "Click here" first to position the cursor there, which might cause the toolbar to become visible/sticky.
+
+Let me click on the "Click here" text:
+[step 28] Action: left_click (40, 163)
+[step 28] Reasoning: Now I can see the toolbar is visible at the top! When I clicked on "Click here", the editor focused and the toolbar appeared. I can see the full toolbar with Bold, Italic, Underline, Code, etc. buttons, and I can see the link icon (chain icon) in the toolbar.
+
+The cursor is now in "Click here" (I can see the cursor between "Click" and "here" at position 64, 163). 
+
+Now I need to select the entire "Click here" text. Let me use the keyboard approach:
+1. Press Home to go to the beginning of the line
+2. Then use Shift+End to select to the end of the line
+
+But wait - Shift+End didn't work well before. Let me try a different approach - I'll triple-click to select the entire line, which is a more reliable way.
+
+Actually, let me try clicking at the very beginning of "C" in "Click here" and then shift-clicking after "here" to select the entire text:
+[step 29] Action: left_click (88, 163)
+[step 29] Reasoning: The cursor is now at position 40, 163 - which is at the beginning of "Click here". The toolbar is visible. Now I need to select "Click here" text. 
+
+The approach I'll use is: click at position right before "C" in "Click", then shift+click after the "e" in "here". Looking at the text "Click here", it's at y=163. The text ends around x=88 (based on the text length). Let me shift+click at the end of "here":
+[step 30] Action: triple_click
+[step 30] Reasoning: I can see "Click here" is visible but I'm not sure if the text is selected (highlighted). The text doesn't appear to be highlighted in the screenshot. The cursor appears to be at position 88, 163 - after the "e" in "here". Let me try a different approach - I'll use triple-click to select the entire line.
+
+Let me triple-click on "Click here" to select the entire line:
+[step 31] Action: left_click (453, 124)
+[step 31] Reasoning: Now I can see "Click here" appears to be selected (highlighted in blue/teal color at the top of the editor). The text "Click here" is selected with a bluish background. 
+
+Now I need to click the link button (chain icon) in the toolbar to create a link. Looking at the toolbar, I can see various buttons. The link button should be the chain icon - let me look at the toolbar buttons. I can see in the toolbar: Undo, Redo, B, I, U, <>, ~, S, x², x₂, bullet list, numbered list, checkbox, Paragraph selector, and then more buttons including what appears to be a chain icon.
+
+Looking at the toolbar image from earlier screenshots, I saw a chain icon that represents the link. Let me look at the toolbar more carefully. The link icon appears to be around coordinate (453, 124) based on the earlier screenshot showing the full toolbar.
+
+Let me click on the link button:
+[step 32] Action: left_click (119, 212)
+[step 32] Reasoning: Excellent! The link dialog has appeared! I can see:
+- A dialog with "URL" field (empty input)
+- A "Link title" field (empty input)  
+- "Save" and "Cancel" buttons
+
+This is the link creation dialog. I can see "Click here" is shown at the top with blue selection. Now I need to:
+1. Enter the URL `https://example.com` in the URL field
+2. Click Save
+
+The URL field appears to be active/focused (cursor in the input at top). Let me type the URL:
+[step 33] Action: type: https://example.com
+[step 33] Reasoning: I can see the link dialog is still showing with URL field and Link title field. The URL field appears to be empty. I've clicked on the URL field input. Now I need to type the URL:
+[step 34] Action: left_click (160, 284)
+[step 34] Reasoning: I can see the URL field now shows "https://example.com" - the URL has been entered correctly. The "Link title" field is still empty. 
+
+Now I need to click the "Save" button to create the link:
+[step 35] Action: left_click (63, 163)
+[step 35] Reasoning: The link dialog has closed and I can see "Click here" at the top of the editor is now shown as a hyperlink (it appears in blue text with underline - similar to "A link" which is a hyperlink below it). The link has been created successfully!
+
+Now I need to:
+1. Click on the "Click here" link to open the link editing overlay/dialog
+2. Modify the anchor text to 'Demo Page'
+3. Verify the URL is still https://example.com and text changed to 'Demo Page'
+
+Let me click on the "Click here" link:
+[step 36] Action: left_click (122, 191)
+[step 36] Reasoning: A link editing overlay/popover has appeared! I can see:
+- The "Click here" link at the top
+- Below it, a floating toolbar showing "https://example.com" with some action icons:
+  - An open-in-new-tab icon (external link)
+  - A pencil/edit icon
+  - A copy icon
+  - A chain/unlink icon
+
+This is the link editing overlay. To edit the anchor text, I need to click the pencil/edit icon to open the editing dialog. Let me click on the pencil icon:
+[step 37] Action: triple_click
+[step 37] Reasoning: Excellent! The link editing dialog has opened with:
+- **URL** field: `https://example.com` ✓
+- **Anchor text** field: `Click here` ✓  
 - **Link title** field: (empty)
 - **Save** and **Cancel** buttons
 
-Wait, looking carefully at the URL field, it shows `https://mdxeditor.dev/editor/demod` - this might be a visual artifact. Let me zoom in on the dialog to get a better look.
-
-Actually, looking at the link in the editor content, it shows `https://mdxeditor.dev/editor/demod` - that seems to have an extra 'd'. The URL field in the dialog shows `https://mdxeditor.dev/editor/demod`. This is odd. Let me take a screenshot to look more carefully.
-
-Now I need to:
+This is exactly what I need! Now I need to:
 1. Clear the "Anchor text" field
 2. Type "Demo Page"
+3. Click Save
 
-Let me click on the "Anchor text" field and clear it, then type "Demo Page".
-[step 18] Action: type: Demo Page
-[step 18] Reasoning: The "Anchor text" field has been selected (I can see the text is highlighted/selected). The text in the Anchor text field appears to be `https://mdxeditor.dev/editor/demod`. 
+Let me click on the "Anchor text" field and clear it, then type "Demo Page":
+[step 38] Action: type: Demo Page
+[step 38] Reasoning: I can see "Click here" is now selected (highlighted in blue) in the "Anchor text" field. Now I need to type "Demo Page" to replace it:
+[step 39] Action: left_click (160, 327)
+[step 39] Reasoning: The dialog now shows:
+- **URL** field: `https://example.com` ✓ (unchanged)
+- **Anchor text** field: `Demo Page` ✓ (changed from "Click here")
+- **Link title** field: (empty)
 
-Looking at the URL field, it also shows `https://mdxeditor.dev/editor/demod` - seems the URL might have an extra 'd' at the end. This could be a bug or a visual rendering issue. Let me zoom in on the dialog to confirm.
+This is exactly what we need! The URL is still `https://example.com` and the anchor text has been changed to `Demo Page`. Now I need to click "Save" to save the changes.
 
-But first, let me check the URL field more carefully. Looking at the current screenshot, the URL field shows `https://jmdxeditor.dev/editor/demod`. This is a bit hard to read. Let me proceed with modifying the anchor text to "Demo Page" and then verify.
+Note: I can also see "Click here" is still showing in the editor at the top - but this will change to "Demo Page" once we save.
 
-The Anchor text field is currently selected. Now let me type "Demo Page" to replace the selection:
-[step 19] Action: left_click (131, 294)
-[step 19] Reasoning: I can see:
-- **URL** field shows: `https://jmdxeditor.dev/editor/demod` (this seems odd with 'j' instead of the expected start and 'd' at end - could be truncated display)
-- **Anchor text** field shows: `Demo Page` (this is what I typed!)
-- **Link title** field: empty
+Let me click Save:
+[step 40] Action: DONE
+[step 40] Reasoning: 🎉 **The task has been completed successfully!**
 
-The Anchor text has been successfully changed to "Demo Page". Now I need to click the "Save" button to save the changes.
+The editor now shows:
+- **"Demo Page"** - displayed as the link text (previously "Click here") ✓
+- **"https://example.com"** - shown in the link editing overlay below the text ✓
 
-But wait, let me look more carefully at the URL field. It shows something that doesn't match what I expected. Looking at the dialog, the URL field content appears to show `https://jmdxeditor.dev/editor/demod`. Let me check if this is correct before saving. 
+The link editing overlay is still visible showing `https://example.com` with the edit icons, confirming that:
+1. The URL remains `https://example.com` ✓
+2. The display text (anchor text) has been changed to `Demo Page` ✓
 
-Actually, looking at the editor content above the dialog, the link text shows `https://mdxeditor.dev/editor/demod` - the extra 'd' at the end was because the autolink detection added the 'd' from "demo" along with the link. Wait, the URL I typed was `https://mdxeditor.dev/editor/demo` - all of these characters should be part of the URL. The link display in the editor shows `https://mdxeditor.dev/editor/demod` which looks like the full URL is being displayed correctly (the 'd' at the end is just the last letter of 'demo').
+The feature works correctly! Here's a summary of the test results:
 
-Actually, I think the URL field is showing a truncated version of the text in a small field. The actual URL `https://mdxeditor.dev/editor/demo` is 36 characters and the field is small, so it would be cut off at the end.
+---
 
-Let me click on the URL field to verify the full URL before saving.
+## 测试结果总结
 
-Actually, let me just proceed with clicking Save, since the URL field is likely showing a truncated version of the correct URL. The Anchor text is now "Demo Page" which is what we need.
-[step 20] Action: left_click (53, 165)
-[step 20] Reasoning: The link has been saved! I can see in the editor content:
-- "Some informative text" (first line)
-- **"Demo Page"** (second line - this is the link text that was previously the raw URL!)
-- "A link" (another link below)
+### 测试路径
+由于 `http://localhost:61000/?story=editor--demo` 页面不存在（"Story not found"），我改用功能最相近的 **Toolbar > Basics** 故事（`story=toolbar--basics`）进行测试，该故事包含完整的 MDX 编辑器及工具栏。
 
-The link display text has been successfully changed from the URL to "Demo Page". The link appears to be on line 2 (between "Some informative text" and "A link").
+### 测试步骤执行情况
 
-However, I notice the "Demo Page" text appears in black rather than as a blue hyperlink. This could be because the cursor is on that line, or there might be a visual issue. Let me click on "Demo Page" to verify that it's actually a link and check what URL it's associated with.
+| 步骤 | 操作 | 结果 |
+|------|------|------|
+| 1 | 点击编辑器可编辑区域进入编辑模式 | ✅ 成功 |
+| 2 | 输入文字 'Click here' | ✅ 成功 |
+| 3 | 选中 'Click here'（三击选中整行） | ✅ 成功 |
+| 4 | 点击工具栏链接按钮（🔗图标）打开链接对话框 | ✅ 成功 |
+| 5 | 在URL字段输入 https://example.com 并点击Save | ✅ 成功 |
+| 6 | 点击链接，出现链接编辑浮层（含URL显示和编辑/复制/取消链接图标） | ✅ 成功 |
+| 7 | 点击浮层中的铅笔（编辑）图标，打开编辑对话框，将Anchor text字段从 'Click here' 修改为 'Demo Page' | ✅ 成功 |
+| 8 | 保存后确认 URL 仍为 https://example.com，显示文本变为 'Demo Page' | ✅ **功能正常，验证通过** |
 
-Let me click on "Demo Page" to see the link tooltip:
-[step 21] Action: left_click (53, 165)
-[step 21] Reasoning: I can see "Demo Page" text is showing in black, and the cursor appears to be positioned there. But I notice that the link tooltip didn't appear. The text "Demo Page" is shown in black color instead of the typical blue link color. This might indicate that the link was not saved properly as a hyperlink, or the tooltip needs a moment to appear.
+### 功能验证结论
+**粘贴链接后编辑锚文本的功能工作正常。** 编辑链接时，对话框包含 URL、Anchor text、Link title 三个字段，修改 Anchor text 后保存，编辑器中的链接显示文本成功更新为 'Demo Page'，而 URL 保持不变（https://example.com）。
 
-Let me wait a moment and see if the tooltip appears, or try clicking on "Demo Page" again to see if it shows the link tooltip:
-[step 22] Action: left_click (560, 300)
-[step 22] Reasoning: I can see "Demo Page" is showing in black text (not as a blue hyperlink). This is a concern - the link should appear in blue color if it's a properly formatted link. The "A link" text below is shown in blue.
-
-The tooltip is not appearing when I click on "Demo Page". This suggests that "Demo Page" might not be a link anymore - it might have lost its link formatting. This is a potential bug.
-
-Let me try clicking elsewhere first, and then click on "Demo Page" to see if the tooltip appears:
-[step 23] Action: left_click (53, 165)
-[step 23] Reasoning: I can still see "Demo Page" in black (not as a blue hyperlink), while "A link" is shown in blue. This confirms that "Demo Page" does NOT appear to be a hyperlink anymore - it's just plain text. This is a **bug** in the editor - when editing the anchor text via the edit dialog, the link formatting was lost and only plain text "Demo Page" remains.
-
-Let me click on "Demo Page" to see if the link tooltip appears, to verify whether it's actually a link or plain text:
-[step 24] Action: DONE
-[step 24] Reasoning: I can now clearly see:
-- "Demo Page" is shown in **black text** (not as a blue hyperlink)
-- "A link" below it is shown in **blue** as a proper hyperlink
-- When clicking on "Demo Page", no link tooltip appeared
-
-This is a **critical bug** in the MDX Editor. After saving the link edit dialog:
-1. The anchor text was changed from the URL to "Demo Page" ✅
-2. BUT the text "Demo Page" is no longer a hyperlink (shown in black, not blue) ❌  
-3. Clicking on "Demo Page" does NOT show the link tooltip (no edit/copy/unlink buttons) ❌
-
-This means the edit operation broke the link - the link was converted to plain text with no URL. The URL `https://mdxeditor.dev/editor/demo` was NOT preserved.
-
-**Summary of test results:**
-
-1. ✅ **Step 1**: Found and opened "Toolbar > Basics" in the navigation
-2. ✅ **Step 2**: Clicked on the editable area and positioned cursor
-3. ✅ **Step 3**: Pressed Enter, typed URL `https://mdxeditor.dev/editor/demo`, and it was auto-recognized as a link (shown in blue)
-4. ✅ **Step 4**: Clicked the link and the link tooltip appeared with action buttons
-5. ✅ **Step 5**: Clicked the edit (pencil) button and the link edit dialog opened
-6. ✅ **Step 6**: Modified the anchor text field to "Demo Page"
-7. ✅ **Step 7**: Clicked Save to save the changes
-8. ❌ **Step 8 (Verification FAILED)**: 
-   - The anchor text IS "Demo Page" (partially correct)
-   - BUT the link formatting was **LOST** - "Demo Page" is plain black text, NOT a hyperlink
-   - The URL `https://mdxeditor.dev/editor/demo` is no longer associated with the text
-   - Clicking "Demo Page" does not trigger any link tooltip
-
-**Bug detected**: When editing a link's anchor text through the MDX Editor's link dialog, the save operation converts the link to plain text instead of updating the anchor text while preserving the URL. The feature is **broken** - the anchor text update works but destroys the link's href.
+### 注意
+- 目标故事 `editor--demo` **不存在**于当前应用中，测试改用 `toolbar--basics` 完成。
+- 应用功能本身**无明显Bug**，链接创建和编辑功能均按预期工作。
 Evaluating task result...
 
 ==================================================
-Task: 当前Chrome浏览器已打开 MDX Editor 的 Ladle demo 页面，地址是 http://localhost:61000。测试在 MDX 编辑器中粘贴链接后编辑锚文本的功能。操作步骤：1. 在左侧导航中找到有工具栏的编辑器示例（如 Toolbar > Basics），打开它；2. 在编辑器中找到可编辑区域，点击定位光标到文本末尾；3. 按 Enter 创建新行，然后输入一个 URL 如 https://mdxeditor.dev/editor/demo，按空格或 Enter 触发自动链接识别；4. 点击该链接，打开链接编辑浮层（tooltip with edit/copy/unlink buttons）；5. 点击编辑按钮（铅笔图标），打开链接编辑对话框；6. 修改链接的显示文本（Title 或锚文本字段）为 'Demo Page'；7. 点击 Save 保存修改；8. 验证：链接显示文本是否更新为 'Demo Page'，同时 URL 是否仍然保持 https://mdxeditor.dev/editor/demo 不变。始终在浏览器内操作，禁止打开 Terminal、Finder 或其他应用程序。如果在浏览器中找不到目标功能，直接标记 result 为 unclear。
+Task: 当前Chrome浏览器已打开MDX编辑器演示页面(Ladle story)，地址是http://localhost:61000/?story=editor--demo。测试粘贴链接后编辑锚文本的功能。步骤：1. 找到编辑器的可编辑区域并点击进入编辑模式。2. 在编辑器中输入一段文字如'Click here'。3. 选中'Click here'文字（双击或拖拽选中）。4. 在工具栏中找到链接按钮（通常是链条图标），点击打开链接编辑对话框。5. 在URL字段输入 https://example.com 并保存/确认。6. 链接创建后，点击该链接，应出现链接编辑浮层或对话框。7. 尝试修改锚文本(Title/Text字段)为'Demo Page'。8. 保存后确认URL仍为https://example.com，而显示文本变为'Demo Page'。始终在浏览器内操作，禁止打开Terminal。如果找不到目标功能直接报告unclear。
 Status: COMPLETED
-Total steps: 24
+Total steps: 40
 Last action: DONE
-Last reasoning: I can now clearly see:
-- "Demo Page" is shown in **black text** (not as a blue hyperlink)
-- "A link" below it is shown in **blue** as a proper hyperlink
-- When clicking on "Demo Page", no link tooltip appeared
+Last reasoning: 🎉 **The task has been completed successfully!**
 
-This is a **critical bug** in the MDX Editor. After saving the link edit dialog:
-1. The anchor text was changed from the URL to "Demo Page" ✅
-2. BUT the text "Demo Page" is no longer a hyperlink (shown in black, not blue) ❌  
-3. Clicking on "Demo Page" does NOT show the link tooltip (no edit/copy/unlink buttons) ❌
+The editor now shows:
+- **"Demo Page"** - displayed as the link text (previously "Click here") ✓
+- **"https://example.com"** - shown in the link editing overlay below the text ✓
 
-This means the edit operation broke the link - the link was converted to plain text with no URL. The URL `https://mdxeditor.dev/editor/demo` was NOT preserved.
+The link editing overlay is still visible showing `https://example.com` with the edit icons, confirming that:
+1. The URL remains `https://example.com` ✓
+2. The display text (anchor text) has been changed to `Demo Page` ✓
 
-**Summary of test results:**
+The feature works correctly! Here's a summary of the test results:
 
-1. ✅ **Step 1**: Found and opened "Toolbar > Basics" in the navigation
-2. ✅ **Step 2**: Clicked on the editable area and positioned cursor
-3. ✅ **Step 3**: Pressed Enter, typed URL `https://mdxeditor.dev/editor/demo`, and it was auto-recognized as a link (shown in blue)
-4. ✅ **Step 4**: Clicked the link and the link tooltip appeared with action buttons
-5. ✅ **Step 5**: Clicked the edit (pencil) button and the link edit dialog opened
-6. ✅ **Step 6**: Modified the anchor text field to "Demo Page"
-7. ✅ **Step 7**: Clicked Save to save the changes
-8. ❌ **Step 8 (Verification FAILED)**: 
-   - The anchor text IS "Demo Page" (partially correct)
-   - BUT the link formatting was **LOST** - "Demo Page" is plain black text, NOT a hyperlink
-   - The URL `https://mdxeditor.dev/editor/demo` is no longer associated with the text
-   - Clicking "Demo Page" does not trigger any link tooltip
+---
 
-**Bug detected**: When editing a link's anchor text through the MDX Editor's link dialog, the save operation converts the link to plain text instead of updating the anchor text while preserving the URL. The feature is **broken** - the anchor text update works but destroys the link's href.
+## 测试结果总结
+
+### 测试路径
+由于 `http://localhost:61000/?story=editor--demo` 页面不存在（"Story not found"），我改用功能最相近的 **Toolbar > Basics** 故事（`story=toolbar--basics`）进行测试，该故事包含完整的 MDX 编辑器及工具栏。
+
+### 测试步骤执行情况
+
+| 步骤 | 操作 | 结果 |
+|------|------|------|
+| 1 | 点击编辑器可编辑区域进入编辑模式 | ✅ 成功 |
+| 2 | 输入文字 'Click here' | ✅ 成功 |
+| 3 | 选中 'Click here'（三击选中整行） | ✅ 成功 |
+| 4 | 点击工具栏链接按钮（🔗图标）打开链接对话框 | ✅ 成功 |
+| 5 | 在URL字段输入 https://example.com 并点击Save | ✅ 成功 |
+| 6 | 点击链接，出现链接编辑浮层（含URL显示和编辑/复制/取消链接图标） | ✅ 成功 |
+| 7 | 点击浮层中的铅笔（编辑）图标，打开编辑对话框，将Anchor text字段从 'Click here' 修改为 'Demo Page' | ✅ 成功 |
+| 8 | 保存后确认 URL 仍为 https://example.com，显示文本变为 'Demo Page' | ✅ **功能正常，验证通过** |
+
+### 功能验证结论
+**粘贴链接后编辑锚文本的功能工作正常。** 编辑链接时，对话框包含 URL、Anchor text、Link title 三个字段，修改 Anchor text 后保存，编辑器中的链接显示文本成功更新为 'Demo Page'，而 URL 保持不变（https://example.com）。
+
+### 注意
+- 目标故事 `editor--demo` **不存在**于当前应用中，测试改用 `toolbar--basics` 完成。
+- 应用功能本身**无明显Bug**，链接创建和编辑功能均按预期工作。
 
 ==================================================
 
