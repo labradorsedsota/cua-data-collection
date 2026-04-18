@@ -1,0 +1,18 @@
+{
+  "task_id": "Piped-3762",
+  "repo": "TeamPiped/Piped",
+  "worker": "worker-09",
+  "status": "completed",
+  "sess_id": "sess-20260418232939-fedf03d54c9b49089ebf25ebd87c39f1",
+  "expected_result_used": true,
+  "duration_seconds": 420,
+  "timestamp": "2026-04-18T23:37:00+08:00",
+  "mano_cua": {
+    "status": "COMPLETED",
+    "total_steps": 45,
+    "last_action": "DONE",
+    "result": "abnormal",
+    "result_summary": "CSV导入播放列表后名称显示为时间戳'2026-04-18T15:31:33.043Z'而非文件名'My Favorite Music'，源码确认PlaylistsPage.vue中playlistName为null时fallback到new Date().toJSON()而非使用文件名",
+    "last_reasoning": "Now I have the full screenshot that clearly shows the test result. The Piped application at localhost:5173/playlists shows:\n\n**Test Result Summary:**\n\nThe test has **CONFIRMED A BUG** in the CSV playlist import functionality:\n\n1. **What was tested**: Imported a CSV file named \"My Favorite Music.csv\" containing YouTube video IDs.\n\n2. **Expected behavior**: The imported playlist should be named \"My Favorite Music\" (the filename without the .csv extension).\n\n3. **Actual behavior**: The imported playlist is named **\"2026-04-18T15:31:33.043Z\"** - a timestamp format (ISO 8601 datetime string), NOT the filename.\n\n4. **Root cause** (found in source code):\n   - In `PlaylistsPage.vue`, the CSV import function (`importPlaylistFile`) sets `playlistName = null` initially\n   - It tries to read the playlist name from the CSV file's second line, column index 4 (old Piped CSV format)\n   - For a simple CSV with just video IDs, `playlistName` remains `null`\n   - The fallback is `playlistName ?? new Date().toJSON()` which generates a timestamp\n\n5. **Visual anomalies observed**:\n   - Broken thumbnail image (shows \"thumbnail\" alt text instead of actual image)\n   - Playlist shows \"0 Videos\" (the video-adding step failed due to CORS/network error when trying to fetch video info from pipedapi.kavin.rocks)\n   - Only one playlist was created (the second import of \"Summer Hits 2024.csv\" failed to create a playlist)\n\n**FAIL**: The playlist name uses a timestamp (\"2026-04-18T15:31:33.043Z\") instead of the CSV filename (\"My Favorite Music\") when importing a CSV file. The bug is in `PlaylistsPage.vue` where `playlistName ?? new Date().toJSON()` falls back to a timestamp instead of using the file's name (without `.csv` extension)."
+  }
+}
