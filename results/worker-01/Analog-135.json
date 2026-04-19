@@ -1,0 +1,22 @@
+{
+  "task_id": "Analog-135",
+  "repo": "analogdotnow/Analog",
+  "worker": "worker-01",
+  "status": "failed",
+  "expected_result_used": false,
+  "sess_id": null,
+  "duration_seconds": 0,
+  "timestamp": "2026-04-19T17:58:00+08:00",
+  "mano_cua": null,
+  "failure": {
+    "type": "deploy_failed",
+    "symptom": "Bun monorepo (workspace:* protocol) 需要 bun 包管理器但无法安装（curl/brew 均被 OOM kill）。改用 pnpm install 后大量模块缺失（drizzle-orm、temporal-polyfill、@simpleanalytics/next 等），dev server 启动返回 500。项目还需要 PostgreSQL 数据库 + OAuth 认证。",
+    "attempted": [
+      "npm install --legacy-peer-deps（workspace:* 协议不支持）",
+      "pnpm install + pnpm-workspace.yaml（安装成功但模块解析不完整）",
+      "移除 @simpleanalytics/next 依赖 + 修改 next.config.ts（仍缺失 drizzle-orm、temporal-polyfill 等核心依赖）",
+      "curl/brew 安装 bun（均被系统 OOM kill）"
+    ],
+    "recommendation": "跳过，需要 bun + PostgreSQL + OAuth，超出 worker 环境能力"
+  }
+}
