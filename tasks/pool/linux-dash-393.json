@@ -1,0 +1,45 @@
+{
+  "task_id": "linux-dash-393",
+  "repo": "tariqbuilds/linux-dash",
+  "repo_url": "https://github.com/tariqbuilds/linux-dash",
+  "issue_url": "https://github.com/tariqbuilds/linux-dash/issues/393",
+  "issue_title": "CPU Temperature not working",
+  "issue_body_preview": "The CPU temperatures are not displayed.\n\nMy sensors output is:\n\n> coretemp-isa-0000\n> Adapter: ISA adapter\n> Core 0:       +36.0°C  (crit = +90.0°C)\n\nThe CPU is a single core i686 Intel Atom, I am using PHP on Ubuntu Server 16.04 LTS.\n\nI got it working by changing the lower `cut -d ' ' -f 3` in cpu_",
+  "fix_pr": 420,
+  "buggy_commit": "9c0ca85a3a",
+  "fix_commit": "e52a77f1a8",
+  "pr_changed_files": 1,
+  "framework": "angular",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/tariqbuilds/linux-dash.git linux-dash-393",
+    "cd linux-dash-393",
+    "git checkout 9c0ca85a3a",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:4200 | grep -q '<'",
+  "dev_url": "http://localhost:4200",
+  "test_page": "/",
+  "app_name": "Linux Dash",
+  "test_description_zh": "打开 Linux Dash 主页，查看 CPU 温度模块，观察是否能正确显示 CPU 各核心的温度数值。",
+  "expected_result_zh": "CPU 温度模块应正确解析 sensors 命令输出，并在页面上显示每个核心的温度数值（如 +36.0°C），而非显示空白或错误信息。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 4694,
+  "batch": 9
+}

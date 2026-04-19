@@ -1,0 +1,43 @@
+{
+  "task_id": "headscale-ui-pr192",
+  "repo": "gurucomputing/headscale-ui",
+  "repo_url": "https://github.com/gurucomputing/headscale-ui",
+  "issue_url": "https://github.com/gurucomputing/headscale-ui/pull/192",
+  "issue_title": "fix: headscale 25 uses user's \"name\" instead of \"id\" to get/create/expire pre-auth keys",
+  "issue_body_preview": "I don't know if that's an issue on headscale's side, but they now require the user's name instead of ID for every actions on pre-auth keys\r\n\r\nNote: this issue is for compatibility with headscale 25+ and is not backward compatible",
+  "fix_pr": 192,
+  "buggy_commit": "21075b994a",
+  "fix_commit": "216a49ec52",
+  "pr_changed_files": 3,
+  "framework": "vue",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/gurucomputing/headscale-ui.git headscale-ui-192",
+    "cd headscale-ui-192",
+    "git checkout 21075b994a",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Headscale",
+  "test_description_zh": "在 Headscale 25+ 环境下，进入用户管理界面，选择一个用户，尝试执行以下操作：1) 获取该用户的预认证密钥列表；2) 为该用户创建新的预认证密钥；3) 使某个预认证密钥过期。观察每个操作是否能正常完成并正确显示结果。",
+  "expected_result_zh": "获取预认证密钥列表时应正确返回并显示该用户的所有预认证密钥；创建新的预认证密钥时应成功创建并在列表中显示新密钥；使预认证密钥过期时应成功标记为过期状态。所有操作均不应出现请求错误或数据为空的情况。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 2639,
+  "batch": 9
+}

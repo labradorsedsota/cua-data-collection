@@ -1,0 +1,45 @@
+{
+  "task_id": "core-805",
+  "repo": "nuxt-hub/core",
+  "repo_url": "https://github.com/nuxt-hub/core",
+  "issue_url": "https://github.com/nuxt-hub/core/issues/805",
+  "issue_title": "Drizzle Studio in Devtools points wrong DB in `cloudflare-dev` emulation",
+  "issue_body_preview": "**Describe the bug**\n\nWhen using `cloudflare-module` preset with `@nuxthub/core`, the `db` instance provided by `@nuxthub/db` correctly references the local D1 database (sqlite file in `/.wrangler/state/v3/d1/miniflare-D1DatabaseObject`), but Drizzle Studio launched from Nuxt Devtools creates and re",
+  "fix_pr": 806,
+  "buggy_commit": "f39f443ed6",
+  "fix_commit": "1e2c6b9240",
+  "pr_changed_files": 1,
+  "framework": "nuxt",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/nuxt-hub/core.git core-805",
+    "cd core-805",
+    "git checkout f39f443ed6",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Core",
+  "test_description_zh": "在使用 cloudflare-module preset 配合 @nuxthub/core 时，打开 Nuxt Devtools 中的 Drizzle Studio 面板，检查其连接的数据库是否与应用实际使用的 D1 数据库一致。向应用数据库中插入一条测试数据，然后在 Drizzle Studio 中查看该数据是否可见。",
+  "expected_result_zh": "Drizzle Studio 在 Devtools 中应正确指向本地 D1 数据库（位于 .wrangler/state/v3/d1/miniflare-D1DatabaseObject 目录下的 sqlite 文件），显示的数据应与应用实际读写的数据库内容一致，而不是创建或引用另一个不同的数据库文件。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 97904,
+  "batch": 9
+}

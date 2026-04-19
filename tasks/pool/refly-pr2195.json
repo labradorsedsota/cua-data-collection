@@ -1,0 +1,43 @@
+{
+  "task_id": "refly-pr2195",
+  "repo": "refly-ai/refly",
+  "repo_url": "https://github.com/refly-ai/refly",
+  "issue_url": "https://github.com/refly-ai/refly/pull/2195",
+  "issue_title": "[REF-1408]fix: Merge skill input variables with existing workflow variables",
+  "issue_body_preview": "Previously, when running a skill via `refly skill run --input`, the input variables would completely replace the workflow's existing variables. This caused variables not specified in the input to be lost.\r\n\r\nThis commit changes the behavior to merge input variables with existing ones:\r\n- Existing va",
+  "fix_pr": 2195,
+  "buggy_commit": "599a79253f",
+  "fix_commit": "1d6b0a57b4",
+  "pr_changed_files": 2,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/refly-ai/refly.git refly-2195",
+    "cd refly-2195",
+    "git checkout 599a79253f",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Refly",
+  "test_description_zh": "在工作流中预先设置多个变量（例如变量A和变量B），然后通过技能运行时仅指定部分输入变量（例如只传入变量A的新值），观察工作流执行后所有变量的状态。",
+  "expected_result_zh": "技能运行后，传入的输入变量（变量A）应被更新为新值，而未在输入中指定的已有变量（变量B）应保留原有值，不会丢失或被清空。工作流应能正确使用所有变量（包括合并后的输入变量和原有变量）完成执行。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 135285,
+  "batch": 9
+}

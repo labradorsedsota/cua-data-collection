@@ -1,0 +1,43 @@
+{
+  "task_id": "pylon-pr481",
+  "repo": "pylonide/pylon",
+  "repo_url": "https://github.com/pylonide/pylon",
+  "issue_url": "https://github.com/pylonide/pylon/pull/481",
+  "issue_title": "Fix Selection menu dropdown positioning due to unguarded command lookup",
+  "issue_body_preview": "The Selection menu dropdown renders at `(0, 0)` because `$checkItems` throws a `TypeError` when a menu item references a command not present in `commands.commands`, aborting `menu.show()` before `ppc.popup.show()` ever sets `top`/`left`.\n\n### Change\n\n- **`plugins-client/ext.menus/menus.js`** — add n",
+  "fix_pr": 481,
+  "buggy_commit": "f5fa532e6e",
+  "fix_commit": "902cbc1bb1",
+  "pr_changed_files": 1,
+  "framework": "other",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/pylonide/pylon.git pylon-481",
+    "cd pylon-481",
+    "git checkout f5fa532e6e",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Pylon",
+  "test_description_zh": "在编辑器中选中一段文本，然后点击顶部菜单栏中的 'Selection' 菜单，观察下拉菜单的弹出位置是否正确显示在菜单按钮下方。",
+  "expected_result_zh": "Selection 菜单的下拉列表应正确定位在菜单按钮正下方弹出，而不是跳到页面左上角 (0, 0) 的位置。菜单项应正常渲染且可交互。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 10,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 175541,
+  "batch": 9
+}

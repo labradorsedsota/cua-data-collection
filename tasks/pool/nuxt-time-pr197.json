@@ -1,0 +1,43 @@
+{
+  "task_id": "nuxt-time-pr197",
+  "repo": "danielroe/nuxt-time",
+  "repo_url": "https://github.com/danielroe/nuxt-time",
+  "issue_url": "https://github.com/danielroe/nuxt-time/pull/197",
+  "issue_title": "fix: handle camel-case options correctly",
+  "issue_body_preview": "Resolves https://github.com/danielroe/nuxt-time/issues/196\r\n\r\nThe Problem was that `Intl.DateTimeFormat` expects e.g. `timeZone`, but the current implementation passes e.g. `timezone` instead.\r\n\r\n```js\r\n// currently\r\nnew Intl.DateTimeFormat(options.locale, { timezone: 'America/New_York' });\r\n\r\n// af",
+  "fix_pr": 197,
+  "buggy_commit": "6aa3a620b5",
+  "fix_commit": "52a43cce0e",
+  "pr_changed_files": 2,
+  "framework": "nuxt",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/danielroe/nuxt-time.git nuxt-time-197",
+    "cd nuxt-time-197",
+    "git checkout 6aa3a620b5",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Nuxt Time",
+  "test_description_zh": "在页面中使用 <NuxtTime> 组件，并传入 camelCase 格式的 Intl.DateTimeFormat 选项（例如 timeZone: 'America/New_York'、dateStyle: 'full' 等），观察渲染出的时间文本是否正确应用了对应的格式化选项。",
+  "expected_result_zh": "组件应正确识别并应用 camelCase 格式的选项，例如传入 timeZone: 'America/New_York' 后，页面上显示的时间应为纽约时区对应的时间，而非用户本地时区或默认时区的时间；其他如 dateStyle、timeStyle 等选项也应正常生效，格式化输出与 Intl.DateTimeFormat 的预期结果一致。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 2699,
+  "batch": 9
+}

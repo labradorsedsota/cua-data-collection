@@ -1,0 +1,43 @@
+{
+  "task_id": "next-seo-pr728",
+  "repo": "garmeeh/next-seo",
+  "repo_url": "https://github.com/garmeeh/next-seo",
+  "issue_url": "https://github.com/garmeeh/next-seo/pull/728",
+  "issue_title": "Fix default robots overriding",
+  "issue_body_preview": "## Description of Change(s):\r\n\r\nFixes #727. \r\n\r\n`dangerouslySetAllPagesToNoIndex` in `<DefaultSeo>` had been having a priority over `noindex: false` in `<NextSeo>` of each page component. `nofollow` is also the same.\r\n\r\nAlso, the test case have expected wrong result. This PR fixes it.\r\n",
+  "fix_pr": 728,
+  "buggy_commit": "b72c5a48ea",
+  "fix_commit": "47d2d56f36",
+  "pr_changed_files": 2,
+  "framework": "nextjs",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/garmeeh/next-seo.git next-seo-728",
+    "cd next-seo-728",
+    "git checkout b72c5a48ea",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Next Seo",
+  "test_description_zh": "在 DefaultSeo 组件中设置 dangerouslySetAllPagesToNoIndex 为 true，然后在某个页面的 NextSeo 组件中显式设置 noindex: false 和 nofollow: false，检查该页面生成的 <meta name='robots'> 标签内容。",
+  "expected_result_zh": "页面级别的 NextSeo 中设置的 noindex: false 和 nofollow: false 应当覆盖 DefaultSeo 中的 dangerouslySetAllPagesToNoIndex/dangerouslySetAllPagesToNoFollow 设置，最终页面的 robots meta 标签应显示 'index, follow'，而非被默认配置错误地覆盖为 'noindex, nofollow'。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 9719,
+  "batch": 9
+}

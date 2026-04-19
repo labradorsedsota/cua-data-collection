@@ -1,0 +1,46 @@
+{
+  "task_id": "crm-366",
+  "repo": "frappe/crm",
+  "repo_url": "https://github.com/frappe/crm",
+  "issue_url": "https://github.com/frappe/crm/issues/366",
+  "issue_title": "Unassigned user getting access to FCRM",
+  "issue_body_preview": "We try to separate which employees get access to which modules by using Roles and permission.\r\nCurrently, we have not given access to any employee to FCRM, only the system manager.\r\n\r\nWe also have disabled app page after login.\r\nBut, other users see this app switch page from here:\r\n![image](https://",
+  "fix_pr": 1655,
+  "buggy_commit": "b140ff48c6",
+  "fix_commit": "dc6ec4943d",
+  "pr_changed_files": 2,
+  "framework": "vue",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/frappe/crm.git crm-366",
+    "cd crm-366",
+    "git checkout b140ff48c6",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Crm",
+  "test_description_zh": "使用一个没有 FCRM 访问权限的普通用户（非系统管理员）登录系统，观察应用切换页面或导航栏中是否显示 FCRM 应用入口，尝试通过应用切换器访问 FCRM。",
+  "expected_result_zh": "没有 FCRM 访问权限的用户在应用切换页面和导航栏中不应看到 FCRM 的入口选项，无法通过应用切换器进入 FCRM 模块。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug",
+      "released"
+    ]
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 100139,
+  "batch": 9
+}

@@ -1,0 +1,45 @@
+{
+  "task_id": "orchest-1021",
+  "repo": "orchest/orchest",
+  "repo_url": "https://github.com/orchest/orchest",
+  "issue_url": "https://github.com/orchest/orchest/issues/1021",
+  "issue_title": "Flickering build status of environments",
+  "issue_body_preview": "**Describe the bug**\r\nEvery time the environments page polls for the status of the environment build, it is set from \"NOT BUILT\" to \"SUCCESS\" (or the actual status the environment build is in).\r\n\r\n**Expected behavior**\r\nNo flickering.\r\n\r\nDoes it during poll set the state to \"NOT BUILT\" by default?\r\n",
+  "fix_pr": 1025,
+  "buggy_commit": "2e8a487844",
+  "fix_commit": "aad91e092d",
+  "pr_changed_files": 6,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/orchest/orchest.git orchest-1021",
+    "cd orchest-1021",
+    "git checkout 2e8a487844",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Orchest",
+  "test_description_zh": "打开 Environments 页面，观察环境构建状态标签在轮询刷新期间的显示变化，持续观察多个轮询周期（数秒至十几秒），注意状态文本是否保持稳定。",
+  "expected_result_zh": "环境构建状态（如 SUCCESS、FAILURE 等）在轮询刷新期间应保持稳定显示，不应出现短暂闪烁为 'NOT BUILT' 后再恢复为实际状态的情况。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 10,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 28488,
+  "batch": 9
+}

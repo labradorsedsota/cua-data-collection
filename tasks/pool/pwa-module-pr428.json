@@ -1,0 +1,43 @@
+{
+  "task_id": "pwa-module-pr428",
+  "repo": "nuxt-community/pwa-module",
+  "repo_url": "https://github.com/nuxt-community/pwa-module",
+  "issue_url": "https://github.com/nuxt-community/pwa-module/pull/428",
+  "issue_title": "fix(meta): add missing `hid` to icon tags",
+  "issue_body_preview": "The favicon head links were pushed without `hid` and `name` and they weren't deduplicated in `mergeMeta`: https://github.com/nuxt-community/pwa-module/blob/245aadc3c3111c1eff0bf18ff775bb248a708867/lib/meta.utils.js#L13-L19\r\nAs a result they were appended every time the page was visited, causing a me",
+  "fix_pr": 428,
+  "buggy_commit": "245aadc3c3",
+  "fix_commit": "d9addb7917",
+  "pr_changed_files": 1,
+  "framework": "nuxt",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/nuxt-community/pwa-module.git pwa-module-428",
+    "cd pwa-module-428",
+    "git checkout 245aadc3c3",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Pwa Module",
+  "test_description_zh": "在 Nuxt PWA 应用中，多次导航访问页面（如从首页跳转到其他页面再返回首页），然后检查页面 <head> 中 favicon 相关的 <link> 标签数量，观察是否存在重复的 icon link 标签。",
+  "expected_result_zh": "无论页面被访问多少次，<head> 中的 favicon link 标签应始终保持唯一，不会出现重复的 icon 标签累积追加的情况。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 5657,
+  "batch": 9
+}

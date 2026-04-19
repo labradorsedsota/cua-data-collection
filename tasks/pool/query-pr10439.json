@@ -1,0 +1,43 @@
+{
+  "task_id": "query-pr10439",
+  "repo": "TanStack/query",
+  "repo_url": "https://github.com/TanStack/query",
+  "issue_url": "https://github.com/TanStack/query/pull/10439",
+  "issue_title": "fix(vue-query-devtools): only register cleanup after mount",
+  "issue_body_preview": "  ## 🎯 Changes\r\n\r\n  Fix SSR cleanup handling in `@tanstack/vue-query-devtools` by only registering `devtools.unmount()`\r\n  after `devtools.mount()` has actually run.\r\n\r\n  Previously, the Vue devtools wrapper registered cleanup in `onScopeDispose()` during setup, while\r\n  `mount()` only happened in `",
+  "fix_pr": 10439,
+  "buggy_commit": "125067c05a",
+  "fix_commit": "0c2bf1ebe0",
+  "pr_changed_files": 3,
+  "framework": "vue",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/TanStack/query.git query-10439",
+    "cd query-10439",
+    "git checkout 125067c05a",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Query",
+  "test_description_zh": "在 Vue SSR 环境下使用 @tanstack/vue-query-devtools，验证页面在服务端渲染后客户端激活（hydration）时 devtools 组件的挂载与卸载流程是否正常，观察页面是否能正常渲染且控制台无报错。",
+  "expected_result_zh": "SSR 渲染的页面在客户端激活后，vue-query-devtools 能正常挂载显示，页面切换或组件卸载时 devtools 能正常清理，不会在 mount 之前触发 unmount 导致报错或页面异常。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 106525,
+  "batch": 9
+}

@@ -1,0 +1,43 @@
+{
+  "task_id": "webogram-pr1379",
+  "repo": "zhukov/webogram",
+  "repo_url": "https://github.com/zhukov/webogram",
+  "issue_url": "https://github.com/zhukov/webogram/pull/1379",
+  "issue_title": "Implement unsend messages. Fix #1340",
+  "issue_body_preview": "~~Does not actually work until the TL layer is updated, but~~ It works! Fixes #1340. Includes all the necessary checks (all selected messages must be sent by the user, and not more than 48 hours ago; only applicable to users and non-super groups), UI (nice checkbox and text with i18n support, but on",
+  "fix_pr": 1379,
+  "buggy_commit": "6e6c74c5c1",
+  "fix_commit": "0bc21d74f7",
+  "pr_changed_files": 8,
+  "framework": "angular",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/zhukov/webogram.git webogram-1379",
+    "cd webogram-1379",
+    "git checkout 6e6c74c5c1",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:4200 | grep -q '<'",
+  "dev_url": "http://localhost:4200",
+  "test_page": "/",
+  "app_name": "Webogram",
+  "test_description_zh": "在与某个用户的私聊或普通群组中，发送一条消息后，在48小时内右键点击或长按该消息，选择删除操作，观察删除对话框中是否出现'同时为对方撤回（unsend）'的复选框选项及其文案显示情况；勾选该选项后确认删除，观察消息是否被成功撤回。再测试选中多条自己发送的消息进行批量删除时，该撤回选项是否正常显示并可交互。",
+  "expected_result_zh": "删除自己48小时内发送的消息时，对话框中应显示带有国际化文案的复选框，允许用户选择同时为对方撤回消息；勾选后确认删除，消息应在双方会话中均被移除。该选项仅在私聊和非超级群组中出现，且仅当所有选中消息均为当前用户发送且在48小时内时才可用。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": true,
+    "issue_labels": []
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 81488,
+  "batch": 9
+}

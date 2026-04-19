@@ -1,0 +1,47 @@
+{
+  "task_id": "ng-dynamic-component-403",
+  "repo": "gund/ng-dynamic-component",
+  "repo_url": "https://github.com/gund/ng-dynamic-component",
+  "issue_url": "https://github.com/gund/ng-dynamic-component/issues/403",
+  "issue_title": "ngOnChanges produces changes for every input, even when the objects are unchanged.",
+  "issue_body_preview": "Problem: `ngOnChanges` seems to always provide all inputs in the SimpleChanges object, even though some inputs are unchanged. Correct behavior would be that only the changed inputs are provided, similar to the Angular implementation.\r\n\r\nRepro steps:\r\n- Open [stackblitz](https://stackblitz.com/edit/a",
+  "fix_pr": 404,
+  "buggy_commit": "a4dd160679",
+  "fix_commit": "57776b3595",
+  "pr_changed_files": 5,
+  "framework": "angular",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/gund/ng-dynamic-component.git ng-dynamic-component-403",
+    "cd ng-dynamic-component-403",
+    "git checkout a4dd160679",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:4200 | grep -q '<'",
+  "dev_url": "http://localhost:4200",
+  "test_page": "/",
+  "app_name": "Ng Dynamic Component",
+  "test_description_zh": "在页面中使用 ng-dynamic-component 动态渲染一个组件，该组件实现了 ngOnChanges 生命周期钩子。为动态组件绑定多个输入属性（inputs），然后仅修改其中一个输入属性的值，观察动态组件的 ngOnChanges 回调中 SimpleChanges 对象包含的变更项。",
+  "expected_result_zh": "当仅修改某一个输入属性时，动态组件的 ngOnChanges 收到的 SimpleChanges 对象应只包含实际发生变化的那个输入属性，未发生变化的输入属性不应出现在 SimpleChanges 中，组件应仅针对真正变化的属性进行更新渲染，与 Angular 原生行为一致。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug",
+      "released",
+      "released on @no-barrels"
+    ]
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 126990,
+  "batch": 9
+}

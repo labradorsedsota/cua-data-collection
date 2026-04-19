@@ -1,0 +1,43 @@
+{
+  "task_id": "faststore-pr3239",
+  "repo": "vtex/faststore",
+  "repo_url": "https://github.com/vtex/faststore",
+  "issue_url": "https://github.com/vtex/faststore/pull/3239",
+  "issue_title": "fix: subdomain locale/salesChannel loss while navigating",
+  "issue_body_preview": "## What's the purpose of this pull request?\r\n\r\nWhen using subdomain bindings for localization (e.g., `https://fr.brandless.fast.store` → `fr-FR`), the locale is correctly identified on the initial page load but gets lost during client-side navigation (search, PDP links, etc.), falling back to the de",
+  "fix_pr": 3239,
+  "buggy_commit": "903988587c",
+  "fix_commit": "2ac0db44fe",
+  "pr_changed_files": 8,
+  "framework": "nextjs",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/vtex/faststore.git faststore-3239",
+    "cd faststore-3239",
+    "git checkout 903988587c",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Faststore",
+  "test_description_zh": "在使用子域名绑定本地化的站点上（例如 fr.brandless.fast.store），首先访问首页确认页面语言/locale 正确，然后执行客户端导航操作（如搜索商品、点击商品进入PDP页面、切换分类等），观察导航后页面的语言/locale 以及销售渠道(salesChannel)是否保持一致。",
+  "expected_result_zh": "在子域名绑定的站点上，初次加载页面时 locale 和 salesChannel 正确识别；执行客户端导航（搜索、点击PDP链接等）后，页面语言、locale 和 salesChannel 应保持与子域名对应的值不变，不会回退到默认语言或默认销售渠道。页面内容（文字、价格、货币符号等）应始终与子域名对应的区域设置一致。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 315711,
+  "batch": 9
+}

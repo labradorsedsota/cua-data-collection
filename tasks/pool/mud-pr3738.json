@@ -1,0 +1,43 @@
+{
+  "task_id": "mud-pr3738",
+  "repo": "latticexyz/mud",
+  "repo_url": "https://github.com/latticexyz/mud",
+  "issue_url": "https://github.com/latticexyz/mud/pull/3738",
+  "issue_title": "fix(explorer): display remotely updated table values",
+  "issue_body_preview": "for checkbox:\r\n- we don't need to track pending value since changes are immediate when the checkbox is clicked/toggled\r\n- current value of checkbox is pulled from the pending/successful submitted value (mutation variables), otherwise the value from the indexer\r\n  - this means when we're idle (not su",
+  "fix_pr": 3738,
+  "buggy_commit": "2660d15c3a",
+  "fix_commit": "a64a3a1800",
+  "pr_changed_files": 2,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/latticexyz/mud.git mud-3738",
+    "cd mud-3738",
+    "git checkout 2660d15c3a",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Mud",
+  "test_description_zh": "在 Explorer 页面中打开一个包含复选框字段的表格，通过外部方式（如另一个客户端或直接数据库操作）远程更新某个表格行的值，观察 Explorer 页面中对应行的复选框和其他字段值是否能实时反映远程更新后的最新状态。同时，点击复选框切换其状态，观察复选框是否立即反映点击后的状态，以及提交成功后值是否正确显示。",
+  "expected_result_zh": "1. 当远程更新表格数据时，Explorer 中对应的复选框和字段值应自动更新为最新的远程值；2. 点击复选框时，复选框应立即切换到新状态（无延迟/闪烁）；3. 提交操作进行中时，显示的是待提交的值；提交成功后，显示索引器返回的最新值；4. 不应出现复选框状态卡在旧值、远程更新不生效或值显示不一致的情况。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 71498,
+  "batch": 9
+}

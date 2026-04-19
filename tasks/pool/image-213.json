@@ -1,0 +1,45 @@
+{
+  "task_id": "image-213",
+  "repo": "nuxt/image",
+  "repo_url": "https://github.com/nuxt/image",
+  "issue_url": "https://github.com/nuxt/image/issues/213",
+  "issue_title": "SEO Problem: Images will never be indexed",
+  "issue_body_preview": "I just found out that in the PageSource itself all images have this format:\r\n\r\n`<img src=\"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7\" width=\"90\" height=\"90\" alt=\"\" loading=\"lazy\">`\r\n\r\nThat is a total disaster for all SEO Crawlers as they will never index any of th",
+  "fix_pr": 1814,
+  "buggy_commit": "423143f326",
+  "fix_commit": "269830e001",
+  "pr_changed_files": 9,
+  "framework": "nuxt",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/nuxt/image.git image-213",
+    "cd image-213",
+    "git checkout 423143f326",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Image",
+  "test_description_zh": "打开首页，查看页面源代码（View Page Source），检查所有 <img> 标签的 src 属性值，确认图片是否使用了真实的图片 URL 而非 base64 占位符格式。同时在浏览器中检查图片是否正常渲染显示。",
+  "expected_result_zh": "页面源代码中所有 <img> 标签的 src 属性应包含真实的图片 URL（如 .jpg、.png、.webp 等格式的路径），而不是 data:image/gif;base64 占位符。对于启用懒加载的图片，应通过合适的属性（如 noscript 回退或 SSR 渲染真实 src）确保搜索引擎爬虫能够识别到真实图片地址。页面中的图片应正常可见并正确加载。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 28806,
+  "batch": 9
+}

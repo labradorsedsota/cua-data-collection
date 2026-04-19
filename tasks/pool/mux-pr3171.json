@@ -1,0 +1,43 @@
+{
+  "task_id": "mux-pr3171",
+  "repo": "coder/mux",
+  "repo_url": "https://github.com/coder/mux",
+  "issue_url": "https://github.com/coder/mux/pull/3171",
+  "issue_title": "🤖 fix: preserve init logs across reconnect replay",
+  "issue_body_preview": "## Summary\n\nKeep the existing `workspace-init` transcript row visible while reconnect replay catches up, and make replayed init events idempotent so the reconnect path can reuse the same replay buffer without blanking or duplicating SSH/setup output.\n\n## Background\n\nThe earlier follow-up fixed repla",
+  "fix_pr": 3171,
+  "buggy_commit": "0ed6c98e24",
+  "fix_commit": "f5a4904f41",
+  "pr_changed_files": 9,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/coder/mux.git mux-3171",
+    "cd mux-3171",
+    "git checkout 0ed6c98e24",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Mux",
+  "test_description_zh": "在工作区初始化过程中，观察 workspace-init 的日志输出行。然后模拟断线重连（或等待自动重连），观察重连回放期间初始化日志区域的显示状态，检查是否有日志行消失、空白闪烁或内容重复的情况。",
+  "expected_result_zh": "断线重连回放期间，已有的 workspace-init 日志行应持续可见，不会出现空白或闪烁；重连回放完成后，SSH/setup 相关的初始化输出不应重复显示，日志内容保持完整且无重复条目。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 91681,
+  "batch": 9
+}

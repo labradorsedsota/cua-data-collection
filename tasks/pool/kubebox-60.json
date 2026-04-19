@@ -1,0 +1,45 @@
+{
+  "task_id": "kubebox-60",
+  "repo": "astefanutti/kubebox",
+  "repo_url": "https://github.com/astefanutti/kubebox",
+  "issue_url": "https://github.com/astefanutti/kubebox/issues/60",
+  "issue_title": "ENOENT Error with AWS EKS",
+  "issue_body_preview": "I am trying to use kubebox with AWS EKS. I updated to 0.6.0 which supports the exec auth. I have been unsuccessful in connecting due to the following error:\r\n\r\nspawn aws-iam-authenticator ENOENT \r\n\r\nPasting in a token doesn't seem to work either.\r\n\r\nAny ideas? What am I missing? ",
+  "fix_pr": 63,
+  "buggy_commit": "f4b4e1996d",
+  "fix_commit": "033a9bf18c",
+  "pr_changed_files": 1,
+  "framework": "other",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/astefanutti/kubebox.git kubebox-60",
+    "cd kubebox-60",
+    "git checkout f4b4e1996d",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Kubebox",
+  "test_description_zh": "在配置了 AWS EKS 集群（使用 exec 认证方式，如 aws-iam-authenticator）的环境中，启动 kubebox 并尝试连接到 EKS 集群，观察是否能成功建立连接并显示集群信息。",
+  "expected_result_zh": "kubebox 应能正确调用 aws-iam-authenticator 完成认证流程，成功连接到 EKS 集群，并在终端 UI 中正常显示集群的 Pod 列表等资源信息，而不是显示 ENOENT 错误。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 19242,
+  "batch": 9
+}

@@ -1,0 +1,45 @@
+{
+  "task_id": "composition-api-78",
+  "repo": "nuxt-community/composition-api",
+  "repo_url": "https://github.com/nuxt-community/composition-api",
+  "issue_url": "https://github.com/nuxt-community/composition-api/issues/78",
+  "issue_title": "fix: Set asynchronously properties from `useMeta` does not react for the first load",
+  "issue_body_preview": "**🐛 The bug**\r\nI try to set the `title` asynchronously:\r\n\r\n```javascript\r\n    const { title } = useMeta({ title: 'Page' })\r\n    setTimeout(() => {\r\n      title.value = 'My page'\r\n    }, 1000)\r\n```\r\n\r\nWhen navigating to the page for the first time, the page title is \"Page\" and does not react to be \"M",
+  "fix_pr": 792,
+  "buggy_commit": "b1b767377d",
+  "fix_commit": "6c8f46f14a",
+  "pr_changed_files": 2,
+  "framework": "nuxt",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/nuxt-community/composition-api.git composition-api-78",
+    "cd composition-api-78",
+    "git checkout b1b767377d",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Composition Api",
+  "test_description_zh": "在使用 useMeta 的页面中，通过异步方式（如 setTimeout）设置页面标题。首次导航到该页面后，等待异步操作完成，观察浏览器页面标题是否更新。",
+  "expected_result_zh": "首次加载页面时，页面标题先显示初始值（如 'Page'），异步操作完成后（如1秒后），页面标题应自动更新为异步设置的新值（如 'My page'），而不是停留在初始值不变。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 8270,
+  "batch": 9
+}

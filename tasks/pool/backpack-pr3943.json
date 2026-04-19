@@ -1,0 +1,43 @@
+{
+  "task_id": "backpack-pr3943",
+  "repo": "coral-xyz/backpack",
+  "repo_url": "https://github.com/coral-xyz/backpack",
+  "issue_url": "https://github.com/coral-xyz/backpack/pull/3943",
+  "issue_title": "fix: empty nft screen loads before nfts load",
+  "issue_body_preview": "During the async data fetch for the `customSplTokenAccounts` atom, the selector `solanaMetadataMap` was not able to propagate the \"loading\" state when the request was still evaluated as pending. This is because the exception (thrown as an unfulfilled Promise) was caught and returned as a null value,",
+  "fix_pr": 3943,
+  "buggy_commit": "aa62f48d57",
+  "fix_commit": "b99ed70722",
+  "pr_changed_files": 2,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/coral-xyz/backpack.git backpack-3943",
+    "cd backpack-3943",
+    "git checkout aa62f48d57",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Backpack",
+  "test_description_zh": "打开 Backpack 钱包扩展，导航至 NFT（收藏品）页面，观察在 NFT 数据加载过程中页面的显示状态，特别关注是否有加载指示器（如骨架屏或 loading spinner），以及 NFT 列表加载完成后的展示情况。",
+  "expected_result_zh": "在 NFT 数据尚未加载完成时，页面应显示加载状态指示器（如 loading spinner 或骨架屏），而不是直接显示\"无 NFT\"的空状态页面。待数据加载完成后，若用户拥有 NFT，则正确展示 NFT 列表；若无 NFT，则显示空状态提示。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 9,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 226108,
+  "batch": 9
+}

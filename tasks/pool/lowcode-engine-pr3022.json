@@ -1,0 +1,43 @@
+{
+  "task_id": "lowcode-engine-pr3022",
+  "repo": "alibaba/lowcode-engine",
+  "repo_url": "https://github.com/alibaba/lowcode-engine",
+  "issue_url": "https://github.com/alibaba/lowcode-engine/pull/3022",
+  "issue_title": "fix(renderer): remove the replacement 'div' for ConfigProvider when i…",
+  "issue_body_preview": "当renderer中的ConfigProvider未设置时默认以div进行兜底，但这样做的坏处就是div会影响布局，当我们以flex布局整个应用时，div不会继承高度，会导致内部的flex布局组件因为缺少高度失效。\r\n建议当ConfigProvider为空时不创建元素，ConfigProvider可以由上层封装自主实现，因为不同的组件库ConfigProvider的属性是不一样的，目前也仅传入了device和locale，所以面向pc和移动端不同的组件库当前方案实际上也无法满足需求，不设置renderer的ConfigProvider这种场景是存在的。",
+  "fix_pr": 3022,
+  "buggy_commit": "09707ce6b1",
+  "fix_commit": "6950329d1e",
+  "pr_changed_files": 1,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/alibaba/lowcode-engine.git lowcode-engine-3022",
+    "cd lowcode-engine-3022",
+    "git checkout 09707ce6b1",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Lowcode Engine",
+  "test_description_zh": "在低代码引擎渲染器中，不设置 ConfigProvider 组件，使用 flex 布局构建整个应用页面，在页面中放置需要依赖父容器高度的 flex 子组件，观察页面的整体布局和子组件的高度表现。",
+  "expected_result_zh": "当未配置 ConfigProvider 时，渲染器不应额外插入多余的 div 包裹层，flex 布局的子组件能够正确继承父容器高度，页面布局正常显示，不会因为多余的 div 元素导致高度丢失或 flex 布局失效。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 9,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 53319,
+  "batch": 9
+}

@@ -1,0 +1,45 @@
+{
+  "task_id": "ngx-scanner-557",
+  "repo": "zxing-js/ngx-scanner",
+  "repo_url": "https://github.com/zxing-js/ngx-scanner",
+  "issue_url": "https://github.com/zxing-js/ngx-scanner/issues/557",
+  "issue_title": "ZxingScannerComponent is not releasing all resources - BrowserCodeReader still trying to decode after ngDestroy",
+  "issue_body_preview": "**Describe the bug**\r\nBrowserCodeReader is trying to decode even after destroying ZxingScannerComponent\r\nAffected version: \"@zxing/ngx-scanner\": \"^17.0.1\"\r\n\r\n**Code**\r\n```html\r\n<button (click)=\"scannerVisible = !scannerVisible\">Toggle scanner</button>\r\n<zxing-scanner *ngIf=\"scannerVisible\"></zxing-s",
+  "fix_pr": 558,
+  "buggy_commit": "31dca2888c",
+  "fix_commit": "e2d0e4d1a5",
+  "pr_changed_files": 1,
+  "framework": "angular",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/zxing-js/ngx-scanner.git ngx-scanner-557",
+    "cd ngx-scanner-557",
+    "git checkout 31dca2888c",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:4200 | grep -q '<'",
+  "dev_url": "http://localhost:4200",
+  "test_page": "/",
+  "app_name": "Ngx Scanner",
+  "test_description_zh": "在页面中通过按钮切换 zxing-scanner 组件的显示与隐藏：1) 点击按钮显示扫码组件，确认摄像头启动并正常扫码；2) 再次点击按钮隐藏扫码组件；3) 观察浏览器控制台是否有报错，以及摄像头指示灯是否熄灭；4) 多次重复切换显示/隐藏操作，观察页面是否正常响应且无资源泄漏相关异常。",
+  "expected_result_zh": "当扫码组件被隐藏（销毁）后，摄像头资源应完全释放（摄像头指示灯熄灭），浏览器控制台不应出现 BrowserCodeReader 持续尝试解码的错误信息，页面保持正常交互，再次显示组件时能重新正常启动扫码功能。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 10977,
+  "batch": 9
+}

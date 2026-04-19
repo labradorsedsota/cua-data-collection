@@ -1,0 +1,45 @@
+{
+  "task_id": "fhir-emr-391",
+  "repo": "beda-software/fhir-emr",
+  "repo_url": "https://github.com/beda-software/fhir-emr",
+  "issue_url": "https://github.com/beda-software/fhir-emr/issues/391",
+  "issue_title": "Hidden by enableWhen required fields are validating",
+  "issue_body_preview": "Required fields hidden by enableWhen condition is still validating while a questionnaire is saving\r\n",
+  "fix_pr": 393,
+  "buggy_commit": "fd8179e122",
+  "fix_commit": "ea27b1e35e",
+  "pr_changed_files": 10,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/beda-software/fhir-emr.git fhir-emr-391",
+    "cd fhir-emr-391",
+    "git checkout fd8179e122",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Fhir Emr",
+  "test_description_zh": "在问卷编辑/填写页面中，找到一个包含 enableWhen 条件控制显隐的必填字段的问卷。设置条件使该必填字段被隐藏（即不满足 enableWhen 条件），然后尝试保存/提交问卷，观察表单验证行为和提交结果。",
+  "expected_result_zh": "当必填字段因 enableWhen 条件不满足而被隐藏时，该字段不应参与表单验证。用户提交问卷时不应因为隐藏的必填字段未填写而出现验证错误，问卷应能正常保存提交。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 9397,
+  "batch": 9
+}

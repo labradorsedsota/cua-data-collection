@@ -1,0 +1,45 @@
+{
+  "task_id": "covalent-210",
+  "repo": "Teradata/covalent",
+  "repo_url": "https://github.com/Teradata/covalent",
+  "issue_url": "https://github.com/Teradata/covalent/issues/210",
+  "issue_title": "[Bug]? Using TdChips and TdFileUpload together causes wrong keyup.enter events to be fired",
+  "issue_body_preview": "Currently using TdChips and TdFileUpload in the same page causes some interesting behaviour\r\n\r\n**Chips:**\r\nTo select a chip when using autocomplete, the enter key is needed to select a chip and also to remove chips. the code is in the following places\r\nhttps://github.com/Teradata/covalent/blob/devel",
+  "fix_pr": 2533,
+  "buggy_commit": "4ddce68ca6",
+  "fix_commit": "e33e94f478",
+  "pr_changed_files": 1,
+  "framework": "angular",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/Teradata/covalent.git covalent-210",
+    "cd covalent-210",
+    "git checkout 4ddce68ca6",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:4200 | grep -q '<'",
+  "dev_url": "http://localhost:4200",
+  "test_page": "/",
+  "app_name": "Covalent",
+  "test_description_zh": "在同一页面中同时使用 TdChips（带自动补全）和 TdFileUpload 组件。在 TdChips 组件中通过输入文本并按 Enter 键选择一个 chip，然后再按 Enter 键尝试删除已选中的 chip。观察两个组件各自的键盘 Enter 事件是否仅在各自组件范围内触发，不会互相干扰。",
+  "expected_result_zh": "在 TdChips 组件中按 Enter 键时，仅触发 TdChips 相关的选择或删除操作，不会意外触发 TdFileUpload 组件的事件；同样，在 TdFileUpload 组件中按 Enter 键时不会影响 TdChips 组件的行为。两个组件的 keyup.enter 事件各自独立、互不干扰，功能正常。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 215541,
+  "batch": 9
+}

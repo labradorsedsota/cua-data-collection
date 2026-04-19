@@ -1,0 +1,45 @@
+{
+  "task_id": "svelthree-189",
+  "repo": "vatro/svelthree",
+  "repo_url": "https://github.com/vatro/svelthree",
+  "issue_url": "https://github.com/vatro/svelthree/issues/189",
+  "issue_title": "Helpers of Lights with `target` are one frame behind (`lookAt` prop functionality)",
+  "issue_body_preview": "Not quite sure why this is happening, but the issue is resolved if we manually update `matrixWorld` of `light.target` right after setting it's position in the `lookAt`-logic (`PropUtils`):\r\n\r\nhttps://github.com/vatro/svelthree/blob/1180fefe2a8c399deec71e2e7c6a142fb0e76ea0/src/lib/utils/PropUtils.ts#",
+  "fix_pr": 190,
+  "buggy_commit": "1180fefe2a",
+  "fix_commit": "0f138f8817",
+  "pr_changed_files": 1,
+  "framework": "svelte",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/vatro/svelthree.git svelthree-189",
+    "cd svelthree-189",
+    "git checkout 1180fefe2a",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Svelthree",
+  "test_description_zh": "在场景中创建一个带有 target 的灯光（如 DirectionalLight 或 SpotLight），为其设置 lookAt 属性指向某个目标位置，观察灯光辅助线（Helper）的方向是否与灯光实际照射方向一致，特别是在初始渲染和属性变化时辅助线是否立即正确更新。",
+  "expected_result_zh": "灯光的 Helper 辅助线应在每一帧都与灯光的实际照射方向（lookAt 目标位置）保持同步，不应出现辅助线滞后一帧才更新的情况。初始渲染和 lookAt 属性变化后，Helper 应立即正确指向目标方向。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 4288,
+  "batch": 9
+}

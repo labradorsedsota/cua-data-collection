@@ -1,0 +1,43 @@
+{
+  "task_id": "apollo-pr274",
+  "repo": "nuxt-modules/apollo",
+  "repo_url": "https://github.com/nuxt-modules/apollo",
+  "issue_url": "https://github.com/nuxt-modules/apollo/pull/274",
+  "issue_title": "Fix: clear cache after every request in ssr",
+  "issue_body_preview": "Clear apollo cache in ssr after every request. So that no extra payload is sent in next ssr request which can cause increase in response size as it'll send apollo ssr state from previous request.\r\n\r\nResolves:\r\nhttps://github.com/nuxt-community/apollo-module/issues/273\r\nhttps://github.com/nuxt-commun",
+  "fix_pr": 274,
+  "buggy_commit": "30260bb8c1",
+  "fix_commit": "6e65adcf4a",
+  "pr_changed_files": 1,
+  "framework": "nuxt",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/nuxt-modules/apollo.git apollo-274",
+    "cd apollo-274",
+    "git checkout 30260bb8c1",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Apollo",
+  "test_description_zh": "在 Nuxt SSR 模式下，依次访问多个使用 Apollo 查询数据的页面，观察每次服务端渲染返回的 HTML 响应大小和其中嵌入的 Apollo 状态（__NUXT__.apollo）数据内容。",
+  "expected_result_zh": "每次 SSR 请求返回的页面中，Apollo 缓存状态仅包含当前页面请求的数据，不应携带前一次请求的残留数据；页面响应体大小正常，不会因为累积之前请求的缓存数据而异常增大。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 3667,
+  "batch": 9
+}

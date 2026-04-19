@@ -1,0 +1,45 @@
+{
+  "task_id": "veritas-kanban-211",
+  "repo": "BradGroux/veritas-kanban",
+  "repo_url": "https://github.com/BradGroux/veritas-kanban",
+  "issue_url": "https://github.com/BradGroux/veritas-kanban/issues/211",
+  "issue_title": "SystemHealthBar shows 1% success rate when all runs succeed",
+  "issue_body_preview": "## Bug\n\nThe System Health Bar displays \"1% success rate\" even when all recent runs succeeded (29/29 = 100%).\n\n## Root Cause\n\n`getRunMetrics()` returns `successRate` as a **0-1 ratio** (e.g. `1.0` for 100%), but `system-health.ts:getOperationsSignal()` passes this value through without converting to ",
+  "fix_pr": 276,
+  "buggy_commit": "bacbd07a1b",
+  "fix_commit": "9baf8946a1",
+  "pr_changed_files": 1,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/BradGroux/veritas-kanban.git veritas-kanban-211",
+    "cd veritas-kanban-211",
+    "git checkout bacbd07a1b",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Veritas Kanban",
+  "test_description_zh": "打开应用首页，观察系统健康状态栏（System Health Bar）中的成功率显示。在所有最近运行均成功的情况下，查看成功率百分比数值是否正确。",
+  "expected_result_zh": "当所有最近运行均成功时（例如 29/29），系统健康状态栏应显示 '100% success rate'，而非 '1% success rate'。成功率数值应正确地将比率转换为百分比进行展示。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 10,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 59875,
+  "batch": 9
+}

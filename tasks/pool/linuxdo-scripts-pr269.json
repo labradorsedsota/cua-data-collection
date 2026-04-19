@@ -1,0 +1,43 @@
+{
+  "task_id": "linuxdo-scripts-pr269",
+  "repo": "anghunk/linuxdo-scripts",
+  "repo_url": "https://github.com/anghunk/linuxdo-scripts",
+  "issue_url": "https://github.com/anghunk/linuxdo-scripts/pull/269",
+  "issue_title": "fix: 修复点击搜索结果无法在新标签页打开的问题",
+  "issue_body_preview": "之前有人提了修复 https://github.com/anghunk/linuxdo-scripts/pull/194 。但是最新版本没把这个修复 https://github.com/anghunk/linuxdo-scripts/pull/194 合并进去。\r\n\r\n之前的 PR [#194](https://github.com/anghunk/linuxdo-scripts/pull/194) 注意到了这个问题并尝试修复，但其实现方式引入了一个新的 Bug：当用户点击搜索结果时，链接不仅会在新标签页打开，同时也会在原始标签页加载，导致一次点击触发两次页面跳转。\r\n\r\n问题复现：\r\n<i",
+  "fix_pr": 269,
+  "buggy_commit": "57c356710d",
+  "fix_commit": "2add22c650",
+  "pr_changed_files": 1,
+  "framework": "other",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/anghunk/linuxdo-scripts.git linuxdo-scripts-269",
+    "cd linuxdo-scripts-269",
+    "git checkout 57c356710d",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Linuxdo Scripts",
+  "test_description_zh": "在论坛页面使用脚本提供的搜索功能，输入关键词进行搜索，然后点击搜索结果中的某一条链接，观察链接的打开行为。",
+  "expected_result_zh": "点击搜索结果链接后，链接仅在新标签页中打开，当前原始标签页保持不变，不会同时在原始标签页中加载该链接，即一次点击只触发一次页面跳转（新标签页打开）。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 15760,
+  "batch": 9
+}

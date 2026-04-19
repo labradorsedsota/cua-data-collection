@@ -1,0 +1,45 @@
+{
+  "task_id": "rx-player-775",
+  "repo": "canalplus/rx-player",
+  "repo_url": "https://github.com/canalplus/rx-player",
+  "issue_url": "https://github.com/canalplus/rx-player/issues/775",
+  "issue_title": "After some time, the `minimumPosition` become too high for live contents when manifestUpdateUrl is set",
+  "issue_body_preview": "## Overview\r\n\r\nI noticed that in rare conditions, the calculated minimumPosition for a given content was set as the one taken from the `manifestUpdateUrl` instead of the true minimum position for the whole content.\r\n\r\n## Some context: the `manifestUpdateUrl`\r\n\r\nTo give some context, applications can",
+  "fix_pr": 1807,
+  "buggy_commit": "da60c98a3e",
+  "fix_commit": "4132bd1527",
+  "pr_changed_files": 1,
+  "framework": "other",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/canalplus/rx-player.git rx-player-775",
+    "cd rx-player-775",
+    "git checkout da60c98a3e",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Rx Player",
+  "test_description_zh": "在直播内容播放场景下，当设置了 manifestUpdateUrl 时，长时间播放后观察播放器报告的 minimumPosition 值是否保持正确，验证用户能否正常回看（seek）到较早的可用位置。",
+  "expected_result_zh": "直播内容长时间播放后，minimumPosition 应反映整个内容的真实最小可播放位置，而非 manifestUpdateUrl 返回的较高值；用户应能正常 seek 到实际可用的最早位置，不会因 minimumPosition 过高而导致可回看范围异常缩小。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 157241,
+  "batch": 9
+}

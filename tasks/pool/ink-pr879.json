@@ -1,0 +1,43 @@
+{
+  "task_id": "ink-pr879",
+  "repo": "vadimdemedes/ink",
+  "repo_url": "https://github.com/vadimdemedes/ink",
+  "issue_url": "https://github.com/vadimdemedes/ink/pull/879",
+  "issue_title": "fix: mark text node dirty on insertBefore to fix stale layout",
+  "issue_body_preview": "## Summary\n\nFixes #867\n\nWhen a string child of `<Text>` transitions from empty (`\"\"`) to non-empty (e.g., `\"x\"`), the rendered output could be incorrectly truncated because Yoga used a stale cached width from the previous layout.\n\n### Root cause\n\n`insertBeforeNode` in `dom.ts` had an early `return` ",
+  "fix_pr": 879,
+  "buggy_commit": "54c4e6518c",
+  "fix_commit": "1761c3ae42",
+  "pr_changed_files": 2,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/vadimdemedes/ink.git ink-879",
+    "cd ink-879",
+    "git checkout 54c4e6518c",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Ink",
+  "test_description_zh": "在 Ink 终端 UI 中，渲染一个 <Text> 组件，其子字符串初始为空字符串 (\"\")，随后通过状态更新将其变为非空字符串（例如 \"x\" 或其他文本内容）。观察渲染输出是否正确显示完整的文本内容。",
+  "expected_result_zh": "当 <Text> 的子文本从空字符串变为非空字符串时，渲染输出应正确显示完整的新文本内容，不应出现文本被截断、丢失或显示为空的情况。布局宽度应根据新的文本内容正确更新。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 2102,
+  "batch": 9
+}

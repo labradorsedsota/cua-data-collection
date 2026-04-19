@@ -1,0 +1,43 @@
+{
+  "task_id": "refly-pr2273",
+  "repo": "refly-ai/refly",
+  "repo_url": "https://github.com/refly-ai/refly",
+  "issue_url": "https://github.com/refly-ai/refly/pull/2273",
+  "issue_title": "fix: nexu modal SPA navigation fix and button text update",
+  "issue_body_preview": "## Summary\n- Fix nexu modal re-appearing when switching sidebar tabs (SPA navigation). Use `sessionStorage` to ensure the modal only shows once per browser session, while still showing on actual page refreshes.\n- Rename button text: \"Download nexu\" → \"Get nexu\" (en-US), \"去 nexu 下载\" → \"前往 nexu\" (zh-H",
+  "fix_pr": 2273,
+  "buggy_commit": "ccb138256c",
+  "fix_commit": "16ad120719",
+  "pr_changed_files": 3,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/refly-ai/refly.git refly-2273",
+    "cd refly-2273",
+    "git checkout ccb138256c",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Refly",
+  "test_description_zh": "1. 打开首页，观察是否弹出 nexu 模态框，记录模态框中按钮的文案（中文/英文环境）。\n2. 关闭模态框后，点击侧边栏不同的标签页进行 SPA 内部导航切换，观察 nexu 模态框是否再次弹出。\n3. 刷新页面（实际页面刷新），观察 nexu 模态框是否重新出现。\n4. 检查英文环境下按钮文案，以及中文环境下按钮文案。",
+  "expected_result_zh": "1. 首次访问页面时 nexu 模态框正常弹出。\n2. 英文环境下按钮文案显示为 \"Get nexu\"，中文环境下显示为 \"前往 nexu\"。\n3. 关闭模态框后，在同一浏览器会话中切换侧边栏标签页（SPA 导航），模态框不应再次出现。\n4. 手动刷新页面后，模态框可以重新出现（基于 sessionStorage，同一会话内不再重复弹出）。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 135285,
+  "batch": 9
+}

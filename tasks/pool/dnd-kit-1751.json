@@ -1,0 +1,49 @@
+{
+  "task_id": "dnd-kit-1751",
+  "repo": "clauderic/dnd-kit",
+  "repo_url": "https://github.com/clauderic/dnd-kit",
+  "issue_url": "https://github.com/clauderic/dnd-kit/issues/1751",
+  "issue_title": "[experimental] DOM elements not garbage collected after removal",
+  "issue_body_preview": "**Describe the bug**\n\nAfter drag and drop the source element are removed from the DOM, But the element remain in memory as detached DOM nodes and memory is not released.\n\n**Reproduction**\n\n[Sanbox](https://codesandbox.io/p/sandbox/hhgc4d)\n\nSteps to reproduce the behavior:\n\n- Load the sandbox\n- Open ",
+  "fix_pr": 1983,
+  "buggy_commit": "d58786f3cf",
+  "fix_commit": "24be876918",
+  "pr_changed_files": 2,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/clauderic/dnd-kit.git dnd-kit-1751",
+    "cd dnd-kit-1751",
+    "git checkout d58786f3cf",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Dnd Kit",
+  "test_description_zh": "在页面中执行多次拖放操作，将元素从一个列表拖到另一个列表（或在同一列表中重新排序），使源元素从 DOM 中移除。反复执行该操作多次后，使用浏览器开发者工具的 Memory 面板拍摄堆快照，检查已被移除的 DOM 元素是否仍作为 detached DOM nodes 存在于内存中。",
+  "expected_result_zh": "拖放操作完成后，已从 DOM 中移除的元素不应以 detached DOM nodes 的形式残留在内存中，内存应被正常回收释放，堆快照中不应出现大量与已移除拖拽元素相关的 detached DOM 节点。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug",
+      "experimental",
+      "dom",
+      "performance",
+      "triage:done"
+    ]
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 11212,
+  "batch": 9
+}

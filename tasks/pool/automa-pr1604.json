@@ -1,0 +1,43 @@
+{
+  "task_id": "automa-pr1604",
+  "repo": "AutomaApp/automa",
+  "repo_url": "https://github.com/AutomaApp/automa",
+  "issue_url": "https://github.com/AutomaApp/automa/pull/1604",
+  "issue_title": "Fix bugs with deleting hosted workflows and opening workflows",
+  "issue_body_preview": "1.The wrong id was used when deleting hosted workflows from the popup page.\r\n2.When opening the workflow detail page from other pages like the popup or logs page, the current route path was being replaced by the activeTab stored in localStorage. I changed it to prioritize using the current route pat",
+  "fix_pr": 1604,
+  "buggy_commit": "697282878c",
+  "fix_commit": "5051c3ffff",
+  "pr_changed_files": 2,
+  "framework": "vue",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/AutomaApp/automa.git automa-1604",
+    "cd automa-1604",
+    "git checkout 697282878c",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Automa",
+  "test_description_zh": "1. 在弹出页面（popup）中，找到一个已托管的工作流（hosted workflow），点击删除按钮，观察该工作流是否被正确删除。\n2. 从弹出页面（popup）或日志页面（logs page）点击某个工作流，打开其详情页面，观察页面路由和显示的内容是否正确对应所点击的工作流。",
+  "expected_result_zh": "1. 在弹出页面删除托管工作流时，应正确删除所选的工作流，而非删除错误的工作流或删除失败。\n2. 从弹出页面或日志页面点击工作流进入详情页后，页面路由应保持为工作流详情页路径，显示的内容应为所点击的工作流的详细信息，不会被 localStorage 中存储的 activeTab 值替换导致跳转到错误的页面。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 9055,
+  "batch": 9
+}

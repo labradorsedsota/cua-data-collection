@@ -1,0 +1,43 @@
+{
+  "task_id": "next-themes-pr330",
+  "repo": "pacocoursey/next-themes",
+  "repo_url": "https://github.com/pacocoursey/next-themes",
+  "issue_url": "https://github.com/pacocoursey/next-themes/pull/330",
+  "issue_title": "fix: map theme to class using ValueObject in injected script",
+  "issue_body_preview": "I think this is a bug: the CSS classes are being correctly remapped in order to _remove_ them all, but the class being added is not mapped using the `ValueObject`:\r\n\r\nhttps://github.com/pacocoursey/next-themes/blob/57c0561b1fac95fab0a951adf1bc74f21e24c91c/next-themes/src/script.ts#L19-L22",
+  "fix_pr": 330,
+  "buggy_commit": "57c0561b1f",
+  "fix_commit": "1b510445a3",
+  "pr_changed_files": 1,
+  "framework": "nextjs",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/pacocoursey/next-themes.git next-themes-330",
+    "cd next-themes-330",
+    "git checkout 57c0561b1f",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Next Themes",
+  "test_description_zh": "在使用 next-themes 配置了 value 映射（例如 themes=['light','dark'], value={dark:'theme-dark', light:'theme-light'}）的项目中，切换主题后，检查 HTML 元素上实际应用的 CSS class 是否为 value 映射后的值。",
+  "expected_result_zh": "当主题切换时，HTML 根元素上的 class 应该使用 value 映射后的值（例如设置 value={dark:'theme-dark'} 时，切换到 dark 主题后 class 应为 'theme-dark'），而不是直接使用未映射的主题名称（如 'dark'）。页面应正确应用对应主题的样式。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 773,
+  "batch": 9
+}

@@ -1,0 +1,45 @@
+{
+  "task_id": "fonts-242",
+  "repo": "nuxt/fonts",
+  "repo_url": "https://github.com/nuxt/fonts",
+  "issue_url": "https://github.com/nuxt/fonts/issues/242",
+  "issue_title": "wrong baseURL in inline CSS",
+  "issue_body_preview": "Related to #96; this still is broken.\r\n\r\nIf I set `baseUrl` to `/subapp` then Nuxt Fonts uses a link like:\r\n\r\n`http://localhost:5001/subapp/_fonts/rP2rp2ywxg089UriCZaSExd86J3t9jz86Mvy4qCRAL19DksVat9XCm3w-ByvzuLy2fa.woff`\r\n\r\nHowever this results in a 404, but this link works (note no base url)\r\n`http",
+  "fix_pr": 437,
+  "buggy_commit": "f164503aa2",
+  "fix_commit": "e47dc24d48",
+  "pr_changed_files": 3,
+  "framework": "nuxt",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/nuxt/fonts.git fonts-242",
+    "cd fonts-242",
+    "git checkout f164503aa2",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Fonts",
+  "test_description_zh": "在 Nuxt 配置中设置 baseURL 为一个子路径（如 /subapp），启动应用后访问页面，检查页面中内联 CSS 引用的字体文件 URL 是否能正确加载，观察页面文字是否使用了预期的自定义字体渲染。",
+  "expected_result_zh": "当设置了 baseURL（如 /subapp）后，页面内联 CSS 中的字体文件 URL 应包含正确的 baseURL 前缀路径，字体文件请求返回 200 而非 404，页面文字应以自定义字体正常渲染显示，无字体加载失败或回退到默认字体的情况。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 5332,
+  "batch": 9
+}

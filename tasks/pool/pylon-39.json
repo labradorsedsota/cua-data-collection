@@ -1,0 +1,45 @@
+{
+  "task_id": "pylon-39",
+  "repo": "pylonide/pylon",
+  "repo_url": "https://github.com/pylonide/pylon",
+  "issue_url": "https://github.com/pylonide/pylon/issues/39",
+  "issue_title": "Ace upgrade from 1.2.9 -> 1.3.1 breaks c9",
+  "issue_body_preview": "Upgrading from 1.2.9 to 1.3.1 seems to break c9 due to the new undoManager implementation and underlying interface changes.\r\n\r\nHere's the breaking commit\r\n\r\nhttps://github.com/ajaxorg/ace/commit/64d50773ee420773d88d94f5875542924b41518d#diff-636b36d7e1fc09db855366c08876e490\r\n\r\n```\r\nundoManager.addSes",
+  "fix_pr": 438,
+  "buggy_commit": "e4685146e4",
+  "fix_commit": "69df3d8371",
+  "pr_changed_files": 2,
+  "framework": "other",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/pylonide/pylon.git pylon-39",
+    "cd pylon-39",
+    "git checkout e4685146e4",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Pylon",
+  "test_description_zh": "在 Pylon IDE（Cloud9）编辑器中打开一个文件，进行文本编辑操作（输入、删除），然后使用撤销（Ctrl+Z）和重做（Ctrl+Shift+Z）功能，观察编辑器是否正常工作，撤销/重做是否按预期执行。同时观察编辑器在加载和基本编辑过程中是否出现报错或功能异常。",
+  "expected_result_zh": "编辑器正常加载并可编辑文件，输入和删除操作正常，撤销和重做功能正确回退和恢复编辑内容，控制台无 undoManager 相关报错，编辑器整体功能不受影响。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 175541,
+  "batch": 9
+}

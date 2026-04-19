@@ -1,0 +1,43 @@
+{
+  "task_id": "chronoframe-pr273",
+  "repo": "HoshinoSuzumi/chronoframe",
+  "repo_url": "https://github.com/HoshinoSuzumi/chronoframe",
+  "issue_url": "https://github.com/HoshinoSuzumi/chronoframe/pull/273",
+  "issue_title": "fix: 修复大图查看器在窗口 resize 后位置/缩放错乱与画面闪烁",
+  "issue_body_preview": "## Summary\n修复了在查看大图时切换浏览器窗口大小后，WebGL 图片查看器出现位置偏移、缩放基准异常，以及调整窗口过程中可能出现的画面闪烁问题。\n\n## Changes\n- 在 `WebGLImageViewerEngine.resize()` 中：\n  - 记录 resize 前画布尺寸与当前变换。\n  - resize 后重新计算 fit 基准缩放（`initialScale`）。\n  - 保持用户当前“相对缩放级别”（相对 fit 的 zoom 倍率）。\n  - 以“resize 前视口中心对应的图像点”为锚点重算平移，避免画面跳动和错位。\n  - 应用边界约束，并在缩放/位移",
+  "fix_pr": 273,
+  "buggy_commit": "e2cf0200ec",
+  "fix_commit": "1d04b66b24",
+  "pr_changed_files": 1,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/HoshinoSuzumi/chronoframe.git chronoframe-273",
+    "cd chronoframe-273",
+    "git checkout e2cf0200ec",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Chronoframe",
+  "test_description_zh": "打开大图查看器查看一张图片，然后调整浏览器窗口大小（拖拽缩放窗口），观察图片查看器中图片的位置、缩放比例以及画面是否有闪烁现象。",
+  "expected_result_zh": "在调整浏览器窗口大小后，大图查看器中的图片应保持在视口中心附近，缩放比例平滑地适配新窗口尺寸，不出现位置偏移、缩放错乱或画面闪烁的问题。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 10,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 18426,
+  "batch": 9
+}

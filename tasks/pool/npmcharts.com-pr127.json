@@ -1,0 +1,43 @@
+{
+  "task_id": "npmcharts.com-pr127",
+  "repo": "cheapsteak/npmcharts.com",
+  "repo_url": "https://github.com/cheapsteak/npmcharts.com",
+  "issue_url": "https://github.com/cheapsteak/npmcharts.com/pull/127",
+  "issue_title": "Investigation (and fix) for log scale issues n charts with Terser's mangle: true",
+  "issue_body_preview": "Investigated root cause of charts having funky plot points when `log scale` was checked off on the FE. Closes #124.\r\n\r\n## Root Cause\r\n\r\nIn `packages/frontend/src/graph/chart/scatter.js`, this variable is created:\r\n\r\n```javascript\r\nvar logScale = chart.yScale().toString().includes('log(x)')\r\n```\r\n\r\nA",
+  "fix_pr": 127,
+  "buggy_commit": "83836d537d",
+  "fix_commit": "e5642a0bb7",
+  "pr_changed_files": 4,
+  "framework": "vue",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/cheapsteak/npmcharts.com.git npmcharts.com-127",
+    "cd npmcharts.com-127",
+    "git checkout 83836d537d",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Npmcharts",
+  "test_description_zh": "访问 npmcharts 首页，输入一个或多个 npm 包名生成图表，然后勾选 'log scale'（对数刻度）选项，观察图表中的数据点绘制是否正确。切换 log scale 开关多次，检查图表每次是否正确渲染。",
+  "expected_result_zh": "启用 log scale 后，图表应以对数刻度正确显示所有数据点，数据点位置应与对应的下载量数值在对数刻度上一致，不应出现异常的绘制点（如数据点跳到错误位置或图表显示混乱）。关闭 log scale 后，图表应恢复为线性刻度并正确显示。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": true,
+    "issue_labels": []
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 5973,
+  "batch": 9
+}

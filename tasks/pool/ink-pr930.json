@@ -1,0 +1,43 @@
+{
+  "task_id": "ink-pr930",
+  "repo": "vadimdemedes/ink",
+  "repo_url": "https://github.com/vadimdemedes/ink",
+  "issue_url": "https://github.com/vadimdemedes/ink/pull/930",
+  "issue_title": "Fix split wide characters when overlapping writes occur",
+  "issue_body_preview": "## Summary\n\n- When two elements overlap in the output grid (via `position=\"absolute\"`, negative margins, etc.) and the write lands in the middle of a wide (CJK) character, one half of the character was left behind, corrupting terminal output\n- Add left/right boundary checks in `Output.write()` to re",
+  "fix_pr": 930,
+  "buggy_commit": "b5f3e3ac4e",
+  "fix_commit": "06d53f4c9d",
+  "pr_changed_files": 2,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/vadimdemedes/ink.git ink-930",
+    "cd ink-930",
+    "git checkout b5f3e3ac4e",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Ink",
+  "test_description_zh": "在 Ink 终端 UI 中，使用 position='absolute' 或负 margin 让两个包含宽字符（如中文/日文/韩文）的元素发生重叠，观察重叠区域的字符渲染结果。",
+  "expected_result_zh": "当两个元素重叠且写入位置落在宽字符（CJK字符）的中间时，被覆盖的宽字符应被完整清除或正确替换，不应出现半个宽字符残留导致的终端输出乱码或字符损坏现象。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 2102,
+  "batch": 9
+}

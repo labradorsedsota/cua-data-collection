@@ -1,0 +1,43 @@
+{
+  "task_id": "phoenix-pr2712",
+  "repo": "phcode-dev/phoenix",
+  "repo_url": "https://github.com/phcode-dev/phoenix",
+  "issue_url": "https://github.com/phcode-dev/phoenix/pull/2712",
+  "issue_title": "fix(ai): prevent UI flicker on entitlement refresh and enforce absolute paths",
+  "issue_body_preview": "Track current entitlement state so _checkEntitlementAndInit skips re-rendering when the state hasn't changed (e.g. background token refresh). Also add system prompt instruction to always use full absolute paths for file operations.\r\n",
+  "fix_pr": 2712,
+  "buggy_commit": "27b39f54fb",
+  "fix_commit": "d59aeba2a7",
+  "pr_changed_files": 5,
+  "framework": "other",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/phcode-dev/phoenix.git phoenix-2712",
+    "cd phoenix-2712",
+    "git checkout 27b39f54fb",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Phoenix",
+  "test_description_zh": "在应用中启用 AI 功能后，等待后台 entitlement token 自动刷新（或手动触发刷新），观察 AI 相关的 UI 面板/组件在 token 刷新过程中是否出现闪烁或重新渲染现象。",
+  "expected_result_zh": "当后台进行 entitlement token 刷新时，如果用户的授权状态未发生实际变化，AI 相关的 UI 面板/组件应保持稳定，不出现闪烁、重新加载或短暂消失再出现的现象。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 207663,
+  "batch": 9
+}

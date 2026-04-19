@@ -1,0 +1,46 @@
+{
+  "task_id": "laverna-850",
+  "repo": "Laverna/laverna",
+  "repo_url": "https://github.com/Laverna/laverna",
+  "issue_url": "https://github.com/Laverna/laverna/issues/850",
+  "issue_title": "Incorrect parsing of code/preformatted text in check lists",
+  "issue_body_preview": "The check list/task list ends if a `pre-formatted text` is encountered. Tested with Laverna `v0.7.51`, here is an example:\r\n![image](https://user-images.githubusercontent.com/6347576/31351032-2771f192-ad47-11e7-8036-513d2bef833d.png)\r\n```\r\n- [x] Incorrect parsing of code/preformatted `text` in check",
+  "fix_pr": 869,
+  "buggy_commit": "a1ebc3339a",
+  "fix_commit": "32a569d221",
+  "pr_changed_files": 1,
+  "framework": "other",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/Laverna/laverna.git laverna-850",
+    "cd laverna-850",
+    "git checkout a1ebc3339a",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
+  "dev_url": "http://localhost:5173",
+  "test_page": "/",
+  "app_name": "Laverna",
+  "test_description_zh": "创建一个新的笔记，在笔记内容中输入包含预格式化文本（反引号包裹的代码片段）的复选框/任务列表，例如：\n- [x] 第一项包含 `代码文本` 的任务\n- [ ] 第二项任务\n- [x] 第三项任务\n保存笔记后，在预览区域观察任务列表的渲染效果。",
+  "expected_result_zh": "任务列表（check list）应完整渲染所有列表项，包含反引号预格式化文本的列表项不应导致任务列表提前中断或截断，所有复选框及其对应文本应按顺序正常显示，预格式化代码片段应以行内代码样式正确呈现在列表项中。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": true,
+    "issue_labels": [
+      "bug",
+      "duplicate"
+    ]
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 6664,
+  "batch": 9
+}

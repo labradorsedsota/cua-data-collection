@@ -1,0 +1,43 @@
+{
+  "task_id": "webmail-pr183",
+  "repo": "bulwarkmail/webmail",
+  "repo_url": "https://github.com/bulwarkmail/webmail",
+  "issue_url": "https://github.com/bulwarkmail/webmail/pull/183",
+  "issue_title": "fix: skip intl middleware for paths already containing a locale prefix",
+  "issue_body_preview": "## Summary\n\nSkip the next-intl middleware in `proxy.ts` when the request path already starts with a locale prefix (e.g. `/en/settings`). Re-processing already-prefixed paths can trigger rewrite loops, especially when combined with a proxy `basePath`.\n\n## Motivation\n\nWhen `localePrefix` is `'always'`",
+  "fix_pr": 183,
+  "buggy_commit": "a7db3883aa",
+  "fix_commit": "c690e8eb76",
+  "pr_changed_files": 2,
+  "framework": "nextjs",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/bulwarkmail/webmail.git webmail-183",
+    "cd webmail-183",
+    "git checkout a7db3883aa",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Webmail",
+  "test_description_zh": "在浏览器中访问带有语言前缀的路径（例如 /en/settings），观察页面是否能正常加载，检查是否出现无限重定向或页面加载失败的情况。同时验证直接访问根路径 / 时国际化中间件是否正常工作，页面能否正确渲染。",
+  "expected_result_zh": "访问带有语言前缀的路径（如 /en/settings）时，页面应正常加载对应内容，不会出现重定向循环或报错。访问根路径时，中间件应正常处理并添加语言前缀，页面正确显示。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 9574,
+  "batch": 9
+}

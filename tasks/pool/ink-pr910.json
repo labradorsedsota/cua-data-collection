@@ -1,0 +1,43 @@
+{
+  "task_id": "ink-pr910",
+  "repo": "vadimdemedes/ink",
+  "repo_url": "https://github.com/vadimdemedes/ink",
+  "issue_url": "https://github.com/vadimdemedes/ink/pull/910",
+  "issue_title": "Fix cursorUp offset in incremental rendering for trailing newline",
+  "issue_body_preview": "## Summary\n\nFixes the cursor rewind offset in `createIncremental` (`src/log-update.ts`) that causes ghost/duplicate lines when the rendered output has a trailing newline.\n\n**Root cause:** The \"same or grow height\" branch uses `cursorUp(previousVisible - 1)` to rewind to line 0. `previousVisible` is ",
+  "fix_pr": 910,
+  "buggy_commit": "243e962f7e",
+  "fix_commit": "c32da0b306",
+  "pr_changed_files": 2,
+  "framework": "react",
+  "package_manager": "npm",
+  "deploy_commands": [
+    "git clone https://github.com/vadimdemedes/ink.git ink-910",
+    "cd ink-910",
+    "git checkout 243e962f7e",
+    "npm install",
+    "npm run dev"
+  ],
+  "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
+  "dev_url": "http://localhost:3000",
+  "test_page": "/",
+  "app_name": "Ink",
+  "test_description_zh": "在终端中使用 ink 渲染包含尾部换行符的输出内容，观察多次增量渲染后终端中是否出现重复行或残影行（ghost lines）。具体步骤：1. 创建一个 ink 应用，输出末尾带有换行符的多行文本；2. 触发多次重新渲染（如状态更新）；3. 观察终端输出是否干净，无重复或残留的旧内容行。",
+  "expected_result_zh": "每次增量渲染后，终端中只显示最新一次渲染的输出内容，不会出现重复行、残影行或旧内容残留，光标正确回退到输出起始位置进行覆盖重绘。",
+  "timeout": 600,
+  "ground_truth": {
+    "bug_type": "",
+    "expected_behavior": "",
+    "actual_behavior": ""
+  },
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 2102,
+  "batch": 9
+}
