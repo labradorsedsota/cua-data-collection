@@ -108,6 +108,7 @@ rm -rf /tmp/bughunt-dispatch
 | worker-07 | 13aea54f953c4a53bac98d995a33c111 | worker07_bot |
 | worker-08 | 1147ef05c926437ab28936d92fcc0590 | worker08_bot |
 | worker-09 | 5c49656f14114b6285b0c32e6e6bff4e | worker09_bot |
+| worker-fabrice | 44998d9add6d40b287a38332cbaf61ca | hermes_bot |
 
 ---
 
