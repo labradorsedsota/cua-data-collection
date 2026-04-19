@@ -1,5 +1,33 @@
 # Results CHANGELOG
 
+## 2026-04-19 17:35 — Batch 14: 48 张卡重做
+
+**原因：** 合规性检查 + 数据质量分类后，以下卡需重做：
+- 不合规卡 26 张（completed缺sess_id / status异常 / 字段缺失等）
+- C类 14 张（共享sess_id，多卡共用一条轨迹）
+- D类 4 张（COMPLETED但TOS无轨迹）
+- E类 4 张（mc_status=KILLED）
+- H类 2 张（无任何result）
+- 去重后 48 张
+
+**操作：**
+1. 87 个 result 文件（含重复副本）移入 `results_archive/trash/`
+2. dispatch-log 重置为 unassigned → 重新分配（避开原 worker）→ dispatched
+3. 通过 Pichai bot 向 9 个 worker 1v1 通道派发任务
+
+**分配：**
+- worker-01: 6 张（Analog-135, Notpad-268, jodit-1327, mint-ui-318, nuxt-security-494, react-virtualized-1375）
+- worker-02: 5 张（BongoCat-437, RapidRAW-658, jodit-1335, mint-ui-366, open5e-655）
+- worker-03: 4 张（Taskosaur-62, mint-ui-490, open5e-762, svelte-highlight-258）
+- worker-05: 6 张（BongoCat-438, calendar-401, minimal-chat-74, mint-ui-531, open5e-775, svelte-tags-input-17）
+- worker-06: 6 张（BongoCat-499, docz-965, mint-ui-285, mint-ui-577, open5e-799, svelte-tags-input-26）
+- worker-07: 5 张（BongoCat-509, mint-ui-290, mint-ui-628, org-chart-290, vue-hotel-datepicker-281）
+- worker-08: 6 张（BongoCat-592, docz-984, mint-ui-304, mint-ui-644, org-chart-306, vue-pdf-98）
+- worker-09: 5 张（BongoCat-777, emoji-mart-220, mint-ui-305, mint-ui-754, planka-1350）
+- worker-fabrice: 5 张（Notpad-195, ide-9, mint-ui-307, mint-ui-776, react-modern-calendar-datepicker-88）
+
+---
+
 ## 2026-04-19 11:30 — 回滚 10:05 的状态修改
 
 **操作：** 回滚 5 张卡的 status 改动，恢复为原始 completed 状态
