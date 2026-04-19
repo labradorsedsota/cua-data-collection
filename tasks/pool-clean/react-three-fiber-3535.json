@@ -1,6 +1,16 @@
 {
-  "app_name": "React Three Fiber",
+  "task_id": "react-three-fiber-3535",
+  "repo": "pmndrs/react-three-fiber",
+  "repo_url": "https://github.com/pmndrs/react-three-fiber",
+  "issue_url": "https://github.com/pmndrs/react-three-fiber/issues/3535",
+  "issue_title": "Re-renders cause DPR to be reset to the initial value",
+  "issue_body_preview": "### Description\n\nSuppose having:\n\n```tsx\nfunction MyApp() {\n  return <>\n        {/* Canvas starts with dpr=0.1 */}\n        <Canvas dpr={0.1}>\n          <Box />\n         \n          {/* This callse setDpr() based on the app requirements. \n              EG: sets dpr to 1 in a useEffect() */}\n          ",
+  "fix_pr": 3629,
   "buggy_commit": "f98e0c6588",
+  "fix_commit": "8eb7b7ff04",
+  "pr_changed_files": 2,
+  "framework": "react",
+  "package_manager": "npm",
   "deploy_commands": [
     "git clone https://github.com/pmndrs/react-three-fiber.git react-three-fiber-3535",
     "cd react-three-fiber-3535",
@@ -10,16 +20,22 @@
   ],
   "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
   "dev_url": "http://localhost:3000",
-  "expected_result_zh": "在子组件通过 setDpr() 动态更新 DPR 后，即使父组件或其他组件发生重新渲染，Canvas 的渲染分辨率应保持 setDpr() 所设置的值，不应被重置回初始的低 dpr 值（画面不应突然变模糊/像素化）。",
-  "fix_commit": "8eb7b7ff04",
-  "framework": "react",
-  "repo": "pmndrs/react-three-fiber",
-  "repo_size_kb": 27877,
-  "task_id": "react-three-fiber-3535",
-  "test_description_zh": "在 Canvas 组件上设置一个较低的初始 dpr 值（如 0.1），然后在子组件中通过 setDpr() 将 dpr 更新为更高值（如 1）。之后触发组件的重新渲染（例如通过状态更新），观察 Canvas 的渲染分辨率是否保持 setDpr 设置的值。",
   "test_page": "/",
-  "pr_number": 3629,
-  "timeout_minutes": 10,
-  "issue_number": 3535,
-  "max_steps": 80
+  "app_name": "React Three Fiber",
+  "test_description_zh": "在 Canvas 组件上设置一个较低的初始 dpr 值（如 0.1），然后在子组件中通过 setDpr() 将 dpr 更新为更高值（如 1）。之后触发组件的重新渲染（例如通过状态更新），观察 Canvas 的渲染分辨率是否保持 setDpr 设置的值。",
+  "expected_result_zh": "在子组件通过 setDpr() 动态更新 DPR 后，即使父组件或其他组件发生重新渲染，Canvas 的渲染分辨率应保持 setDpr() 所设置的值，不应被重置回初始的低 dpr 值（画面不应突然变模糊/像素化）。",
+  "timeout": 600,
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": [
+      "bug",
+      "v10"
+    ]
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 27877,
+  "batch": 9
 }

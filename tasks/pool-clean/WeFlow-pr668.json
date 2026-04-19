@@ -1,6 +1,16 @@
 {
-  "app_name": "Weflow",
+  "task_id": "WeFlow-pr668",
+  "repo": "hicccc77/WeFlow",
+  "repo_url": "https://github.com/hicccc77/WeFlow",
+  "issue_url": "https://github.com/hicccc77/WeFlow/pull/668",
+  "issue_title": "fix: 将通知头像存储在缓存文件中，通过LRU缓存维护头像缓存数量，点击通知后可以跳转到对应的会话窗口(fixes #654)",
+  "issue_body_preview": "改动概述\r\n\r\n    新增 AvatarFileCacheService (electron/services/avatarFileCacheService.ts)\r\n    - 头像文件缓存服务，将网络头像下载到本地缓存\r\n    - 使用 LRU (Least Recently Used) 策略维护缓存，限制最大 100 个文件\r\n    - 支持并发下载复用（同一 URL 并发调用时复用同一个下载任务）\r\n    重构 linuxNotificationService.ts\r\n    - 移除了原来内联的 downloadAvatarToLocal 等头像下载逻辑\r\n    - 改用 ",
+  "fix_pr": 668,
   "buggy_commit": "714827a36d",
+  "fix_commit": "08bd5e5435",
+  "pr_changed_files": 7,
+  "framework": "vue",
+  "package_manager": "npm",
   "deploy_commands": [
     "git clone https://github.com/hicccc77/WeFlow.git WeFlow-668",
     "cd WeFlow-668",
@@ -10,16 +20,19 @@
   ],
   "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
   "dev_url": "http://localhost:5173",
-  "expected_result_zh": "1. 系统通知弹窗中应正确显示发送者的头像，头像图片不应为空白或显示默认占位图；\n2. 不同联系人的通知头像应各自正确显示对应的头像图片，缓存机制正常工作不出现加载失败；\n3. 点击通知后，应用主窗口应被唤起/聚焦，并自动跳转定位到该通知对应的会话聊天窗口。",
-  "fix_commit": "08bd5e5435",
-  "framework": "vue",
-  "repo": "hicccc77/WeFlow",
-  "repo_size_kb": 98438,
-  "task_id": "WeFlow-pr668",
-  "test_description_zh": "1. 在 Linux 环境下登录 WeFlow，确保有新消息到达并触发系统通知；\n2. 观察系统通知弹窗中是否正确显示发送者的头像图片；\n3. 多次收到不同联系人的消息通知，观察头像是否都能正常加载显示；\n4. 点击系统通知弹窗，观察应用窗口是否被激活并跳转到对应的会话窗口。",
   "test_page": "/",
-  "pr_number": 668,
-  "timeout_minutes": 10,
-  "issue_number": 668,
-  "max_steps": 80
+  "app_name": "Weflow",
+  "test_description_zh": "1. 在 Linux 环境下登录 WeFlow，确保有新消息到达并触发系统通知；\n2. 观察系统通知弹窗中是否正确显示发送者的头像图片；\n3. 多次收到不同联系人的消息通知，观察头像是否都能正常加载显示；\n4. 点击系统通知弹窗，观察应用窗口是否被激活并跳转到对应的会话窗口。",
+  "expected_result_zh": "1. 系统通知弹窗中应正确显示发送者的头像，头像图片不应为空白或显示默认占位图；\n2. 不同联系人的通知头像应各自正确显示对应的头像图片，缓存机制正常工作不出现加载失败；\n3. 点击通知后，应用主窗口应被唤起/聚焦，并自动跳转定位到该通知对应的会话聊天窗口。",
+  "timeout": 600,
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 98438,
+  "batch": 9
 }

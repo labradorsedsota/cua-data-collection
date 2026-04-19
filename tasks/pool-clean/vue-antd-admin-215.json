@@ -1,6 +1,16 @@
 {
-  "app_name": "Vue Antd Admin",
+  "task_id": "vue-antd-admin-215",
+  "repo": "iczer/vue-antd-admin",
+  "repo_url": "https://github.com/iczer/vue-antd-admin",
+  "issue_url": "https://github.com/iczer/vue-antd-admin/issues/215",
+  "issue_title": "关闭页面缓存的时候，多个路由使用相同的 component，页面会认为是同一个页面，不会触发页面重新加载",
+  "issue_body_preview": "## 场景还原\r\n1. basic 分支\r\n2. /config/config.js 中添加 cachePage: false，asyncRoutes: true,  关闭页面缓存，设置为异步路由\r\n3. /router/async/router.map.js 中 添加路由,用于测试，component 相同\r\n```\r\n  test: {\r\n    name: 'test',\r\n    renderMenu: false,\r\n    component: () => import('@/pages/demo')\r\n  },\r\n  test2: {\r\n    name: 'test2',\r\n ",
+  "fix_pr": 63,
   "buggy_commit": "930f4afd56",
+  "fix_commit": "9eaf0962c6",
+  "pr_changed_files": 2,
+  "framework": "vue",
+  "package_manager": "npm",
   "deploy_commands": [
     "git clone https://github.com/iczer/vue-antd-admin.git vue-antd-admin-215",
     "cd vue-antd-admin-215",
@@ -10,16 +20,21 @@
   ],
   "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
   "dev_url": "http://localhost:5173",
-  "expected_result_zh": "当关闭页面缓存后，即使多个路由使用相同的 component，在路由切换时每个页面都应独立触发重新加载和渲染，页面内容应正确刷新，不会被视为同一个页面而跳过重新加载。",
-  "fix_commit": "9eaf0962c6",
-  "framework": "vue",
-  "repo": "iczer/vue-antd-admin",
-  "repo_size_kb": 9660,
-  "task_id": "vue-antd-admin-215",
-  "test_description_zh": "1. 在 config/config.js 中设置 cachePage: false 和 asyncRoutes: true。\n2. 在 router/async/router.map.js 中配置两个不同的路由（如 test 和 test2），它们指向相同的 component（如 @/pages/demo）。\n3. 先访问第一个路由页面（如 /test），观察页面内容正常加载。\n4. 然后切换到第二个路由页面（如 /test2），观察页面是否重新加载并正确渲染。\n5. 再切换回第一个路由页面，观察页面内容是否重新加载。",
   "test_page": "/",
-  "pr_number": 63,
-  "timeout_minutes": 10,
-  "issue_number": 215,
-  "max_steps": 80
+  "app_name": "Vue Antd Admin",
+  "test_description_zh": "1. 在 config/config.js 中设置 cachePage: false 和 asyncRoutes: true。\n2. 在 router/async/router.map.js 中配置两个不同的路由（如 test 和 test2），它们指向相同的 component（如 @/pages/demo）。\n3. 先访问第一个路由页面（如 /test），观察页面内容正常加载。\n4. 然后切换到第二个路由页面（如 /test2），观察页面是否重新加载并正确渲染。\n5. 再切换回第一个路由页面，观察页面内容是否重新加载。",
+  "expected_result_zh": "当关闭页面缓存后，即使多个路由使用相同的 component，在路由切换时每个页面都应独立触发重新加载和渲染，页面内容应正确刷新，不会被视为同一个页面而跳过重新加载。",
+  "timeout": 600,
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": true,
+    "issue_labels": [
+      "bug"
+    ]
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 9660,
+  "batch": 9
 }

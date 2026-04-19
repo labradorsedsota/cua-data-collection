@@ -1,6 +1,16 @@
 {
-  "app_name": "Tracktor",
+  "task_id": "tracktor-pr203",
+  "repo": "javedh-dev/tracktor",
+  "repo_url": "https://github.com/javedh-dev/tracktor",
+  "issue_url": "https://github.com/javedh-dev/tracktor/pull/203",
+  "issue_title": "Fix vehicle creation failing with null id",
+  "issue_body_preview": "Fixes #202\n\nWhen creating a vehicle, the client sends `id: null` in the request body. Drizzle's `$defaultFn` only fires when a value is `undefined`, not when it's explicitly `null`, so the UUID was never generated and SQLite threw a NOT NULL constraint error.\n\nFix: explicitly generate the UUID in `a",
+  "fix_pr": 203,
   "buggy_commit": "cec57a9c48",
+  "fix_commit": "02b42d997e",
+  "pr_changed_files": 1,
+  "framework": "nextjs",
+  "package_manager": "npm",
   "deploy_commands": [
     "git clone https://github.com/javedh-dev/tracktor.git tracktor-203",
     "cd tracktor-203",
@@ -10,16 +20,19 @@
   ],
   "deploy_verify": "curl -s http://localhost:3000 | grep -q '<'",
   "dev_url": "http://localhost:3000",
-  "expected_result_zh": "提交车辆创建表单后，车辆应成功创建，页面不应出现错误提示，新创建的车辆应正确显示在车辆列表中，并拥有有效的唯一标识。",
-  "fix_commit": "02b42d997e",
-  "framework": "nextjs",
-  "repo": "javedh-dev/tracktor",
-  "repo_size_kb": 12426,
-  "task_id": "tracktor-pr203",
-  "test_description_zh": "在应用中尝试创建一辆新车辆（vehicle）：打开车辆创建表单，填写必要的车辆信息字段，然后提交表单，观察车辆是否能成功创建并出现在车辆列表中。",
   "test_page": "/",
-  "pr_number": 203,
-  "timeout_minutes": 10,
-  "issue_number": 203,
-  "max_steps": 80
+  "app_name": "Tracktor",
+  "test_description_zh": "在应用中尝试创建一辆新车辆（vehicle）：打开车辆创建表单，填写必要的车辆信息字段，然后提交表单，观察车辆是否能成功创建并出现在车辆列表中。",
+  "expected_result_zh": "提交车辆创建表单后，车辆应成功创建，页面不应出现错误提示，新创建的车辆应正确显示在车辆列表中，并拥有有效的唯一标识。",
+  "timeout": 600,
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 7,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 12426,
+  "batch": 9
 }

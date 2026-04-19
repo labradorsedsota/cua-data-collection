@@ -1,6 +1,16 @@
 {
-  "app_name": "Algermusicplayer",
+  "task_id": "AlgerMusicPlayer-pr644",
+  "repo": "algerkong/AlgerMusicPlayer",
+  "repo_url": "https://github.com/algerkong/AlgerMusicPlayer",
+  "issue_url": "https://github.com/algerkong/AlgerMusicPlayer/pull/644",
+  "issue_title": "fix(mpris): 修复 MPRIS 模块多项安全和性能问题",
+  "issue_body_preview": "## Summary\n\n针对 #643 的代码审核修复，解决以下问题：\n\n- **P0**: 将 `fix-sandbox.js` 从 `postinstall` 移除，避免 `npm install` 时执行 `sudo`\n- **P0**: 缓存平台信息避免 `sendSync` 阻塞渲染进程\n- **P0**: 修复 `cleanupAppShortcuts` 中缺少 MPRIS 监听器清理导致的事件泄漏\n- **P1**: 修复 `play`/`pause`/`stop` 事件语义错误，不再全部映射到 `togglePlay`\n- **P1**: `destroyMpris` 中添加 ",
+  "fix_pr": 644,
   "buggy_commit": "8e3e4e610c",
+  "fix_commit": "f9222b699d",
+  "pr_changed_files": 7,
+  "framework": "vue",
+  "package_manager": "npm",
   "deploy_commands": [
     "git clone https://github.com/algerkong/AlgerMusicPlayer.git AlgerMusicPlayer-644",
     "cd AlgerMusicPlayer-644",
@@ -10,16 +20,19 @@
   ],
   "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
   "dev_url": "http://localhost:5173",
-  "expected_result_zh": "通过系统媒体控制点击暂停按钮时播放器应暂停播放，点击播放按钮时应恢复播放，点击停止按钮时应停止播放；三个按钮的行为应各不相同且语义正确。多次切换歌曲后应用界面不出现卡顿，渲染进程保持流畅响应，不存在事件泄漏导致的性能下降问题。",
-  "fix_commit": "f9222b699d",
-  "framework": "vue",
-  "repo": "algerkong/AlgerMusicPlayer",
-  "repo_size_kb": 34256,
-  "task_id": "AlgerMusicPlayer-pr644",
-  "test_description_zh": "在 Linux 系统下启动音乐播放器，播放一首歌曲，然后通过系统媒体控制（MPRIS 接口）分别点击播放、暂停、停止按钮，观察播放器的播放状态是否正确响应各个操作。同时在播放过程中多次切换歌曲，观察应用是否出现卡顿或无响应的情况。",
   "test_page": "/",
-  "pr_number": 644,
-  "timeout_minutes": 10,
-  "issue_number": 644,
-  "max_steps": 80
+  "app_name": "Algermusicplayer",
+  "test_description_zh": "在 Linux 系统下启动音乐播放器，播放一首歌曲，然后通过系统媒体控制（MPRIS 接口）分别点击播放、暂停、停止按钮，观察播放器的播放状态是否正确响应各个操作。同时在播放过程中多次切换歌曲，观察应用是否出现卡顿或无响应的情况。",
+  "expected_result_zh": "通过系统媒体控制点击暂停按钮时播放器应暂停播放，点击播放按钮时应恢复播放，点击停止按钮时应停止播放；三个按钮的行为应各不相同且语义正确。多次切换歌曲后应用界面不出现卡顿，渲染进程保持流畅响应，不存在事件泄漏导致的性能下降问题。",
+  "timeout": 600,
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 6,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 34256,
+  "batch": 9
 }

@@ -1,6 +1,16 @@
 {
-  "app_name": "Linuxdo Scripts",
+  "task_id": "linuxdo-scripts-pr186",
+  "repo": "anghunk/linuxdo-scripts",
+  "repo_url": "https://github.com/anghunk/linuxdo-scripts",
+  "issue_url": "https://github.com/anghunk/linuxdo-scripts/pull/186",
+  "issue_title": "fix: 修复连续收藏后台只显示最后一条的问题",
+  "issue_body_preview": "问题描述\r\n修复了连续收藏多个帖子时，进入收藏夹后台只能显示最后一条收藏记录的问题。\r\n\r\n改进方式\r\n1. 修改了收藏保存逻辑，将收藏内容保存到`bookmarks`数组中，而不是单个`bookmarkData`对象\r\n2. 每次收藏时检查URL是否已存在，避免重复添加\r\n3. 更新了收藏页面的逻辑，使其能够读取并处理`bookmarks`数组\r\n4. 保留了对单个`bookmarkData`的向后兼容支持\r\n\r\n修复后的效果\r\n现在用户可以连续收藏多个帖子，所有收藏都会被正确保存并在收藏夹中显示，而不仅仅是最后一条。\r\n\r\n测试后本地无问题",
+  "fix_pr": 186,
   "buggy_commit": "589a24d7a5",
+  "fix_commit": "29f8eea857",
+  "pr_changed_files": 2,
+  "framework": "other",
+  "package_manager": "npm",
   "deploy_commands": [
     "git clone https://github.com/anghunk/linuxdo-scripts.git linuxdo-scripts-186",
     "cd linuxdo-scripts-186",
@@ -10,16 +20,19 @@
   ],
   "deploy_verify": "curl -s http://localhost:5173 | grep -q '<'",
   "dev_url": "http://localhost:5173",
-  "expected_result_zh": "收藏夹后台页面应完整显示所有已收藏的帖子记录，每条收藏都正确展示，而非仅显示最后一条收藏记录。再次收藏已收藏过的帖子时不会产生重复条目。",
-  "fix_commit": "29f8eea857",
-  "framework": "other",
-  "repo": "anghunk/linuxdo-scripts",
-  "repo_size_kb": 15760,
-  "task_id": "linuxdo-scripts-pr186",
-  "test_description_zh": "在论坛中依次收藏多个不同的帖子，然后进入收藏夹后台页面，观察收藏列表中的记录条数和内容。",
   "test_page": "/",
-  "pr_number": 186,
-  "timeout_minutes": 10,
-  "issue_number": 186,
-  "max_steps": 80
+  "app_name": "Linuxdo Scripts",
+  "test_description_zh": "在论坛中依次收藏多个不同的帖子，然后进入收藏夹后台页面，观察收藏列表中的记录条数和内容。",
+  "expected_result_zh": "收藏夹后台页面应完整显示所有已收藏的帖子记录，每条收藏都正确展示，而非仅显示最后一条收藏记录。再次收藏已收藏过的帖子时不会产生重复条目。",
+  "timeout": 600,
+  "_screening": {
+    "ui_observable": true,
+    "has_screenshot": false,
+    "issue_labels": []
+  },
+  "_ui_score": 8,
+  "_description_source": "llm_api_batch9",
+  "backend_risk": false,
+  "repo_size_kb": 15760,
+  "batch": 9
 }
