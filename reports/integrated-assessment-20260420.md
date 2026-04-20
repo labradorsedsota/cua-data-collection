@@ -10,8 +10,8 @@
 | 评级 | 含义 | 数量 | 占比 |
 |------|------|------|------|
 | ✅ A级 | 可交付 | 722 | 82.7% |
-| 🟡 B级 | 有瑕疵 | 45 | 5.2% |
-| 🔴 C级 | 需修复 | 85 | 9.7% |
+| 🟡 B级 | 有瑕疵 | 125 | 14.3% |
+| 🔴 C级 | 需修复 | 5 | 0.6% |
 | ⚫ D级 | 无轨迹 | 21 | 2.4% |
 
 ---
@@ -170,9 +170,9 @@
 | #3 | status 值非法（不是 completed/failed） | 🔴 |
 | #4 | completed 卡 mano_cua 不完整 | 🔴 |
 | #5 | mano_cua.result 值非法 | 🔴 |
-| #6 | sess_id 格式不合规 | 🟡 |
+| #6 | sess_id 格式不合规 | 🔴 |
 | #7 | failed 卡 failure 字段不完整 | 🔴 |
-| #9 | task_id 跨 worker 重复 | 🔴 |
+| #9 | task_id 跨 worker 重复 | 🟡 |
 | #10 | total_steps > 80 | 🟡 |
 | #11 | status=completed 但 result=deploy_failed（逻辑矛盾） | 🔴 |
 | #14 | timestamp 非标准 ISO 8601 | 🟡 |
