@@ -1,7 +1,7 @@
 # Integrated Assessment 方法论与复用指南
 
-> 版本：v1.0  
-> 创建时间：2026-04-20  
+> 版本：v1.1  
+> 更新时间：2026-04-20  
 > 作者：Pichai  
 
 ---
@@ -16,10 +16,11 @@
 
 | 数据源 | 路径 | 说明 |
 |--------|------|------|
-| result 卡 | `results/worker-*/` | 全集，每张 JSON 一个执行结果 |
-| 任务卡 | `tasks/pool-clean/` | 原始任务定义（含 test_description_zh, dev_url, app_name） |
-| TOS 轨迹 | 本地 `/Users/mlt/Documents/code/oss/tos_trajectories/trajectories/{sess_id}/` | 从 TOS 下载的 mano-cua 执行轨迹 |
-| LLM 匹配结果 | `reports/llm-match-report-20260420.json` | claude-haiku-4-5 判定结果 |
+| result 卡 | repo `results/worker-*/` | 全集，每张 JSON 一个执行结果 |
+| 任务卡 | repo `tasks/pool-clean/` | 原始任务定义（含 test_description_zh, dev_url, app_name） |
+| TOS 轨迹 | `/Users/mlt/Documents/code/oss/tos_trajectories/trajectories/{sess_id}/` | mano-cua 执行轨迹 |
+| 脚本目录 | `/Users/mlt/.openclaw/workspace/scripts/bughunt-assessment/` | 所有评估脚本 |
+| 脚本输出 | `/Users/mlt/.openclaw/workspace/scripts/bughunt-assessment/output/` | LLM 匹配结果等中间产物 |
 
 ---
 
@@ -144,32 +145,32 @@ Model: claude-haiku-4-5
 ### 前置准备
 
 ```bash
-# 1. Clone repo (sparse checkout results + tasks)
+# 1. Clone repo (sparse checkout)
 git clone --filter=blob:none --sparse https://github.com/labradorsedsota/bughunt.git /tmp/bughunt-check
 cd /tmp/bughunt-check
 git sparse-checkout set results tasks/pool-clean reports
 
-# 2. 确认轨迹已下载到本地
+# 2. 确认轨迹目录
 TRAJ_DIR="/Users/mlt/Documents/code/oss/tos_trajectories/trajectories"
 ls $TRAJ_DIR | wc -l  # 应有 520+
+
+# 3. 如有新增 result 卡的 sess_id 缺轨迹，先补下载
+python3 ~/.openclaw/workspace/scripts/bughunt-assessment/download_missing_batch.py
 ```
 
-### 执行脚本
+### 执行评估
 
 ```bash
-# 3. 运行整合评估脚本
-python3 /tmp/integrate_report.py
+SCRIPTS=~/.openclaw/workspace/scripts/bughunt-assessment
 
 # 4. 运行 LLM 匹配（后台，约 20 分钟）
-python3 /tmp/llm_match_check.py &
+# 注意：脚本中 RESULTS_DIR/TASKS_DIR 仍指向 /tmp/bughunt-check，需要先 clone repo
+python3 $SCRIPTS/llm_match_check.py &
 
-# 5. LLM 完成后，重新整合（合并 LLM 结果到 integrated assessment）
-python3 /tmp/integrate_with_llm.py
-```
+# 5. 运行整合报告
+python3 $SCRIPTS/integrate_report.py
 
-### 推到线上
-
-```bash
+# 6. 推到线上
 cd /tmp/bughunt-check
 git add reports/integrated-assessment-*.{csv,json,md}
 git commit -m "update: integrated assessment YYYY-MM-DD"
@@ -178,25 +179,27 @@ git push origin main
 
 ---
 
-## 十、脚本位置
+## 十、文件位置总览
 
-| 脚本 | 路径 | 用途 |
-|------|------|------|
-| 合规检查 | `/tmp/compliance_check.py` | 18 项合规检查 |
-| LLM 匹配 | `/tmp/llm_match_check.py` | LLM 判定轨迹匹配 |
-| 整合报告 | `/tmp/integrate_report.py` | 合并所有数据源 |
-| TOS 下载 | `/Users/mlt/.openclaw/workspace/download_sess.py` | 按 sess_id 下载轨迹 |
-| 批量下载 | `/tmp/download_missing_batch.py` | 批量下载缺失轨迹 |
+| 文件 | 持久化路径 | 说明 |
+|------|-----------|------|
+| LLM 匹配脚本 | `~/.openclaw/workspace/scripts/bughunt-assessment/llm_match_check.py` | 调 claude-haiku-4-5 |
+| 整合报告脚本 | `~/.openclaw/workspace/scripts/bughunt-assessment/integrate_report.py` | 合并数据源 |
+| 合规检查脚本 | `~/.openclaw/workspace/scripts/bughunt-assessment/compliance_check.py` | 18 项检查 |
+| TOS 下载脚本 | `~/.openclaw/workspace/scripts/bughunt-assessment/download_missing_batch.py` | 批量下载 |
+| 脚本输出目录 | `~/.openclaw/workspace/scripts/bughunt-assessment/output/` | LLM 结果、日志 |
+| 轨迹数据 | `/Users/mlt/Documents/code/oss/tos_trajectories/trajectories/` | 520 session, 24GB |
+| 原始下载脚本 | `~/.openclaw/workspace/download_sess.py` | 单个 sess_id 下载 |
 
 ---
 
 ## 十一、注意事项
 
-1. **轨迹目录已移到持久化路径：** `/Users/mlt/Documents/code/oss/tos_trajectories/trajectories/`
-2. **LLM API 有 budget 限制：** 本地 proxy (127.0.0.1:18792) 已超 budget，用 mininglamp gateway 直连
-3. **app_name 字段命名不一致是正常的：** npm 包名 vs 产品名，不影响 LLM 判定
-4. **重复卡（#9）降为 B 级：** 不影响 selected，但标记提醒去重
-5. **脚本在 /tmp 会丢：** 下次执行前确认脚本是否还在，必要时从 memory 重建
+1. **repo 每次用 sparse clone 到 /tmp/bughunt-check** — 这是临时工作目录，脚本中 RESULTS_DIR/TASKS_DIR 指向这里
+2. **轨迹已在持久化路径** — 不会因重启丢失
+3. **LLM API budget** — 本地 proxy (127.0.0.1:18792) 已超 budget，用 mininglamp gateway 直连
+4. **app_name 命名不一致是正常的** — npm 包名 vs 产品名，LLM 能正确判定
+5. **重复卡（#9）是 B 级** — 不影响 selected，但标记提醒去重
 
 ---
 
