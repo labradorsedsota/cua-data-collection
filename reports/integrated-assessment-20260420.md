@@ -158,6 +158,23 @@
 
 ---
 
+
+## 十一、selected 筛选标准
+
+**selected = Y** 需同时满足以下全部条件：
+
+| 条件 | 要求 |
+|------|------|
+| status | completed |
+| mano_cua_status | COMPLETED |
+| has_trajectory | yes |
+| trajectory_match | match |
+| grade | A 或 B |
+
+任一条件不满足则 selected = N。
+
+**结果：selected=Y 共 364 张（占总量 41.7%）**
+
 ## 附录：compliance_issues 编号对照表
 
 | 编号 | 含义 | 严重度 |
