@@ -112,8 +112,7 @@ unassigned → assigned（Pichai 选卡）→ dispatched（Mycroft 发送后 Pic
 4. 更新选中卡的状态为 `assigned`，填入 `worker`、`batch`、`assigned_at`
 5. 更新 `summary` 统计
 6. `git push`
-7. 通知 Mycroft 派发：**必须在「执行专用」子区（`19fe99c798914d5fac7d7de9e6fcc839____2043640961514344448`）@Mycroft 下达指令，不要发到主群**
-8. 指令中必须明确写：**"用你自己的 bot token 发送，不要用 Pichai 的 token"**
+7. 通知 Mycroft 派发：在「执行专用」子区 @Mycroft 下达指令（见§5.5 指令模板）
 
 ### 5.2 确认派发
 
@@ -162,3 +161,32 @@ unassigned → assigned（Pichai 选卡）→ dispatched（Mycroft 发送后 Pic
 4. **Mycroft 只从 pool-clean/ 读卡** — pool/ 含 ground_truth，绝不发给 Worker
 5. **所有 Worker 汇报必须 @Pichai** — 不带 mention 字段的消息 PM 收不到
 6. **同 repo + 同 buggy_commit 同 Worker** — 确保 Worker 本地熔断生效；同 repo 不同 commit 也尽量同 Worker 以复用部署
+
+---
+
+## 附录：§5.5 通知 Mycroft 派发（指令模板）
+
+在「执行专用」子区 @Mycroft 发送以下指令（替换 `{变量}` 后发送）：
+
+```
+@Mycroft 派发指令：
+
+**请严格按照你的操作手册 `pm-template/dispatch-sop-mycroft.md` 执行。**
+
+1. 拉取 repo（按手册§三步骤 1）
+2. 读取 `pm-template/dispatch-log.json`，找出所有 `status: "assigned"` 的卡，按 worker 分组
+3. 对每个有 assigned 卡的 Worker，向其 1v1 通道发送 2 条消息（按手册§三的模板，严格按顺序，间隔 200-300ms）：
+   - 消息 1：派发指令（任务 ID 列表 + 执行手册位置 + pool-clean 路径），不需要 mention
+   - 消息 2：汇报规则，必须 @Worker（payload 带 mention 字段）
+4. Worker 通道表见手册§四
+5. 用你自己的 bot token 发送，不要用 Pichai 的 token
+6. 不需要逐张发任务卡 JSON，Worker 自行从 repo 的 tasks/pool-clean/ 读取
+7. batch 号为 {BATCH_NUM}
+8. {EXTRA_NOTE}
+9. 完成后清理临时目录，回报派发结果（成功/失败的 Worker 列表）
+```
+
+**使用说明：**
+- `{BATCH_NUM}`：替换为当前批次号
+- `{EXTRA_NOTE}`：如有特殊提醒（如执行手册版本变更）写在这里，无则删除此行
+- 不需要手动指定 Worker 列表，Mycroft 从 dispatch-log 中自动识别有 assigned 卡的 Worker
