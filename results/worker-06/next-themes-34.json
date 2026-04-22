@@ -1,0 +1,21 @@
+{
+  "task_id": "next-themes-34",
+  "repo": "pacocoursey/next-themes",
+  "worker": "worker-06",
+  "status": "failed",
+  "sess_id": null,
+  "expected_result_used": false,
+  "duration_seconds": 0,
+  "timestamp": "2026-04-22T18:30:00+08:00",
+  "mano_cua": null,
+  "failure": {
+    "type": "deploy_failed",
+    "symptom": "buggy_commit 7c8a3269ca 为 next-themes 极早期版本（Next.js 9 + React 16 + webpack 4），存在多重兼容性问题：1) OpenSSL ERR_OSSL_EVP_UNSUPPORTED（即使 Node 18 + --openssl-legacy-provider 也无法完全解决）；2) React 多副本冲突（dist 引用根 react，example 引用自己的 react，Invalid hook call）；3) fsevents.watch 不兼容",
+    "attempted": [
+      "Node 18 + NODE_OPTIONS=--openssl-legacy-provider（仍报 react 多副本冲突）",
+      "删除根 node_modules/react（dist 找不到 react）",
+      "修改 example package.json 路径指向正确的 ../../dist"
+    ],
+    "recommendation": "此 commit 太老（2020 年，Next.js 9），monorepo 结构与依赖已不兼容当前环境，跳过"
+  }
+}
