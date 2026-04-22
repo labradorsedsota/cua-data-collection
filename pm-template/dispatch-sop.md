@@ -133,7 +133,7 @@ unassigned → assigned（Pichai 选卡）→ dispatched（Mycroft 发送后 Pic
 |------|------|
 | Worker 30 分钟未 ACK | 在 1v1 通道 @Worker 催促 |
 | Worker ACK 后 20 分钟无进度 | @Worker 询问状态 |
-| Worker 报 deploy_failed | Worker 按 guide 自行执行熔断（同 buggy_commit 连续 2 张 deploy_failed → 该 commit 剩余卡自动跳过），PM 不需要介入熔断判断。如 Worker 主动上报需协助的，再个案处理 |
+| Worker 报 deploy_failed | 建议 nvm 切版本或跳过 |
 | Worker 完成批次 | 选下一批卡，走选卡排产流程 |
 
 ---
