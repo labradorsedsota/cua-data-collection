@@ -94,6 +94,7 @@ unassigned → assigned（Pichai 选卡）→ dispatched（Mycroft 发送后 Pic
 3. **前置筛选（必须，按优先级依次检查）**：
    
    **硬性排除（直接跳过，不放入 dispatch-log）：**
+   - `deploy_status` 为 `no_script_low_roi` 或 `no_script_dead` 的卡
    - `backend_risk: true` 的卡
    - `repo_size_kb > 500000`（>500MB）的卡
    - `test_page` 是需要认证的页面（/login、/auth、/signin、/dashboard 等）
@@ -104,7 +105,8 @@ unassigned → assigned（Pichai 选卡）→ dispatched（Mycroft 发送后 Pic
    **排产优先级（从高到低）：**
    - 优先选 `deploy_commands` 步骤 ≤3 的简单项目
    - 优先选 `repo_size_kb` 小的项目（<100MB 优先）
-   - 同项目打包，复用 clone + install
+   - 同 repo + 同 buggy_commit 的卡打包给同一个 Worker（确保熔断机制在 Worker 本地生效）
+   - 同 repo 不同 buggy_commit 也尽量给同一 Worker（复用 clone + install）
    - 100-200MB 的项目降优先级但不排除
    
 4. 更新选中卡的状态为 `assigned`，填入 `worker`、`batch`、`assigned_at`
@@ -131,7 +133,7 @@ unassigned → assigned（Pichai 选卡）→ dispatched（Mycroft 发送后 Pic
 |------|------|
 | Worker 30 分钟未 ACK | 在 1v1 通道 @Worker 催促 |
 | Worker ACK 后 20 分钟无进度 | @Worker 询问状态 |
-| Worker 报 deploy_failed | 建议 nvm 切版本或跳过 |
+| Worker 报 deploy_failed | Worker 按 guide 自行执行熔断（同 buggy_commit 连续 2 张 deploy_failed → 该 commit 剩余卡自动跳过），PM 不需要介入熔断判断。如 Worker 主动上报需协助的，再个案处理 |
 | Worker 完成批次 | 选下一批卡，走选卡排产流程 |
 
 ---
@@ -159,4 +161,4 @@ unassigned → assigned（Pichai 选卡）→ dispatched（Mycroft 发送后 Pic
 3. **每次修改 dispatch-log 后必须 push**
 4. **Mycroft 只从 pool-clean/ 读卡** — pool/ 含 ground_truth，绝不发给 Worker
 5. **所有 Worker 汇报必须 @Pichai** — 不带 mention 字段的消息 PM 收不到
-6. **同项目同 Worker** — 复用部署提效
+6. **同 repo + 同 buggy_commit 同 Worker** — 确保 Worker 本地熔断生效；同 repo 不同 commit 也尽量同 Worker 以复用部署
