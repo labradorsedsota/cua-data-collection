@@ -1,8 +1,20 @@
 # BugHunt Cron 任务清单
 
-> 最后更新：2026-04-17 14:11 (Pichai)
+> 最后更新：2026-04-22 18:16 (Pichai)
 > 
 > 所有 cron 任务运行在 Pichai 所在机器（机器 A），通过 OpenClaw cron 管理。
+> 
+> **脚本统一存放：** `~/.openclaw/workspace/scripts/bughunt/`
+
+---
+
+## 当前状态总览
+
+| 任务 | 状态 | 频率 |
+|------|------|------|
+| bughunt-trial-patrol | ✅ 运行中 | 每 15 分钟 |
+| bughunt-dashboard-sync | ✅ 运行中 | 每小时整点 |
+| bughunt-pool-sync | ⏸ 已停用（近期不产卡） | 每 30 分钟 |
 
 ---
 
@@ -14,6 +26,8 @@
 | **频率** | 每 15 分钟 |
 | **Session** | isolated |
 | **超时** | 300 秒 |
+| **类型** | 纯 agent cron（prompt 驱动，无外部脚本） |
+| **状态** | ✅ 运行中 |
 
 **功能：** 检查 10 个 Worker（worker-01~09 + Fabrice）的 1v1 工作通道最新消息，判断执行状态并生成巡检报告。
 
@@ -48,10 +62,11 @@
 
 | 项 | 值 |
 |---|---|
-| **ID** | `0ca42207-f60d-48d3-992d-6416f201ced5` |
+| **ID** | `a91210a2-0cac-487f-a21c-97ae3444613f`（重建后新 ID） |
 | **频率** | 每小时整点（cron `0 * * * *`，Asia/Shanghai） |
 | **Session** | isolated |
-| **脚本** | `~/.openclaw/workspace/scripts/sync-dashboard.sh` |
+| **脚本** | `~/.openclaw/workspace/scripts/bughunt/sync-dashboard.sh` |
+| **状态** | ✅ 运行中 |
 
 **功能：** 扫描 `results/` 目录所有执行结果 JSON + `tasks/pool/` 全量卡，生成 `dashboard/progress.json` 并 push 到 repo。
 
@@ -69,11 +84,12 @@
 
 | 项 | 值 |
 |---|---|
-| **ID** | `2ab40999-bd5a-404c-98a9-3dad85249ff8` |
-| **频率** | 每小时第 30 分（cron `30 * * * *`，Asia/Shanghai） |
+| **ID** | `06f8e54f-5dce-4809-9a65-d20e58c31fef`（重建后新 ID） |
+| **频率** | 每 30 分钟 |
 | **Session** | isolated |
 | **超时** | 120 秒 |
-| **脚本** | `~/.openclaw/workspace/scripts/sync-pool-to-dispatch.sh` |
+| **脚本** | `~/.openclaw/workspace/scripts/bughunt/sync-pool-to-dispatch.sh` |
+| **状态** | ⏸ 已停用（近期智子不产卡，无需同步） |
 
 **功能：** 扫描 `tasks/pool/`，找出不在 dispatch-log.json 中的新任务卡，自动完成：
 1. 去掉 `ground_truth` 字段 → 生成 pool-clean 版本写入 `tasks/pool-clean/`
