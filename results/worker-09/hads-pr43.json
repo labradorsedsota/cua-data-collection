@@ -1,0 +1,19 @@
+{
+  "task_id": "hads-pr43",
+  "worker": "worker-09",
+  "repo": "sinedied/hads",
+  "issue_url": "https://github.com/sinedied/hads/pull/43",
+  "buggy_commit": "dcd3df7d9c",
+  "fix_commit": "f92071f702",
+  "dev_url": "http://localhost:4040/crash-test.md",
+  "test_description": "在Markdown文档中添加使用不被highlight.js支持的语言标识符的代码块，在浏览器中访问该文档页面，观察是否崩溃",
+  "result": "reproduced",
+  "result_summary": "Bug已复现。包含不支持的语言标识符(notareallanguage)的代码块导致页面返回'Cannot GET /crash-test.md'错误，而非正常渲染。服务器进程未宕机（其他正常页面如readme.md可正常访问），但该特定页面的渲染因highlight.js未捕获异常而失败。",
+  "reasoning": "step 1: 访问http://localhost:4040/crash-test.md，页面显示'Cannot GET /crash-test.md'白色错误页面，无任何Hads文档系统界面元素。step 2: 访问http://localhost:4040/readme.md，页面完整渲染'Project documentation test'文档，证明服务器进程仍在运行。step 3: 确认bug为特定于含不支持语言代码块的文件，highlight.highlight()对不支持的语言标识符抛出未捕获异常，导致Express路由处理失败返回404/Cannot GET错误。",
+  "steps_count": 3,
+  "duration_seconds": 45,
+  "session_id": "sess-20260422202730-da6710b1abc344e78f0ce6c0ef717423",
+  "log_file": "logs/hads-pr43.log",
+  "timestamp": "2026-04-22T12:28:00Z",
+  "batch": 15
+}
