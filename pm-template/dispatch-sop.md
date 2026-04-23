@@ -93,21 +93,34 @@ unassigned → assigned（Pichai 选卡）→ dispatched（Mycroft 发送后 Pic
 2. 从 `status: unassigned` 的卡中选卡
 3. **前置筛选（必须，按优先级依次检查）**：
    
-   **硬性排除（直接跳过，不放入 dispatch-log）：**
+   **硬性排除（直接跳过，不排产）：**
    - `deploy_status` 为 `no_script_low_roi` 或 `no_script_dead` 的卡
    - `backend_risk: true` 的卡
    - `repo_size_kb > 500000`（>500MB）的卡
+   - `archived: true` 的 repo（Batch 1-8 历史 100% fail）
+   - `node_engines` 与 Worker Node 22 严格冲突（要求 <18 或指定旧版本如 8.10.x）
    - `test_page` 是需要认证的页面（/login、/auth、/signin、/dashboard 等）
    - 项目明显需要数据库（看板工具、CRM、项目管理类应用）
    - 项目需要 OAuth/第三方认证
    - `deploy_commands` 含 docker、database、prisma 关键词
    
    **排产优先级（从高到低）：**
-   - 优先选 `deploy_commands` 步骤 ≤3 的简单项目
-   - 优先选 `repo_size_kb` 小的项目（<100MB 优先）
+   
+   > Batch 9 详细排产方案见 [`batch9-priority-plan.md`](batch9-priority-plan.md)，排产脚本见 [`../scripts/batch9-prioritize.py`](../scripts/batch9-prioritize.py)
+   
+   | 优先级 | 条件 | 预期成功率 |
+   |-------|------|-----------|
+   | P1 | < 20MB，非高风险框架，无 node-sass | ~57% |
+   | P2 | 20-100MB，非高风险框架，无 node-sass | ~46% |
+   | P3 | 100-500MB，非高风险框架，无 node-sass | ~40% |
+   | P4 | 高风险框架(Next.js/Gatsby/Lit) < 100MB，或含 node-sass | ~25% |
+   | P5 | 高风险框架 ≥ 100MB | ~20% |
+   
+   **高风险框架**（基于 Batch 1-8 历史 fail rate ≥ 70%）：Next.js、Gatsby、Lit
+   
+   **其他排产规则：**
    - 同 repo + 同 buggy_commit 的卡打包给同一个 Worker（确保熔断机制在 Worker 本地生效）
    - 同 repo 不同 buggy_commit 也尽量给同一 Worker（复用 clone + install）
-   - 100-200MB 的项目降优先级但不排除
    
 4. 更新选中卡的状态为 `assigned`，填入 `worker`、`batch`、`assigned_at`
 5. 更新 `summary` 统计
