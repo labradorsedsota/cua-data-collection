@@ -108,6 +108,11 @@ tr:hover{background:rgba(255,255,255,.04)}
   <div class="filters">
     <input type="text" id="search" placeholder="🔍 搜索 task_id..." oninput="renderTable()">
     <input type="text" id="searchSess" placeholder="🔍 搜索 Session ID..." oninput="renderTable()">
+    <select id="filterSess" onchange="renderTable()">
+      <option value="">全部 Session</option>
+      <option value="has">有 Session</option>
+      <option value="none">无 Session</option>
+    </select>
     <select id="filterStatus" onchange="renderTable()">
       <option value="">全部状态</option>
       <option value="pending">待分配</option>
@@ -291,6 +296,7 @@ function populateWorkerFilter() {
 function renderTable() {
   const search = document.getElementById('search').value.toLowerCase();
   const searchSess = document.getElementById('searchSess').value.toLowerCase();
+  const filterSess = document.getElementById('filterSess').value;
   const filterStatus = document.getElementById('filterStatus').value;
   const filterWorker = document.getElementById('filterWorker').value;
   const filterResult = document.getElementById('filterResult').value;
@@ -298,6 +304,8 @@ function renderTable() {
   let filtered = allTasks.filter(t => {
     if (search && !t.task_id.toLowerCase().includes(search)) return false;
     if (searchSess && !(t.sess_id||'').toLowerCase().includes(searchSess)) return false;
+    if (filterSess === 'has' && (!t.sess_id || t.sess_id === 'None')) return false;
+    if (filterSess === 'none' && t.sess_id && t.sess_id !== 'None') return false;
     if (filterStatus && t.status !== filterStatus) return false;
     if (filterWorker && t.worker !== filterWorker) return false;
     if (filterResult && t.result !== filterResult) return false;
