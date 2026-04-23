@@ -1,0 +1,18 @@
+{
+  "task_id": "ConvertX-320",
+  "repo": "C4illin/ConvertX",
+  "worker": "worker-03",
+  "status": "completed",
+  "sess_id": "sess-20260423170050-49828ae701814b07a6fccd88c981215c",
+  "expected_result_used": true,
+  "duration_seconds": 540,
+  "timestamp": "2026-04-23T17:12:00+08:00",
+  "mano_cua": {
+    "status": "COMPLETED",
+    "total_steps": 59,
+    "last_action": "DONE",
+    "result": "abnormal",
+    "result_summary": "登录表单存在严重Bug——输入凭据点击Login后页面变为空白（blank page），URL停留在/login，无错误提示也无成功跳转，6次以上尝试均复现。因登录功能完全失效，无法访问文件上传和转换功能，docx→pdf转换测试未能执行",
+    "last_reasoning": "The pattern is confirmed again. After clicking Login:\n- URL: localhost:3000/login (unchanged)\n- Page: completely blank (white)\n- Tab title: \"localhost:3000/login\" (no app icon/title)\n\nThis is a confirmed bug in ConvertX v0.14.1: The login form submission results in a blank page at localhost:3000/login. The user cannot log in through the web interface.\n\nThe tab title changes from \"ConvertX | Login\" to \"localhost:3000/login\" which indicates the SPA JavaScript stopped rendering after the form submission.\n\nSummary of findings:\n1. Bug confirmed: Login form submission (POST to /login) results in a completely blank page\n2. The URL stays at localhost:3000/login after login attempt\n3. The SPA JavaScript stops rendering after form submission\n4. The page cannot be used to log in - user cannot access the main ConvertX functionality\n5. There is no registration page (no separate /register route)\n6. The conversion feature (docx → pdf) is inaccessible because login fails"
+  }
+}
