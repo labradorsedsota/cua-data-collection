@@ -3,25 +3,19 @@
   "repo": "AutomaApp/automa",
   "worker": "worker-08",
   "status": "failed",
-  "expected_result_used": true,
+  "expected_result_used": false,
   "sess_id": "sess-20260423191126-93ff2127b6624881842aac6f17637898",
   "duration_seconds": 1260,
   "timestamp": "2026-04-23T19:32:00+08:00",
-  "mano_cua": {
-    "status": "KILLED",
-    "total_steps": 70,
-    "last_action": "browsing Finder file dialog (off-track)",
-    "result": "unclear",
-    "result_summary": "mano-cua 完全跑偏：Automa 是 Chrome 扩展，newtab.html 在 localhost:3001 渲染为空白页（缺少 Chrome extension API），mano-cua 从 step 6 开始尝试用 Finder 文件对话框在文件系统中寻找 Automa 源码目录，持续到 step 70 仍未回到浏览器测试实际 bug。被 kill -9 终止。",
-    "last_reasoning": "mano-cua 在 step 70 仍然在 Finder Go-To-Folder 对话框中尝试 /Users/worker08/repos/ 路径，试图定位 Automa 源码。完全偏离了测试 folder 分组 bug 的目标。"
-  },
+  "mano_cua": null,
   "failure": {
-    "type": "mano_cua_error",
-    "symptom": "Automa 是 Chrome 扩展，npm start 的 webpack-dev-server 在 localhost:3001 提供静态文件列表而非可交互 UI。newtab.html 渲染空白（依赖 Chrome extension API）。mano-cua 无法在空白页上操作，转而用 Finder 寻找源码目录，完全跑偏。",
+    "type": "deploy_failed",
+    "symptom": "browser_extension_no_web_ui",
     "attempted": [
-      "第 1 次：dev server 未启动导致 ERR_CONNECTION_REFUSED，mano-cua 504 timeout",
-      "第 2 次：dev server 启动成功（port 3001 返回 200），但 Automa 作为 Chrome 扩展 newtab.html 渲染空白，mano-cua 跑偏 70 步后被 kill"
+      "npm start → webpack-dev-server port 3001 返回静态文件列表",
+      "newtab.html 渲染空白（依赖 chrome.* extension API）",
+      "mano-cua 70 steps 完全跑偏确认无法在 dev server 上测试"
     ],
-    "recommendation": "Automa 是 Chrome 扩展项目，需要通过 chrome://extensions 加载解压扩展才能测试 UI。单纯 npm run dev / npm start 无法提供可交互页面。建议跳过此类 Chrome 扩展项目或提供专用部署方案。"
+    "recommendation": "Chrome 扩展项目，标准 web dev server 无法提供可交互 UI，需 chrome://extensions 加载"
   }
 }
