@@ -107,6 +107,8 @@ unassigned → assigned（Pichai 选卡）→ dispatched（Mycroft 发送后 Pic
    **排产优先级（从高到低）：**
    
    > Batch 9 详细排产方案见 [`batch9-priority-plan.md`](batch9-priority-plan.md)，排产脚本见 [`../scripts/batch9-prioritize.py`](../scripts/batch9-prioritize.py)
+   >
+   > **脚本产出说明：** 脚本输出 `batch9-priority-output.json`，其中 `excluded` 和 `priority_tiers`（P1-P5）两个集合完全互斥——被硬性排除的卡不会出现在 P1-P5 中。排产时只从 `priority_tiers` 里选卡即可。
    
    | 优先级 | 条件 | 预期成功率 |
    |-------|------|-----------|
