@@ -1,0 +1,29 @@
+{
+  "task_id": "OpsiMate-305",
+  "repo": "OpsiMate/OpsiMate",
+  "worker": "worker-05",
+  "status": "failed",
+  "sess_id": "sess-20260423175242-cabb6c4acb354530acd67ab81adfa735",
+  "expected_result_used": true,
+  "duration_seconds": 1170,
+  "timestamp": "2026-04-23T18:12:00+08:00",
+  "mano_cua": {
+    "status": "STOPPED",
+    "total_steps": 26,
+    "last_action": "screenshot",
+    "result": "unclear",
+    "result_summary": "找到SSH Key上传区域（拖拽区+文件选择器），但无法在浏览器约束内完成拖拽测试——drag-and-drop需要从Finder拖文件到浏览器，而浏览器约束禁止打开Finder。mano-cua尝试用file:///URL和文件选择器替代但未能完成。",
+    "last_reasoning": "mano-cua navigated to Add Provider → Server → Authentication → SSH Key section, found the drag-and-drop upload zone. Opened file picker via click but realized drag-and-drop testing requires Finder/external file manager access which is forbidden by browser constraint. Attempted file:/// URL which opened Finder unintentionally. Force-stopped at 19.5min (past 15min hard timeout)."
+  },
+  "failure": {
+    "type": "timeout",
+    "symptom": "Hard timeout 15min exceeded (actual 19.5min). mano-cua couldn't complete drag-and-drop file type validation test within browser-only constraints.",
+    "attempted": [
+      "Found upload zone at Add Provider > Server > Authentication > SSH Key",
+      "Tried file picker dialog (click-to-select) - dialog opened but no suitable test files",
+      "Tried file:/// URL which inadvertently opened Finder",
+      "Force-stopped at step 26"
+    ],
+    "recommendation": "Drag-and-drop file type validation inherently requires external file manager. Task may not be CUA-testable within browser constraints."
+  }
+}
