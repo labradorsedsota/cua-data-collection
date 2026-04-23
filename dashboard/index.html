@@ -54,9 +54,7 @@ tr:nth-child(even){background:rgba(255,255,255,.02)}
 tr:hover{background:rgba(255,255,255,.04)}
 
 /* Tooltip */
-.tip-wrap{position:relative;cursor:default}
-.tip-wrap .tip{display:none;position:absolute;bottom:calc(100% + 6px);left:0;background:#1c2128;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12px;white-space:nowrap;z-index:200;box-shadow:0 4px 12px rgba(0,0,0,.4);pointer-events:none}
-.tip-wrap:hover .tip{display:block}
+#tooltip{position:fixed;background:#1c2128;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12px;font-family:'SF Mono',SFMono-Regular,Consolas,monospace;white-space:nowrap;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.4);pointer-events:none;display:none}
 
 /* Badges */
 .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:500;white-space:nowrap}
@@ -155,6 +153,7 @@ tr:hover{background:rgba(255,255,255,.04)}
   </div>
   <div style="text-align:center;padding:16px;color:var(--text2);font-size:12px" id="tableInfo"></div>
 </div>
+<div id="tooltip"></div>
 
 <script>
 const REPO = 'labradorsedsota/bughunt';
@@ -332,7 +331,7 @@ function renderTable() {
       <td class="text-muted">${t.worker || '-'}</td>
       <td>${t.result ? `<span class="badge badge-${t.result}">${RESULT_LABELS[t.result] || t.result}</span>` : '-'}</td>
       <td class="mono">${t.duration_seconds ? formatDuration(t.duration_seconds) : '-'}</td>
-      <td class="mono">${t.sess_id && t.sess_id !== 'None' ? `<span class="tip-wrap truncate" style="display:inline-block;max-width:160px;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom">${escHtml(t.sess_id)}<span class="tip">${escHtml(t.sess_id)}</span></span>` : '-'}</td>
+      <td class="mono">${t.sess_id && t.sess_id !== 'None' ? `<span class="sess-cell" data-sess="${escHtml(t.sess_id)}" style="display:inline-block;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom;cursor:default">${escHtml(t.sess_id)}</span>` : '-'}</td>
       <td class="truncate" title="${escHtml(t.test_description_zh || '')}">${escHtml(t.test_description_zh || '')}</td>
     </tr>
   `).join('');
@@ -355,6 +354,22 @@ function formatDuration(s) {
   return m + 'm' + (rs ? rs + 's' : '');
 }
 function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// Tooltip for session ID
+const ttEl = document.getElementById('tooltip');
+document.addEventListener('mouseover', e => {
+  const cell = e.target.closest('.sess-cell');
+  if (cell) {
+    ttEl.textContent = cell.dataset.sess;
+    ttEl.style.display = 'block';
+    const r = cell.getBoundingClientRect();
+    ttEl.style.left = r.left + 'px';
+    ttEl.style.top = (r.top - ttEl.offsetHeight - 6) + 'px';
+  }
+});
+document.addEventListener('mouseout', e => {
+  if (e.target.closest('.sess-cell')) ttEl.style.display = 'none';
+});
 
 // Init
 loadData();
