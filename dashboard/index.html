@@ -54,7 +54,7 @@ tr:nth-child(even){background:rgba(255,255,255,.02)}
 tr:hover{background:rgba(255,255,255,.04)}
 
 /* Tooltip */
-#tooltip{position:fixed;background:#1c2128;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12px;font-family:'SF Mono',SFMono-Regular,Consolas,monospace;white-space:nowrap;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.4);pointer-events:none;display:none}
+#tooltip{position:fixed;background:#1c2128;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12px;font-family:'SF Mono',SFMono-Regular,Consolas,monospace;white-space:nowrap;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.4);display:none;cursor:text;user-select:text}
 
 /* Badges */
 .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:500;white-space:nowrap}
@@ -357,19 +357,36 @@ function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
 
 // Tooltip for session ID
 const ttEl = document.getElementById('tooltip');
+let ttTimer = null;
+function showTip(cell) {
+  clearTimeout(ttTimer);
+  ttEl.textContent = cell.dataset.sess;
+  ttEl.style.display = 'block';
+  const r = cell.getBoundingClientRect();
+  // Position above the cell
+  let left = r.left;
+  let top = r.top - ttEl.offsetHeight - 6;
+  // Keep within viewport
+  const ttW = ttEl.offsetWidth;
+  if (left + ttW > window.innerWidth - 8) left = window.innerWidth - ttW - 8;
+  if (left < 8) left = 8;
+  if (top < 8) top = r.bottom + 6; // flip below if no room above
+  ttEl.style.left = left + 'px';
+  ttEl.style.top = top + 'px';
+}
+function hideTipDelayed() {
+  ttTimer = setTimeout(() => { ttEl.style.display = 'none'; }, 200);
+}
 document.addEventListener('mouseover', e => {
   const cell = e.target.closest('.sess-cell');
-  if (cell) {
-    ttEl.textContent = cell.dataset.sess;
-    ttEl.style.display = 'block';
-    const r = cell.getBoundingClientRect();
-    ttEl.style.left = r.left + 'px';
-    ttEl.style.top = (r.top - ttEl.offsetHeight - 6) + 'px';
-  }
+  if (cell) { showTip(cell); return; }
+  if (e.target.closest('#tooltip')) { clearTimeout(ttTimer); return; }
 });
 document.addEventListener('mouseout', e => {
-  if (e.target.closest('.sess-cell')) ttEl.style.display = 'none';
+  if (e.target.closest('.sess-cell') || e.target.closest('#tooltip')) hideTipDelayed();
 });
+ttEl.addEventListener('mouseover', () => clearTimeout(ttTimer));
+ttEl.addEventListener('mouseout', hideTipDelayed);
 
 // Init
 loadData();
