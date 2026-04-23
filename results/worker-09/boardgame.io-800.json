@@ -2,19 +2,17 @@
   "task_id": "boardgame.io-800",
   "repo": "boardgameio/boardgame.io",
   "worker": "worker-09",
-  "status": "failed",
-  "sess_id": "sess-20260423181230-c542a6c4c00241e099d03171c1275aa5",
+  "status": "completed",
+  "sess_id": "sess-20260423221608-29381780fa7246aaa1b477b1b4022060",
   "expected_result_used": false,
-  "duration_seconds": 0,
-  "timestamp": "2026-04-23T10:35:00Z",
+  "duration_seconds": 480,
+  "timestamp": "2026-04-23T14:14:00Z",
   "mano_cua": {
-    "status": "FAILED",
-    "total_steps": 6,
-    "last_action": "key: ctrl+shift+m",
-    "result": "failed",
-    "result_summary": "mano-cua连续3次执行失败。首次6步后ProxyError断连，后两次被系统SIGKILL无输出。部署成功(HTTP 200)。",
-    "last_reasoning": "首次尝试到step 6时mano API ProxyError: ConnectionResetError。后两次重试mano-cua进程均被SIGKILL，无任何输出。"
+    "status": "COMPLETED",
+    "total_steps": 53,
+    "result": "abnormal",
+    "result_summary": "AI对手不响应bug已复现。Chess Singleplayer中玩家落子e4后，AI(Player 1)不自动回应，ctx.currentPlayer停留在'1'，ctx.turn=2不推进，G.pgn只记录'1. e4'。游戏永久卡在AI回合。另发现3个附带bug：endTurn()按钮无效、点击AI标签导致Debug面板消失、面板折叠后无法恢复。",
+    "last_reasoning": "AI对手完全不工作，玩家落子后AI不会自动回应，整个对局陷入死锁。Debug面板State视图确认ctx.numMoves=0（AI回合内AI从未执行move），棋盘同步测试无法继续。"
   },
-  "failure_reason": "mano_cua_killed",
   "batch": 17
 }

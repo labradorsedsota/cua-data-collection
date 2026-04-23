@@ -2,19 +2,18 @@
   "task_id": "boardgame.io-782",
   "repo": "boardgameio/boardgame.io",
   "worker": "worker-09",
-  "status": "failed",
-  "sess_id": "",
+  "status": "completed",
+  "sess_id": "sess-20260423220311-8094b83d3700447a97cbf71a1f26389e",
   "expected_result_used": false,
-  "duration_seconds": 0,
-  "timestamp": "2026-04-23T10:02:00Z",
+  "duration_seconds": 540,
+  "timestamp": "2026-04-23T14:12:00Z",
   "mano_cua": {
-    "status": "FAILED",
-    "total_steps": 0,
-    "last_action": "",
-    "result": "failed",
-    "result_summary": "mano-cua进程连续3次被系统SIGKILL，无输出。部署成功(HTTP 200)但mano-cua无法完成执行。疑似系统内存压力导致。",
-    "last_reasoning": "部署boardgame.io v0.39.16成功，deasync原生模块重编译完成，端口3000返回HTTP 200。但mano-cua启动后每次均被SIGKILL，3次重试均失败，无任何step输出。"
+    "status": "COMPLETED",
+    "total_steps": 49,
+    "last_action": "Open url: view-source:http://localhost:3000/static/css/main.chunk.css",
+    "result": "abnormal",
+    "result_summary": "CSS样式泄露已复现。Debug面板的button/select样式(.debug-panel :global(button, select))泄露到页面其他区域。在Undo Examples页和Random API页，游戏区域的button元素（shuffle/roll/A/B/undo/redo）显示与Debug面板相同的灰色背景和边框样式。Tic-Tac-Toe格子未受影响因为是td元素不是button。",
+    "last_reasoning": "Undo Examples页面的游戏区域button元素与Debug面板button视觉上完全一致（灰色背景、灰色边框），证实CSS :global(button, select)选择器泄露了Debug面板样式到全局。"
   },
-  "failure_reason": "mano_cua_killed",
   "batch": 17
 }
