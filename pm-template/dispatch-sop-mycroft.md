@@ -116,7 +116,7 @@ rm -rf /tmp/bughunt-dispatch
 
 ```bash
 curl -s -X POST "https://im.deepminer.com.cn/api/v1/bot/sendMessage" \
-  -H "Authorization: Bearer bf_f44080a9a3d4b527b2ab93c42dc9571c" \
+  -H "Authorization: Bearer bf_10112c9e4f0014108c7c2435b9313bab" \
   -H "Content-Type: application/json" \
   -d '{
     "channel_id": "{channel_id}",
