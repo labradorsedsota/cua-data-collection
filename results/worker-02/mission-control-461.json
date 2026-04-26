@@ -3,16 +3,16 @@
   "repo": "builderz-labs/mission-control",
   "worker": "worker-02",
   "status": "completed",
-  "sess_id": "sess-20260424173916-0fb36e36c966454bb618596f71a741fe",
+  "sess_id": "sess-20260427015510-f82d7cd247e84cd8bef8029563434392",
   "expected_result_used": true,
-  "duration_seconds": 600,
-  "timestamp": "2026-04-24T17:49:00+08:00",
+  "duration_seconds": 360,
+  "timestamp": "2026-04-27T02:01:00+08:00",
   "mano_cua": {
-    "status": "STOPPED_BY_TIMEOUT",
-    "total_steps": 12,
-    "last_action": "mouse_move",
-    "result": "unclear",
-    "result_summary": "主界面Gateway Control Plane显示正常（Gateway: Connected, Online, Traffic: 4 sessions, Errors: 0）。但mano-cua在逐个hover侧边栏图标（概览/智能体/任务/聊天等）寻找Debug面板入口时超时，未能进入Debug面板查看健康检查探针路径。页面同时显示OpenClaw状态完整性警告（OAuth dir不存在、45个orphan transcript等）。",
-    "last_reasoning": "逐个检查左侧边栏图标tooltip（概览/智能体/任务/聊天等），未找到Debug面板入口即超时。"
+    "status": "COMPLETED",
+    "total_steps": 31,
+    "last_action": "DONE",
+    "result": "abnormal",
+    "result_summary": "Debug 面板健康检查探针报告 Gateway unreachable / healthy:false / heartbeat failed，而主仪表盘同时显示 Gateway Online/Connected，状态严重矛盾。Debug 面板使用过时的 /api/* 路由探测导致误报不可达。",
+    "last_reasoning": "主仪表盘显示 Gateway Online（绿色在线）和 Connected（绿色已连接），但 Debug 面板显示 debug.unreachable（不可达）、healthy: false、error: Gateway unreachable、heartbeat debug.failed。两者存在严重矛盾，说明 Debug 面板的健康检查探针使用了过时的 /api/* 路由，导致误报网关不可达。"
   }
 }
