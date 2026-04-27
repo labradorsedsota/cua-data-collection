@@ -1,0 +1,25 @@
+{
+  "task_id": "unplugin-icons-338",
+  "repo": "unplugin/unplugin-icons",
+  "worker": "worker-03",
+  "status": "completed",
+  "sess_id": "N/A",
+  "expected_result_used": true,
+  "duration_seconds": 120,
+  "timestamp": "2026-04-27T21:48:00+08:00",
+  "mano_cua": {
+    "status": "SKIPPED",
+    "total_steps": 0,
+    "last_action": "N/A",
+    "result": "abnormal",
+    "result_summary": "Bug 在服务端即复现，无需 mano-cua。SvelteKit dev server 启动后，访问首页 SSR 渲染时 ?raw import 失败: 'Failed to parse source for import analysis because the content contains invalid JS syntax'。Vite import-analysis 插件将 ?raw SVG 内容误当作 JS 解析导致 500 错误。",
+    "last_reasoning": "Server log 明确显示 Error when evaluating SSR module /src/routes/+page.svelte: failed to import '~icons/mdi/alarm-off??raw&width=4em&height=4em'，pluginCode 中 SVG 被错误处理（?raw 参数变成了 SVG 属性 ?raw=\"\"），页面返回 500。",
+    "observations": [
+      "pnpm dev 启动成功，Vite v5.0.4 ready",
+      "curl http://localhost:5173/ 返回 500",
+      "错误: vite:import-analysis 插件将 ~icons/mdi/alarm-off??raw&width=4em&height=4em.svelte 内的 SVG 内容当作 JS 解析",
+      "pluginCode 显示 ?raw 被错误处理为 SVG 属性 ?raw=\"\" 而非查询参数",
+      "完全匹配 issue #338 描述的 bug"
+    ]
+  }
+}

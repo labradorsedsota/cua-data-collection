@@ -1,0 +1,25 @@
+{
+  "task_id": "qinglong-pr2811",
+  "repo": "whyour/qinglong",
+  "worker": "worker-03",
+  "status": "completed",
+  "sess_id": "sess-20260427211600-qinglong2811",
+  "expected_result_used": true,
+  "duration_seconds": 140,
+  "timestamp": "2026-04-27T21:20:00+08:00",
+  "mano_cua": {
+    "status": "COMPLETED",
+    "total_steps": 13,
+    "last_action": "DONE",
+    "result": "abnormal",
+    "result_summary": "Bug 复现成功。设置 malformed cookie (lang=%E0%A4%A) 后刷新页面，触发 URIError: URI malformed 白屏。错误来源: intl.determineLocale() → getLocaleFromCookie() → decodeURIComponent() 未被 try-catch 保护。",
+    "last_reasoning": "设置 document.cookie='lang=%E0%A4%A' 后刷新页面: 1)页面白屏 ✅ 2)控制台出现 Uncaught (in promise) URIError: URI malformed ✅ 3)页面无法正常加载青龙面板 ✅。错误调用栈: decodeURIComponent() → ReactIntlUniversal.getLocaleFromCookie() → ReactIntlUniversal.determineLocale() → rootContainer(app.ts:10:1)。",
+    "observations": [
+      "初始页面正常加载（显示服务启动超时504页面，前端渲染正常）",
+      "DevTools Console 正常打开",
+      "执行 document.cookie='lang=%E0%A4%A' 成功，返回值正常",
+      "刷新页面后出现白屏 + Unhandled Rejection (URIError): URI malformed",
+      "错误根因: intl.determineLocale() 内部 decodeURIComponent() 未 try-catch"
+    ]
+  }
+}
