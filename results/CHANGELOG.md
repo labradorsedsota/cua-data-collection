@@ -1,5 +1,52 @@
 # Results CHANGELOG
 
+## 2026-04-27 16:51 — 29 张 result 卡合规修复（#4 字段重命名 + #5 值映射）
+
+**原因：** 整合评估发现 29 张 completed 卡存在 mano_cua 字段不合规问题，林菡确认修复方案后执行。
+
+**修复一：#4 字段重命名（7 张，worker-06）**
+
+将非标准字段名映射为标准字段名：`judgment`→`result`, `reasoning_summary`→`last_reasoning`, `observed_facts`→`result_summary`
+
+| # | 文件路径 | 修复后 result |
+|---|---------|-------------|
+| 1 | worker-06/pump.io-pr1157.json | abnormal |
+| 2 | worker-06/pump.io-pr1191.json | abnormal |
+| 3 | worker-06/pump.io-pr1311.json | abnormal |
+| 4 | worker-06/pump.io-pr1432.json | abnormal |
+| 5 | worker-06/shadcn-svelte-extras-pr229.json | abnormal |
+| 6 | worker-06/shadcn-svelte-extras-pr245.json | abnormal |
+| 7 | worker-06/shadcn-svelte-extras-pr360.json | abnormal |
+
+**修复二：#5 值映射（22 张，worker-02/08/09）**
+
+将非法 result 值映射为标准值：`has_bug`→`abnormal`, `no_bug`→`normal`, `reproduced`→`abnormal`
+
+| # | 文件路径 | 修复前 | 修复后 |
+|---|---------|-------|-------|
+| 8 | worker-02/whiteboard-113.json | reproduced | abnormal |
+| 9 | worker-08/add-to-calendar-button-pr411.json | has_bug | abnormal |
+| 10 | worker-08/add-to-calendar-button-pr735.json | has_bug | abnormal |
+| 11 | worker-08/angular-bootstrap-datetimepicker-pr51.json | has_bug | abnormal |
+| 12 | worker-08/github-readme-activity-graph-106.json | has_bug | abnormal |
+| 13 | worker-08/github-readme-activity-graph-130.json | has_bug | abnormal |
+| 14 | worker-08/github-readme-activity-graph-pr104.json | has_bug | abnormal |
+| 15 | worker-08/github-readme-activity-graph-pr105.json | has_bug | abnormal |
+| 16 | worker-08/github-readme-activity-graph-pr164.json | has_bug | abnormal |
+| 17 | worker-08/ngx-loading-bar-pr164.json | no_bug | normal |
+| 18 | worker-08/nomie6-oss-22.json | has_bug | abnormal |
+| 19 | worker-08/nomie6-oss-37.json | has_bug | abnormal |
+| 20 | worker-08/nomie6-oss-38.json | has_bug | abnormal |
+| 21 | worker-08/nomie6-oss-41.json | no_bug | normal |
+| 22 | worker-08/nomie6-oss-56.json | no_bug | normal |
+| 23 | worker-08/openapi-gui-pr55.json | has_bug | abnormal |
+| 24 | worker-08/openapi-gui-pr62.json | no_bug | normal |
+| 25 | worker-09/boardgame.io-766.json | reproduced | abnormal |
+| 26 | worker-09/drawnix-pr324.json | reproduced | abnormal |
+| 27 | worker-09/hads-32.json | reproduced | abnormal |
+| 28 | worker-09/hads-pr13.json | reproduced | abnormal |
+| 29 | worker-09/hads-pr43.json | reproduced | abnormal |
+
 ## 2026-04-19 17:35 — Batch 14: 48 张卡重做
 
 **原因：** 合规性检查 + 数据质量分类后，以下卡需重做：
