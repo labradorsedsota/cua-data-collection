@@ -69,7 +69,7 @@ tr:hover{background:rgba(255,255,255,.04)}
 .badge-unclear{background:rgba(210,153,34,.12);color:var(--yellow)}
 .mono{font-family:'SF Mono',SFMono-Regular,Consolas,monospace;font-size:12px}
 .text-muted{color:var(--text2)}
-.col-taskid{max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.col-taskid{min-width:200px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .truncate{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* Loading */
@@ -146,7 +146,6 @@ tr:hover{background:rgba(255,255,255,.04)}
           <th onclick="sortBy('result')">结果 <span class="sort-arrow">↕</span></th>
 
           <th onclick="sortBy('sess_id')">Session <span class="sort-arrow">↕</span></th>
-          <th>描述</th>
         </tr>
       </thead>
       <tbody id="taskTable"></tbody>
@@ -330,8 +329,7 @@ function renderTable() {
       <td class="text-muted">${t.worker || '-'}</td>
       <td>${t.result ? `<span class="badge badge-${t.result}">${RESULT_LABELS[t.result] || t.result}</span>` : '-'}</td>
 
-      <td class="mono">${t.sess_id && t.sess_id !== 'None' ? `<span class="sess-cell" data-sess="${escHtml(t.sess_id)}" style="display:inline-block;max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom;cursor:default">${escHtml(t.sess_id)}</span>` : '-'}</td>
-      <td class="truncate" title="${escHtml(t.test_description_zh || '')}">${escHtml(t.test_description_zh || '')}</td>
+      <td class="mono">${t.sess_id && t.sess_id !== 'None' ? `<span class="sess-cell" data-sess="${escHtml(t.sess_id)}" style="display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom;cursor:default">${escHtml(t.sess_id)}</span>` : '-'}</td>
     </tr>
   `).join('');
 
