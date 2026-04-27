@@ -1,5 +1,245 @@
 # Results CHANGELOG
 
+## 2026-04-27 17:50 — Batch 15: 219 张卡重做（评级 review 后归档）
+
+**原因：** 整合评估 review 后，林菡确认以下 219 张卡需重做，旧 result 归档至 `results_archive/trash/`。
+
+**问题分类：**
+
+### 无轨迹 (has_trajectory=no)（129 张）
+
+| 1 | worker-02/editable-81.json |
+| 2 | worker-02/mavonEditor-pr717.json |
+| 3 | worker-02/react-boilerplate-pr2810.json |
+| 4 | worker-02/tikzcd-editor-pr5.json |
+| 5 | worker-02/vue-trix-pr18.json |
+| 6 | worker-02/whiteboard-13.json |
+| 7 | worker-03/ngx-infinite-scroll-40.json |
+| 8 | worker-03/ngx-infinite-scroll-pr235.json |
+| 9 | worker-03/ngx-infinite-scroll-pr262.json |
+| 10 | worker-03/ngx-infinite-scroll-pr282.json |
+| 11 | worker-03/ngx-infinite-scroll-pr369.json |
+| 12 | worker-03/ngx-infinite-scroll-pr386.json |
+| 13 | worker-04/Eve-586.json |
+| 14 | worker-04/Eve-703.json |
+| 15 | worker-04/Eve-704.json |
+| 16 | worker-04/Eve-834.json |
+| 17 | worker-04/Eve-835.json |
+| 18 | worker-04/Eve-837.json |
+| 19 | worker-04/Eve-pr736.json |
+| 20 | worker-04/Eve-pr877.json |
+| 21 | worker-04/am-editor-pr245.json |
+| 22 | worker-04/am-editor-pr305.json |
+| 23 | worker-04/am-editor-pr36.json |
+| 24 | worker-04/apollo-pr274.json |
+| 25 | worker-04/apollo-pr330.json |
+| 26 | worker-04/apollo-pr362.json |
+| 27 | worker-04/axios-module-pr364.json |
+| 28 | worker-04/axios-module-pr414.json |
+| 29 | worker-04/axios-module-pr424.json |
+| 30 | worker-04/coracle-517.json |
+| 31 | worker-04/coracle-524.json |
+| 32 | worker-04/coracle-526.json |
+| 33 | worker-04/coracle-530.json |
+| 34 | worker-04/coracle-pr396.json |
+| 35 | worker-04/coracle-pr496.json |
+| 36 | worker-04/discord-data-package-explorer-pr11.json |
+| 37 | worker-04/discord-data-package-explorer-pr30.json |
+| 38 | worker-04/drawnix-141.json |
+| 39 | worker-04/drawnix-pr274.json |
+| 40 | worker-04/drawnix-pr368.json |
+| 41 | worker-04/fonts-371.json |
+| 42 | worker-04/fonts-382.json |
+| 43 | worker-04/fonts-pr274.json |
+| 44 | worker-04/heynote-132.json |
+| 45 | worker-04/inspira-ui-pr260.json |
+| 46 | worker-04/inspira-ui-pr263.json |
+| 47 | worker-04/inspira-ui-pr268.json |
+| 48 | worker-04/ngx-progressbar-66.json |
+| 49 | worker-04/ngx-progressbar-88.json |
+| 50 | worker-04/ngx-progressbar-pr119.json |
+| 51 | worker-04/ngx-progressbar-pr278.json |
+| 52 | worker-04/nuxt-95.json |
+| 53 | worker-04/nuxt-pr162.json |
+| 54 | worker-04/pwa-module-pr354.json |
+| 55 | worker-04/pwa-module-pr386.json |
+| 56 | worker-04/pwa-module-pr417.json |
+| 57 | worker-04/pwa-module-pr428.json |
+| 58 | worker-04/svelte-toast-pr52.json |
+| 59 | worker-04/unplugin-icons-338.json |
+| 60 | worker-04/unplugin-icons-pr316.json |
+| 61 | worker-04/unplugin-icons-pr320.json |
+| 62 | worker-04/unplugin-icons-pr356.json |
+| 63 | worker-04/vue-element-plus-admin-317.json |
+| 64 | worker-04/vue-element-plus-admin-318.json |
+| 65 | worker-04/vue-element-plus-admin-424.json |
+| 66 | worker-04/vue-element-plus-admin-428.json |
+| 67 | worker-04/vuetify-module-95.json |
+| 68 | worker-04/vuetify-module-pr230.json |
+| 69 | worker-04/vuetify-module-pr300.json |
+| 70 | worker-04/wuffle-142.json |
+| 71 | worker-04/wuffle-161.json |
+| 72 | worker-04/wuffle-245.json |
+| 73 | worker-05/OpsiMate-407.json |
+| 74 | worker-05/homer-pr1034.json |
+| 75 | worker-05/homer-pr174.json |
+| 76 | worker-06/muya-pr152.json |
+| 77 | worker-06/nuxt-social-share-175.json |
+| 78 | worker-06/pump.io-pr1355.json |
+| 79 | worker-06/pump.io-pr1465.json |
+| 80 | worker-06/pump.io-pr926.json |
+| 81 | worker-06/shadcn-svelte-extras-pr361.json |
+| 82 | worker-06/vue-notion-41.json |
+| 83 | worker-06/vue-notion-pr46.json |
+| 84 | worker-06/vue-notion-pr57.json |
+| 85 | worker-07/BitFun-188.json |
+| 86 | worker-08/DaybydayCRM-pr381.json |
+| 87 | worker-08/DaybydayCRM-pr420.json |
+| 88 | worker-08/angular-bootstrap-datetimepicker-pr49.json |
+| 89 | worker-08/chronoframe-92.json |
+| 90 | worker-08/chronoframe-pr273.json |
+| 91 | worker-08/evlog-160.json |
+| 92 | worker-08/evlog-164.json |
+| 93 | worker-08/github-readme-activity-graph-pr9.json |
+| 94 | worker-08/jsPDF-AutoTable-691.json |
+| 95 | worker-08/mission-control-526.json |
+| 96 | worker-08/mission-control-529.json |
+| 97 | worker-08/nomie6-oss-58.json |
+| 98 | worker-08/nuxt-directus-144.json |
+| 99 | worker-08/nuxt-directus-147.json |
+| 100 | worker-08/nuxt-directus-157.json |
+| 101 | worker-08/qinglong-pr2811.json |
+| 102 | worker-08/qinglong-pr2833.json |
+| 103 | worker-08/qinglong-pr2837.json |
+| 104 | worker-09/air-datepicker-pr471.json |
+| 105 | worker-09/boardgame.io-1021.json |
+| 106 | worker-09/boardgame.io-810.json |
+| 107 | worker-09/boardgame.io-855.json |
+| 108 | worker-09/conform-454.json |
+| 109 | worker-09/hastic-grafana-app-223.json |
+| 110 | worker-09/hastic-grafana-app-275.json |
+| 111 | worker-09/hastic-grafana-app-324.json |
+| 112 | worker-09/lenis-pr507.json |
+| 113 | worker-09/obsidian-execute-code-pr395.json |
+| 114 | worker-09/preact-2949.json |
+| 115 | worker-09/preact-4111.json |
+| 116 | worker-09/preact-4422.json |
+| 117 | worker-09/tiny-editor-108.json |
+| 118 | worker-09/tiny-editor-156.json |
+| 119 | worker-09/tiny-editor-173.json |
+| 120 | worker-09/tiny-editor-197.json |
+| 121 | worker-09/tiny-editor-201.json |
+| 122 | worker-09/tiny-editor-294.json |
+| 123 | worker-09/tiny-editor-417.json |
+| 124 | worker-09/tracktor-pr139.json |
+| 125 | worker-09/vuefinder-pr49.json |
+| 126 | worker-09/vuefinder-pr8.json |
+| 127 | worker-fabrice/ESPConnect-pr137.json |
+| 128 | worker-fabrice/KaibanJS-215.json |
+| 129 | worker-fabrice/svelte-jsoneditor-pr73.json |
+
+### 无result描述 (has_trajectory=no_result_desc)（68 张）
+
+| 1 | worker-01/leaflet-geoman-1348.json |
+| 2 | worker-01/svelte-sonner-pr173.json |
+| 3 | worker-01/the-graph-174.json |
+| 4 | worker-01/the-graph-pr122.json |
+| 5 | worker-02/jingo-pr189.json |
+| 6 | worker-02/mavonEditor-649.json |
+| 7 | worker-02/mavonEditor-729.json |
+| 8 | worker-02/mavonEditor-pr640.json |
+| 9 | worker-02/mavonEditor-pr661.json |
+| 10 | worker-02/mission-control-456.json |
+| 11 | worker-02/react-slick-pr2149.json |
+| 12 | worker-02/react-slick-pr622.json |
+| 13 | worker-03/gridsheet-pr105.json |
+| 14 | worker-03/mui-tiptap-334.json |
+| 15 | worker-03/ngx-scrollbar-674.json |
+| 16 | worker-04/coracle-474.json |
+| 17 | worker-04/drawnix-pr318.json |
+| 18 | worker-04/drawnix-pr333.json |
+| 19 | worker-04/heynote-195.json |
+| 20 | worker-04/heynote-21.json |
+| 21 | worker-04/heynote-357.json |
+| 22 | worker-04/vue-element-plus-admin-316.json |
+| 23 | worker-05/OpsiMate-408.json |
+| 24 | worker-05/homer-pr112.json |
+| 25 | worker-05/homer-pr115.json |
+| 26 | worker-05/react-dropzone-1449.json |
+| 27 | worker-05/react-dropzone-526.json |
+| 28 | worker-06/Raneto-88.json |
+| 29 | worker-06/headscale-ui-pr192.json |
+| 30 | worker-06/next-themes-85.json |
+| 31 | worker-06/nuxt-social-share-410.json |
+| 32 | worker-07/AlgerMusicPlayer-43.json |
+| 33 | worker-07/Armoria-pr115.json |
+| 34 | worker-07/Armoria-pr122.json |
+| 35 | worker-07/Armoria-pr132.json |
+| 36 | worker-07/Armoria-pr206.json |
+| 37 | worker-07/reactour-pr405.json |
+| 38 | worker-07/reactour-pr448.json |
+| 39 | worker-07/reactour-pr49.json |
+| 40 | worker-07/reactour-pr529.json |
+| 41 | worker-07/reactour-pr639.json |
+| 42 | worker-07/reactour-pr660.json |
+| 43 | worker-07/svelty-picker-pr156.json |
+| 44 | worker-07/turnstile-250.json |
+| 45 | worker-07/visual-drag-demo-pr122.json |
+| 46 | worker-07/visual-drag-demo-pr133.json |
+| 47 | worker-07/visual-drag-demo-pr27.json |
+| 48 | worker-08/angular-bootstrap-datetimepicker-pr426.json |
+| 49 | worker-08/medical-appointment-scheduling-131.json |
+| 50 | worker-08/medical-appointment-scheduling-91.json |
+| 51 | worker-08/ngx-loading-bar-40.json |
+| 52 | worker-08/ngx-loading-bar-43.json |
+| 53 | worker-08/ngx-loading-bar-65.json |
+| 54 | worker-08/ngx-loading-bar-85.json |
+| 55 | worker-08/ngx-loading-bar-pr159.json |
+| 56 | worker-08/nomie6-oss-23.json |
+| 57 | worker-09/air-datepicker-613.json |
+| 58 | worker-09/boardgame.io-782.json |
+| 59 | worker-09/boardgame.io-848.json |
+| 60 | worker-09/conform-469.json |
+| 61 | worker-09/laverna-351.json |
+| 62 | worker-09/lenis-68.json |
+| 63 | worker-09/react-datetime-picker-156.json |
+| 64 | worker-09/react-datetime-picker-40.json |
+| 65 | worker-09/vuefinder-pr154.json |
+| 66 | worker-09/vuetable-2-pr17.json |
+| 67 | worker-fabrice/svelte-jsoneditor-pr184.json |
+| 68 | worker-fabrice/vuepress-theme-vdoing-pr432.json |
+
+### 轨迹不匹配 (trajectory_match=mismatch)（14 张）
+
+| 1 | worker-01/leaflet-geoman-1521.json |
+| 2 | worker-02/react-boilerplate-126.json |
+| 3 | worker-02/react-slick-1881.json |
+| 4 | worker-03/gridsheet-92.json |
+| 5 | worker-04/heynote-434.json |
+| 6 | worker-04/inspira-ui-87.json |
+| 7 | worker-04/sanity-690.json |
+| 8 | worker-06/dnd-kit-61.json |
+| 9 | worker-06/muya-pr135.json |
+| 10 | worker-06/shadcn-svelte-extras-pr330.json |
+| 11 | worker-08/ngx-loading-bar-93.json |
+| 12 | worker-09/boardgame.io-1096.json |
+| 13 | worker-09/conform-306.json |
+| 14 | worker-09/react-datetime-picker-180.json |
+
+### #4 字段不完整（4 张）
+
+| 1 | worker-06/pump.io-pr1438.json |
+| 2 | worker-06/shadcn-svelte-extras-166.json |
+| 3 | worker-06/shadcn-svelte-extras-pr296.json |
+| 4 | worker-06/shadcn-svelte-extras-pr355.json |
+
+### LLM匹配出错 (trajectory_match=error)（4 张）
+
+| 1 | worker-02/components-pr172.json |
+| 2 | worker-02/editable-64.json |
+| 3 | worker-02/mavonEditor-pr667.json |
+| 4 | worker-04/form-builder-pr78.json |
+
 ## 2026-04-27 16:51 — 29 张 result 卡合规修复（#4 字段重命名 + #5 值映射）
 
 **原因：** 整合评估发现 29 张 completed 卡存在 mano_cua 字段不合规问题，林菡确认修复方案后执行。
