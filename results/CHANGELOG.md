@@ -1,6 +1,6 @@
 # Results CHANGELOG
 
-## 2026-04-27 17:50 — Batch 15: 219 张卡重做（评级 review 后归档）
+## 2026-04-27 17:50 — Batch 39: 219 张卡重做（评级 review 后归档）
 
 **原因：** 整合评估 review 后，林菡确认以下 219 张卡需重做，旧 result 归档至 `results_archive/trash/`。
 
