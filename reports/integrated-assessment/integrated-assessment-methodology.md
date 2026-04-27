@@ -1,7 +1,7 @@
 # Integrated Assessment 方法论与复用指南
 
-> 版本：v1.1  
-> 更新时间：2026-04-20  
+> 版本：v1.2  
+> 更新时间：2026-04-27  
 > 作者：Pichai  
 
 ---
@@ -18,7 +18,7 @@
 |--------|------|------|
 | result 卡 | repo `results/worker-*/` | 全集，每张 JSON 一个执行结果 |
 | 任务卡 | repo `tasks/pool-clean/` | 原始任务定义（含 test_description_zh, dev_url, app_name） |
-| TOS 轨迹 | `/Users/mlt/Documents/code/oss/tos_trajectories/trajectories/{sess_id}/` | mano-cua 执行轨迹 |
+| TOS 轨迹 | `/Users/mlt/Documents/code/oss/tos_trajectories/trajectories/{sess_id}/` | mano-cua 执行轨迹（仅 result.json + files.txt 云端清单，不含截图） |
 | 脚本目录 | `/Users/mlt/.openclaw/workspace/scripts/bughunt-assessment/` | 所有评估脚本 |
 | 脚本输出 | `/Users/mlt/.openclaw/workspace/scripts/bughunt-assessment/output/` | LLM 匹配结果等中间产物 |
 
@@ -152,9 +152,10 @@ git sparse-checkout set results tasks/pool-clean reports
 
 # 2. 确认轨迹目录
 TRAJ_DIR="/Users/mlt/Documents/code/oss/tos_trajectories/trajectories"
-ls $TRAJ_DIR | wc -l  # 应有 520+
+ls $TRAJ_DIR | wc -l
 
-# 3. 如有新增 result 卡的 sess_id 缺轨迹，先补下载
+# 3. 下载缺失轨迹的 result.json（自动 diff，仅下载 result.json + 生成云端文件清单）
+# 脚本会自动扫描 result 卡中的 sess_id → 与本地做 diff → 只下载缺失的
 python3 ~/.openclaw/workspace/scripts/bughunt-assessment/download_missing_batch.py
 ```
 
@@ -186,9 +187,9 @@ git push origin main
 | LLM 匹配脚本 | `~/.openclaw/workspace/scripts/bughunt-assessment/llm_match_check.py` | 调 claude-haiku-4-5 |
 | 整合报告脚本 | `~/.openclaw/workspace/scripts/bughunt-assessment/integrate_report.py` | 合并数据源 |
 | 合规检查脚本 | `~/.openclaw/workspace/scripts/bughunt-assessment/compliance_check.py` | 18 项检查 |
-| TOS 下载脚本 | `~/.openclaw/workspace/scripts/bughunt-assessment/download_missing_batch.py` | 批量下载 |
+| TOS 下载脚本 | `~/.openclaw/workspace/scripts/bughunt-assessment/download_missing_batch.py` | 轻量下载（仅 result.json + files.txt 清单，自动 diff） |
 | 脚本输出目录 | `~/.openclaw/workspace/scripts/bughunt-assessment/output/` | LLM 结果、日志 |
-| 轨迹数据 | `/Users/mlt/Documents/code/oss/tos_trajectories/trajectories/` | 520 session, 24GB |
+| 轨迹数据 | `/Users/mlt/Documents/code/oss/tos_trajectories/trajectories/` | 每个 session 仅含 result.json + files.txt 云端清单 |
 | 原始下载脚本 | `~/.openclaw/workspace/download_sess.py` | 单个 sess_id 下载 |
 
 ---
@@ -196,10 +197,11 @@ git push origin main
 ## 十一、注意事项
 
 1. **repo 每次用 sparse clone 到 /tmp/bughunt-check** — 这是临时工作目录，脚本中 RESULTS_DIR/TASKS_DIR 指向这里
-2. **轨迹已在持久化路径** — 不会因重启丢失
+2. **轨迹只下载 result.json** — 评估管线只需要 result.json 中的 `task` 字段做匹配，不需要截图；云端完整文件列表保存在每个 session 目录的 `files.txt` 中，需要时可按需补下载
 3. **LLM API budget** — 本地 proxy (127.0.0.1:18792) 已超 budget，用 mininglamp gateway 直连
 4. **app_name 命名不一致是正常的** — npm 包名 vs 产品名，LLM 能正确判定
 5. **重复卡（#9）是 B 级** — 不影响 selected，但标记提醒去重
+6. **download_missing_batch.py 自动 diff** — 脚本从 result 卡中提取 completed 卡的 sess_id，与本地已有 result.json 做 diff，只下载缺失的，无需手动维护 sess_id 列表
 
 ---
 
