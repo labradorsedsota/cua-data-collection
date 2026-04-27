@@ -1,7 +1,7 @@
 # BugHunt Result 整合评估报告
 
-> 生成时间：2026-04-20 14:55  
-> 数据源：results/ 全量 873 张卡 × (合规检查 + 轨迹匹配 + 去重)
+> 生成时间：2026-04-27 12:06  
+> 数据源：results/ 全量 1781 张卡 × (合规检查 + 轨迹匹配 + 去重)
 
 ---
 
@@ -185,5 +185,5 @@
 ---
 
 *数据文件：*
-- CSV: `reports/integrated-assessment-20260420.csv`
-- JSON: `reports/integrated-assessment-20260420.json`
+- CSV: `reports/integrated-assessment/integrated-assessment-20260427.csv`
+- JSON: `reports/integrated-assessment/integrated-assessment-20260427.json`
