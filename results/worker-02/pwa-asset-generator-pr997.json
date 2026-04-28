@@ -6,18 +6,16 @@
   "expected_result_used": false,
   "sess_id": null,
   "duration_seconds": 0,
-  "timestamp": "2026-04-28T13:05:00+08:00",
+  "timestamp": "2026-04-28T18:10:00+08:00",
   "mano_cua": null,
   "failure": {
     "type": "deploy_failed",
-    "symptom": "git clone反复失败，41MB repo。shallow clone成功但unshallow失败(early EOF)，无法checkout到buggy_commit",
+    "symptom": "SSH clone成功(9秒)，checkout成功。但这是一个CLI工具(pwa-asset-generator)，没有dev server或web UI。package.json中无dev/start(web)脚本，只有CLI命令和test。任务卡标注framework=other，实际无法在浏览器中测试",
     "attempted": [
-      "git clone 无代理 → SIGKILL/timeout",
-      "git clone 带代理 → early EOF",
-      "git clone --depth 1 带代理 → 成功但fetch specific commit失败",
-      "git fetch --unshallow → early EOF",
-      "curl tarball → SIGKILL/timeout"
+      "SSH clone成功(41MB, 9秒)",
+      "git checkout aadbb9b35c 成功",
+      "检查package.json: 无dev server脚本，纯CLI工具"
     ],
-    "recommendation": "跳过，当前网络不稳定无法完整clone，可稍后重试"
+    "recommendation": "跳过，CLI工具无Web UI，不适合CUA视觉验证"
   }
 }
