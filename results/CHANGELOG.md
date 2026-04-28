@@ -1,5 +1,32 @@
 # Results CHANGELOG
 
+## 2026-04-28 15:50 — worker-08 result 值修复（5 张卡，#5 合规问题）
+
+**原因：** worker-08 使用了非规范的 `mano_cua.result` 值（`has_bug`/`no_bug`），不在执行规范§三允许的 `normal`/`abnormal`/`unclear` 范围内，触发 #5 红色合规 → C 级。
+
+**操作：** 直接修改 result 值，无需重做（语义映射明确：`has_bug` → `abnormal`，`no_bug` → `normal`）。
+
+**逐张明细：**
+
+| # | 文件 | 旧值 | 新值 | 其他问题 |
+|---|------|------|------|---------|
+| 1 | worker-08/ngx-loading-bar-43.json | `no_bug` | `normal` | 无 |
+| 2 | worker-08/ngx-loading-bar-65.json | `has_bug` | `abnormal` | 无 |
+| 3 | worker-08/ngx-loading-bar-93.json | `has_bug` | `abnormal` | #10（steps=93>80） |
+| 4 | worker-08/nomie6-oss-23.json | `has_bug` | `abnormal` | #10（steps=104>80） |
+| 5 | worker-08/nuxt-directus-144.json | `no_bug` | `normal` | 无 |
+
+**修复后预期评级变化：**
+- ngx-loading-bar-43: C→A（selected 待重跑 assessment 确认）
+- ngx-loading-bar-65: C→A
+- ngx-loading-bar-93: C→B（仍有 #10 + trajectory_match=mismatch）
+- nomie6-oss-23: C→B（仍有 #10）
+- nuxt-directus-144: C→A
+
+**操作人：** Pichai | **确认人：** 林菡
+
+---
+
 ## 2026-04-27 17:50 — Batch 39: 219 张卡重做（评级 review 后归档）
 
 **原因：** 整合评估 review 后，林菡确认以下 219 张卡需重做，旧 result 归档至 `results_archive/trash/`。
