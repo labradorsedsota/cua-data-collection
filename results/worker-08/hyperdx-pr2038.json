@@ -1,0 +1,19 @@
+{
+  "task_id": "hyperdx-pr2038",
+  "repo": "hyperdxio/hyperdx",
+  "worker": "worker-08",
+  "status": "completed",
+  "sess_id": "sess-20260428124224-daa5776d83b641cba0c5fb34b7db044a",
+  "expected_result_used": true,
+  "duration_seconds": 1200,
+  "timestamp": "2026-04-28T12:52:00+08:00",
+  "mano_cua": {
+    "status": "KILLED",
+    "total_steps": 104,
+    "last_action": "KILLED_BY_WORKER",
+    "result": "has_bug",
+    "result_summary": "Bug确认。在搜索页面输入包含SQL关键字的过滤条件（如 level:info AND service:web），提交后URL中filters参数始终为空数组[]。mano-cua通过源码分析确认根因：searchFilters.tsx中extractInClauses函数使用.includes(' OR ')和.includes(' AND ')检查过滤值，当值包含这些关键字时整个过滤器被静默跳过（不加入results数组）。同样，.split(' = ')等操作会错误拆分包含运算符的值。即使简单的level:info过滤器也无法生成filter tags（因为搜索栏使用Lucene语法写入where参数，而filter tag系统依赖filters参数，两者解析路径不同）。",
+    "last_reasoning": "源码中extractInClauses对filter.type==='sql'的过滤器，若value.includes(' OR ')则整个filter被silently skipped。这是.includes()和.split()的naive用法导致的解析bug。"
+  },
+  "deploy_notes": "commit 20e4720761, Next.js 16.1.7 (webpack), Node 20, yarn 4 workspace monorepo, port 3000. 后端API未运行但前端搜索功能可用。"
+}
