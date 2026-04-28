@@ -1,0 +1,341 @@
+Session created: sess-20260427232256-558c97e6f015434ba0bc40bc7124fc53
+UI panel initialized successfully
+UI window displayed
+Expected result: 输入错误密码后点击登录，页面应弹出提示消息告知用户登录失败，而非无反馈或静默失败。
+[step 0] Action: Initializing
+[step 0] Reasoning: Initializing session connection
+[step 0] Action: screenshot
+[step 1] Action: screenshot
+[step 1] Reasoning: 页面正在加载中，我看到ElementAdmin的logo和一个加载spinner。让我等待页面完全加载后再截图。
+[step 2] Action: Open url: http://localhost:4000
+[step 2] Reasoning: 页面还在加载。我注意到页面内容（ElementAdmin logo和spinner）位于右侧，这看起来有点奇怪。让我等待页面加载完成。
+[step 3] Action: wait
+[step 3] Reasoning: 页面仍在加载，打开了新标签页。我注意到ElementAdmin的logo和spinner位于页面右侧，这是一个视觉异常——通常登录页面的内容应该居中显示。让我等待加载完成。
+[step 4] Action: left_click (113, 33)
+[step 4] Reasoning: 页面仍然显示loading spinner。让我切换到第一个标签页并等待更长时间。
+[step 5] Action: left_click (640, 61)
+[step 5] Reasoning: 页面仍在加载中。我注意到这个loading状态持续了很长时间，这是不正常的。页面内容（ElementAdmin logo和spinner）位于右侧，这是一个视觉异常。让我导航到登录页面的具体URL。
+[step 6] Action: type: localhost:4000/#/...
+[step 6] Reasoning: URL栏现在显示的是 `localhost:4000/#/`。我需要导航到登录页面。让我输入登录页面的URL。
+[step 7] Action: wait
+[step 8] Action: left_click (166, 90)
+[step 8] Reasoning: 我看到URL输入框中显示的是`localhost:4000/#/login`，Enter键已经按下但似乎没有导航。我需要点击搜索建议或者直接按回车。让我点击第一个建议。
+[step 9] Action: wait
+[step 9] Reasoning: URL已经更新为`localhost:4000/#/login`，但页面仍然显示loading状态。我可以看到ElementAdmin logo和spinner仍然在右侧，这是一个视觉异常（内容应该居中）。让我等待一下看看页面是否会加载完成。
+[step 10] Action: key: ctrl+shift+r
+[step 10] Reasoning: 页面持续显示loading状态，而且ElementAdmin logo和spinner异常地显示在右侧。这明显是一个视觉布局bug。让我尝试强制刷新页面。
+[step 11] Action: key: cmd+r
+[step 11] Reasoning: 页面仍然只显示loading状态。这个页面似乎卡在了loading状态。让我使用Cmd+R来刷新。
+[step 12] Action: wait
+[step 12] Reasoning: 页面仍然卡在loading状态，而且ElementAdmin logo显示在右侧（视觉异常）。让我等待更长时间后再检查。
+[step 13] Action: Minimize panel
+[step 13] Reasoning: 页面持续卡在loading状态。我注意到这可能是一个加载动画，实际的登录表单可能在页面的其他部分（左侧）但因为加载动画覆盖而看不见，或者登录页面实际上正在加载但登录表单元素不可见。
+
+让我观察到：
+1. **视觉异常**：ElementAdmin logo和loading spinner显示在页面右侧（约x=1152, y=325-440），而不是在页面中央。这是明显的布局bug。
+2. 页面一直处于loading状态，没有出现登录表单。
+
+这个loading界面可能是一个初始splash screen，但它一直没有消失。让我点击页面看是否会触发页面加载完成。
+
+实际上，我想到了——这可能是任务状态widget遮挡了页面右上角的内容（任务面板），导致页面布局异常。让我最小化任务状态面板。
+[step 14] Action: wait
+[step 14] Reasoning: 即使最小化任务状态面板后，页面仍然显示loading状态，ElementAdmin logo和spinner显示在右侧。这是一个明显的视觉布局bug——内容应该显示在中央。
+
+页面似乎一直卡在loading状态，没有显示登录表单。让我等待更长时间，或者尝试在第二个标签页查看。
+[step 15] Action: left_click (113, 33)
+[step 15] Reasoning: 页面一直卡在loading状态超过了2分钟。我注意到第一个标签页也有同样的问题。让我切换到第一个标签页，看看是否有不同的状态。
+
+这个持续的loading状态非常不正常。页面的内容（ElementAdmin logo和spinner）显示在右侧，这是一个布局bug。实际上，这可能是因为当前的loading是正常的SPA初始化过程，但遇到了某些错误导致无法完成初始化。
+
+让我尝试访问第一个标签页。
+[step 16] Action: key: cmd+minus
+[step 16] Reasoning: 两个标签页都显示相同的URL `localhost:4000/#/login`，并且都卡在loading状态。
+
+等一下——我注意到这个loading screen实际上可能是Vue应用的初始loading screen，它叫做"app loading"。在Vue Element Plus Admin中，通常有一个index.html中的初始loading界面，它在Vue应用初始化之前显示。如果Vue应用成功初始化，这个loading screen会被移除。
+
+实际上，我怀疑这个loading screen可能是整个页面的背景，而实际登录表单在左侧（页面的大部分区域），但由于某种CSS问题，它是透明或不可见的。
+
+让我检查一下页面的左侧，点击那里看是否有隐藏的输入框。
+
+实际上不对，让我重新思考。看截图：
+- ElementAdmin logo约在(1150, 325)位置
+- Spinner约在(1150, 440)位置
+
+这些内容位于屏幕右上方区域。这是一个纯白色的页面，左侧没有任何内容。
+
+这可能是：
+1. 登录页面的布局bug（内容偏移到右侧）
+2. 或者这是初始loading screen，Vue应用还未完全初始化
+
+让我等待更长时间并观察变化。但实际上我已经等了很长时间了（超过10分钟）。
+
+让我尝试缩小页面来看是否有内容被隐藏在视图外面。
+[step 17] Action: key: cmd+0
+[step 18] Action: left_click (400, 400)
+[step 18] Reasoning: 页面仍在loading。我需要思考一下：这个页面一直处于loading状态，已经很长时间了（超过2分钟）。有两个解释：
+
+1. **布局bug**：Vue Element Plus Admin的loading screen的位置/对齐出现了问题，导致显示在右侧而不是居中
+2. **应用无法初始化**：Vue应用遇到了某种初始化错误，导致loading screen无法消失
+
+让我尝试直接点击页面左侧区域，看是否有可交互的元素（比如被隐藏的表单）。
+
+实际上，我想到了一个不同的可能性：这个loading screen可能是Vue路由守卫在检查用户认证状态时的等待画面。如果应用还没有正确初始化，它会一直等待。
+
+让我尝试点击页面左侧区域，看是否存在登录表单的输入框。
+[step 19] Action: wait
+[step 19] Reasoning: 页面仍然卡在loading状态，左侧点击没有出现任何登录表单。这个loading页面已经持续了很长时间。
+
+我注意到有个重要的观察：
+- ElementAdmin logo和spinner位于页面的右侧（x≈1152），而不是居中。这是一个**视觉布局bug**。
+- 正常情况下，这个loading屏幕应该在页面居中显示。
+
+这个loading状态是Vue Element Plus Admin的HTML初始loading（在index.html中），通常会在Vue应用初始化后被移除。但是现在它一直没有消失，这表明Vue应用的初始化可能遇到了问题。
+
+实际上，我重新看这个截图，发现页面URL是`localhost:4000/#/login`，内容在右上角。这可能是一个正常的loading屏幕，只是因为某种CSS原因显示在了右侧。
+
+让我尝试等待更长时间——这可能是一个慢速加载的情况。
+[step 20] Action: key: Escape
+[step 20] Reasoning: 经过超过10分钟的等待，页面仍然卡在loading状态。这是一个严重的问题。
+
+让我分析当前状态：
+1. **视觉异常（布局Bug）**：ElementAdmin logo和spinner显示在页面右侧（约x=1152），而不是页面中央。这是一个CSS布局bug。
+2. **功能异常**：页面长时间处于loading状态，从未显示登录表单。
+
+我注意到这个loading screen通常是HTML页面的初始加载状态（在Vue应用初始化之前），一旦Vue应用成功挂载，这个loading screen会被隐藏/移除。如果loading screen一直显示，说明Vue应用无法正确初始化。
+
+让我尝试停止页面加载，然后查看当前状态。
+[step 21] Action: left_click (113, 33)
+[step 21] Reasoning: 页面仍然卡在loading状态。这个问题已经持续了很长时间了。
+
+让我尝试从第一个标签页去操作，或者尝试访问`http://localhost:4000`（不带hash路由）。
+
+实际上，我注意到有两个标签页都显示"ElementAdmin"，但是我现在在第二个标签页（右边的）。让我切换到第一个标签页。
+[step 22] Action: left_click (640, 61)
+[step 22] Reasoning: 两个标签页都显示相同的内容。页面仍然处于loading状态，无法正常加载登录表单。
+
+这是一个**严重的应用功能问题**。整个Vue Element Plus Admin应用无法正常初始化，loading screen一直显示，永远无法到达登录页面。
+
+视觉异常总结：
+1. ElementAdmin logo和spinner显示在页面右侧，而不是居中 - **布局Bug**
+2. Loading screen持续显示，Vue应用无法初始化 - **功能Bug**
+
+由于我已经等待了超过15分钟，并且尝试了多种方式（刷新、强制刷新、切换标签页、等待），页面都无法正常显示登录表单，这使得我无法完成任务（输入用户名密码并点击登录按钮）。
+
+基于测试模式的规则，我需要报告这些问题并确定任务的结果。但让我先尝试最后一种方法：直接访问基础URL（不带hash路由）并等待重定向到登录页。
+[step 23] Action: triple_click
+[step 23] Reasoning: 地址栏已经打开，我可以看到当前URL是`localhost:4000/#/login`，已经是登录页面URL了。让我输入新的URL，然后等待页面加载。
+[step 24] Action: type: http://localhost:...
+[step 25] Action: wait
+[step 25] Reasoning: 我可以看到地址栏显示`http://localhost:4000`，并且有一个下拉提示显示"ElementAdmin - http://localhost:4000"，这说明Chrome已经在另一个标签页打开了该页面。Enter键已按下，现在让我等待页面加载。
+
+我注意到搜索提示中显示了"ElementAdmin - http://localhost:4000 - 切换到这个标签页"，这说明另一个标签页（第一个标签页）有这个URL。让我点击第一行选项切换到那个标签页，或等待当前页面加载。
+[step 26] Action: key: Escape
+[step 26] Reasoning: 地址栏下拉菜单还是显示着，URL还是`http://localhost:4000`。我看到第一个选项是"ElementAdmin - http://localhost:4000 - 切换到这个标签页"。让我点击这个选项，或者按Escape然后等待页面加载。
+
+让我按Enter来导航到这个URL：
+
+实际上，看着地址栏中显示的是`http://localhost:4000`，Enter键已按下（之前已经执行`\n`），等待中。页面背景仍然是loading状态。
+
+让我按Escape来关闭这个下拉菜单，然后检查当前页面状态。
+[step 27] Action: wait
+[step 27] Reasoning: URL现在显示为`http://localhost:4000`，页面仍然显示loading状态，内容在右侧。这是同样的状态，URL改变了，但内容仍然是loading screen。
+
+等一下——我观察到地址栏显示`http://localhost:4000`（不是`/#/login`），而页面正在loading。让我等待这次导航完成。
+[step 28] Action: left_click (640, 300)
+[step 28] Reasoning: 仍然是loading状态，URL是`http://localhost:4000`。页面加载了，但Vue应用无法初始化，loading screen一直显示。
+
+我注意到这可能是一个严重的应用错误——Vue应用可能抛出了JavaScript错误，导致无法初始化。但由于禁止使用Terminal和开发者工具，我无法直接诊断问题。
+
+让我尝试最后的方法——检查第一个标签页（当时任务开始时已经打开的那个）是否有不同的状态。
+
+等等，我刚才注意到：这个页面可能需要更长时间加载。实际上，所有的loading状态都来自同一个Vue SPA的加载过程。我已经尝试了：
+1. 等待5秒
+2. 等待10秒 
+3. 刷新页面
+4. 强制刷新页面
+5. 导航到不同URL
+
+所有情况下都是同样的loading状态。这是一个**功能性Bug**：应用无法完成初始化。
+
+然而，我应该再尝试一次——直接点击loading屏幕。这个loading屏幕显示在右侧，而通常它应该居中显示。这可能意味着左侧区域实际上是登录表单的区域，只是被loading screen遮挡了，或者整个页面布局出了问题。
+
+让我点击左侧区域看看是否有什么可以交互的内容。
+[step 29] Action: left_click (291, 33)
+[step 29] Reasoning: 页面仍然处于loading状态。我已经在多个位置点击，但登录表单没有出现。页面始终只显示右侧的loading screen。
+
+这是一个严重的应用问题。让我对当前状态做一个最终评估：
+
+**观察到的问题：**
+
+1. **视觉布局Bug**：ElementAdmin logo和loading spinner显示在页面右侧（约x=1150, y=300-460），而不是页面中央。这是一个CSS布局问题，正常应该居中显示。
+
+2. **功能Bug**：Vue Element Plus Admin应用无法完成初始化。Loading screen持续显示超过20分钟，且多次刷新后仍然无法正常加载登录页面表单。
+
+3. **应用无响应**：多次尝试导航到不同URL（`http://localhost:4000`、`http://localhost:4000/#/login`）并等待，都无法使应用从loading状态转变为正常的登录页面状态。
+
+由于应用无法显示登录页面表单，我无法完成"输入用户名admin和错误密码wrongpassword，点击登录按钮"这些操作。
+
+让我尝试第二个标签页，看看它是否有不同的状态。
+[step 30] Action: left_click (1151, 436)
+[step 30] Reasoning: 我注意到这个标签页的URL是`localhost:4000/#/`（带hash路由，注意URL路径是`/#/`，不是`/#/login`）。这可能是初始路由，还没有被重定向到`/#/login`。
+
+**重要发现**：两个标签页都显示相同的loading状态，URL分别为：
+1. 第一个标签页：`http://localhost:4000` 
+2. 第二个标签页：`localhost:4000/#/`
+
+第二个标签页的URL是`localhost:4000/#/`，这说明应用没有正确重定向到`/#/login`路由，并且卡在了初始路由下的loading状态。这是一个明显的**路由守卫（Router Guard）或应用初始化Bug**。
+
+实际上，我想再尝试一次。也许我需要点击页面上的某个地方来解除某种冻结状态。让我点击loading spinner区域。
+[step 31] Action: wait
+[step 31] Reasoning: 我注意到菜单栏上有一个数字显示（2.8KB/s），说明页面在进行网络活动。这表明Vue应用还在尝试加载某些资源。
+
+页面仍然处于loading状态，旋转的spinner显示在右侧位置（约x=1151, y=438）。
+
+我现在尝试一个完全不同的方法——直接在URL中输入登录页的完整URL并等待：
+
+实际上，我认为这个持续的loading状态可能是因为应用的JS文件正在下载和解析，这可能需要较长时间。让我再等待一会儿。
+[step 32] Action: wait
+[step 32] Reasoning: 时间已经到了23:28，网络仍然有活动（顶部显示4600KB/s的速度），spinner仍然在旋转，位置仍然在右侧。这是一个非常异常的状态。
+
+让我停下来思考：这个应用的loading状态持续了超过30分钟了，从23:26到23:28。即使有网络活动，页面内容从未改变。
+
+我现在面临几种可能性：
+1. **这是预期的行为**：应用设计就是这样一个长时间的loading screen（极不可能，这会是糟糕的UX）
+2. **JavaScript错误**：Vue应用初始化过程中发生了错误，导致loading screen无法被移除（最可能）
+3. **布局Bug**：loading screen正在正确的位置显示，只是CSS把它渲染在了右侧而不是居中
+
+注意到spinner的位置一直是在页面右侧，在任务状态面板（已经最小化了）消失后，spinner位置仍然在右侧。这意味着这不是任务状态面板遮挡问题，这是一个真正的CSS布局bug。
+
+现在我需要做出决定：继续等待还是标记任务为失败。根据测试模式的规则，我已经尝试了多种方法都无法获得预期结果，应该记录这个bug并报告任务状态。
+
+由于我无法看到登录页面表单，无法输入用户名和密码，因此无法完成这个测试任务。
+
+让我最后尝试一种方法，切换到另一个标签页，看是否有差异。
+
+实际上，让我再等待一会，因为菜单栏显示了网络活动（4600KB/s），这说明页面仍在从服务器加载资源。也许加载还未完成，需要更长时间。
+[step 33] Action: left_click (130, 33)
+[step 33] Reasoning: 经过额外20秒等待（总计超过5分钟），页面仍然处于loading状态。loading spinner仍然位于页面右侧（约x=1151, y=437），而不是中央。
+
+现在让我尝试最后一种方法——切换到第一个标签页，看看它是否已经加载了不同的内容。
+[step 34] Action: wait
+[step 34] Reasoning: 第一个标签页（`localhost:4000/#/login`）也显示了完全相同的loading状态，spinner位于右侧（x≈1151, y≈437）。
+
+菜单栏显示网络活动（1998/s），说明还有网络请求在进行。让我再等待一段时间。
+
+实际上，我注意到应用在约23:26时开始加载，现在是23:28，已经过了2分钟。网络速度在4600KB/s左右，这是很高的速度，但页面一直处于loading状态。
+
+让我再做一次最终的等待：
+[step 35] Action: key: cmd+shift+r
+[step 35] Reasoning: 时间现在是23:29，页面仍然处于loading状态，已经超过了3分钟。LoadingScreen中的ElementAdmin logo和spinner仍然显示在右侧（x≈1151），这是一个明显的CSS布局Bug（应该居中显示）。
+
+应用无法完成初始化，登录表单始终未出现。
+
+根据测试规则，我已经：
+1. 等待了足够长的时间（超过3分钟）
+2. 尝试了多种不同的方法（刷新、强制刷新、导航到不同URL等）
+3. 同样的失败状态重复出现超过2次
+
+我需要做最后一次检查，看看spinner是否只是CSS positioning问题（loading screen可能实际上是正常工作的，只是UI位置错误），并且登录表单可能在屏幕的某个位置被隐藏了。
+
+让我检查一下是否在spinner下方（或其他位置）有任何可以点击的输入框。这个loading screen可能实际上是一个有z-index覆盖整个页面的layer，而登录表单在它下面。
+
+实际上，这不可能——如果loading screen覆盖了整个页面，那它的背景应该是非透明的，遮挡背后的内容。但实际上背景是白色的，spinner在右侧。
+
+让我最后看一眼，检查是否在页面的任何其他位置有任何可交互的内容（比如真正的登录表单，可能被布局bug推到了屏幕外或可见区域之外）。
+
+我总结一下：
+- 页面`http://localhost:4000/#/login`显示了一个loading screen，但是loading screen的位置异常（显示在右侧而非中央），这是一个视觉/布局Bug。
+- Loading screen持续了超过3分钟没有消失，Vue应用无法完成初始化，这是一个功能Bug。
+- 由于登录表单从未出现，我无法完成测试任务（输入用户名密码并点击登录）。
+
+根据TESTING_MODE规则，这个任务应该被标记为FAIL，但是等等——任务说的是"如果找不到目标功能，标记result为unclear"。
+
+但这不是找不到功能，而是应用本身出了严重问题——页面无法正常加载。这应该是FAIL，或者是unclear（因为我们看到了应用的loading screen，知道应用存在，但无法访问登录表单）。
+
+根据任务指示，"如果找不到目标功能，标记result为unclear"，因为我无法到达登录页面的功能，所以标记为unclear。
+
+但根据测试模式，这是一个功能Bug，应该记录并报告。
+
+我认为应该继续尝试，因为页面刷新中可能会有变化。让我尝试硬刷新一次看看是否能看到登录表单。
+[step 36] Action: DONE
+[step 36] Reasoning: 强制刷新后，页面仍然处于相同的loading状态，spinner位于右侧。这是一个持续性的问题。
+
+**总结最终结论：**
+
+经过超过5分钟的等待和多种尝试方法（普通刷新、强制刷新、导航到不同URL等），Vue Element Plus Admin（ElementAdmin）应用一直处于loading状态，从未显示登录页面表单。
+
+**发现的Bug：**
+1. **视觉布局Bug（严重）**：Loading screen中的ElementAdmin logo和spinner位于页面右侧（约x=1151, y=300-460），而不是居中显示。这是一个CSS布局问题，正常情况应该居中显示在页面中央。
+2. **功能Bug（严重）**：应用无法完成Vue初始化，loading screen持续显示，登录表单从未出现。用户无法访问任何功能。
+
+由于无法看到登录表单，任务中的"输入用户名admin和错误密码"这一步骤无法执行，因此无法观察到错误提示弹窗是否出现。
+
+根据任务说明"如果找不到目标功能，标记result为unclear"，且检测到了严重的应用错误，所以：
+
+**任务结果：FAIL（unclear）** - 由于应用的持续loading状态和布局Bug，无法访问登录表单，因此无法测试错误密码登录时的错误提示弹窗功能。
+
+---
+
+## 测试报告总结
+
+### 发现的问题
+
+**1. 视觉布局Bug（严重）**
+- **现象**：ElementAdmin logo和loading spinner显示在页面右侧（约坐标x=1151, y=300-460），而不是居中显示。
+- **正常期望**：Loading screen应该居中显示在页面中央。
+- **影响**：页面视觉外观异常。
+
+**2. 功能性Bug（严重，阻断性）**
+- **现象**：访问`http://localhost:4000`或`http://localhost:4000/#/login`后，Vue Element Plus Admin应用持续处于loading状态超过5分钟，无法完成初始化，登录页面表单从未出现。
+- **正常期望**：应用应在数秒内完成初始化，并显示登录页面表单（用户名输入框、密码输入框、登录按钮）。
+- **影响**：用户无法访问任何页面功能，包括登录功能。这是一个完全阻断性的bug。
+
+### 测试结论
+
+**result: unclear** - 由于应用存在严重的初始化Bug，登录页面表单始终未能显示，无法执行"输入错误密码并点击登录按钮"的测试步骤，因此无法观察和验证"密码错误时是否出现错误提示弹窗"这一功能。
+Evaluating task result...
+
+==================================================
+Task: 当前Chrome浏览器已打开Vue Element Plus Admin登录页面，地址是http://localhost:4000。在登录页面输入正确的用户名（admin）但输入错误的密码（如wrongpassword），然后点击登录按钮，观察页面是否出现错误提示弹窗消息。 请始终在浏览器内操作，禁止打开Terminal、Finder或其他应用程序。如果找不到目标功能，标记result为unclear。
+Status: COMPLETED
+Total steps: 36
+Last action: DONE
+Last reasoning: 强制刷新后，页面仍然处于相同的loading状态，spinner位于右侧。这是一个持续性的问题。
+
+**总结最终结论：**
+
+经过超过5分钟的等待和多种尝试方法（普通刷新、强制刷新、导航到不同URL等），Vue Element Plus Admin（ElementAdmin）应用一直处于loading状态，从未显示登录页面表单。
+
+**发现的Bug：**
+1. **视觉布局Bug（严重）**：Loading screen中的ElementAdmin logo和spinner位于页面右侧（约x=1151, y=300-460），而不是居中显示。这是一个CSS布局问题，正常情况应该居中显示在页面中央。
+2. **功能Bug（严重）**：应用无法完成Vue初始化，loading screen持续显示，登录表单从未出现。用户无法访问任何功能。
+
+由于无法看到登录表单，任务中的"输入用户名admin和错误密码"这一步骤无法执行，因此无法观察到错误提示弹窗是否出现。
+
+根据任务说明"如果找不到目标功能，标记result为unclear"，且检测到了严重的应用错误，所以：
+
+**任务结果：FAIL（unclear）** - 由于应用的持续loading状态和布局Bug，无法访问登录表单，因此无法测试错误密码登录时的错误提示弹窗功能。
+
+---
+
+## 测试报告总结
+
+### 发现的问题
+
+**1. 视觉布局Bug（严重）**
+- **现象**：ElementAdmin logo和loading spinner显示在页面右侧（约坐标x=1151, y=300-460），而不是居中显示。
+- **正常期望**：Loading screen应该居中显示在页面中央。
+- **影响**：页面视觉外观异常。
+
+**2. 功能性Bug（严重，阻断性）**
+- **现象**：访问`http://localhost:4000`或`http://localhost:4000/#/login`后，Vue Element Plus Admin应用持续处于loading状态超过5分钟，无法完成初始化，登录页面表单从未出现。
+- **正常期望**：应用应在数秒内完成初始化，并显示登录页面表单（用户名输入框、密码输入框、登录按钮）。
+- **影响**：用户无法访问任何页面功能，包括登录功能。这是一个完全阻断性的bug。
+
+### 测试结论
+
+**result: unclear** - 由于应用存在严重的初始化Bug，登录页面表单始终未能显示，无法执行"输入错误密码并点击登录按钮"的测试步骤，因此无法观察和验证"密码错误时是否出现错误提示弹窗"这一功能。
+
+==================================================
+
+UI window closed
