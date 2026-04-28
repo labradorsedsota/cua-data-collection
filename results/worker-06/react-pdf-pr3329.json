@@ -2,17 +2,16 @@
   "task_id": "react-pdf-pr3329",
   "repo": "diegomura/react-pdf",
   "worker": "worker-06",
-  "status": "deploy_failed",
+  "status": "failed",
   "sess_id": null,
   "expected_result_used": false,
   "duration_seconds": 0,
-  "timestamp": "2026-04-28T15:16:00+08:00",
-  "mano_cua": {
-    "status": "SKIPPED",
-    "total_steps": 0,
-    "last_action": null,
-    "result": "unclear",
-    "result_summary": "网络严重降级导致git clone和tarball下载均失败。仓库大小diegomura/react-pdf超过40MB，当前下载速度仅~6KB/s，10分钟仅下载3.7MB。尝试多种方式（git clone depth 1/50/blobless、gh CLI、curl tarball）均失败或超时。",
-    "last_reasoning": "Network severely degraded. Download speed ~6KB/s, repos >40MB cannot be cloned or downloaded within reasonable time."
+  "timestamp": "2026-04-28T18:50:00+08:00",
+  "mano_cua": null,
+  "failure": {
+    "type": "deploy_failed",
+    "symptom": "fuse_repo_blocked",
+    "attempted": ["fuse_trigger: react-pdf-284 (commit b227e0e303), react-pdf-1765 (commit fb848a7750)"],
+    "recommendation": "同repo已有2个不同buggy_commit deploy_failed，repo级熔断。react-pdf是yarn/lerna monorepo，lerna build因nx native模块缺失失败，canvas native模块编译失败，无内置dev server。任务卡deploy_commands(npm install/npm run dev)不适用于此项目。"
   }
 }
