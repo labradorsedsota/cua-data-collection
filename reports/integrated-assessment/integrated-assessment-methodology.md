@@ -18,9 +18,9 @@
 |--------|------|------|
 | result 卡 | repo `results/worker-*/` | 全集，每张 JSON 一个执行结果 |
 | 任务卡 | repo `tasks/pool-clean/` | 原始任务定义（含 test_description_zh, dev_url, app_name） |
-| TOS 轨迹 | `/Users/mlt/Documents/code/oss/tos_trajectories/trajectories/{sess_id}/` | mano-cua 执行轨迹（仅 result.json + files.txt 云端清单，不含截图） |
-| 脚本目录 | `/Users/mlt/.openclaw/workspace/scripts/bughunt-assessment/` | 所有评估脚本 |
-| 脚本输出 | `/Users/mlt/.openclaw/workspace/scripts/bughunt-assessment/output/` | LLM 匹配结果等中间产物 |
+| TOS 轨迹 | `~/Documents/code/oss/tos_trajectories/trajectories/{sess_id}/` | mano-cua 执行轨迹（仅 result.json + files.txt 云端清单，不含截图） |
+| 脚本目录 | `~/.openclaw/workspace/scripts/bughunt-assessment/` | 所有评估脚本 |
+| 脚本输出 | `~/.openclaw/workspace/scripts/bughunt-assessment/output/` | LLM 匹配结果等中间产物 |
 
 ---
 
@@ -145,13 +145,12 @@ Model: claude-haiku-4-5
 ### 前置准备
 
 ```bash
-# 1. Clone repo (sparse checkout)
-git clone --filter=blob:none --sparse https://github.com/labradorsedsota/bughunt.git /tmp/bughunt-check
-cd /tmp/bughunt-check
-git sparse-checkout set results tasks/pool-clean reports
+# 1. 拉取最新 repo
+cd ~/repos/bughunt
+git pull origin main
 
 # 2. 确认轨迹目录
-TRAJ_DIR="/Users/mlt/Documents/code/oss/tos_trajectories/trajectories"
+TRAJ_DIR="~/Documents/code/oss/tos_trajectories/trajectories"
 ls $TRAJ_DIR | wc -l
 
 # 3. 下载缺失轨迹的 result.json（自动 diff，仅下载 result.json + 生成云端文件清单）
@@ -165,15 +164,14 @@ python3 ~/.openclaw/workspace/scripts/bughunt-assessment/download_missing_batch.
 SCRIPTS=~/.openclaw/workspace/scripts/bughunt-assessment
 
 # 4. 运行 LLM 匹配（后台，约 20 分钟）
-# 注意：脚本中 RESULTS_DIR/TASKS_DIR 仍指向 /tmp/bughunt-check，需要先 clone repo
 python3 $SCRIPTS/llm_match_check.py &
 
 # 5. 运行整合报告
 python3 $SCRIPTS/integrate_report.py
 
 # 6. 推到线上
-cd /tmp/bughunt-check
-git add reports/integrated-assessment-*.{csv,json,md}
+git pull origin main
+git add reports/integrated-assessment/integrated-assessment-*.{csv,json,md}
 git commit -m "update: integrated assessment YYYY-MM-DD"
 git push origin main
 ```
@@ -189,14 +187,15 @@ git push origin main
 | 合规检查脚本 | `~/.openclaw/workspace/scripts/bughunt-assessment/compliance_check.py` | 18 项检查 |
 | TOS 下载脚本 | `~/.openclaw/workspace/scripts/bughunt-assessment/download_missing_batch.py` | 轻量下载（仅 result.json + files.txt 清单，自动 diff） |
 | 脚本输出目录 | `~/.openclaw/workspace/scripts/bughunt-assessment/output/` | LLM 结果、日志 |
-| 轨迹数据 | `/Users/mlt/Documents/code/oss/tos_trajectories/trajectories/` | 每个 session 仅含 result.json + files.txt 云端清单 |
+| 轨迹数据 | `~/Documents/code/oss/tos_trajectories/trajectories/` | 每个 session 仅含 result.json + files.txt 云端清单 |
+| 本地 repo | `~/repos/bughunt` | results、tasks/pool-clean、reports 所在位置 |
 | 原始下载脚本 | `~/.openclaw/workspace/download_sess.py` | 单个 sess_id 下载 |
 
 ---
 
 ## 十一、注意事项
 
-1. **repo 每次用 sparse clone 到 /tmp/bughunt-check** — 这是临时工作目录，脚本中 RESULTS_DIR/TASKS_DIR 指向这里
+1. **使用本地 repo `~/repos/bughunt`** — 执行前先 `git pull` 拉最新，脚本中 RESULTS_DIR/TASKS_DIR 指向这里
 2. **轨迹只下载 result.json** — 评估管线只需要 result.json 中的 `task` 字段做匹配，不需要截图；云端完整文件列表保存在每个 session 目录的 `files.txt` 中，需要时可按需补下载
 3. **LLM API budget** — 本地 proxy (127.0.0.1:18792) 已超 budget，用 mininglamp gateway 直连
 4. **app_name 命名不一致是正常的** — npm 包名 vs 产品名，LLM 能正确判定
